@@ -5,6 +5,7 @@ import { renderOverview } from './sections/overview';
 import { renderFlights } from './sections/flights';
 import { renderRental } from './sections/rental';
 import { renderLodging } from './sections/lodging';
+import { renderFood } from './sections/food';
 import { renderItinerary } from './sections/itinerary';
 import { renderHikes } from './sections/hikes';
 import { renderViewpoints } from './sections/viewpoints';
@@ -31,6 +32,7 @@ function mount(): void {
     renderFlights(),
     renderRental(),
     renderLodging(),
+    renderFood(),
     renderItinerary(),
     renderHikes(),
     renderViewpoints(),

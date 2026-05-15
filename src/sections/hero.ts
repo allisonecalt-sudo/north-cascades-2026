@@ -7,6 +7,7 @@ const NAV_LINKS: { id: string; label: string }[] = [
   { id: 'flights', label: 'Flights' },
   { id: 'rental', label: 'Rental car' },
   { id: 'lodging', label: 'Lodging' },
+  { id: 'food', label: 'Food (kosher)' },
   { id: 'itinerary', label: 'Itinerary' },
   { id: 'hikes', label: 'Hikes' },
   { id: 'viewpoints', label: 'Viewpoints' },

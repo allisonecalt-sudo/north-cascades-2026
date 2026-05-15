@@ -1,10 +1,9 @@
 /**
  * Seattle add-on section.
  *
- * Renders the Seattle stop options as filterable cards (chips: All / Iconic /
- * Outdoorsy / Food / Lodging), then a logistics list, then the suggested
- * mini-itineraries. Mirrors the lodging-section visual language so it slots
- * into the existing cabin-glacial palette.
+ * Recommended Thu-evening half-day is surfaced first; everything else
+ * (alternative itineraries, sights, logistics) is collapsed behind
+ * disclosure widgets to keep density low.
  */
 
 import {
@@ -12,7 +11,6 @@ import {
   SEATTLE_ITINERARIES,
   SEATTLE_LOGISTICS,
   SEATTLE_STOPS,
-  type SeattleCategory,
   type SeattleItinerary,
   type SeattleStop,
 } from '../data/seattle';
@@ -73,78 +71,17 @@ function renderStopCard(stop: SeattleStop): HTMLElement {
   );
 }
 
-function uniqueCategories(stops: SeattleStop[]): SeattleCategory[] {
-  const seen = new Set<SeattleCategory>();
-  for (const s of stops) seen.add(s.category);
-  return (Object.keys(CATEGORY_LABELS) as SeattleCategory[]).filter((c) => seen.has(c));
-}
-
-function renderFilterChips(grid: HTMLElement, stops: SeattleStop[]): HTMLElement {
-  const categories = uniqueCategories(stops);
-  const allChip = h(
-    'button',
-    {
-      type: 'button',
-      class: 'chip chip--active',
-      'data-filter': 'all',
-      'aria-pressed': 'true',
-    },
-    `All (${stops.length})`
-  );
-  const chips = categories.map((c) => {
-    const count = stops.filter((s) => s.category === c).length;
-    return h(
-      'button',
-      {
-        type: 'button',
-        class: 'chip',
-        'data-filter': c,
-        'aria-pressed': 'false',
-      },
-      `${CATEGORY_LABELS[c]} (${count})`
-    );
-  });
-  const bar = h(
-    'div',
-    {
-      class: 'chip-row',
-      role: 'group',
-      'aria-label': 'Filter Seattle stops by category',
-    },
-    allChip,
-    ...chips
-  );
-  bar.addEventListener('click', (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLButtonElement)) return;
-    const filter = target.dataset['filter'];
-    if (!filter) return;
-    const allChips = bar.querySelectorAll<HTMLButtonElement>('.chip');
-    allChips.forEach((chip) => {
-      const active = chip.dataset['filter'] === filter;
-      chip.classList.toggle('chip--active', active);
-      chip.setAttribute('aria-pressed', active ? 'true' : 'false');
-    });
-    const cards = grid.querySelectorAll<HTMLElement>('.seattle-card');
-    cards.forEach((card) => {
-      const cat = card.dataset['category'];
-      card.hidden = filter !== 'all' && cat !== filter;
-    });
-  });
-  return bar;
-}
-
-function renderItinerary(it: SeattleItinerary): HTMLElement {
+function renderItinerary(it: SeattleItinerary, primary: boolean): HTMLElement {
   return h(
     'article',
     {
-      class: `option-list__item${it.recommended ? ' option-list__item--rec' : ''}`,
+      class: `option-list__item${primary ? ' option-list__item--rec' : ''}`,
     },
     h(
       'header',
       { class: 'option-list__head' },
       h('strong', {}, it.label),
-      it.recommended ? badge('Recommended', 'good') : null
+      primary ? badge('Pick', 'good') : null
     ),
     h('p', { class: 'option-list__note' }, it.scenario),
     h(
@@ -156,60 +93,68 @@ function renderItinerary(it: SeattleItinerary): HTMLElement {
 }
 
 export function renderSeattle(): HTMLElement {
-  const grid = h(
-    'div',
-    { class: 'card-grid' },
-    ...SEATTLE_STOPS.map(renderStopCard)
-  );
+  const primaryItin = SEATTLE_ITINERARIES.find((i) => i.recommended);
+  const otherItins = SEATTLE_ITINERARIES.filter((i) => !i.recommended);
 
-  const wrap = section(
+  return section(
     'seattle',
     'Seattle add-on',
     h(
       'p',
       { class: 'section__lede' },
-      "You're already paying SEA transit both ways. Day 5 (Thu Aug 20) most-likely lands you in town mid-afternoon with 4-8 hours before an evening flight east — natural fit for a half-day stop. This section covers that scenario plus a pre-trip Saturday overnight and a longer add-on-night option."
+      'Day 5 lands in Seattle mid-afternoon with hours before an evening flight east — natural fit for a half-day stop. Kosher meals come from QFC Mercer Island.'
     ),
+    // Recommended itinerary front-and-centre.
+    primaryItin ? renderItinerary(primaryItin, true) : null,
+    // Other itineraries — collapsed.
+    otherItins.length > 0
+      ? h(
+          'details',
+          { class: 'disclosure' },
+          h(
+            'summary',
+            { class: 'disclosure__summary' },
+            `Other Seattle scenarios (${otherItins.length})`
+          ),
+          h(
+            'div',
+            { class: 'option-list' },
+            ...otherItins.map((it) => renderItinerary(it, false))
+          )
+        )
+      : null,
+    // Sights — collapsed.
     h(
-      'div',
-      { class: 'seattle-sub' },
-      h('h3', { class: 'subsection__title' }, 'Logistics'),
+      'details',
+      { class: 'disclosure' },
+      h(
+        'summary',
+        { class: 'disclosure__summary' },
+        `Seattle sights + neighborhoods (${SEATTLE_STOPS.length})`
+      ),
+      h('div', { class: 'card-grid' }, ...SEATTLE_STOPS.map(renderStopCard))
+    ),
+    // Logistics — collapsed.
+    h(
+      'details',
+      { class: 'disclosure' },
+      h(
+        'summary',
+        { class: 'disclosure__summary' },
+        `Seattle logistics (parking, light rail, traffic — ${SEATTLE_LOGISTICS.length})`
+      ),
       h(
         'ul',
-        { class: 'logistics' },
+        { class: 'mini-list' },
         ...SEATTLE_LOGISTICS.map((row) =>
           h(
             'li',
-            { class: 'logistics__item' },
-            h('h4', { class: 'logistics__topic' }, row.topic),
-            h('p', { class: 'logistics__detail' }, row.detail)
+            { class: 'mini-list__item' },
+            h('strong', { class: 'mini-list__label' }, row.topic),
+            h('span', { class: 'mini-list__detail' }, row.detail)
           )
         )
       )
-    ),
-    h(
-      'div',
-      { class: 'seattle-sub' },
-      h('h3', { class: 'subsection__title' }, 'Stops + cards'),
-      h(
-        'p',
-        { class: 'section__lede' },
-        'Filter by category. Photos credit linked to source.'
-      ),
-      renderFilterChips(grid, SEATTLE_STOPS),
-      grid
-    ),
-    h(
-      'div',
-      { class: 'seattle-sub' },
-      h('h3', { class: 'subsection__title' }, 'Suggested mini-itineraries'),
-      h(
-        'div',
-        { class: 'option-list' },
-        ...SEATTLE_ITINERARIES.map(renderItinerary)
-      )
     )
   );
-
-  return wrap;
 }

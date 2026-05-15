@@ -38,8 +38,10 @@ export const ITINERARY: ItineraryDay[] = [
       },
     ],
     meals: {
-      lunch: 'Birdsview Brewing (Concrete) OR sandwiches from Marblemount Country Store.',
-      dinner: 'Buffalo Run Restaurant or Mondo (American + Korean) — both in Marblemount.',
+      lunch:
+        'Eat from the QFC Mercer Island / Trader Joe\'s kosher haul you stocked in Seattle/Bellingham (corridor towns have no kosher).',
+      dinner:
+        'Cook in the cabin (kitchen pick: Skagit River Resort or Rhody House). Sealed kosher meat + Va\'ad deli from QFC Mercer Island.',
     },
   },
   {
@@ -50,7 +52,8 @@ export const ITINERARY: ItineraryDay[] = [
     stops: [
       {
         step: 'Pre-hike fuel',
-        detail: 'Coffee + breakfast sandwich at Marblemount Country Store. Pack lunch + 2L water each.',
+        detail:
+          'Cabin breakfast (cereal + sealed kosher dairy from your TJ\'s haul). Pack a kosher sandwich + 2L water each — Marblemount Country Store is not kosher, only useful for sealed bottled water/whole fruit.',
       },
       {
         step: 'Drive Marblemount → Cascade Pass Trailhead',
@@ -70,7 +73,7 @@ export const ITINERARY: ItineraryDay[] = [
       { step: 'Drive back to Marblemount', detail: '~1 hr.', time: '~1 hr' },
     ],
     meals: {
-      dinner: 'Rotate Buffalo Run / Mondo from Night 1.',
+      dinner: 'Cook in the cabin. Post-hike kosher pasta + sealed sauce + pre-grilled chicken from your QFC haul travels well.',
     },
   },
   {
@@ -107,8 +110,9 @@ export const ITINERARY: ItineraryDay[] = [
       { step: 'Check in', detail: 'Freestone Inn · Sun Mountain · or Methow River Lodge.' },
     ],
     meals: {
-      lunch: 'Colonial Creek picnic area (post-hike) — bring sandwiches.',
-      dinner: 'Old Schoolhouse Brewery (riverfront deck) OR Arrowleaf Bistro (nicer, river views).',
+      lunch: 'Colonial Creek picnic area (post-hike) — bring kosher sandwiches from the cabin.',
+      dinner:
+        'Cook at the east-side cabin (Freestone cabin, River\'s Edge chalet, or Spring Creek Ranch — all have full kitchens). Winthrop restaurants are not kosher.',
     },
   },
   {
@@ -119,7 +123,8 @@ export const ITINERARY: ItineraryDay[] = [
     stops: [
       {
         step: 'Pre-hike fuel',
-        detail: 'Rocking Horse Bakery, 265 Riverside Ave, Winthrop — coffee + pastries.',
+        detail:
+          'Cabin breakfast — Rocking Horse Bakery in Winthrop is not kosher. Brew your own and pack sealed kosher pastries from the Trader Joe\'s/QFC haul.',
       },
       {
         step: 'Drive to Rainy Pass Trailhead',
@@ -143,11 +148,11 @@ export const ITINERARY: ItineraryDay[] = [
       {
         step: 'Winthrop walkabout',
         detail:
-          'Old-west boardwalk on Riverside Ave. Sheri’s Sweet Shoppe for ice cream. Shafer Historical Museum if open.',
+          'Old-west boardwalk on Riverside Ave. Shafer Historical Museum if open. (Sheri\'s Sweet Shoppe + town restaurants are not kosher — sightseeing only.)',
       },
     ],
     meals: {
-      dinner: 'Arrowleaf Bistro (nicer) · East 20 Pizza (casual) · Three Fingered Jacks (old-west).',
+      dinner: 'Cook in the cabin — kosher pasta night with the salad you picked up at QFC.',
     },
   },
   {
@@ -155,7 +160,11 @@ export const ITINERARY: ItineraryDay[] = [
     date: 'Thu Aug 20',
     title: 'Slow morning, drive to SEA',
     stops: [
-      { step: 'Breakfast', detail: 'Rocking Horse Bakery or Three Fingered Jacks.' },
+      {
+        step: 'Breakfast',
+        detail:
+          'Cabin breakfast from your kosher stock — last morning to use what\'s left. Pack a sandwich + bars for the drive.',
+      },
       {
         step: 'Optional easy morning',
         detail:
@@ -168,8 +177,9 @@ export const ITINERARY: ItineraryDay[] = [
         time: '~4 hrs',
       },
       {
-        step: 'Lunch stop',
-        detail: 'Leavenworth (Bavarian village on US-2) or Cle Elum (on I-90).',
+        step: 'Kosher lunch in Seattle',
+        detail:
+          'Stop at QFC Mercer Island (Va\'ad kosher deli, 7823 SE 28th St) for a real sit-down kosher lunch before SEA. (Leavenworth / Cle Elum have no kosher — sandwich-from-cooler only if you stop there.)',
       },
       { step: 'Arrive SEA', detail: 'Mid-afternoon for evening flight east.' },
     ],

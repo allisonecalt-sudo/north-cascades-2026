@@ -73,15 +73,51 @@ function renderHikeCard(hike: Hike): HTMLElement {
   );
 }
 
+function renderHikeSummary(hike: Hike): HTMLElement {
+  const meta = TAG_META[hike.tag];
+  return h(
+    'li',
+    { class: 'mini-list__item' },
+    h(
+      'strong',
+      { class: 'mini-list__label' },
+      `#${hike.rank} · ${hike.name}`,
+      ' ',
+      badge(meta.label, meta.kind)
+    ),
+    h(
+      'span',
+      { class: 'mini-list__detail' },
+      `${hike.mileage} · ${hike.elevation} · ${hike.difficulty}. ${hike.description}`
+    )
+  );
+}
+
 export function renderHikes(): HTMLElement {
+  // Surface the two anchor hikes; collapse the rest as a compact list.
+  const anchors = HIKES.filter((hk) => hk.tag === 'must-do' || hk.tag === 'classic');
+  const rest = HIKES.filter((hk) => hk.tag !== 'must-do' && hk.tag !== 'classic');
+
   return section(
     'hikes',
     'Hikes',
     h(
       'p',
       { class: 'section__lede' },
-      'Ranked by signature value. Two anchor hikes (#1, #2); the rest are alternates, easy add-ons, or Plan B if WA-20 stays closed.'
+      'Two anchor hikes — one each side. Easy add-ons, alternates, and Plan-B options collapsed below.'
     ),
-    h('div', { class: 'card-grid card-grid--hikes' }, ...HIKES.map(renderHikeCard))
+    h('div', { class: 'card-grid card-grid--hikes' }, ...anchors.map(renderHikeCard)),
+    rest.length > 0
+      ? h(
+          'details',
+          { class: 'disclosure' },
+          h(
+            'summary',
+            { class: 'disclosure__summary' },
+            `Easy add-ons, alternates, Plan B (${rest.length})`
+          ),
+          h('ul', { class: 'mini-list' }, ...rest.map(renderHikeSummary))
+        )
+      : null
   );
 }

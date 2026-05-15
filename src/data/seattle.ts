@@ -208,58 +208,11 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     },
   },
 
-  // ---------- Real food ----------
-  {
-    id: 'sitka-spruce',
-    name: 'Sitka & Spruce',
-    category: 'food',
-    address: 'Melrose Market, 1531 Melrose Ave, Seattle, WA 98122',
-    why: 'PNW seasonal small plates from Matt Dillon, in the converted Melrose Market warehouse on Capitol Hill. Local, ingredient-driven — exactly the not-a-chain pick. Sit at the counter if you can.',
-    timeNeeded: '1.5-2 hours',
-    practical: 'Dinner only; reservations strongly recommended on Resy.',
-    photo: {
-      src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=70',
-      alt: 'Restaurant interior with warm wood, an open kitchen, and counter seating.',
-      credit: 'Photo: Jay Wennington / Unsplash',
-      creditUrl: 'https://unsplash.com/photos/N_Y88TWmGwA',
-      width: 800,
-      height: 533,
-    },
-  },
-  {
-    id: 'storyville',
-    name: 'Storyville Coffee (Pike Place)',
-    category: 'food',
-    address: '94 Pike St #34, Seattle, WA 98101',
-    why: 'Hidden upstairs on the corner of Pike Place — high windows over the market, wood-fired pastries, very good lattes. Better coffee than the original Starbucks line below, no wait.',
-    timeNeeded: '30-45 min',
-    practical: 'Walk in. Indoor seating + a tiny balcony. Open daily 7am-6pm.',
-    photo: {
-      src: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=70',
-      alt: 'Latte in a ceramic cup on a wooden table beside a window.',
-      credit: 'Photo: Nathan Dumlao / Unsplash',
-      creditUrl: 'https://unsplash.com/photos/6VhPY27jdps',
-      width: 800,
-      height: 533,
-    },
-  },
-  {
-    id: 'walrus-carpenter',
-    name: 'The Walrus and the Carpenter',
-    category: 'food',
-    address: '4743 Ballard Ave NW, Seattle, WA 98107',
-    why: 'Famous Ballard oyster bar from Renee Erickson — small, lively, ingredient-driven seafood. James Beard winner. The Ballard / Fremont stretch is also one of the most-walkable food strips in the city.',
-    timeNeeded: '1.5-2 hours',
-    practical: 'No reservations — walk in early (5pm open) or expect a 30-90 min wait. Worth it.',
-    photo: {
-      src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=70',
-      alt: 'Plate of fresh oysters on ice with lemon wedges.',
-      credit: 'Photo: Ben Stern / Unsplash',
-      creditUrl: 'https://unsplash.com/photos/Cz38gW46_nA',
-      width: 800,
-      height: 533,
-    },
-  },
+  // ---------- Real food (kosher only) ----------
+  // Non-kosher Seattle food picks removed May 15 2026 — kosher pivot.
+  // Real kosher options live in the Restaurants section (QFC Mercer Island deli,
+  // Pabla, Teapot Vegetarian, Einstein Bros. Renton, Island Crust). Seattle stops
+  // here are sightseeing only; eat from the Restaurants section.
 
   // ---------- Lodging ----------
   {
@@ -315,12 +268,11 @@ export const SEATTLE_ITINERARIES: SeattleItinerary[] = [
     id: 'thu-halfday',
     label: 'Thu Aug 20 post-trip half-day',
     scenario:
-      "Drive Winthrop → SEA arrives mid-afternoon. You have ~4-6 hours before an evening eastbound flight. Default play if you're flying out Thu evening.",
+      "Drive Winthrop → SEA arrives mid-afternoon. ~4-6 hours before an evening flight. Default play if you're flying out Thu evening.",
     steps: [
-      'Stop at Snoqualmie Falls on the way in (~30 min from Seattle on I-90) — adds ~1 hr but it is the natural last-glimpse-of-mountains stop.',
-      'Park at Pike Place Market Garage (~$8/hr).',
-      'Walk Pike Place arcade + waterfront + the Overlook Walk over to Olympic Sculpture Park (~2 hrs).',
-      'Late lunch / early dinner — Storyville Coffee for a pre-flight reset, or walk to a Pike Place chowder counter.',
+      'Stop at Snoqualmie Falls on the way in (~30 min from Seattle on I-90).',
+      'Stop at QFC Mercer Island (7823 SE 28th St) for a kosher deli lunch + airport snacks — Va\'ad-certified counter, ~10 min off I-90.',
+      'Park at Pike Place Market Garage (~$8/hr). Walk Pike Place arcade + waterfront + Olympic Sculpture Park (~2 hrs).',
       'Drive to SEA — leave 90 min before boarding, more in rush hour.',
     ],
     recommended: true,
@@ -331,36 +283,35 @@ export const SEATTLE_ITINERARIES: SeattleItinerary[] = [
     scenario:
       'Same Thu evening flight, but trade the walking-tour for a ferry ride. Best if you arrive in Seattle by ~1pm.',
     steps: [
-      'Park at the Pier 50 / Pioneer Square garages.',
-      'Walk on Bainbridge ferry (~$10 round trip, 35 min each way).',
-      'Coffee + lunch + a short stroll in Bainbridge town (~1.5 hrs ashore).',
-      'Ferry back, walk Pioneer Square for 30-45 min.',
-      'Drive to SEA.',
+      'Pre-board lunch from QFC Mercer Island kosher deli before heading downtown.',
+      'Park at Pier 50 / Pioneer Square garages.',
+      'Walk on Bainbridge ferry (~$10 round trip, 35 min each way) — eat your packed lunch with skyline view.',
+      'Short stroll in Bainbridge town (~1.5 hrs ashore).',
+      'Ferry back, walk Pioneer Square for 30-45 min. Drive to SEA.',
     ],
   },
   {
     id: 'sat-overnight',
     label: 'Sat Aug 15 pre-trip overnight',
     scenario:
-      'Land Saturday afternoon/evening, sleep in Seattle, drive Sunday morning to Marblemount (~2 hrs) fresh. Best if redeye-jet-lag is a concern, or if the flight gets in late.',
+      'Land Saturday afternoon/evening, sleep in Seattle, drive Sunday morning to Marblemount (~2 hrs) fresh. Best if redeye-jet-lag is a concern.',
     steps: [
-      'Drop the rental at SEA (or skip the pickup until Sunday) — Link light rail to Westlake in 40 min.',
+      'Drop the rental at SEA — Link light rail to Westlake in 40 min.',
       'Check into Hotel Andra (Belltown) — walking distance to Pike Place + waterfront.',
-      'Quick walk-around at Pike Place sunset + Olympic Sculpture Park if light allows.',
-      'Dinner at Sitka & Spruce or a Belltown spot.',
-      'Sunday morning: coffee at Storyville, Uber to SEA, pick up rental, drive ~2 hrs to Marblemount.',
+      'Dinner at Teapot Vegetarian House (kosher pareve, Capitol Hill) or Pabla Indian (kosher dairy, Renton).',
+      'Sunday morning: Uber to SEA, pick up rental, stop at QFC Mercer Island for trip-prep kosher groceries, drive ~2 hrs to Marblemount.',
     ],
   },
   {
     id: 'thu-overnight',
     label: 'Thu→Fri Aug 20-21 add-on night',
     scenario:
-      "Push the eastbound flight to Friday morning or use a redeye. Gives a full evening + morning in Seattle. Worth it if it's your first time in the PNW or fares are similar.",
+      "Push the eastbound flight to Friday morning or use a redeye. Gives a full evening + morning in Seattle. Worth it if it's your first time in the PNW.",
     steps: [
       'Drive Winthrop → Snoqualmie Falls → SEA car drop in afternoon.',
       'Link light rail or Uber to Hotel Andra.',
       'Late afternoon — Kerry Park at sunset (the skyline shot).',
-      'Dinner at The Walrus and the Carpenter (Ballard) — early arrival to skip the wait.',
+      'Dinner at Pabla (kosher dairy) or Einstein Bros. Renton (Va\'ad kosher) en route.',
       'Fri morning — Discovery Park beach loop or Bainbridge ferry, then SEA for departure.',
     ],
   },

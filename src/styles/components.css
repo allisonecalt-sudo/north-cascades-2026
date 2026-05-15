@@ -374,6 +374,224 @@
   font-weight: 500;
 }
 
+/* Progressive disclosure (collapse-by-default sub-sections) */
+.disclosure {
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  background: var(--c-warm-50);
+  padding: 0;
+  margin-top: var(--sp-4);
+  overflow: hidden;
+}
+
+.disclosure[open] {
+  box-shadow: var(--shadow-sm);
+}
+
+.disclosure__summary {
+  list-style: none;
+  cursor: pointer;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--c-forest-700);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.disclosure__summary::-webkit-details-marker {
+  display: none;
+}
+
+.disclosure__summary::after {
+  content: 'Show ▾';
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--c-ink-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.disclosure[open] .disclosure__summary::after {
+  content: 'Hide ▴';
+  color: var(--c-forest-700);
+}
+
+.disclosure__summary:hover {
+  background: var(--c-warm-100);
+}
+
+.disclosure[open] .disclosure__summary {
+  border-bottom: 1px solid var(--c-line);
+}
+
+.disclosure > *:not(summary) {
+  padding: var(--sp-4);
+}
+
+.disclosure > .card-grid,
+.disclosure > .mini-list,
+.disclosure > .option-list {
+  padding: var(--sp-4);
+}
+
+.disclosure__lede {
+  color: var(--c-ink-500);
+  font-size: var(--fs-sm);
+  padding-bottom: 0;
+}
+
+/* Compact one-line summary list — used inside disclosures */
+.mini-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin: 0;
+}
+
+.mini-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.mini-list__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.mini-list__label {
+  color: var(--c-forest-800);
+  font-size: var(--fs-base);
+  font-weight: 600;
+}
+
+.mini-list__detail {
+  color: var(--c-ink-700);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+/* Card badges row (lodging — top pick + kitchen) */
+.card__badges {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Flight primary recommendation card — wider, more breathing room */
+.flight-card--primary {
+  padding: var(--sp-5);
+}
+
+@media (min-width: 720px) {
+  .flight-card--primary {
+    padding: var(--sp-6);
+  }
+}
+
+/* Food Strategy section */
+.food-card {
+  padding: var(--sp-4);
+}
+
+.food-card__title {
+  font-size: var(--fs-lg);
+  color: var(--c-forest-800);
+  margin: 0;
+}
+
+.food-card__address,
+.food-card__phone {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin: 0;
+}
+
+.food-card__phone {
+  color: var(--c-forest-700);
+}
+
+.food-card__hint {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  font-style: italic;
+  margin: 0;
+}
+
+.food-card__why {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+}
+
+.food-card__stock {
+  font-size: var(--fs-sm);
+  background: var(--c-glacier-100);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+  color: var(--c-ink-900);
+  line-height: 1.55;
+}
+
+.food-card__stock strong {
+  color: var(--c-glacier-600);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--fs-xs);
+}
+
+/* Restaurants — fail-loud "no kosher here" block */
+.restaurants__none {
+  background: var(--c-warn-bg);
+  border: 1px solid var(--c-warn-border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.restaurants__none-headline {
+  color: var(--c-warn-ink);
+  font-size: var(--fs-base);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.restaurants__none-note {
+  color: var(--c-warn-ink);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.restaurants__phone {
+  font-size: var(--fs-xs);
+  color: var(--c-forest-700);
+}
+
+.restaurants__hechsher {
+  font-size: var(--fs-xs);
+  color: var(--c-forest-700);
+  font-weight: 600;
+  background: var(--c-good-bg);
+  padding: 2px 8px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.restaurants__link {
+  font-size: var(--fs-sm);
+  margin-top: var(--sp-2);
+}
+
 /* Booking tips list (flights) */
 .tip-list {
   list-style: none;

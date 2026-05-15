@@ -1,9 +1,9 @@
 import {
   EAST_LODGING,
-  VIBE_LABELS,
+  KITCHEN_LABELS,
   WEST_LODGING,
+  type KitchenLevel,
   type Lodging,
-  type LodgingVibe,
 } from '../data/lodging';
 import { badge, h, section } from '../dom';
 
@@ -32,8 +32,14 @@ function renderPhoto(lodging: Lodging): HTMLElement {
   return figure;
 }
 
+function kitchenBadgeKind(level: KitchenLevel): 'good' | 'info' | 'warn' {
+  if (level === 'full') return 'good';
+  if (level === 'kitchenette') return 'info';
+  return 'warn';
+}
+
 function renderLodgingCard(lodging: Lodging): HTMLElement {
-  const card = h(
+  return h(
     'article',
     {
       class: `card lodging-card${lodging.topPick ? ' lodging-card--top' : ''}`,
@@ -44,7 +50,12 @@ function renderLodgingCard(lodging: Lodging): HTMLElement {
       'header',
       { class: 'card__header' },
       h('h3', { class: 'card__title' }, lodging.name),
-      lodging.topPick ? badge('Top pick', 'good') : null
+      h(
+        'div',
+        { class: 'card__badges' },
+        lodging.topPick ? badge('Top pick', 'good') : null,
+        badge(KITCHEN_LABELS[lodging.kitchen], kitchenBadgeKind(lodging.kitchen))
+      )
     ),
     h('p', { class: 'card__address' }, lodging.address),
     lodging.phone ? h('p', { class: 'card__phone' }, lodging.phone) : null,
@@ -72,77 +83,27 @@ function renderLodgingCard(lodging: Lodging): HTMLElement {
       : null,
     lodging.bookingHint ? h('p', { class: 'card__hint' }, lodging.bookingHint) : null
   );
-  return card;
-}
-
-function uniqueVibes(lodgings: Lodging[]): LodgingVibe[] {
-  const seen = new Set<LodgingVibe>();
-  for (const l of lodgings) seen.add(l.vibe);
-  // Preserve a stable ordering aligned with VIBE_LABELS keys.
-  return (Object.keys(VIBE_LABELS) as LodgingVibe[]).filter((v) => seen.has(v));
-}
-
-function renderFilters(
-  panel: HTMLElement,
-  lodgings: Lodging[],
-  panelId: string
-): HTMLElement {
-  const vibes = uniqueVibes(lodgings);
-  const allChip = h(
-    'button',
-    {
-      type: 'button',
-      class: 'chip chip--active',
-      'data-filter': 'all',
-      'aria-pressed': 'true',
-    },
-    `All (${lodgings.length})`
-  );
-  const chips = vibes.map((v) => {
-    const count = lodgings.filter((l) => l.vibe === v).length;
-    return h(
-      'button',
-      {
-        type: 'button',
-        class: 'chip',
-        'data-filter': v,
-        'aria-pressed': 'false',
-      },
-      `${VIBE_LABELS[v]} (${count})`
-    );
-  });
-  const bar = h(
-    'div',
-    {
-      class: 'chip-row',
-      role: 'group',
-      'aria-label': `Filter ${panelId} lodging by vibe`,
-    },
-    allChip,
-    ...chips
-  );
-  bar.addEventListener('click', (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLButtonElement)) return;
-    const filter = target.dataset['filter'];
-    if (!filter) return;
-    const allChips = bar.querySelectorAll<HTMLButtonElement>('.chip');
-    allChips.forEach((c) => {
-      const active = c.dataset['filter'] === filter;
-      c.classList.toggle('chip--active', active);
-      c.setAttribute('aria-pressed', active ? 'true' : 'false');
-    });
-    const cards = panel.querySelectorAll<HTMLElement>('.lodging-card');
-    cards.forEach((card) => {
-      const vibe = card.dataset['vibe'];
-      card.hidden = filter !== 'all' && vibe !== filter;
-    });
-  });
-  return bar;
 }
 
 function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElement {
-  const grid = h('div', { class: 'card-grid' }, ...lodgings.map(renderLodgingCard));
+  const topPicks = lodgings.filter((l) => l.topPick);
+  const rest = lodgings.filter((l) => !l.topPick);
+
+  const topGrid = h('div', { class: 'card-grid' }, ...topPicks.map(renderLodgingCard));
+  const restDisclosure =
+    rest.length > 0
+      ? h(
+          'details',
+          { class: 'disclosure' },
+          h(
+            'summary',
+            { class: 'disclosure__summary' },
+            `Show ${rest.length} more option${rest.length === 1 ? '' : 's'}`
+          ),
+          h('div', { class: 'card-grid' }, ...rest.map(renderLodgingCard))
+        )
+      : null;
+
   const panel = h(
     'div',
     {
@@ -152,8 +113,8 @@ function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElemen
       'aria-labelledby': `lodging-tab-${id}`,
     },
     h('h3', { class: 'tab-panel__title' }, title),
-    renderFilters(grid, lodgings, id),
-    grid
+    topGrid,
+    restDisclosure
   );
   return panel;
 }
@@ -173,7 +134,7 @@ export function renderLodging(): HTMLElement {
         'aria-controls': 'lodging-panel-west',
         'data-target': 'west',
       },
-      `West side · Nights 1-2 (${WEST_LODGING.length})`
+      `West · Nights 1-2`
     ),
     h(
       'button',
@@ -186,7 +147,7 @@ export function renderLodging(): HTMLElement {
         'aria-controls': 'lodging-panel-east',
         'data-target': 'east',
       },
-      `East side · Nights 3-4 (${EAST_LODGING.length})`
+      `East · Nights 3-4`
     )
   );
 
@@ -200,7 +161,7 @@ export function renderLodging(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'Two travelers sharing — Erin prefers spacious + a little nicer than basic. Cabins, lodges, B&Bs, vacation rentals, glamping, and ranch stays below. Tabs split by side; chips filter by vibe.'
+      'Cabins with full kitchens take priority — both travelers keep kosher and the corridor has zero kosher restaurants, so self-catering is the plan. Every card shows kitchen status at a glance.'
     ),
     tabs,
     westPanel,

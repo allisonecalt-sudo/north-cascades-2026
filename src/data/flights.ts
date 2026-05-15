@@ -16,21 +16,21 @@ export interface FlightOption {
 export const FLIGHT_OPTIONS: FlightOption[] = [
   {
     id: 'sea-rt',
-    label: 'A. SEA roundtrip',
-    route: 'NYC → SEA → NYC',
+    label: 'SEA roundtrip on Alaska Airlines',
+    route: 'NYC (JFK/EWR) → SEA → NYC',
     routeDiagram: 'NYC ──► SEA ──► NYC',
     costDelta: 'Cheapest. Saves ~$200-400 on flights + ~$100-250 on one-way drop fee.',
-    drivingHours: '+2 hr west drive Day 1 · 0 hr added on return',
+    drivingHours: '~5.5-6 hr nonstop · +2 hr Day-1 drive to Marblemount · 4 hr Day-5 drive back',
     pros: [
+      'Fewest stopovers — JFK↔SEA + EWR↔SEA both run nonstop on Alaska, Delta, JetBlue, United',
       'Cheapest routing — skips the BLI feeder both ways',
-      'Works under every WA-20 contingency (Stevens Pass loop OR west-side-only)',
+      'Works under every WA-20 contingency',
       'No one-way rental drop fee',
-      'Largest airline selection — Alaska, Delta, JetBlue, United, American all serve JFK/EWR↔SEA',
     ],
     cons: ['+2 hrs of driving on Day 1 morning to reach Marblemount'],
     recommended: true,
     recommendationNote:
-      'Top recommendation given the WA-20 closure uncertainty. Open-jaw only wins if the highway is fully reopened well before mid-August.',
+      'The pick. Nonstop NYC↔SEA on Alaska is the fewest-stop, most-reliable routing — and it stays the right call under every road-closure contingency.',
   },
   {
     id: 'bli-sea',
@@ -142,6 +142,75 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
     recommended: false,
     warning:
       'Passport required (US/Canada border). Confirm rental brand allows cross-border drive — many do not, or charge surcharges.',
+  },
+];
+
+/**
+ * Compact one-line summaries of every non-primary routing.
+ * Used inside a collapsed "Other flight options" expander on the site.
+ */
+export interface FlightOptionSummary {
+  id: string;
+  label: string;
+  oneLiner: string;
+}
+
+export const OTHER_FLIGHT_SUMMARIES: FlightOptionSummary[] = [
+  {
+    id: 'bli-sea',
+    label: 'BLI in / SEA out (open-jaw)',
+    oneLiner:
+      '+1 stopover SEA→BLI on Alaska, ~30 min hop. Saves ~2 hrs Day-1 driving but adds ~$300-450 (BLI feeder + one-way drop fee). Only wins if WA-20 is confirmed open.',
+  },
+  {
+    id: 'sea-bli',
+    label: 'SEA in / BLI out (reverse open-jaw)',
+    oneLiner:
+      'Same open-jaw economics as the standard direction but pacing is worse — Cascade Pass falls on Day 4 instead of Day 2.',
+  },
+  {
+    id: 'bli-rt',
+    label: 'BLI roundtrip (west-side only)',
+    oneLiner: 'Two BLI feeders. Pairs naturally with a west-side-only Plan B; skips the east side.',
+  },
+  {
+    id: 'geg',
+    label: 'GEG (Spokane) into east side',
+    oneLiner:
+      'Lands east of the closure — Winthrop guaranteed even if WA-20 stays shut. Always +1 stopover (no nonstop NYC→GEG); 3:45 drive on arrival. Most expensive.',
+  },
+  {
+    id: 'pdx',
+    label: 'PDX (Portland) southern alternate',
+    oneLiner: 'Nonstop JFK→PDX exists but adds ~3 hrs of driving north. Only if a deep fare deal appears.',
+  },
+  {
+    id: 'yvr',
+    label: 'YVR (Vancouver, BC) northern alternate',
+    oneLiner:
+      'Closest landing to the park, but border + passport + rental cross-border rules add friction. JetBlue runs the only JFK→YVR nonstop.',
+  },
+];
+
+/**
+ * Concise summaries of nearby airport alternatives (one line each).
+ * Previously a deep-dive — now collapsed.
+ */
+export const AIRPORT_ALTERNATIVES: FlightOptionSummary[] = [
+  {
+    id: 'gef-short',
+    label: 'Spokane (GEG)',
+    oneLiner: 'East-side fallback if WA-20 stays closed. 3:45 from Winthrop. Always 1 stop from NYC.',
+  },
+  {
+    id: 'pdx-short',
+    label: 'Portland (PDX)',
+    oneLiner: 'Has nonstops from JFK on Alaska/Delta. ~5:15 drive to Marblemount. Cheaper sometimes.',
+  },
+  {
+    id: 'yvr-short',
+    label: 'Vancouver, BC (YVR)',
+    oneLiner: 'Closest landing (~2:45 to Marblemount). Border + passport overhead. JetBlue JFK nonstop.',
   },
 ];
 
