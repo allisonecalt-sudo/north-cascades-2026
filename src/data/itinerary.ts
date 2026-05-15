@@ -29,7 +29,7 @@ export const ITINERARY: ItineraryDay[] = [
       },
       {
         step: 'Check in',
-        detail: 'Skagit River Resort · Glacier Peak Resort · or Buffalo Run Inn (TBD).',
+        detail: 'Rhody House (Airbnb) · Cascade River House · or Glacier Peak Resort cabins (Skagit River Resort / Clark\'s Cabins is closed).',
       },
       {
         step: 'Evening orientation',
@@ -41,7 +41,7 @@ export const ITINERARY: ItineraryDay[] = [
       lunch:
         'Eat from the QFC Mercer Island / Trader Joe\'s kosher haul you stocked in Seattle/Bellingham (corridor towns have no kosher).',
       dinner:
-        'Cook in the cabin (kitchen pick: Skagit River Resort or Rhody House). Sealed kosher meat + Va\'ad deli from QFC Mercer Island.',
+        'Cook in the cabin (kitchen pick: Rhody House or Cascade River House — both have full kitchens). Sealed kosher meat + Va\'ad deli from QFC Mercer Island.',
     },
   },
   {

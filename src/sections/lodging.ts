@@ -9,16 +9,30 @@ import { badge, h, section } from '../dom';
 
 function renderPhoto(lodging: Lodging): HTMLElement {
   const { photo } = lodging;
+  // Unsplash photos are thematic/representative, not photos of the actual
+  // property. Flag them so travelers don't think this is what they're booking.
+  const isRepresentative = photo.credit?.toLowerCase().includes('unsplash') ?? false;
   const img = h('img', {
     class: 'card__img',
     src: photo.src,
-    alt: photo.alt,
+    alt: isRepresentative
+      ? `Representative photo (not actual property): ${photo.alt}`
+      : photo.alt,
     width: photo.width,
     height: photo.height,
     loading: 'lazy',
     decoding: 'async',
   });
   const figure = h('figure', { class: 'card__figure' }, img);
+  if (isRepresentative) {
+    figure.append(
+      h(
+        'p',
+        { class: 'card__photo-warning' },
+        'Representative photo — not the actual property. See booking link for real photos.'
+      )
+    );
+  }
   if (photo.credit) {
     const credit = photo.creditUrl
       ? h(

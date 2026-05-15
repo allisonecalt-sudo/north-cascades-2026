@@ -211,7 +211,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
   // ---------- Real food (kosher only) ----------
   // Non-kosher Seattle food picks removed May 15 2026 — kosher pivot.
   // Real kosher options live in the Restaurants section (QFC Mercer Island deli,
-  // Pabla, Teapot Vegetarian, Einstein Bros. Renton, Island Crust). Seattle stops
+  // Pabla, Teapot Vegetarian, Einstein Bros. University Village). Seattle stops
   // here are sightseeing only; eat from the Restaurants section.
 
   // ---------- Lodging ----------
@@ -311,7 +311,7 @@ export const SEATTLE_ITINERARIES: SeattleItinerary[] = [
       'Drive Winthrop → Snoqualmie Falls → SEA car drop in afternoon.',
       'Link light rail or Uber to Hotel Andra.',
       'Late afternoon — Kerry Park at sunset (the skyline shot).',
-      'Dinner at Pabla (kosher dairy) or Einstein Bros. Renton (Va\'ad kosher) en route.',
+      'Dinner at Pabla Indian (kosher dairy, Renton) or breakfast at Einstein Bros. University Village (Va\'ad kosher) the next morning.',
       'Fri morning — Discovery Park beach loop or Bainbridge ferry, then SEA for departure.',
     ],
   },

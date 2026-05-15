@@ -31,16 +31,16 @@ export const OPEN_DECISIONS: OpenDecision[] = [
   {
     id: 'west-lodging',
     question: 'West-side lodging (Nights 1-2)',
-    options: 'Skagit River Resort · Glacier Peak Resort · Buffalo Run Inn',
+    options: 'Rhody House (Airbnb) · Cascade River House · Glacier Peak Resort cabins',
     targetBy: 'Book ASAP — cabins fill for August',
-    rec: 'Skagit River Resort cabins.',
+    rec: 'Rhody House (Airbnb, full kitchen) — Skagit River Resort / Clark\'s Cabins is closed; that brand should NOT be booked.',
   },
   {
     id: 'east-lodging',
     question: 'East-side lodging (Nights 3-4)',
-    options: 'Freestone Inn (Mazama) · Sun Mountain Lodge · Methow River Lodge',
+    options: 'River\'s Edge Resort · Spring Creek Ranch · Sun Mountain Lodge Patterson Lake Cabins · Freestone Inn cabins',
     targetBy: 'Book ASAP — peak season',
-    rec: 'Freestone Inn (matches Erin’s brief best).',
+    rec: 'River\'s Edge Resort or Spring Creek Ranch (both confirmed full kitchens). Freestone has "apartment-sized" kitchens — workable but smaller; matches the brief on amenities but not the strongest kosher-cook setup.',
   },
   {
     id: 'cascade-pass-extent',

@@ -1,11 +1,11 @@
 export const CLOSURE_ALERT = {
   headline: 'WA-20 is currently CLOSED through the park',
   detail:
-    'As of May 15, 2026, WA-20 is closed in both directions between Colonial Creek (MP 130) and Porcupine Creek (MP 156) — the entire Diablo Lake → Washington Pass corridor this trip is built around.',
+    'As of May 15, 2026, WA-20 remains closed between Colonial Creek Campground (MP 130) and Porcupine Creek (MP 156) — the entire Diablo Lake → Washington Pass corridor. The east side reopened to Porcupine Creek turnaround on Apr 30, 2026 (per WSDOT), but the closed 26-mile section through the park is still inaccessible.',
   cause:
-    'December 2025 atmospheric-river washouts (1,000+ ft of pavement gone, MP 142-148) + March 2026 rockslide (~4,000 cu yd of debris, MP 131). Two simultaneous emergency contracts running 24/7.',
+    'December 2025 atmospheric-river washouts (1,000+ ft of pavement gone, MP 142-148) + March 2026 rockslide (~4,000 cu yd of debris, MP 131). First emergency contract started May 5 (slope stabilization + debris removal at MP 131); second contract started May 13 (washout repairs).',
   target:
-    'WSDOT target reopen: July 4, 2026. "A goal, not a promise." Latest seasonal reopen since WSDOT started tracking in 1972.',
+    'WSDOT target reopen: July 4, 2026. "A goal, not a promise." Will not reopen for Memorial Day. Latest seasonal reopen since WSDOT started tracking in 1972.',
   triggers: [
     'Re-check WSDOT status Jul 8 (4 days post-target).',
     'WA-20 open by Jul 15 with no fire activity → keep itinerary as-is.',

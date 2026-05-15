@@ -63,11 +63,12 @@ export const RESTAURANTS: RestaurantTown[] = [
           'Smaller scope than Mercer Island — packaged kosher selection, not a hot deli counter. Useful if you base in Seattle proper for the Day-5 stop.',
       },
       {
-        name: 'Einstein Bros. Bagels — Renton',
-        address: '17280 Southcenter Pkwy, Tukwila, WA 98188',
+        name: 'Einstein Bros. Bagels — University Village',
+        address: '2746 NE 45th St, Seattle, WA 98105',
+        phone: '(206) 522-1998',
         hechsher: 'Seattle Va\'ad',
         note:
-          'Va\'ad-supervised location near SEA. The Einstein Bros. chain is NOT universally kosher — this specific store is. Solid bagel + cream-cheese pick on the way back to the airport. [verify hours pre-trip]',
+          'CORRECTED 2026-05-15 — the Va\'ad-certified Einstein Bros. is the UNIVERSITY VILLAGE store (next door to QFC U-Village, same address block, different storefront), NOT a Renton or Tukwila location. The Einstein Bros. chain is NOT universally kosher — only this specific U-Village store is Va\'ad-supervised. If you\'re doing Mercer Island QFC for the deli run, U-Village is ~15 min north of it; if heading back to SEA from north, pass it on I-5. [verify hours pre-trip]',
       },
       {
         name: 'Pabla Indian Cuisine',
@@ -86,11 +87,11 @@ export const RESTAURANTS: RestaurantTown[] = [
           'Vegan/pareve pan-Asian on Capitol Hill. ~15 min from downtown, ~25 min from SEA. Sit-down option if you want a real Seattle dinner that\'s still kosher.',
       },
       {
-        name: 'Island Crust Café',
+        name: 'Island Crust Café — CLOSED · NOT KOSHER',
         address: '7525 SE 24th St, Mercer Island, WA 98040',
-        hechsher: 'Seattle Va\'ad (dairy)',
+        hechsher: 'NONE — certification lost October 2022',
         note:
-          'Dairy café on Mercer Island — pizza, salads, breakfast. Reviewers describe it as fine-not-great, but it\'s a real sit-down option. [verify still open + hours]',
+          'DO NOT EAT HERE. Island Crust lost its Seattle Va\'ad certification in October 2022 after non-kosher cheese was discovered by a Va\'ad supervisor. The owner publicly announced he would reopen without kosher certification. Yelp lists the business as CLOSED as of October 2024. Listed here only as a NEGATIVE — flag for any older guide that still claims this is kosher. [verified 2026-05-15]',
       },
       {
         name: 'Seattle Kosher (online grocery + prepared)',

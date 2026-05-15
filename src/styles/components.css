@@ -346,6 +346,18 @@
   text-decoration: underline;
 }
 
+.card__photo-warning {
+  margin: 0;
+  padding: 0.35rem 0.6rem;
+  background: #fff4d6;
+  color: #6b4500;
+  font-size: 0.72rem;
+  font-weight: 500;
+  border-top: 1px solid #f0d68a;
+  border-bottom: 1px solid #f0d68a;
+  line-height: 1.3;
+}
+
 .card__cta {
   margin: 0;
 }

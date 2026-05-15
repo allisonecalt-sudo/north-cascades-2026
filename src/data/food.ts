@@ -121,7 +121,7 @@ export const HECHSHER_CHEAT: PantryNote[] = [
   {
     topic: 'Seattle Va\'ad',
     detail:
-      'Local Pacific Northwest certifier (Va\'ad Harabanim of Greater Seattle). Certifies QFC Mercer Island + U-Village kosher sections, Einstein Bros. Renton, Pabla, Teapot, Island Crust. Standards aligned with OU.',
+      'Local Pacific Northwest certifier (Va\'ad Harabanim of Greater Seattle). Certifies QFC Mercer Island + U-Village kosher sections, Einstein Bros. University Village (NOT Renton/Tukwila), Pabla Indian, Teapot Vegetarian, Seattle Kosher Catering, Leah\'s Catering. Standards aligned with OU.',
   },
   {
     topic: 'Plain "K"',
