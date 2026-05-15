@@ -1,4 +1,9 @@
-import { FLIGHT_OPTIONS, FLIGHT_RETURN_OPTIONS, type FlightOption } from '../data/flights';
+import {
+  BOOKING_TIPS,
+  FLIGHT_OPTIONS,
+  FLIGHT_RETURN_OPTIONS,
+  type FlightOption,
+} from '../data/flights';
 import { badge, h, section } from '../dom';
 
 function renderFlightCard(option: FlightOption): HTMLElement {
@@ -16,6 +21,7 @@ function renderFlightCard(option: FlightOption): HTMLElement {
     ),
     h('p', { class: 'card__route' }, option.route),
     h('p', { class: 'card__diagram', 'aria-hidden': 'true' }, option.routeDiagram),
+    option.warning ? h('p', { class: 'card__warning' }, option.warning) : null,
     h(
       'dl',
       { class: 'card__facts' },
@@ -53,7 +59,7 @@ export function renderFlights(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'Allison routes TLV → NYC (JFK/EWR) → west coast. Alaska runs ~26 weekly BLI↔SEA feeders. SEA is the major hub.'
+      'Allison routes TLV → NYC (JFK/EWR) → west coast. SEA is the major hub; Alaska, Delta, JetBlue, and United run nonstops from JFK/EWR. Seven routings below, plus booking tips below the cards.'
     ),
     h('div', { class: 'card-grid' }, ...FLIGHT_OPTIONS.map(renderFlightCard)),
     h(
@@ -74,6 +80,23 @@ export function renderFlights(): HTMLElement {
               opt.recommended ? badge('Recommended', 'good') : null
             ),
             h('p', { class: 'option-list__note' }, opt.note)
+          )
+        )
+      )
+    ),
+    h(
+      'div',
+      { class: 'subsection' },
+      h('h3', { class: 'subsection__title' }, 'Booking tips'),
+      h(
+        'ul',
+        { class: 'tip-list' },
+        ...BOOKING_TIPS.map((tip) =>
+          h(
+            'li',
+            { class: 'tip-list__item' },
+            h('strong', { class: 'tip-list__topic' }, tip.topic),
+            h('p', { class: 'tip-list__detail' }, tip.detail)
           )
         )
       )

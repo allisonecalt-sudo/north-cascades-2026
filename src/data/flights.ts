@@ -9,6 +9,8 @@ export interface FlightOption {
   cons: string[];
   recommended: boolean;
   recommendationNote?: string;
+  /** Optional warning shown prominently (e.g. passport for YVR). */
+  warning?: string;
 }
 
 export const FLIGHT_OPTIONS: FlightOption[] = [
@@ -21,9 +23,9 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
     drivingHours: '+2 hr west drive Day 1 · 0 hr added on return',
     pros: [
       'Cheapest routing — skips the BLI feeder both ways',
-      'Works under every contingency (Stevens Pass loop OR west-side-only OR punt to Sep)',
+      'Works under every WA-20 contingency (Stevens Pass loop OR west-side-only)',
       'No one-way rental drop fee',
-      'Most flexible if WA-20 status changes',
+      'Largest airline selection — Alaska, Delta, JetBlue, United, American all serve JFK/EWR↔SEA',
     ],
     cons: ['+2 hrs of driving on Day 1 morning to reach Marblemount'],
     recommended: true,
@@ -32,7 +34,7 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
   },
   {
     id: 'bli-sea',
-    label: 'B. BLI in / SEA out (original plan)',
+    label: 'B. BLI in / SEA out (open-jaw)',
     route: 'NYC → SEA → BLI in; SEA → NYC out',
     routeDiagram: 'NYC ──► SEA ──► BLI  ···  SEA ──► NYC',
     costDelta:
@@ -40,8 +42,8 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
     drivingHours: '-2 hrs Day 1 (closer to park) · 4-hr drive Day 5',
     pros: [
       'Maximizes park time on Day 1 (shortest drive in)',
-      'No backtracking on WA-20',
-      'Short ~30 min final feeder SEA→BLI',
+      'No backtracking on WA-20 when corridor is open',
+      'Short ~30 min final feeder SEA→BLI on Alaska',
     ],
     cons: [
       'If WA-20 stays closed, you land on the wrong side of the corridor',
@@ -51,14 +53,14 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
   },
   {
     id: 'sea-bli',
-    label: 'C. SEA in / BLI out (reverse)',
+    label: 'C. SEA in / BLI out (reverse open-jaw)',
     route: 'NYC → SEA in; BLI → SEA → NYC out',
     routeDiagram: 'NYC ──► SEA  ···  BLI ──► SEA ──► NYC',
     costDelta: 'Roughly same as B.',
-    drivingHours: 'Drive east → west; ~2 hr SEA backtrack on the return',
+    drivingHours: 'Drive east → west · ~2 hr SEA backtrack on the return',
     pros: ['Same open-jaw economics as B'],
     cons: [
-      'Worse pacing — Cascade Pass on Day 4 (less time to acclimate routing) and Maple Pass on Day 2 (jet-lagged)',
+      'Worse pacing — Cascade Pass on Day 4, Maple Pass on Day 2 (jet-lagged)',
       'Return trip backtracks 2 hrs to SEA',
     ],
     recommended: false,
@@ -67,9 +69,9 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
     id: 'bli-rt',
     label: 'D. BLI roundtrip (west-side only)',
     route: 'NYC → SEA → BLI in/out',
-    routeDiagram: 'NYC ──► SEA ──► BLI  ◄──► BLI ──► SEA ──► NYC',
+    routeDiagram: 'NYC ──► SEA ──► BLI ──► SEA ──► NYC',
     costDelta: 'Mid — pays BLI feeders both ways but skips the one-way drop fee.',
-    drivingHours: 'West side only; no east-side driving',
+    drivingHours: 'West side only · no east-side driving',
     pros: [
       'Pairs naturally with a west-side-only contingency (Cascade Pass + Park Butte + Artist Point)',
       'Shortest drive days both ends',
@@ -79,6 +81,67 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
       'Two feeder legs adds cost vs SEA roundtrip',
     ],
     recommended: false,
+  },
+  {
+    id: 'geg',
+    label: 'E. Spokane (GEG) into east side',
+    route: 'NYC → SEA → GEG in; SEA → NYC out',
+    routeDiagram: 'NYC ──► SEA ──► GEG  ···  SEA ──► NYC',
+    costDelta:
+      'Adds ~$250-400 vs SEA RT — extra feeder leg + one-way drop fee. Alaska runs ~14-15 daily SEA↔GEG.',
+    drivingHours: 'GEG → Winthrop ~3 hr 45 min, 180 mi · SEA out via Stevens Pass ~4 hr',
+    pros: [
+      'Lands you east of the WA-20 closure — Winthrop / Maple Pass guaranteed even if the highway stays shut',
+      'Backup if SEA → BLI feeder availability tightens',
+    ],
+    cons: [
+      'Extra 4 hrs driving total vs SEA RT (3:45 in + extra distance back to SEA)',
+      'No nonstops from JFK/EWR — always connects through SEA, MSP, or DEN',
+      'Most expensive of the five routings',
+    ],
+    recommended: false,
+  },
+  {
+    id: 'pdx',
+    label: 'F. Portland (PDX) southern alternate',
+    route: 'NYC → PDX in; SEA → NYC out (or PDX RT)',
+    routeDiagram: 'NYC ──► PDX  ···  SEA ──► NYC',
+    costDelta:
+      'Often cheaper than SEA RT — Alaska + Delta + JetBlue all run JFK↔PDX nonstops (~6 hr 25 min). Round-trips from ~$317.',
+    drivingHours: 'PDX → Marblemount ~5 hr 15 min via I-5 north. Adds ~3 hrs vs SEA.',
+    pros: [
+      'Direct JFK↔PDX nonstops on Alaska/Delta = fewer connection-failure risks',
+      'Often the cheapest west-coast fare from JFK',
+      'Scenic I-5 drive — option to stop in Seattle on the way',
+    ],
+    cons: [
+      'Big driving hit — ~3 extra hrs vs SEA',
+      'Only worthwhile if a fare alert flags a deep PDX deal',
+    ],
+    recommended: false,
+  },
+  {
+    id: 'yvr',
+    label: 'G. Vancouver, BC (YVR) northern alternate',
+    route: 'NYC → YVR in; SEA → NYC out',
+    routeDiagram: 'NYC ──► YVR  ···  SEA ──► NYC',
+    costDelta:
+      'Variable. JetBlue runs the only JFK→YVR nonstop (~6 hr 20 min, 4×/week). Connections via SEA on Alaska. Often cheaper than BLI feeders.',
+    drivingHours:
+      'YVR → Marblemount ~2 hr 45 min via Hwy 1 + border at Sumas. Add 30-90 min for border depending on the line.',
+    pros: [
+      'Lands closest to the park of any option (~2:45 to Marblemount vs SEA’s 2 hr)',
+      'JetBlue JFK→YVR nonstop is a real option',
+      'Border crossing at Sumas is usually one of the calmer ones',
+    ],
+    cons: [
+      'Border crossing adds unpredictable wait (30-90 min in summer)',
+      'Need passport ready + accept the rental-car border-crossing surcharge if doing one-way',
+      'Cross-border one-way rental drops are limited; usually need to return YVR car at YVR and rent again in WA',
+    ],
+    recommended: false,
+    warning:
+      'Passport required (US/Canada border). Confirm rental brand allows cross-border drive — many do not, or charge surcharges.',
   },
 ];
 
@@ -100,5 +163,43 @@ export const FLIGHT_RETURN_OPTIONS = [
     label: 'C. Thu Aug 20 redeye SEA → JFK/EWR',
     note: 'Same as B but lands east coast Fri AM. Connect to TLV Fri evening if heading home same day.',
     recommended: false,
+  },
+];
+
+export interface BookingTip {
+  topic: string;
+  detail: string;
+}
+
+export const BOOKING_TIPS: BookingTip[] = [
+  {
+    topic: 'When to book',
+    detail:
+      'Peak August West-Coast flights: book 8-12 weeks ahead (~late May / early June for Aug 16-20). Long-haul TLV→NYC: book 5-7 months out — ideally already locked. Fares typically stabilize ~6 weeks pre-departure; last-minute peak fares spike hard.',
+  },
+  {
+    topic: 'Fare-alert tools',
+    detail:
+      'Set alerts on Google Flights (price-tracking graph + email alerts), Hopper (predicts cheaper dates), Going (formerly Scott’s Cheap Flights — best for deep-discount mistake fares), and Kayak Hacker Fares. Start monitoring 3-5 months before departure to learn the typical price band.',
+  },
+  {
+    topic: 'Alaska Airlines route quirks',
+    detail:
+      'SEA hub serves BLI (~30 min hop, ~26 weekly), GEG (~14-15 daily), PDX, YVR. Mileage Plan transfers from Marriott Bonvoy + Bilt Rewards. Saver fares allow free same-day standby on Alaska metal.',
+  },
+  {
+    topic: 'Delta + JetBlue + United',
+    detail:
+      'Delta runs nonstop JFK↔SEA + JFK↔PDX. JetBlue is the only nonstop JFK↔YVR. United routes through EWR↔SEA or EWR↔PDX. American serves JFK↔SEA but with fewer summer slots than Alaska/Delta.',
+  },
+  {
+    topic: 'Open-jaw pricing',
+    detail:
+      'Open-jaw (BLI in / SEA out) sometimes prices the same as a roundtrip if booked as a multi-city itinerary on Alaska. Always check both single-airline multi-city AND two separate one-ways before booking.',
+  },
+  {
+    topic: 'Day-of-week strategy',
+    detail:
+      'For peak-summer SEA, Tuesday and Wednesday departures typically run 10-20% cheaper than Friday/Sunday. Mid-week return is usually fine since Thu Aug 20 is the target return day anyway.',
   },
 ];

@@ -271,3 +271,139 @@
   font-size: var(--fs-xl);
   margin-bottom: var(--sp-3);
 }
+
+/* Filter chips (lodging vibe filter) */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+}
+
+.chip {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--c-ink-700);
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.chip:hover {
+  border-color: var(--c-forest-500);
+  color: var(--c-forest-700);
+}
+
+.chip--active {
+  background: var(--c-forest-500);
+  border-color: var(--c-forest-500);
+  color: white;
+}
+
+.chip--active:hover {
+  color: white;
+}
+
+/* Card photos (lodging + hikes) */
+.card__figure {
+  margin: calc(var(--sp-4) * -1) calc(var(--sp-4) * -1) 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--c-glacier-100);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.card__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.card__credit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: #f3f3f3;
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm) 0 0 0;
+  max-width: 100%;
+  line-height: 1.2;
+}
+
+.card__credit a {
+  color: #f3f3f3;
+  text-decoration: none;
+}
+
+.card__credit a:hover {
+  text-decoration: underline;
+}
+
+.card__cta {
+  margin: 0;
+}
+
+.card__cta-link {
+  display: inline-block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-forest-700);
+  text-decoration: none;
+  border-bottom: 1px solid var(--c-forest-500);
+  padding-bottom: 1px;
+}
+
+.card__cta-link:hover {
+  color: var(--c-forest-900);
+}
+
+.card__warning {
+  font-size: var(--fs-sm);
+  background: var(--c-warn-bg);
+  color: var(--c-warn-ink);
+  border: 1px solid var(--c-warn-border);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+/* Booking tips list (flights) */
+.tip-list {
+  list-style: none;
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .tip-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.tip-list__item {
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+}
+
+.tip-list__topic {
+  display: block;
+  color: var(--c-forest-800);
+  font-size: var(--fs-base);
+  margin-bottom: var(--sp-1);
+}
+
+.tip-list__detail {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin: 0;
+}

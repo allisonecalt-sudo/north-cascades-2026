@@ -294,6 +294,44 @@
   color: var(--c-ink-700);
 }
 
+.timeline__figure {
+  margin: var(--sp-3) 0 0;
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--c-glacier-100);
+  max-width: 32rem;
+}
+
+.timeline__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.timeline__credit {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: #f3f3f3;
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm) 0 0 0;
+  line-height: 1.2;
+}
+
+.timeline__credit a {
+  color: #f3f3f3;
+  text-decoration: none;
+}
+
+.timeline__credit a:hover {
+  text-decoration: underline;
+}
+
 /* Restaurants */
 .restaurants__town + .restaurants__town {
   margin-top: var(--sp-5);

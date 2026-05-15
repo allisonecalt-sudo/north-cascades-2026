@@ -1,5 +1,34 @@
-import { VIEWPOINTS } from '../data/viewpoints';
+import { VIEWPOINTS, type Viewpoint } from '../data/viewpoints';
 import { badge, h, section } from '../dom';
+
+function renderViewpointPhoto(v: Viewpoint): HTMLElement | null {
+  if (!v.photo) return null;
+  const img = h('img', {
+    class: 'timeline__img',
+    src: v.photo.src,
+    alt: v.photo.alt,
+    width: v.photo.width,
+    height: v.photo.height,
+    loading: 'lazy',
+    decoding: 'async',
+  });
+  const figure = h('figure', { class: 'timeline__figure' }, img);
+  if (v.photo.credit) {
+    const credit = v.photo.creditUrl
+      ? h(
+          'figcaption',
+          { class: 'timeline__credit' },
+          h(
+            'a',
+            { href: v.photo.creditUrl, rel: 'noopener', target: '_blank' },
+            v.photo.credit
+          )
+        )
+      : h('figcaption', { class: 'timeline__credit' }, v.photo.credit);
+    figure.append(credit);
+  }
+  return figure;
+}
 
 export function renderViewpoints(): HTMLElement {
   return section(
@@ -31,7 +60,8 @@ export function renderViewpoints(): HTMLElement {
               h('h3', { class: 'timeline__name' }, v.name),
               v.postcard ? badge('Postcard', 'good') : null
             ),
-            h('p', { class: 'timeline__detail' }, v.description)
+            h('p', { class: 'timeline__detail' }, v.description),
+            renderViewpointPhoto(v)
           )
         )
       )

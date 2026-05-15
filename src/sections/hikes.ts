@@ -9,11 +9,41 @@ const TAG_META: Record<HikeTag, { label: string; kind: 'good' | 'info' | 'warn' 
   'plan-b': { label: 'Plan B', kind: 'warn' },
 };
 
+function renderHikePhoto(hike: Hike): HTMLElement | null {
+  if (!hike.photo) return null;
+  const img = h('img', {
+    class: 'card__img',
+    src: hike.photo.src,
+    alt: hike.photo.alt,
+    width: hike.photo.width,
+    height: hike.photo.height,
+    loading: 'lazy',
+    decoding: 'async',
+  });
+  const figure = h('figure', { class: 'card__figure' }, img);
+  if (hike.photo.credit) {
+    const credit = hike.photo.creditUrl
+      ? h(
+          'figcaption',
+          { class: 'card__credit' },
+          h(
+            'a',
+            { href: hike.photo.creditUrl, rel: 'noopener', target: '_blank' },
+            hike.photo.credit
+          )
+        )
+      : h('figcaption', { class: 'card__credit' }, hike.photo.credit);
+    figure.append(credit);
+  }
+  return figure;
+}
+
 function renderHikeCard(hike: Hike): HTMLElement {
   const meta = TAG_META[hike.tag];
   return h(
     'article',
     { class: 'card hike-card' },
+    renderHikePhoto(hike),
     h(
       'header',
       { class: 'card__header' },
