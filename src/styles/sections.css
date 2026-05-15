@@ -373,6 +373,25 @@
   color: var(--c-ink-700);
 }
 
+/* Seattle */
+.seattle-sub + .seattle-sub {
+  margin-top: var(--sp-6);
+}
+
+.seattle-itin__steps {
+  margin: var(--sp-2) 0 0 var(--sp-4);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+}
+
+.seattle-itin__steps li {
+  padding-left: var(--sp-1);
+}
+
 /* Logistics */
 .logistics {
   list-style: none;

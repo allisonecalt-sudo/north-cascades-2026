@@ -11,6 +11,7 @@ const NAV_LINKS: { id: string; label: string }[] = [
   { id: 'hikes', label: 'Hikes' },
   { id: 'viewpoints', label: 'Viewpoints' },
   { id: 'restaurants', label: 'Restaurants' },
+  { id: 'seattle', label: 'Seattle' },
   { id: 'logistics', label: 'Logistics' },
   { id: 'decisions', label: 'Open decisions' },
 ];

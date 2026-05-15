@@ -9,6 +9,7 @@ import { renderItinerary } from './sections/itinerary';
 import { renderHikes } from './sections/hikes';
 import { renderViewpoints } from './sections/viewpoints';
 import { renderRestaurants } from './sections/restaurants';
+import { renderSeattle } from './sections/seattle';
 import { renderLogistics } from './sections/logistics';
 import { renderDecisions } from './sections/decisions';
 import { renderFooter } from './sections/footer';
@@ -34,6 +35,7 @@ function mount(): void {
     renderHikes(),
     renderViewpoints(),
     renderRestaurants(),
+    renderSeattle(),
     renderLogistics(),
     renderDecisions()
   );
