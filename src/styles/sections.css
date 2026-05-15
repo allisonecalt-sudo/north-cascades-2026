@@ -1,0 +1,468 @@
+/* Overview */
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.overview__stats {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--sp-2) var(--sp-4);
+  background: var(--c-warm-50);
+  padding: var(--sp-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--c-line);
+  margin: 0;
+}
+
+.overview__label {
+  color: var(--c-ink-500);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.overview__value {
+  margin: 0;
+  color: var(--c-ink-900);
+  font-size: var(--fs-base);
+}
+
+.overview__sub {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--sp-3);
+  color: var(--c-warn-ink);
+}
+
+.overview__contingency-list {
+  list-style: none;
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .overview__contingency-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.contingency-card {
+  background: var(--c-warn-bg);
+  border: 1px solid var(--c-warn-border);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+}
+
+.contingency-card__title {
+  font-size: var(--fs-base);
+  color: var(--c-warn-ink);
+  margin-bottom: var(--sp-2);
+}
+
+.contingency-card__detail {
+  font-size: var(--fs-sm);
+  color: var(--c-warn-ink);
+}
+
+/* Itinerary days */
+.days {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.day {
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  background: var(--c-warm-50);
+  overflow: hidden;
+}
+
+.day[open] {
+  box-shadow: var(--shadow-sm);
+}
+
+.day__summary {
+  list-style: none;
+  padding: var(--sp-4);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.day__summary::-webkit-details-marker {
+  display: none;
+}
+
+.day__summary::after {
+  content: '＋';
+  color: var(--c-forest-500);
+  font-size: var(--fs-xl);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.day[open] .day__summary::after {
+  content: '−';
+}
+
+.day__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.day__num {
+  color: var(--c-forest-500);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.day__date {
+  color: var(--c-ink-500);
+  font-size: var(--fs-sm);
+}
+
+.day__title {
+  font-weight: 600;
+  color: var(--c-forest-800);
+  font-size: var(--fs-lg);
+}
+
+.day__body {
+  padding: 0 var(--sp-4) var(--sp-4);
+  border-top: 1px solid var(--c-line);
+  padding-top: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.day__stops {
+  list-style: none;
+  counter-reset: stop;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.day__stop {
+  counter-increment: stop;
+  padding-left: 2.25rem;
+  position: relative;
+}
+
+.day__stop::before {
+  content: counter(stop);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  background: var(--c-forest-700);
+  color: white;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day__stop-title {
+  font-weight: 600;
+  color: var(--c-forest-800);
+  margin-bottom: 2px;
+}
+
+.day__stop-detail {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+}
+
+.day__meals {
+  background: var(--c-glacier-100);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-sm);
+  margin: 0;
+}
+
+.day__meals dt {
+  color: var(--c-glacier-600);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--fs-xs);
+}
+
+.day__meals dd {
+  margin: 0;
+  color: var(--c-ink-900);
+}
+
+/* Hikes */
+.hike-card__rank {
+  color: var(--c-forest-500);
+  font-weight: 700;
+}
+
+/* Viewpoints timeline */
+.timeline {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 2.5rem;
+  top: 1.2rem;
+  bottom: 1.2rem;
+  width: 2px;
+  background: var(--c-glacier-400);
+  border-radius: 1px;
+}
+
+.timeline__item {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  position: relative;
+}
+
+.timeline__marker {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.timeline__mp {
+  background: var(--c-glacier-500);
+  color: white;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline__item--postcard .timeline__mp {
+  background: var(--c-forest-500);
+}
+
+.timeline__body {
+  padding-bottom: var(--sp-2);
+}
+
+.timeline__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+
+.timeline__name {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--c-forest-800);
+}
+
+.timeline__detail {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+}
+
+/* Restaurants */
+.restaurants__town + .restaurants__town {
+  margin-top: var(--sp-5);
+}
+
+.restaurants__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.restaurants__item {
+  padding: var(--sp-3);
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+}
+
+.restaurants__head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: var(--sp-2);
+}
+
+.restaurants__name {
+  color: var(--c-forest-800);
+  font-size: var(--fs-base);
+}
+
+.restaurants__address {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+}
+
+.restaurants__note {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+}
+
+/* Logistics */
+.logistics {
+  list-style: none;
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .logistics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.logistics__item {
+  padding: var(--sp-4);
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+}
+
+.logistics__topic {
+  font-size: var(--fs-base);
+  margin-bottom: var(--sp-2);
+  color: var(--c-forest-800);
+}
+
+.logistics__detail {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin-bottom: var(--sp-2);
+}
+
+.logistics__link {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+/* Decisions */
+.decisions {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.decisions__item {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  transition: border-color 150ms ease;
+}
+
+.decisions__row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  cursor: pointer;
+  align-items: start;
+}
+
+.decisions__check {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.2rem;
+  accent-color: var(--c-forest-500);
+  cursor: pointer;
+}
+
+.decisions__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+}
+
+.decisions__question {
+  font-size: var(--fs-base);
+  color: var(--c-forest-800);
+}
+
+.decisions__options {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+}
+
+.decisions__target {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  font-style: italic;
+}
+
+.decisions__rec {
+  font-size: var(--fs-sm);
+  color: var(--c-forest-700);
+  font-weight: 500;
+}
+
+.decisions__check:checked ~ .decisions__body .decisions__question {
+  text-decoration: line-through;
+  color: var(--c-ink-500);
+}
+
+/* Footer */
+.footer {
+  background: var(--c-forest-900);
+  color: var(--c-glacier-100);
+  margin-top: var(--sp-7);
+  padding: var(--sp-6) var(--gutter);
+}
+
+.footer__inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  align-items: flex-start;
+  font-size: var(--fs-sm);
+}
+
+.footer__back {
+  color: var(--c-glacier-400);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.footer__back:hover {
+  color: white;
+}
