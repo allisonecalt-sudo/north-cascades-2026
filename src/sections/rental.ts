@@ -1,5 +1,6 @@
 /**
- * Rental car — research-backed cards with insurance breakdowns + booking links.
+ * Rental car — research-backed cards with REAL quotes, pros/cons, and
+ * multiple booking links per option. v3 (May 16, 2026 update).
  *
  * Hard rules surfaced in section header (Allison May 16, 2026):
  *   - Automatic transmission only
@@ -7,24 +8,79 @@
  *   - All-in price = headline (CDW/LDW + supplemental liability bundled)
  *   - Bare rental price kept as smaller secondary line for transparency
  *
- * Lead picks: the three SEA-roundtrip cards (hybrid SUV via Costco, hybrid SUV
- * via Enterprise direct, mid-size sedan). Less common shapes — mid-size SUV,
- * BLI roundtrip, SEA→BLI open-jaw, Turo peer-to-peer — live in the disclosure.
+ * Each card carries:
+ *   - Structured `costAllIn` (low-high + source + sourceUrl + quotedDate)
+ *   - Pros + cons (3-5 specific items each)
+ *   - Multiple bookingLinks (primary + aggregator backup)
+ *   - sources[] for audit trail
+ *
+ * Lead picks (now 3 verified-live-quote cards):
+ *   1. SEA RT Compact SUV via Costco — $716-875 all-in
+ *   2. SEA RT Hybrid sedan via Costco — $755-920 all-in
+ *   3. SEA RT Compact sedan via Costco — $674-825 all-in (cheapest meets-brief)
+ *
+ * Less-common shapes in disclosure: Mid-size SUV, Standard Elite SUV, Turo,
+ * BLI roundtrip, SEA→BLI open-jaw.
  *
  * Unpaved-road contract note is surfaced explicitly. Hertz/Avis/Budget/
  * Enterprise/Alamo all restrict gravel roads; Cascade River Rd is technically
  * a contract violation. Reader needs to know that, then decide.
  */
 
-import { POWERTRAIN_LABELS, RENTAL_OPTIONS, type RentalOption } from '../data/rental';
+import {
+  POWERTRAIN_LABELS,
+  RENTAL_OPTIONS,
+  type BookingLink,
+  type RentalOption,
+} from '../data/rental';
 import { h, section } from '../dom';
 
-// Lead picks = the SEA-roundtrip trio. All three trip paths default to SEA RT flights.
+// Lead picks = the SEA-roundtrip trio with VERIFIED LIVE QUOTES.
 const LEAD_IDS = new Set([
   'sea-rt-hybrid-suv-costco',
-  'sea-rt-hybrid-suv-enterprise',
+  'sea-rt-hybrid-sedan-costco',
   'sea-rt-sedan',
 ]);
+
+function formatPriceRange(low: number, high: number): string {
+  const fmt = (n: number) => `$${n.toLocaleString('en-US')}`;
+  return `${fmt(low)}–${fmt(high)}`;
+}
+
+function renderQuotedPrice(option: RentalOption): HTMLElement {
+  const { low, high, quotedDate, source, sourceUrl } = option.costAllIn;
+  return h(
+    'div',
+    { class: 'rental-card__price-block' },
+    h(
+      'p',
+      { class: 'rental-card__price-allin' },
+      h('strong', {}, `${formatPriceRange(low, high)} all-in (5 days, CDW + SLI bundled)`)
+    ),
+    h('p', { class: 'rental-card__price-bare' }, option.costBare),
+    h(
+      'p',
+      { class: 'rental-card__price-source' },
+      h('em', {}, `Quoted ${quotedDate}. `),
+      h(
+        'a',
+        {
+          href: sourceUrl,
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          class: 'rental-card__source-link',
+        },
+        'Source ↗'
+      ),
+      ` — ${source}`
+    ),
+    h(
+      'p',
+      { class: 'rental-card__price-note' },
+      'Headline includes CDW/LDW + supplemental liability. PAI not included (usually skip).'
+    )
+  );
+}
 
 function renderInsuranceBreakdown(option: RentalOption): HTMLElement {
   return h(
@@ -42,6 +98,78 @@ function renderInsuranceBreakdown(option: RentalOption): HTMLElement {
       h('dd', {}, option.insuranceBreakdown.sli),
       h('dt', { class: 'rental-card__breakdown-total' }, 'Daily all-in'),
       h('dd', { class: 'rental-card__breakdown-total' }, option.insuranceBreakdown.totalDaily)
+    )
+  );
+}
+
+function renderProsCons(option: RentalOption): HTMLElement {
+  return h(
+    'div',
+    { class: 'rental-card__proscons' },
+    h(
+      'div',
+      { class: 'rental-card__pros' },
+      h('h4', { class: 'rental-card__proscons-title rental-card__proscons-title--pros' }, 'Pros'),
+      h(
+        'ul',
+        { class: 'rental-card__proscons-list' },
+        ...option.pros.map((p) => h('li', {}, p))
+      )
+    ),
+    h(
+      'div',
+      { class: 'rental-card__cons' },
+      h('h4', { class: 'rental-card__proscons-title rental-card__proscons-title--cons' }, 'Cons'),
+      h(
+        'ul',
+        { class: 'rental-card__proscons-list' },
+        ...option.cons.map((c) => h('li', {}, c))
+      )
+    )
+  );
+}
+
+function renderBookingLinks(option: RentalOption): HTMLElement {
+  const linkNodes = option.bookingLinks.map((link: BookingLink) =>
+    h(
+      'li',
+      { class: 'rental-card__booking-link-item' },
+      h(
+        'a',
+        {
+          class: 'rental-card__book-link',
+          href: link.url,
+          target: '_blank',
+          rel: 'noopener noreferrer',
+        },
+        link.label + ' →'
+      ),
+      link.note ? h('span', { class: 'rental-card__booking-link-note' }, ` ${link.note}`) : null
+    )
+  );
+
+  return h(
+    'div',
+    { class: 'rental-card__cta' },
+    h('p', { class: 'rental-card__booking-label' }, 'Booking links'),
+    h('ul', { class: 'rental-card__booking-list' }, ...linkNodes)
+  );
+}
+
+function renderSources(option: RentalOption): HTMLElement | null {
+  if (!option.sources || option.sources.length === 0) return null;
+  return h(
+    'details',
+    { class: 'rental-card__sources' },
+    h(
+      'summary',
+      { class: 'rental-card__sources-summary' },
+      `Sources (${option.sources.length})`
+    ),
+    h(
+      'ul',
+      { class: 'rental-card__sources-list' },
+      ...option.sources.map((s) => h('li', {}, s))
     )
   );
 }
@@ -67,17 +195,7 @@ function renderCard(option: RentalOption): HTMLElement {
     ),
     h('p', { class: 'card__subtitle' }, option.vehicleType),
     h('p', { class: 'rental-card__specs' }, option.specs),
-    h(
-      'div',
-      { class: 'rental-card__price-block' },
-      h('p', { class: 'rental-card__price-allin' }, h('strong', {}, option.costAllIn)),
-      h('p', { class: 'rental-card__price-bare' }, option.costBare),
-      h(
-        'p',
-        { class: 'rental-card__price-note' },
-        'Headline includes CDW/LDW + supplemental liability. PAI not included (usually skip).'
-      )
-    ),
+    renderQuotedPrice(option),
     renderInsuranceBreakdown(option),
     h(
       'dl',
@@ -89,21 +207,10 @@ function renderCard(option: RentalOption): HTMLElement {
       h('dt', {}, 'Pairs with'),
       h('dd', {}, option.pairsWith)
     ),
+    renderProsCons(option),
     h('p', { class: 'card__note' }, option.tradeoff),
-    h(
-      'p',
-      { class: 'rental-card__cta' },
-      h(
-        'a',
-        {
-          class: 'rental-card__book-link',
-          href: option.bookingLink,
-          target: '_blank',
-          rel: 'noopener noreferrer',
-        },
-        'Open booking page →'
-      )
-    )
+    renderBookingLinks(option),
+    renderSources(option)
   );
 }
 
@@ -118,7 +225,7 @@ export function renderRental(): HTMLElement {
       'p',
       { class: 'section__lede rental__hard-rules' },
       h('strong', {}, 'Hard rules: '),
-      'automatic transmission, gas or hybrid powertrain, prices include full insurance (CDW/LDW + supplemental liability).'
+      'automatic transmission, gas or hybrid powertrain, prices include full insurance (CDW/LDW + supplemental liability). All quotes verified May 16, 2026 for Aug 16-20 pickup window.'
     ),
     h(
       'div',
@@ -142,17 +249,17 @@ export function renderRental(): HTMLElement {
       h(
         'li',
         { class: 'gist__item' },
-        'Hybrid Compact SUV via Costco Travel is the simplest fit — RAV4/CR-V Hybrid class, ~40 mpg, full second-driver included, 10–25% under brand-direct.'
+        'Cheapest verified live quote (May 16, 2026): Turo Toyota Corolla at $262 5-day pre-tax-pre-protection. Cheapest full-stack major: Costco Compact sedan at $674-825 all-in.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        'Mid-size sedan is the cheapest meets-brief; sedan-on-gravel works in August but adds ~5–10 mph of careful driving on Cascade River Rd.'
+        'Costco Travel is the consistent value across classes — fulfilled by Alamo/Enterprise/Avis/Budget, 10-25% under brand-direct, free additional driver included.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        'Lead picks all pair with the SEA-roundtrip flight that all three trip paths default to.'
+        'Mid-size SUV is only $27 over Compact SUV at Costco — verified May 16 quote. Worth the bump for clearance + cargo if you want margin on Cascade River Rd gravel.'
       ),
       h(
         'li',
@@ -162,7 +269,7 @@ export function renderRental(): HTMLElement {
           { href: 'https://www.autoslash.com/', target: '_blank', rel: 'noopener noreferrer' },
           'AutoSlash'
         ),
-        ' is worth a 2-minute parallel quote — it shops coupons + member rates across brands and emails comparison results. Not a direct booking surface, but useful as a price-tracker once you book.'
+        ' is the right shop for one-way drop fees and coupon hunting — emails comparison results across brands. Not a direct booking surface but useful as a price-tracker after booking.'
       )
     ),
     h('div', { class: 'card-grid' }, ...lead.map(renderCard)),
@@ -173,7 +280,7 @@ export function renderRental(): HTMLElement {
           h(
             'summary',
             { class: 'disclosure__summary' },
-            `Less common shapes — mid-size SUV, BLI base, open-jaw, peer-to-peer (${alt.length})`
+            `Less common shapes — mid-size SUV, Standard Elite, Turo, BLI base, open-jaw (${alt.length})`
           ),
           h(
             'p',
