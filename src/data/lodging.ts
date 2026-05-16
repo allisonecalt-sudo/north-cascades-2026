@@ -58,6 +58,25 @@ export interface LodgingPhoto {
 
 export type KitchenLevel = 'full' | 'kitchenette' | 'none';
 
+/**
+ * Sunset call-out per property.
+ *   - 'yes': specific evidence (review hits, property language, geographic
+ *     orientation) that this property is a notable sunset stay. Renders as a
+ *     "Sunset" badge + one-line note on the card.
+ *   - 'maybe': partial story — open exposure or one review hit, but no
+ *     consistent sunset-as-feature framing. Renders as a softer "Sunset:
+ *     maybe" note with the caveat.
+ *   - 'no' (or field omitted): no sunset exposure worth noting. Nothing
+ *     renders on the card.
+ *
+ * Allison May 16, 2026: *"if place to stay with amazing sunset worth noting."*
+ * Tip-the-scale fact — not a ranking axis on its own.
+ */
+export interface SunsetFlag {
+  worth: 'yes' | 'maybe' | 'no';
+  note: string;
+}
+
 /** Review profile per the May 16 standing rule — score + count + source. */
 export interface Reviews {
   /** Score string as shown by the source, e.g. "9.2/10", "4.8/5", "4 stars". */
@@ -95,6 +114,8 @@ export interface Lodging {
   natureTag: NatureTag;
   /** "Worth noting" extras — kitchen, hot tub, deck, view, atypical features. */
   extras: string;
+  /** Sunset call-out — optional. Only render on card when worth !== 'no'. */
+  sunset?: SunsetFlag;
   /** Review profile — REQUIRED per May 16 standing rule. */
   reviews: Reviews;
   /** True if bed count needs confirmation at booking (multi-unit properties). */
@@ -353,6 +374,10 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'Ranch acreage — 580 acres of pasture, Mt. Baker visible from the property.',
     natureTag: 'ranch-acreage',
     extras: 'Full kitchens in the log cabins, Mt. Baker views, working cattle ranch setting. Distinctive.',
+    sunset: {
+      worth: 'yes',
+      note: 'Open ranch acreage with Mt. Baker to the southwest — multiple reviewers call out the "Million Dollar View" lit at sunset. No tree cover blocks the western sky.',
+    },
     reviews: {
       score: '4.7/5',
       count: '~270 reviews',
@@ -543,6 +568,10 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Lakeside on Freestone Lake — woods-set property, lake-front cabins.',
     natureTag: 'lakeside',
     extras: 'Apartment-sized kitchens, pool, hot tub, on-site restaurant. Closest east-side stay to Rainy Pass.',
+    sunset: {
+      worth: 'maybe',
+      note: 'Cabins line a small alpine lake — water-foreground sunset reflections are likely from the lake-front decks, but Mazama sits between 7000+ ft peaks so the sun drops behind the western ridge earlier than the calendar sunset. Ask which cabin numbers face the lake at booking.',
+    },
     reviews: {
       score: '4.6/5',
       count: '~520 reviews',
@@ -574,6 +603,10 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Riverside on the Methow + ranch acreage — alfalfa-field setting, private and quiet.',
     natureTag: 'riverside',
     extras: 'Full kitchens, 60-acre property, river access. Private and quiet.',
+    sunset: {
+      worth: 'maybe',
+      note: 'Open alfalfa-field setting with the Methow Valley to the west — property language calls out porch evenings with deer at golden hour. Not a guaranteed sunset stay (no explicit "sunset view" framing) but unobstructed western sky over the fields.',
+    },
     reviews: {
       score: '4.9/5',
       count: '~90 reviews',
@@ -702,6 +735,10 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Woods-set, half-mile from downtown — quiet residential edge, trees around.',
     natureTag: 'woods',
     extras: 'Cabins have kitchenettes, buffet breakfast at the inn, walkable to boardwalk.',
+    sunset: {
+      worth: 'maybe',
+      note: 'Sits on the "sunny eastern slope" of the valley (per property description) — faces west across the Methow toward the Cascades, so western sky is open. Trees around the cabins limit foreground but the view itself is there. Ask which cabin has the most open western exposure.',
+    },
     reviews: {
       score: '4.5/5',
       count: '~210 reviews',
@@ -736,6 +773,10 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Lakeside on Patterson Lake + 1,500 acres of trails — most-nature-immersed east-side option.',
     natureTag: 'lakeside',
     extras: 'Full kitchens, fireplaces, porches, on-site spa + marina + 1,500 acres of trails.',
+    sunset: {
+      worth: 'yes',
+      note: 'Main lodge sits at 3,000 ft on an open ridgetop with 360° Cascade + Methow Valley views — guests and the lodge itself call out sunset from the hot tub + main-lodge patio. Even if you book a Patterson Lake Cabin, the ridge is a 5-min drive up.',
+    },
     reviews: {
       score: '4.6/5',
       count: '~1,400 reviews',

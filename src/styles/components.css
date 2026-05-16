@@ -265,6 +265,34 @@
   line-height: 1.45;
 }
 
+.card__sunset {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-900);
+  margin: 0;
+  line-height: 1.45;
+  background: #fff4e0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border-left: 3px solid #e08e3a;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.card__sunset--maybe {
+  background: #fbf3e3;
+  border-left-color: #c9a35d;
+}
+
+.card__sunset-badge {
+  flex: 0 0 auto;
+}
+
+.card__sunset-note {
+  flex: 1 1 auto;
+}
+
 .card__reviews {
   font-size: var(--fs-sm);
   color: var(--c-ink-900);

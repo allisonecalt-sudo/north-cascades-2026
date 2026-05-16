@@ -99,6 +99,53 @@ export const DARK_SKY_SPOTS: DarkSkySpot[] = [
   },
 ];
 
+/**
+ * Sunset spots — non-lodging-tied viewpoints worth a deliberate visit at golden
+ * hour. Added May 16, 2026 alongside the per-property sunset flags so a guest
+ * staying at a non-sunset cabin still has a 10-min drive to a real sunset.
+ */
+export interface SunsetSpot {
+  name: string;
+  where: string;
+  why: string;
+  note?: string;
+}
+
+export const SUNSET_SPOTS: SunsetSpot[] = [
+  {
+    name: 'Washington Pass Overlook',
+    where: 'MP 162 WA-20 (east side) · 5,477 ft',
+    why:
+      'Highest paved overlook on WA-20 — at sunset the last light hits Liberty Bell + Early Winters Spires as alpenglow. Photographers list it for both sunrise and sunset.',
+    note: 'Already a planned daytime stop. Stay through sunset = same pull-off, no extra driving.',
+  },
+  {
+    name: 'Diablo Lake Overlook',
+    where: 'MP 132 WA-20 (west side)',
+    why:
+      'Turquoise glacier-flour lake with the Cascades framing the west. Open to the south + west — sunset light bounces off the water. Wide pull-off, easy to linger.',
+  },
+  {
+    name: 'Sun Mountain Lodge — ridge (open to non-guests)',
+    where: '604 Patterson Lake Rd, Winthrop · 3,000 ft',
+    why:
+      '360° ridgetop with Cascade + Methow Valley views. Non-guests can grab a drink at the Wolf Creek Bar and Grill and walk the patio at sunset — confirm current public-access policy by phone.',
+    note: 'Phone: (509) 996-2211. ~45 min from Mazama, ~10 min from Winthrop.',
+  },
+  {
+    name: 'Pearrygin Lake State Park — boat launch',
+    where: '~10 min north of Winthrop',
+    why:
+      'Lake oriented east-west with open western sky over the water — Discover Pass required ($10/day). Quiet, accessible, no climb.',
+  },
+  {
+    name: 'Patterson Lake — west shore',
+    where: 'Below Sun Mountain Lodge · ~15 min south of Winthrop',
+    why:
+      'Smaller, quieter alternative to Pearrygin. Lake faces the ridge to the west; methow-valley dark-sky designation kicks in after sunset for a stargaze chaser.',
+  },
+];
+
 export const SKY_NOTES = {
   newMoonNote:
     'NEW MOON is Tue Aug 18, 2026 — the darkest sky of the month falls in the middle of the trip. If stars matter at all, this is the window.',

@@ -2,7 +2,7 @@
  * Sky — sunrise/sunset/golden-hour + stargazing for the trip dates.
  */
 
-import { SKY_DAYS, DARK_SKY_SPOTS, SKY_NOTES } from '../data/sky';
+import { SKY_DAYS, DARK_SKY_SPOTS, SUNSET_SPOTS, SKY_NOTES } from '../data/sky';
 import { h, section } from '../dom';
 
 export function renderSky(): HTMLElement {
@@ -56,6 +56,30 @@ export function renderSky(): HTMLElement {
       { class: 'sky-notes' },
       h('p', { class: 'sky-notes__item' }, h('strong', {}, 'New moon: '), SKY_NOTES.newMoonNote),
       h('p', { class: 'sky-notes__item' }, h('strong', {}, 'Perseids: '), SKY_NOTES.perseidsTail)
+    ),
+    h(
+      'div',
+      { class: 'sky-spots sky-spots--sunset' },
+      h('h3', { class: 'subsection__title' }, 'Sunset spots in the area'),
+      h(
+        'p',
+        { class: 'section__lede' },
+        'Non-lodging spots worth a deliberate visit at golden hour — useful if your cabin isn\'t west-facing.'
+      ),
+      h(
+        'ul',
+        { class: 'sky-spots__list' },
+        ...SUNSET_SPOTS.map((spot) =>
+          h(
+            'li',
+            { class: 'sky-spots__item' },
+            h('strong', { class: 'sky-spots__name' }, spot.name),
+            h('span', { class: 'sky-spots__where' }, ` · ${spot.where}`),
+            h('p', { class: 'sky-spots__why' }, spot.why),
+            spot.note ? h('p', { class: 'sky-spots__note' }, spot.note) : null
+          )
+        )
+      )
     ),
     h(
       'div',

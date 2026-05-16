@@ -108,6 +108,25 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
     lodging.nature
   );
 
+  // Sunset row — Allison May 16, 2026: "if place to stay with amazing sunset
+  // worth noting." Tip-the-scale fact, rendered for 'yes' and 'maybe' only.
+  const sunsetRow =
+    lodging.sunset && lodging.sunset.worth !== 'no'
+      ? h(
+          'p',
+          {
+            class: `card__sunset card__sunset--${lodging.sunset.worth}`,
+          },
+          h(
+            'span',
+            { class: `badge badge--${lodging.sunset.worth === 'yes' ? 'good' : 'info'} card__sunset-badge` },
+            lodging.sunset.worth === 'yes' ? 'Sunset' : 'Sunset · maybe'
+          ),
+          ' ',
+          h('span', { class: 'card__sunset-note' }, lodging.sunset.note)
+        )
+      : null;
+
   // Review row — May 16 standing rule, every card surfaces score + count + source.
   const r = lodging.reviews;
   const reviewLine =
@@ -158,6 +177,7 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
     reviewRow,
     reviewHighlights,
     h('p', { class: 'card__extras' }, h('strong', {}, 'Worth noting: '), lodging.extras),
+    sunsetRow,
     isTownCenter
       ? h(
           'p',
