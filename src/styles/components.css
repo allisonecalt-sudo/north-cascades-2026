@@ -1192,3 +1192,276 @@
   border-left: 3px solid var(--c-ink-400);
   border-radius: var(--radius-sm);
 }
+
+/* ────────────────────────────────────────────────────────────
+   Cool sleeping places — Austria-lifted citation pattern with
+   per-card source pill + "researched as-of" date. Distinct
+   visual treatment from the standard West/East lodging tabs.
+   ──────────────────────────────────────────────────────────── */
+.cool-sleep__intro-note {
+  font-size: 0.88rem;
+  color: var(--c-ink-700);
+  line-height: 1.55;
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-3);
+  background: var(--c-warm-50);
+  border-left: 3px solid var(--c-glacier-500);
+  border-radius: var(--radius-sm);
+  max-width: 70ch;
+}
+
+.cool-sleep__group {
+  margin: var(--sp-6) 0 var(--sp-4);
+}
+
+.cool-sleep__group + .cool-sleep__group {
+  border-top: 1px dashed var(--c-line);
+  padding-top: var(--sp-4);
+}
+
+.cool-sleep__group-title {
+  font-size: var(--fs-lg);
+  color: var(--c-forest-800, #1f3b2a);
+  display: flex;
+  align-items: center;
+  gap: 0.5ch;
+  margin: 0 0 var(--sp-2);
+}
+
+.cool-sleep__group-icon {
+  font-size: 1.15em;
+  line-height: 1;
+}
+
+.cool-sleep__group-lede {
+  font-size: 0.88rem;
+  color: var(--c-ink-700);
+  margin: 0 0 var(--sp-3);
+  line-height: 1.5;
+  max-width: 65ch;
+}
+
+.cool-sleep-card {
+  border-left: 3px solid var(--c-glacier-500);
+}
+
+.cool-sleep-card--in-park {
+  border-left-color: var(--c-forest-500);
+}
+
+.cool-sleep-card--around-park {
+  border-left-color: var(--c-glacier-500);
+}
+
+.cool-sleep-card--quirky {
+  border-left-color: #c08a3d;
+}
+
+.cool-sleep-card--inspiration {
+  opacity: 0.92;
+  background: var(--c-warm-50);
+}
+
+.cool-sleep-card--inspiration .card__title {
+  color: var(--c-ink-700);
+}
+
+.cool-sleep__source {
+  font-size: 0.78rem;
+  color: var(--c-ink-500);
+  margin: 0;
+  padding-top: var(--sp-2);
+  border-top: 1px dashed var(--c-line);
+  line-height: 1.45;
+}
+
+.cool-sleep__source-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--c-ink-700);
+  font-size: 0.72rem;
+}
+
+.cool-sleep__source-link {
+  color: var(--c-glacier-700, #1f5a76);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+
+.cool-sleep__source-link:hover {
+  color: var(--c-forest-700);
+}
+
+.cool-sleep__source-as-of {
+  color: var(--c-ink-500);
+  font-style: italic;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Per-section inline source citation — used by the citation
+   audit pass. Tiny pill nestled below a section title to give
+   provenance to facts not already covered by per-card sources.
+   ──────────────────────────────────────────────────────────── */
+.section-sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-warm-50);
+  border: 1px dashed var(--c-line);
+  border-radius: var(--radius-sm);
+  font-size: 0.74rem;
+  color: var(--c-ink-500);
+  line-height: 1.4;
+}
+
+.section-sources__label {
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  color: var(--c-ink-700);
+}
+
+.section-sources__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.section-sources__item a {
+  color: var(--c-glacier-700, #1f5a76);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+
+.section-sources__item a:hover {
+  color: var(--c-forest-700);
+}
+
+.section-sources__as-of {
+  font-style: italic;
+  color: var(--c-ink-500);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Notes summary page (for-erin & dedicated /notes view)
+   Lifted from Austria's notes.html surface — a global view of
+   every note across the site, grouped by section + path.
+   ──────────────────────────────────────────────────────────── */
+.notes-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.notes-summary__filterbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: var(--sp-2);
+  background: var(--c-warm-50);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  align-items: center;
+}
+
+.notes-summary__filter {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  background: white;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--c-ink-700);
+  transition: all 0.15s ease;
+}
+
+.notes-summary__filter:hover {
+  border-color: var(--c-forest-500);
+}
+
+.notes-summary__filter--active {
+  background: var(--c-forest-700);
+  border-color: var(--c-forest-700);
+  color: white;
+  font-weight: 600;
+}
+
+.notes-summary__count-line {
+  font-size: 0.92rem;
+  color: var(--c-ink-700);
+  margin: 0 0 var(--sp-2);
+}
+
+.notes-summary__group {
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  background: var(--c-warm-50);
+  padding: var(--sp-3);
+}
+
+.notes-summary__group-title {
+  font-size: var(--fs-base);
+  color: var(--c-forest-800, #1f3b2a);
+  margin: 0 0 var(--sp-2);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.notes-summary__group-link {
+  font-size: 0.78rem;
+  color: var(--c-glacier-700, #1f5a76);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+
+.notes-summary__note {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+  margin-top: var(--sp-2);
+  font-size: 0.92rem;
+}
+
+.notes-summary__note-body {
+  margin: 0 0 var(--sp-2);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.notes-summary__note-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: var(--c-ink-500);
+}
+
+.notes-summary__note-addressed {
+  color: var(--c-good-ink);
+  background: var(--c-good-bg);
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+}
+
+.notes-summary__empty {
+  padding: var(--sp-5);
+  text-align: center;
+  color: var(--c-ink-500);
+  font-size: 0.92rem;
+  background: var(--c-warm-50);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--c-line);
+}

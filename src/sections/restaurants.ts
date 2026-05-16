@@ -14,6 +14,7 @@ import { RESTAURANTS, type Restaurant, type RestaurantTown } from '../data/resta
 import { getPathById } from '../data/paths';
 import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { h, section } from '../dom';
+import { renderSectionSources } from './section-sources';
 
 function renderPlace(place: Restaurant): HTMLElement {
   return h(
@@ -169,6 +170,14 @@ export function renderRestaurants(): HTMLElement {
     'restaurants',
     'Food + restaurants',
     renderGist(getSelectedPath()),
+    renderSectionSources({
+      label: 'Hechsher certifications via',
+      sources: [
+        { name: 'Seattle Va\'ad of Kashruth', url: 'https://seattlevaad.org/' },
+        { name: 'koshergrocers.com', url: 'https://www.koshergrocers.com/' },
+      ],
+      asOf: 'May 2026',
+    }),
     renderBody(getSelectedPath())
   );
 

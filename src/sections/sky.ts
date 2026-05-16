@@ -4,6 +4,7 @@
 
 import { SKY_DAYS, DARK_SKY_SPOTS, SUNSET_SPOTS, SKY_NOTES } from '../data/sky';
 import { h, section } from '../dom';
+import { renderSectionSources } from './section-sources';
 
 export function renderSky(): HTMLElement {
   return section(
@@ -14,6 +15,21 @@ export function renderSky(): HTMLElement {
       { class: 'section__lede' },
       'Golden-hour timing + dark-sky spots. Aug 18, 2026 is a new moon — best chance for stars all month.'
     ),
+    renderSectionSources({
+      label: 'Sun + moon times from',
+      sources: [
+        {
+          name: 'timeanddate.com (Winthrop)',
+          url: 'https://www.timeanddate.com/sun/@5816336?month=8&year=2026',
+        },
+        { name: 'NPS · noca.gov stargazing', url: 'https://www.nps.gov/noca/learn/nature/lightscape.htm' },
+        {
+          name: 'Methow Valley · International Dark Sky Community',
+          url: 'https://darksky.org/places/methow-valley/',
+        },
+      ],
+      asOf: 'May 2026',
+    }),
     h(
       'div',
       { class: 'sky-times' },

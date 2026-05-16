@@ -60,6 +60,11 @@ const NEXT: Record<PageId, Cta[]> = {
     { href: 'lodging.html', label: 'Lodging →' },
     { href: 'for-erin.html', label: 'For Erin →' },
   ],
+  notes: [
+    { href: './', label: 'Home →' },
+    { href: 'lodging.html', label: 'Lodging →' },
+    { href: 'for-erin.html', label: 'For Erin →' },
+  ],
 };
 
 export function renderPageCtas(active: PageId): HTMLElement {

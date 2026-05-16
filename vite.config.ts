@@ -22,6 +22,7 @@ export default defineConfig(({ command }) => ({
         seattle: here('seattle.html'),
         forErin: here('for-erin.html'),
         details: here('details.html'),
+        notes: here('notes.html'),
       },
     },
   },

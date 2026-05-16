@@ -10,6 +10,7 @@ import { HIKES, LEVEL_LABELS, type Hike, type HikeLevel } from '../data/hikes';
 import { getPathById } from '../data/paths';
 import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { badge, h, section } from '../dom';
+import { renderSectionSources } from './section-sources';
 
 function renderHikePhoto(hike: Hike): HTMLElement | null {
   if (!hike.photo) return null;
@@ -160,6 +161,15 @@ export function renderHikes(): HTMLElement {
     'hikes',
     'Hikes',
     h('ul', { class: 'gist' }),
+    renderSectionSources({
+      label: 'Trail stats sourced from',
+      sources: [
+        { name: 'Washington Trails Association (WTA)', url: 'https://www.wta.org/' },
+        { name: 'NPS · noca.gov', url: 'https://www.nps.gov/noca/planyourvisit/hiking.htm' },
+        { name: 'AllTrails', url: 'https://www.alltrails.com/parks/us/washington/north-cascades-national-park' },
+      ],
+      asOf: 'May 2026',
+    }),
     h('h3', { class: 'subsection__title' }, `Easy walks (${easy.length})`),
     h('div', { class: 'card-grid card-grid--hikes hikes-easy' }),
     h('h3', { class: 'subsection__title' }, `Moderate hikes — beautiful + doable (${moderate.length})`),

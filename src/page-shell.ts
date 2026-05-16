@@ -37,7 +37,8 @@ export type PageId =
   | 'food'
   | 'seattle'
   | 'for-erin'
-  | 'details';
+  | 'details'
+  | 'notes';
 
 interface NavEntry {
   id: PageId;
@@ -57,6 +58,7 @@ const NAV: readonly NavEntry[] = [
   { id: 'seattle', href: 'seattle.html', label: 'Seattle' },
   { id: 'for-erin', href: 'for-erin.html', label: 'For Erin' },
   { id: 'details', href: 'details.html', label: 'Details' },
+  { id: 'notes', href: 'notes.html', label: 'Notes' },
 ];
 
 interface ShellOptions {
@@ -161,6 +163,14 @@ function buildClosureBanner(): HTMLElement {
           rel: 'noopener noreferrer',
         },
         'Live WSDOT status →'
+      ),
+      h(
+        'p',
+        {
+          class: 'closure-banner__detail',
+          style: 'font-size: 0.72rem; opacity: 0.82; margin-top: 0.6rem; font-style: italic;',
+        },
+        'Source: WSDOT North Cascades Highway live status · verified May 15, 2026. Re-check before Aug 1.'
       )
     )
   );

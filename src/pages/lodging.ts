@@ -8,6 +8,7 @@
 import '../styles/main.css';
 import { mountPageShell, attachNotesToAllSections } from '../page-shell';
 import { renderLodging } from '../sections/lodging';
+import { renderCoolSleepingPlaces } from '../sections/cool-sleeping-places';
 import { renderPageCtas } from '../sections/page-ctas';
 
 function mount(): void {
@@ -17,7 +18,11 @@ function mount(): void {
     lede: 'Real cabin options for each base. 2 beds, 1-2 bedrooms, ~$200-300. Nature-immersed picks lead.',
   });
 
-  main.append(renderLodging(), renderPageCtas('lodging'));
+  main.append(
+    renderLodging(),
+    renderCoolSleepingPlaces(),
+    renderPageCtas('lodging')
+  );
   attachNotesToAllSections(main);
 }
 
