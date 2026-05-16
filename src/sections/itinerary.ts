@@ -78,11 +78,9 @@ function renderBody(container: HTMLElement, selectedId: string | null): void {
         'li',
         { class: 'gist__item' },
         path
-          ? `Filtered to ${path.name} — ${path.lodgingShape}. Switch path or compare all from the picker at top.`
-          : 'No path selected — showing the default five-day shape. Pick a path above to filter.'
-      ),
-      h('li', { class: 'gist__item' }, 'Back to the cabin by 7-8 PM, balanced pace.'),
-      h('li', { class: 'gist__item' }, 'Tap any day below to expand.')
+          ? `${path.name} — ${path.lodgingShape}. Back to the cabin by 7-8 PM.`
+          : 'Default five-day shape. Pick a path above to see the per-path itinerary. Back to the cabin by 7-8 PM.'
+      )
     );
   }
 

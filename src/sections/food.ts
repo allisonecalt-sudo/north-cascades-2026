@@ -52,21 +52,11 @@ export function renderFood(): HTMLElement {
       h(
         'li',
         { class: 'mini-list__item' },
-        h('strong', { class: 'mini-list__label' }, 'Sit-down kosher in Seattle'),
-        h(
-          'span',
-          { class: 'mini-list__detail' },
-          'Listed in the Food + restaurants section — QFC Mercer Island deli, Pabla, Teapot, Einstein Bros U-Village.'
-        )
-      ),
-      h(
-        'li',
-        { class: 'mini-list__item' },
         h('strong', { class: 'mini-list__label' }, 'Cabin meals'),
         h(
           'span',
           { class: 'mini-list__detail' },
-          'Packaged hechsher goods + fridge + microwave covers most of the trip. Pasta, sealed sauces, rotisserie chicken, fruit, salad, bread, breakfast cereals all work.'
+          'Packaged hechsher goods + fridge + microwave covers most meals — pasta, sealed sauces, rotisserie chicken, fruit, salad, bread. Sit-down kosher options live in the Food + restaurants section.'
         )
       )
     )

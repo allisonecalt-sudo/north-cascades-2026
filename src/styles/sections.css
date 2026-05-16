@@ -727,14 +727,66 @@
   font-size: var(--fs-sm);
 }
 
+/* Collapsible facts on mobile — keeps the path card scan-light. */
+.path-card__details {
+  border-top: 1px solid var(--c-line);
+  padding-top: var(--sp-2);
+}
+
+.path-card__details-summary {
+  list-style: none;
+  cursor: pointer;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-ink-500);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-1) 0;
+}
+
+.path-card__details-summary::-webkit-details-marker {
+  display: none;
+}
+
+.path-card__details-summary::after {
+  content: '＋';
+  color: var(--c-forest-500);
+  font-size: var(--fs-base);
+  font-weight: 400;
+}
+
+.path-card__details[open] .path-card__details-summary::after {
+  content: '−';
+}
+
 .path-card__facts {
   display: grid;
   grid-template-columns: max-content 1fr;
   gap: var(--sp-2) var(--sp-3);
-  margin: 0;
+  margin: var(--sp-2) 0 0;
   font-size: var(--fs-sm);
-  padding-top: var(--sp-2);
-  border-top: 1px solid var(--c-line);
+}
+
+/* On desktop, keep the facts always-visible (no need to hide them — there's
+ * room) and hide the summary toggle entirely. */
+@media (min-width: 760px) {
+  .path-card__details {
+    padding-top: var(--sp-3);
+  }
+  .path-card__details-summary {
+    display: none;
+  }
+  .path-card__facts {
+    /* Always visible on desktop regardless of <details open> state. */
+    margin-top: 0;
+  }
+  /* Force display:grid even when details is closed (browsers hide children
+   * of <details> when not open — we override via display). */
+  .path-card__details:not([open]) > .path-card__facts {
+    display: grid;
+  }
 }
 
 .path-card__facts dt {

@@ -42,14 +42,23 @@ function renderCard(path: TripPath, active: boolean): HTMLElement {
       ...path.snapshot.map((line) => h('li', { class: 'path-card__bullet' }, line))
     ),
     h(
-      'dl',
-      { class: 'path-card__facts' },
-      h('dt', {}, 'Lodging'),
-      h('dd', {}, path.lodgingShape),
-      h('dt', {}, 'Flights'),
-      h('dd', {}, path.flightNote),
-      h('dt', {}, 'Tradeoff'),
-      h('dd', { class: 'path-card__tradeoff' }, path.tradeoff)
+      'details',
+      { class: 'path-card__details' },
+      h(
+        'summary',
+        { class: 'path-card__details-summary' },
+        'Lodging · Flights · Tradeoff'
+      ),
+      h(
+        'dl',
+        { class: 'path-card__facts' },
+        h('dt', {}, 'Lodging'),
+        h('dd', {}, path.lodgingShape),
+        h('dt', {}, 'Flights'),
+        h('dd', {}, path.flightNote),
+        h('dt', {}, 'Tradeoff'),
+        h('dd', { class: 'path-card__tradeoff' }, path.tradeoff)
+      )
     ),
     h(
       'div',
@@ -76,14 +85,15 @@ function renderPicker(container: HTMLElement, selected: string | null): void {
     ...TRIP_PATHS.map((p) => renderCard(p, p.id === selected))
   );
 
-  // Update the "Compare all options" toggle state.
+  // "Compare all" button only shows when a path is active (action: clear).
+  // When nothing is selected the button is dead weight — the picker IS the
+  // compare view.
+  const compareControls = container.querySelector<HTMLElement>('.path-controls');
   const compareBtn = container.querySelector<HTMLButtonElement>('.path-compare');
-  if (compareBtn) {
-    const compareActive = selected === null;
-    compareBtn.classList.toggle('path-compare--active', compareActive);
-    compareBtn.textContent = compareActive
-      ? '✓ Comparing all options (no path selected)'
-      : 'Compare all options instead';
+  if (compareBtn && compareControls) {
+    const pathActive = selected !== null;
+    compareControls.hidden = !pathActive;
+    compareBtn.textContent = 'Show all options (clear path)';
   }
 
   // Update the active-path summary line.
@@ -91,9 +101,10 @@ function renderPicker(container: HTMLElement, selected: string | null): void {
   if (summary) {
     if (selected) {
       const path = TRIP_PATHS.find((p) => p.id === selected);
-      summary.textContent = `Viewing Path ${selected}${path ? ` — ${path.name.replace(`Path ${selected} · `, '')}` : ''}. Itinerary, lodging, hikes, and Seattle sections below are filtered to this path.`;
+      summary.textContent = `Viewing Path ${selected}${path ? ` — ${path.name.replace(`Path ${selected} · `, '')}` : ''}. Itinerary, lodging, hikes, and Seattle below are filtered to this path.`;
+      summary.hidden = false;
     } else {
-      summary.textContent = 'No path selected — everything below shows the full options menu.';
+      summary.hidden = true;
     }
   }
 }
