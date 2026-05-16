@@ -1,3 +1,17 @@
+/**
+ * Lodging — re-ranked on the Terra Nova brief.
+ *
+ * Axis (per Allison May 16, 2026):
+ *   - Spacious, a little nicer than basic, ~$200-300 per night.
+ *   - Kitchens are a NICE-TO-HAVE, not the gating criterion (kosher is flexible —
+ *     packaged hechsher goods + a fridge cover most of the trip).
+ *   - Splurge options ($400+) are demoted, not removed — kept as "if you want
+ *     to splurge" cards near the bottom.
+ *
+ * No "top pick" badges. Every card just shows what it costs, what it has, and
+ * who it might fit. Reader decides.
+ */
+
 export type LodgingVibe =
   | 'cabin'
   | 'lodge'
@@ -7,14 +21,14 @@ export type LodgingVibe =
   | 'ranch'
   | 'inn';
 
+/** Loose tier signal — replaces "top pick" without crowning. */
+export type LodgingTier = 'fits-brief' | 'splurge' | 'budget-or-basic' | 'note';
+
 export interface LodgingPhoto {
   src: string;
   alt: string;
-  /** Optional credit line displayed under the image (Wikimedia attribution etc). */
   credit?: string;
-  /** Source page (Wikimedia file page, Unsplash photo page) for click-through credit. */
   creditUrl?: string;
-  /** Intrinsic image dimensions for layout-shift prevention. */
   width: number;
   height: number;
 }
@@ -33,8 +47,7 @@ export interface Lodging {
   notes: string;
   bookingHint?: string;
   bookingUrl?: string;
-  topPick?: boolean;
-  /** Kosher-cooking constraint: full kitchen / kitchenette / none. */
+  tier: LodgingTier;
   kitchen: KitchenLevel;
   photo: LodgingPhoto;
 }
@@ -45,9 +58,6 @@ export const KITCHEN_LABELS: Record<KitchenLevel, string> = {
   none: 'No kitchen',
 };
 
-// Generic, property-appropriate photos from Unsplash's hotlinking-permitted CDN.
-// Each URL uses ?w=800 to cap bandwidth; full-resolution photos are available
-// on Unsplash by clicking the credit link.
 const PHOTOS = {
   cabinWoods: {
     src: 'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=800&q=70',
@@ -145,14 +155,6 @@ const PHOTOS = {
     width: 800,
     height: 533,
   },
-  riverCottage: {
-    src: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=70',
-    alt: 'Riverfront cottage with deck on a clear mountain river.',
-    credit: 'Photo: Roberto Nickson / Unsplash',
-    creditUrl: 'https://unsplash.com/photos/I4iLmGLb6Bk',
-    width: 800,
-    height: 533,
-  },
   motelInn: {
     src: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=70',
     alt: 'Boutique inn with wood siding and welcoming entrance.',
@@ -163,23 +165,11 @@ const PHOTOS = {
   },
 } as const satisfies Record<string, LodgingPhoto>;
 
+// ====================================================================
+// WEST SIDE — Marblemount / Rockport / Concrete
+// ====================================================================
 export const WEST_LODGING: Lodging[] = [
-  {
-    id: 'skagit-river-resort',
-    name: 'Skagit River Resort / Clark’s Cabins — CLOSED · now Glacier Peak Resort',
-    address: '58468 Clark Cabin Rd, Rockport, WA 98283',
-    phone: '(360) 708-3005 (Glacier Peak)',
-    type: 'Status update — same address, now operated as Glacier Peak Resort & Winery',
-    vibe: 'cabin',
-    pricePerNight: 'See Glacier Peak listing below',
-    distance: '~10 min west of Marblemount · ~1 hr to Cascade Pass trailhead',
-    notes:
-      'IMPORTANT — Clark\'s Skagit River Resort is marked CLOSED on Yelp (Feb 2026 update) and multiple lodging directories list "Glacier Peak Resort (formerly Skagit River Resort)" at this same address. Do NOT book under the old name or old (360) 873-2250 number. See the Glacier Peak Resort entry below; re-verify cabin kitchen scope with them before booking. [verified 2026-05-15]',
-    bookingHint: 'Call Glacier Peak directly (360) 708-3005 to confirm current cabin inventory + kitchen scope.',
-    bookingUrl: 'https://glacierpeakresortandwinery.com/',
-    kitchen: 'kitchenette',
-    photo: PHOTOS.cabinClassic,
-  },
+  // ---- Fits the Terra Nova brief ($200-300, spacious, a little nicer) ----
   {
     id: 'rhody-house',
     name: 'The Rhody House',
@@ -189,42 +179,12 @@ export const WEST_LODGING: Lodging[] = [
     pricePerNight: '$190-260',
     distance: 'Marblemount · ~50 min to Cascade Pass trailhead',
     notes:
-      'Bright, well-reviewed cabin rental — repeatedly cited as ideal for Cascade Pass day hikers. Full kitchen + outdoor space; works for self-catering kosher meals.',
-    bookingHint: 'Listed on Airbnb (search “Rhody House Marblemount”).',
+      'Bright cabin rental, well-reviewed, room to spread out. Full kitchen + outdoor space. Sits in the Terra Nova-tier sweet spot — spacious, a little nicer than basic, not a splurge.',
+    bookingHint: 'Listed on Airbnb — search "Rhody House Marblemount".',
     bookingUrl: 'https://www.airbnb.com/marblemount-wa/stays',
-    topPick: true,
+    tier: 'fits-brief',
     kitchen: 'full',
     photo: PHOTOS.rentalAFrame,
-  },
-  {
-    id: 'cascade-river-house',
-    name: 'Cascade River House',
-    address: 'Cascade River Rd, Marblemount, WA 98267',
-    type: 'Whole-house vacation rental on Cascade River',
-    vibe: 'rental',
-    pricePerNight: '$350-500',
-    distance: 'On Cascade River Rd · ~30-45 min to Cascade Pass trailhead',
-    notes:
-      'Riverfront private house with full kitchen, sleeps a small group. Closest rental to Cascade Pass trailhead. Splurge tier — built for self-catered week.',
-    bookingUrl: 'https://www.cascaderiverhouse.com/',
-    topPick: true,
-    kitchen: 'full',
-    photo: PHOTOS.cabinRiver,
-  },
-  {
-    id: 'glacier-peak',
-    name: 'Glacier Peak Resort & Winery (formerly Skagit River Resort)',
-    address: '58468 Clark Cabin Rd, Rockport, WA 98283',
-    phone: '(360) 708-3005',
-    type: 'Cabins · on-site restaurant + winery',
-    vibe: 'cabin',
-    pricePerNight: '$150-220 cabins',
-    distance: '~10 min west of Marblemount · ~1 hr to Cascade Pass',
-    notes:
-      'The current operator at the old Skagit River / Clark\'s Cabins address. Cabins with kitchenettes, sofa beds, smart TVs, free WiFi. Winery + restaurant on property are non-kosher. Kitchenette is enough for breakfasts + light dinners. CALL to confirm cabin inventory + kitchen scope before booking — the property has changed names/operators recently. [verified 2026-05-15]',
-    bookingUrl: 'https://glacierpeakresortandwinery.com/',
-    kitchen: 'kitchenette',
-    photo: PHOTOS.cabinWoods,
   },
   {
     id: 'nc-hideaway',
@@ -235,9 +195,10 @@ export const WEST_LODGING: Lodging[] = [
     pricePerNight: '$200-280',
     distance: '~25 min west of Marblemount · ~1 hr 25 min to Cascade Pass',
     notes:
-      'Just off the North Cascades Highway. Full kitchen, front and back decks, fire pit, dog-friendly. Quiet self-catering base.',
+      'Full kitchen, front + back decks, fire pit, quiet setting. Further from the trailhead but a calm base if the cabin matters more than the drive minutes.',
     bookingHint: 'Listed on Airbnb.',
     bookingUrl: 'https://www.airbnb.com/rooms/724602112999024219',
+    tier: 'fits-brief',
     kitchen: 'full',
     photo: PHOTOS.rentalModern,
   },
@@ -250,14 +211,31 @@ export const WEST_LODGING: Lodging[] = [
     pricePerNight: '$250-350',
     distance: '~25 min west of Marblemount · ~1 hr 25 min to Cascade Pass',
     notes:
-      'Family cabin nestled along the Skagit River. Full kitchen, private hot tub on deck, river access. Reviewers call out the deck and water sound.',
+      'Family-cabin feel, full kitchen, private hot tub on the deck, river access. Reviewers call out the deck and the water sound.',
     bookingUrl: 'https://www.airbnb.com/rooms/1159630003390456641',
+    tier: 'fits-brief',
     kitchen: 'full',
     photo: PHOTOS.cabinHot,
   },
   {
+    id: 'glacier-peak',
+    name: 'Glacier Peak Resort & Winery',
+    address: '58468 Clark Cabin Rd, Rockport, WA 98283',
+    phone: '(360) 708-3005',
+    type: 'Cabins · on-site restaurant + winery (formerly Skagit River Resort)',
+    vibe: 'cabin',
+    pricePerNight: '$150-220',
+    distance: '~10 min west of Marblemount · ~1 hr to Cascade Pass',
+    notes:
+      'Cabins with kitchenettes, sofa beds, smart TVs, free WiFi. A bit under the Terra Nova price band — fine if you want simple. (This is the property that operated as Skagit River Resort / Clark\'s Cabins until early 2026; call to confirm cabin scope before booking.)',
+    bookingUrl: 'https://glacierpeakresortandwinery.com/',
+    tier: 'fits-brief',
+    kitchen: 'kitchenette',
+    photo: PHOTOS.cabinWoods,
+  },
+  {
     id: 'ovenells',
-    name: 'Ovenell’s Heritage Inn & Log Cabins',
+    name: 'Ovenell\'s Heritage Inn & Log Cabins',
     address: '46276 Concrete Sauk Valley Rd, Concrete, WA 98237',
     phone: '(360) 853-8494',
     type: 'Log cabins + guesthouses on a 580-acre cattle ranch',
@@ -265,11 +243,31 @@ export const WEST_LODGING: Lodging[] = [
     pricePerNight: '$200-330',
     distance: '~25 min west of Marblemount · ~1 hr 25 min to Cascade Pass',
     notes:
-      'Working cattle ranch with views of Mt. Baker. Log cabins have full kitchens; guesthouse rooms do not. Distinctive ranch experience — pick a cabin specifically for kosher cooking. [verify kitchen at booking]',
+      'Working cattle ranch with Mt. Baker views. Log cabins have full kitchens; guesthouse rooms do not. Distinctive setting — pick a cabin specifically if cooking matters.',
     bookingUrl: 'https://www.ovenells-inn.com/',
+    tier: 'fits-brief',
     kitchen: 'full',
     photo: PHOTOS.ranchProperty,
   },
+
+  // ---- Splurge tier ----
+  {
+    id: 'cascade-river-house',
+    name: 'Cascade River House',
+    address: 'Cascade River Rd, Marblemount, WA 98267',
+    type: 'Whole-house vacation rental on Cascade River',
+    vibe: 'rental',
+    pricePerNight: '$350-500',
+    distance: 'On Cascade River Rd · ~30-45 min to Cascade Pass trailhead',
+    notes:
+      'Riverfront private house with full kitchen, closest rental to the Cascade Pass trailhead. Splurge tier — listed if you want a step up from Terra Nova-tier.',
+    bookingUrl: 'https://www.cascaderiverhouse.com/',
+    tier: 'splurge',
+    kitchen: 'full',
+    photo: PHOTOS.cabinRiver,
+  },
+
+  // ---- Budget / basic / status notes ----
   {
     id: 'buffalo-run',
     name: 'Buffalo Run Inn',
@@ -280,8 +278,9 @@ export const WEST_LODGING: Lodging[] = [
     pricePerNight: '$130-180',
     distance: 'WA-20 in Marblemount center · ~55 min to Cascade Pass',
     notes:
-      'Inn-style rooms — no in-room cooking. Adjacent Buffalo Run Restaurant is non-kosher. Backup only; cooler-and-cold-meals mode if you stay here.',
+      'Inn-style rooms — no in-room cooking. Cheaper, simpler — listed in case price drops are the priority.',
     bookingUrl: 'https://www.buffalorunrestaurant.com/',
+    tier: 'budget-or-basic',
     kitchen: 'none',
     photo: PHOTOS.innClassic,
   },
@@ -295,75 +294,36 @@ export const WEST_LODGING: Lodging[] = [
     pricePerNight: '$135-180',
     distance: 'WA-20 Marblemount center · ~55 min to Cascade Pass',
     notes:
-      'Traditional rooms, no in-room kitchens. Adjacent Upriver Grill is non-kosher. Cooler-and-cold-meals only — pick a cabin instead.',
+      'Traditional rooms, no in-room kitchens. Same budget-tier tradeoff as Buffalo Run — fine if a cabin isn\'t available.',
     bookingUrl: 'https://www.northcascadesinn.com/',
+    tier: 'budget-or-basic',
     kitchen: 'none',
     photo: PHOTOS.motelInn,
   },
-];
-
-export const EAST_LODGING: Lodging[] = [
   {
-    id: 'freestone',
-    name: 'Freestone Inn — book the cabins (apartment-sized kitchens)',
-    address: '31 Early Winters Dr, Mazama, WA 98833',
-    phone: '(509) 996-3906',
-    type: 'Rustic cabins with apartment-sized kitchens (NOT lodge rooms)',
-    vibe: 'lodge',
-    pricePerNight: '$300+ cabins (Aug peak)',
-    distance: '15 mi west of Winthrop · ~25 min to Rainy Pass',
-    notes:
-      'CORRECTED 2026-05-15 — Freestone\'s own site describes cabin kitchens as "apartment-sized" not full. Workable for kosher cooking (stove, fridge, basic gear) but smaller than the River\'s Edge / Spring Creek / Sun Mountain Patterson Lake cabin kitchens. Lodge rooms have NO kitchen — drop priority. Pool, hot tub, on-site restaurant non-kosher. Closest east-side stay to Rainy Pass.',
-    bookingUrl: 'https://www.freestoneinn.com/',
-    kitchen: 'kitchenette',
-    photo: PHOTOS.lodgeMountain,
-  },
-  {
-    id: 'rivers-edge',
-    name: 'River’s Edge Resort',
-    address: '115 Riverside Ave, Winthrop, WA 98862',
-    phone: '(509) 996-8000',
-    type: 'Riverside chalets + cottages with private hot tubs',
+    id: 'skagit-river-resort-note',
+    name: 'Skagit River Resort / Clark\'s Cabins — closed (status note)',
+    address: '58468 Clark Cabin Rd, Rockport, WA 98283',
+    phone: '(360) 708-3005 (current operator)',
+    type: 'No longer operating under this name',
     vibe: 'cabin',
-    pricePerNight: '$210-310',
-    distance: 'Downtown Winthrop on the Chewuch River · ~40 min to Rainy Pass',
+    pricePerNight: 'See Glacier Peak Resort above',
+    distance: 'Same address, new operator',
     notes:
-      'Two-bedroom riverside chalets have full kitchens + private hot tubs. Walkable to non-kosher town dinners (irrelevant) — what matters is you can cook the kosher meals you brought.',
-    bookingUrl: 'https://riversedgewinthrop.com/',
-    topPick: true,
-    kitchen: 'full',
-    photo: PHOTOS.cabinHot,
-  },
-  {
-    id: 'spring-creek-ranch',
-    name: 'Spring Creek Ranch',
-    address: 'Winthrop, WA 98862',
-    type: 'Three private cabins on 60 acres · full kitchens',
-    vibe: 'ranch',
-    pricePerNight: '$220-340',
-    distance: 'On the Methow River · ~7 min to downtown · ~45 min to Rainy Pass',
-    notes:
-      'Spring Creek Cabin (2BR custom log), Owl’s Nest (studio), Ranch House — all with full kitchens. Goose-down duvets, alfalfa-field setting. Quiet + private. Strong self-catering pick.',
-    bookingUrl: 'https://springcreekwinthrop.com/lodging/',
-    topPick: true,
-    kitchen: 'full',
+      'Status note only — if you see this name in older guides, the property is now Glacier Peak Resort (above). Don\'t book under the old name or (360) 873-2250 number. [verified 2026-05-15]',
+    bookingHint: 'See Glacier Peak Resort listing.',
+    bookingUrl: 'https://glacierpeakresortandwinery.com/',
+    tier: 'note',
+    kitchen: 'kitchenette',
     photo: PHOTOS.cabinClassic,
   },
-  {
-    id: 'sun-mountain',
-    name: 'Sun Mountain Lodge — Patterson Lake Cabins only',
-    address: '604 Patterson Lake Rd, Winthrop, WA 98862',
-    phone: '(509) 996-2211',
-    type: 'Patterson Lake Cabins (full kitchens). NOT main lodge rooms.',
-    vibe: 'lodge',
-    pricePerNight: 'Cabins $400+ Aug peak · main lodge $270+ (no kitchen — skip)',
-    distance: '~10 min from Winthrop · ~45 min to Rainy Pass',
-    notes:
-      '1,500 acres of trails. Patterson Lake Cabins have full kitchens, fireplaces, porches — the splurge pick. Main lodge rooms have NO kitchen — drop from consideration. All on-site restaurants are non-kosher.',
-    bookingUrl: 'https://www.sunmountainlodge.com/',
-    kitchen: 'full',
-    photo: PHOTOS.lodgeRidge,
-  },
+];
+
+// ====================================================================
+// EAST SIDE — Winthrop / Mazama
+// ====================================================================
+export const EAST_LODGING: Lodging[] = [
+  // ---- Fits the Terra Nova brief ($200-300, spacious, a little nicer) ----
   {
     id: 'methow-river',
     name: 'Methow River Lodge & Cabins',
@@ -372,12 +332,45 @@ export const EAST_LODGING: Lodging[] = [
     type: 'Cabins + lodge rooms on the Methow River',
     vibe: 'cabin',
     pricePerNight: '$200-250',
-    distance: 'Walking distance to Winthrop boardwalk',
+    distance: 'Walking distance to Winthrop boardwalk · ~40 min to Rainy Pass',
     notes:
-      'Mid-tier. Cabins have kitchenettes (microwave + fridge + small stove, not full); lodge rooms are bare. Workable for breakfasts + reheats — not full cooking. [verify kitchenette scope]',
+      'River setting, walkable to downtown Winthrop for dinner if you want to eat out. Cabins have kitchenettes (microwave + fridge + small stove); inn rooms are basic. Lands squarely in the Terra Nova-tier sweet spot.',
     bookingUrl: 'https://www.methowriverlodge.com/',
+    tier: 'fits-brief',
     kitchen: 'kitchenette',
     photo: PHOTOS.cabinRiver,
+  },
+  {
+    id: 'rivers-edge',
+    name: 'River\'s Edge Resort',
+    address: '115 Riverside Ave, Winthrop, WA 98862',
+    phone: '(509) 996-8000',
+    type: 'Riverside chalets + cottages with private hot tubs',
+    vibe: 'cabin',
+    pricePerNight: '$210-310',
+    distance: 'Downtown Winthrop on the Chewuch River · ~40 min to Rainy Pass',
+    notes:
+      'Riverside chalets with full kitchens + private hot tubs. Walkable to Winthrop boardwalk. Solid spacious-cabin pick at the upper end of the Terra Nova band.',
+    bookingUrl: 'https://riversedgewinthrop.com/',
+    tier: 'fits-brief',
+    kitchen: 'full',
+    photo: PHOTOS.cabinHot,
+  },
+  {
+    id: 'freestone',
+    name: 'Freestone Inn — cabins',
+    address: '31 Early Winters Dr, Mazama, WA 98833',
+    phone: '(509) 996-3906',
+    type: 'Rustic cabins with apartment-sized kitchens',
+    vibe: 'lodge',
+    pricePerNight: '$300+ cabins (Aug peak)',
+    distance: '15 mi west of Winthrop · ~25 min to Rainy Pass',
+    notes:
+      'Cabins have apartment-sized kitchens (smaller than full but workable). Pool, hot tub, on-site restaurant. Closest east-side stay to Rainy Pass, which matters on Maple Pass morning. Top of the Terra Nova band.',
+    bookingUrl: 'https://www.freestoneinn.com/',
+    tier: 'fits-brief',
+    kitchen: 'kitchenette',
+    photo: PHOTOS.lodgeMountain,
   },
   {
     id: 'chewuch',
@@ -389,8 +382,9 @@ export const EAST_LODGING: Lodging[] = [
     pricePerNight: '$160-260',
     distance: 'Half-mile from downtown Winthrop · ~40 min to Rainy Pass',
     notes:
-      'Buffet breakfast included — NOT kosher; skip it. Cabins have kitchenettes (works for kosher reheats); inn rooms do not. Walkable to Old-West boardwalk. Cabin-only pick if you stay.',
+      'Cabins (with kitchenettes) sit in the Terra Nova band; inn rooms are bare. Buffet breakfast included but not relevant here. Walkable to the Old-West boardwalk.',
     bookingUrl: 'https://chewuchinn.com/',
+    tier: 'fits-brief',
     kitchen: 'kitchenette',
     photo: PHOTOS.bnbCozy,
   },
@@ -404,11 +398,47 @@ export const EAST_LODGING: Lodging[] = [
     pricePerNight: '$200-375',
     distance: 'Mazama village · ~30 min to Rainy Pass',
     notes:
-      'Lodge rooms have no kitchens; some cabins do. [verify per-unit kitchen] On-site restaurant non-kosher. Pool, hot tub, yoga studio nice — kitchen the gating factor for kosher.',
+      'Pool, hot tub, yoga studio. Some cabins have kitchens, lodge rooms do not — confirm per-unit at booking. Solid Mazama-side option close to Rainy Pass.',
     bookingUrl: 'https://www.innmazama.com/',
+    tier: 'fits-brief',
     kitchen: 'kitchenette',
     photo: PHOTOS.lodgeMountain,
   },
+  {
+    id: 'spring-creek-ranch',
+    name: 'Spring Creek Ranch',
+    address: 'Winthrop, WA 98862',
+    type: 'Three private cabins on 60 acres · full kitchens',
+    vibe: 'ranch',
+    pricePerNight: '$220-340',
+    distance: 'On the Methow River · ~7 min to downtown · ~45 min to Rainy Pass',
+    notes:
+      'Spring Creek Cabin (2BR log), Owl\'s Nest (studio), Ranch House — all full kitchens, alfalfa-field setting. Private and quiet. Top of the Terra Nova band.',
+    bookingUrl: 'https://springcreekwinthrop.com/lodging/',
+    tier: 'fits-brief',
+    kitchen: 'full',
+    photo: PHOTOS.cabinClassic,
+  },
+
+  // ---- Splurge tier ----
+  {
+    id: 'sun-mountain',
+    name: 'Sun Mountain Lodge — Patterson Lake Cabins',
+    address: '604 Patterson Lake Rd, Winthrop, WA 98862',
+    phone: '(509) 996-2211',
+    type: 'Patterson Lake Cabins (full kitchens)',
+    vibe: 'lodge',
+    pricePerNight: 'Cabins $400+ Aug peak · main lodge $270+',
+    distance: '~10 min from Winthrop · ~45 min to Rainy Pass',
+    notes:
+      '1,500 acres of trails + spa. Patterson Lake Cabins have full kitchens, fireplaces, porches. Splurge tier — listed if you want the resort feel; otherwise Terra Nova-tier picks above match the brief better.',
+    bookingUrl: 'https://www.sunmountainlodge.com/',
+    tier: 'splurge',
+    kitchen: 'full',
+    photo: PHOTOS.lodgeRidge,
+  },
+
+  // ---- Budget / different vibe ----
   {
     id: 'rolling-huts',
     name: 'Rolling Huts',
@@ -419,8 +449,9 @@ export const EAST_LODGING: Lodging[] = [
     pricePerNight: '$145-200',
     distance: '~10 min from Winthrop · ~35 min to Rainy Pass',
     notes:
-      'Tea kettle, mini-fridge, fireplace — NO stove/oven. Cold meals + reheats only. Bathrooms in a central barn. Two-night minimum. Aesthetic pick, not the cooking pick.',
+      'Tea kettle + mini-fridge + fireplace, no stove. Bathrooms in a central barn. Two-night minimum. Different vibe — listed in case the aesthetic is the draw.',
     bookingUrl: 'https://rollinghuts.com/',
+    tier: 'budget-or-basic',
     kitchen: 'kitchenette',
     photo: PHOTOS.glampingHut,
   },
@@ -434,8 +465,9 @@ export const EAST_LODGING: Lodging[] = [
     pricePerNight: '$170-260',
     distance: 'Downtown Winthrop · ~40 min to Rainy Pass',
     notes:
-      'Riverfront, private balconies, hot tub — but no in-room cooking. Cold-meal mode only. Pick a cabin instead.',
+      'Riverfront, private balconies, hot tub. No in-room cooking — fine if eating out / cold-meal mode is OK.',
     bookingUrl: 'https://hotelriovista.com/',
+    tier: 'budget-or-basic',
     kitchen: 'none',
     photo: PHOTOS.motelInn,
   },
@@ -449,8 +481,9 @@ export const EAST_LODGING: Lodging[] = [
     pricePerNight: '$149-353',
     distance: 'WA-20 south edge of Winthrop · ~40 min to Rainy Pass',
     notes:
-      'Reliable, quiet, family-run — but no in-room kitchens. Cold-meals + microwave-in-lobby tier. Skip in favor of a cabin.',
+      'Reliable, quiet, family-run. No in-room kitchens. Cheaper end of the spectrum.',
     bookingUrl: 'https://mtgardnerinn.com/',
+    tier: 'budget-or-basic',
     kitchen: 'none',
     photo: PHOTOS.motelInn,
   },
@@ -464,4 +497,11 @@ export const VIBE_LABELS: Record<LodgingVibe, string> = {
   glamping: 'Glamping',
   ranch: 'Ranch',
   inn: 'Inns',
+};
+
+export const TIER_LABELS: Record<LodgingTier, string> = {
+  'fits-brief': 'Terra Nova tier',
+  splurge: 'Splurge',
+  'budget-or-basic': 'Basic / cheaper',
+  note: 'Status note',
 };

@@ -1,5 +1,12 @@
+/**
+ * Roadside viewpoints along WA-20.
+ *
+ * Featured stops (Diablo Lake, Washington Pass) lead with photos. Quick
+ * pull-offs sit below as a milepost timeline. No "postcard" hierarchy.
+ */
+
 import { VIEWPOINTS, type Viewpoint } from '../data/viewpoints';
-import { badge, h, section } from '../dom';
+import { h, section } from '../dom';
 
 function renderViewpointPhoto(v: Viewpoint): HTMLElement | null {
   if (!v.photo) return null;
@@ -33,7 +40,7 @@ function renderViewpointPhoto(v: Viewpoint): HTMLElement | null {
 function renderTimelineItem(v: Viewpoint): HTMLElement {
   return h(
     'li',
-    { class: `timeline__item${v.postcard ? ' timeline__item--postcard' : ''}` },
+    { class: 'timeline__item' },
     h(
       'div',
       { class: 'timeline__marker', 'aria-hidden': 'true' },
@@ -46,7 +53,7 @@ function renderTimelineItem(v: Viewpoint): HTMLElement {
         'div',
         { class: 'timeline__head' },
         h('h3', { class: 'timeline__name' }, v.name),
-        v.postcard ? badge('Postcard', 'good') : null
+        h('span', { class: 'timeline__time' }, v.timeNeeded)
       ),
       h('p', { class: 'timeline__detail' }, v.description),
       renderViewpointPhoto(v)
@@ -59,23 +66,25 @@ function renderViewpointSummary(v: Viewpoint): HTMLElement {
     'li',
     { class: 'mini-list__item' },
     h('strong', { class: 'mini-list__label' }, `MP ${v.milepost} · ${v.name}`),
-    h('span', { class: 'mini-list__detail' }, v.description)
+    h('span', { class: 'mini-list__detail' }, `${v.description} · ${v.timeNeeded}`)
   );
 }
 
 export function renderViewpoints(): HTMLElement {
-  const postcards = VIEWPOINTS.filter((v) => v.postcard);
-  const rest = VIEWPOINTS.filter((v) => !v.postcard);
+  // Sort by milepost for the full timeline, but lead with the two photo-featured stops.
+  const featured = VIEWPOINTS.filter((v) => v.featured).sort((a, b) => a.milepost - b.milepost);
+  const rest = VIEWPOINTS.filter((v) => !v.featured).sort((a, b) => a.milepost - b.milepost);
 
   return section(
     'viewpoints',
     'Roadside viewpoints (WA-20)',
     h(
-      'p',
-      { class: 'section__lede' },
-      'Two postcard stops along the corridor. Quick pull-offs collapsed below.'
+      'ul',
+      { class: 'gist' },
+      h('li', { class: 'gist__item' }, 'Two bigger stops with parking, restrooms, and 20-30 min walks: Diablo Lake (MP 132) and Washington Pass (MP 162).'),
+      h('li', { class: 'gist__item' }, 'A handful of 5-minute pull-offs between them, listed by milepost below.')
     ),
-    h('ol', { class: 'timeline' }, ...postcards.map(renderTimelineItem)),
+    h('ol', { class: 'timeline' }, ...featured.map(renderTimelineItem)),
     rest.length > 0
       ? h(
           'details',
@@ -83,7 +92,7 @@ export function renderViewpoints(): HTMLElement {
           h(
             'summary',
             { class: 'disclosure__summary' },
-            `Other pull-offs along WA-20 (${rest.length})`
+            `Quick pull-offs by milepost (${rest.length})`
           ),
           h('ul', { class: 'mini-list' }, ...rest.map(renderViewpointSummary))
         )

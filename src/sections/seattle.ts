@@ -1,9 +1,9 @@
 /**
- * Seattle add-on section.
+ * Seattle add-on — conditional, all-optional.
  *
- * Recommended Thu-evening half-day is surfaced first; everything else
- * (alternative itineraries, sights, logistics) is collapsed behind
- * disclosure widgets to keep density low.
+ * Per Allison May 16: "give suggestions if worth it." Section opens with
+ * "skip if you don't want it" framing. Itineraries are listed as scenarios,
+ * no "Pick" badge — none is the answer.
  */
 
 import {
@@ -71,18 +71,11 @@ function renderStopCard(stop: SeattleStop): HTMLElement {
   );
 }
 
-function renderItinerary(it: SeattleItinerary, primary: boolean): HTMLElement {
+function renderItinerary(it: SeattleItinerary): HTMLElement {
   return h(
     'article',
-    {
-      class: `option-list__item${primary ? ' option-list__item--rec' : ''}`,
-    },
-    h(
-      'header',
-      { class: 'option-list__head' },
-      h('strong', {}, it.label),
-      primary ? badge('Pick', 'good') : null
-    ),
+    { class: 'option-list__item' },
+    h('header', { class: 'option-list__head' }, h('strong', {}, it.label)),
     h('p', { class: 'option-list__note' }, it.scenario),
     h(
       'ol',
@@ -93,36 +86,21 @@ function renderItinerary(it: SeattleItinerary, primary: boolean): HTMLElement {
 }
 
 export function renderSeattle(): HTMLElement {
-  const primaryItin = SEATTLE_ITINERARIES.find((i) => i.recommended);
-  const otherItins = SEATTLE_ITINERARIES.filter((i) => !i.recommended);
-
   return section(
     'seattle',
-    'Seattle add-on',
+    'Seattle (optional)',
     h(
-      'p',
-      { class: 'section__lede' },
-      'Day 5 lands in Seattle mid-afternoon with hours before an evening flight east — natural fit for a half-day stop. Kosher meals come from QFC Mercer Island.'
+      'ul',
+      { class: 'gist' },
+      h('li', { class: 'gist__item' }, 'Day 5 flow has 4-6 hours in Seattle between the drive in and the evening flight — natural fit for a stop if you want one.'),
+      h('li', { class: 'gist__item' }, 'Skip the whole section if you\'d rather go straight to SEA. Nothing here is core.'),
+      h('li', { class: 'gist__item' }, 'No museums. Walkables + outdoorsy stops only.')
     ),
-    // Recommended itinerary front-and-centre.
-    primaryItin ? renderItinerary(primaryItin, true) : null,
-    // Other itineraries — collapsed.
-    otherItins.length > 0
-      ? h(
-          'details',
-          { class: 'disclosure' },
-          h(
-            'summary',
-            { class: 'disclosure__summary' },
-            `Other Seattle scenarios (${otherItins.length})`
-          ),
-          h(
-            'div',
-            { class: 'option-list' },
-            ...otherItins.map((it) => renderItinerary(it, false))
-          )
-        )
-      : null,
+
+    // Scenarios — all neutral.
+    h('h3', { class: 'subsection__title' }, 'When-it-fits scenarios'),
+    h('div', { class: 'option-list' }, ...SEATTLE_ITINERARIES.map(renderItinerary)),
+
     // Sights — collapsed.
     h(
       'details',
@@ -130,10 +108,11 @@ export function renderSeattle(): HTMLElement {
       h(
         'summary',
         { class: 'disclosure__summary' },
-        `Seattle sights + neighborhoods (${SEATTLE_STOPS.length})`
+        `Seattle stops + neighborhoods (${SEATTLE_STOPS.length})`
       ),
       h('div', { class: 'card-grid' }, ...SEATTLE_STOPS.map(renderStopCard))
     ),
+
     // Logistics — collapsed.
     h(
       'details',

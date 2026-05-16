@@ -1,13 +1,13 @@
-import { HIKES, type Hike, type HikeTag } from '../data/hikes';
-import { badge, h, section } from '../dom';
+/**
+ * Hikes — grouped by effort level. Easy + moderate lead.
+ *
+ * Ambitious add-ons (Sahale Arm, Cutthroat Pass) sit at the bottom inside a
+ * disclosure with an honest framing line. No "must-do" / "the trail" /
+ * crowned hikes. Each card shows level + side so the reader scans by fit.
+ */
 
-const TAG_META: Record<HikeTag, { label: string; kind: 'good' | 'info' | 'warn' | 'default' }> = {
-  'must-do': { label: 'Must-do', kind: 'good' },
-  classic: { label: 'Classic', kind: 'good' },
-  easy: { label: 'Easy', kind: 'info' },
-  alternative: { label: 'Alternative', kind: 'default' },
-  'plan-b': { label: 'Plan B', kind: 'warn' },
-};
+import { HIKES, LEVEL_LABELS, type Hike, type HikeLevel } from '../data/hikes';
+import { badge, h, section } from '../dom';
 
 function renderHikePhoto(hike: Hike): HTMLElement | null {
   if (!hike.photo) return null;
@@ -38,23 +38,22 @@ function renderHikePhoto(hike: Hike): HTMLElement | null {
   return figure;
 }
 
+function sideLabel(side: Hike['side']): string {
+  if (side === 'west') return 'West side';
+  if (side === 'east') return 'East side';
+  return 'Either side';
+}
+
 function renderHikeCard(hike: Hike): HTMLElement {
-  const meta = TAG_META[hike.tag];
   return h(
     'article',
-    { class: 'card hike-card' },
+    { class: `card hike-card hike-card--${hike.level}` },
     renderHikePhoto(hike),
     h(
       'header',
       { class: 'card__header' },
-      h(
-        'h3',
-        { class: 'card__title' },
-        h('span', { class: 'hike-card__rank', 'aria-hidden': 'true' }, `#${hike.rank}`),
-        ' ',
-        hike.name
-      ),
-      badge(meta.label, meta.kind)
+      h('h3', { class: 'card__title' }, hike.name),
+      badge(sideLabel(hike.side), 'info')
     ),
     h('p', { class: 'card__subtitle' }, hike.trailhead),
     h(
@@ -74,16 +73,15 @@ function renderHikeCard(hike: Hike): HTMLElement {
 }
 
 function renderHikeSummary(hike: Hike): HTMLElement {
-  const meta = TAG_META[hike.tag];
   return h(
     'li',
     { class: 'mini-list__item' },
     h(
       'strong',
       { class: 'mini-list__label' },
-      `#${hike.rank} · ${hike.name}`,
+      hike.name,
       ' ',
-      badge(meta.label, meta.kind)
+      badge(sideLabel(hike.side), 'info')
     ),
     h(
       'span',
@@ -93,30 +91,55 @@ function renderHikeSummary(hike: Hike): HTMLElement {
   );
 }
 
+function byLevel(level: HikeLevel): Hike[] {
+  return HIKES.filter((h) => h.level === level);
+}
+
 export function renderHikes(): HTMLElement {
-  // Surface the two anchor hikes; collapse the rest as a compact list.
-  const anchors = HIKES.filter((hk) => hk.tag === 'must-do' || hk.tag === 'classic');
-  const rest = HIKES.filter((hk) => hk.tag !== 'must-do' && hk.tag !== 'classic');
+  const easy = byLevel('easy');
+  const moderate = byLevel('moderate');
+  const ambitious = byLevel('ambitious');
 
   return section(
     'hikes',
     'Hikes',
+    // Gist in 3 lines.
     h(
-      'p',
-      { class: 'section__lede' },
-      'Two anchor hikes — one each side. Easy add-ons, alternates, and Plan-B options collapsed below.'
+      'ul',
+      { class: 'gist' },
+      h('li', { class: 'gist__item' }, 'Options at different levels — beautiful nature, easy → moderate is the sweet spot.'),
+      h(
+        'li',
+        { class: 'gist__item' },
+        'Moderate cards lead (Maple Pass, Cascade Pass, Blue Lake, Thunder Knob). Easy walks sit above; ambitious add-ons collapse below.'
+      ),
+      h('li', { class: 'gist__item' }, 'No must-dos — pick by energy on the day.')
     ),
-    h('div', { class: 'card-grid card-grid--hikes' }, ...anchors.map(renderHikeCard)),
-    rest.length > 0
+
+    // Easy walks
+    h('h3', { class: 'subsection__title' }, `Easy walks (${easy.length})`),
+    h('div', { class: 'card-grid card-grid--hikes' }, ...easy.map(renderHikeCard)),
+
+    // Moderate (the sweet spot)
+    h('h3', { class: 'subsection__title' }, `Moderate hikes — beautiful + doable (${moderate.length})`),
+    h('div', { class: 'card-grid card-grid--hikes' }, ...moderate.map(renderHikeCard)),
+
+    // Ambitious — collapsed.
+    ambitious.length > 0
       ? h(
           'details',
           { class: 'disclosure' },
           h(
             'summary',
             { class: 'disclosure__summary' },
-            `Easy add-ons, alternates, Plan B (${rest.length})`
+            `${LEVEL_LABELS.ambitious}s — long days, only if both feel strong (${ambitious.length})`
           ),
-          h('ul', { class: 'mini-list' }, ...rest.map(renderHikeSummary))
+          h(
+            'p',
+            { class: 'disclosure__lede' },
+            'Significant climb + long day. Listed for completeness, not as the plan.'
+          ),
+          h('ul', { class: 'mini-list' }, ...ambitious.map(renderHikeSummary))
         )
       : null
   );

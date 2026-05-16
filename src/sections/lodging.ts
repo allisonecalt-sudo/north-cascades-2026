@@ -1,16 +1,23 @@
+/**
+ * Lodging — Terra Nova-tier cabins lead, splurge + basic collapsed below.
+ *
+ * No "Top pick" crown. Cards group by tier (fits-brief / splurge / basic) so
+ * the reader sees the cluster that matches the brief first; the rest sit
+ * behind disclosures.
+ */
+
 import {
   EAST_LODGING,
   KITCHEN_LABELS,
   WEST_LODGING,
   type KitchenLevel,
   type Lodging,
+  type LodgingTier,
 } from '../data/lodging';
 import { badge, h, section } from '../dom';
 
 function renderPhoto(lodging: Lodging): HTMLElement {
   const { photo } = lodging;
-  // Unsplash photos are thematic/representative, not photos of the actual
-  // property. Flag them so travelers don't think this is what they're booking.
   const isRepresentative = photo.credit?.toLowerCase().includes('unsplash') ?? false;
   const img = h('img', {
     class: 'card__img',
@@ -56,7 +63,7 @@ function renderLodgingCard(lodging: Lodging): HTMLElement {
   return h(
     'article',
     {
-      class: `card lodging-card${lodging.topPick ? ' lodging-card--top' : ''}`,
+      class: `card lodging-card lodging-card--${lodging.tier}`,
       'data-vibe': lodging.vibe,
     },
     renderPhoto(lodging),
@@ -67,7 +74,6 @@ function renderLodgingCard(lodging: Lodging): HTMLElement {
       h(
         'div',
         { class: 'card__badges' },
-        lodging.topPick ? badge('Top pick', 'good') : null,
         badge(KITCHEN_LABELS[lodging.kitchen], kitchenBadgeKind(lodging.kitchen))
       )
     ),
@@ -91,7 +97,7 @@ function renderLodgingCard(lodging: Lodging): HTMLElement {
           h(
             'a',
             { class: 'card__cta-link', href: lodging.bookingUrl, rel: 'noopener', target: '_blank' },
-            'Book / details'
+            'Booking link'
           )
         )
       : null,
@@ -99,26 +105,61 @@ function renderLodgingCard(lodging: Lodging): HTMLElement {
   );
 }
 
-function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElement {
-  const topPicks = lodgings.filter((l) => l.topPick);
-  const rest = lodgings.filter((l) => !l.topPick);
+function byTier(lodgings: Lodging[], tier: LodgingTier): Lodging[] {
+  return lodgings.filter((l) => l.tier === tier);
+}
 
-  const topGrid = h('div', { class: 'card-grid' }, ...topPicks.map(renderLodgingCard));
-  const restDisclosure =
-    rest.length > 0
+function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElement {
+  const fitsBrief = byTier(lodgings, 'fits-brief');
+  const splurge = byTier(lodgings, 'splurge');
+  const basic = byTier(lodgings, 'budget-or-basic');
+  const notes = byTier(lodgings, 'note');
+
+  const fitsBriefGrid = h('div', { class: 'card-grid' }, ...fitsBrief.map(renderLodgingCard));
+
+  const splurgeBlock =
+    splurge.length > 0
       ? h(
           'details',
           { class: 'disclosure' },
           h(
             'summary',
             { class: 'disclosure__summary' },
-            `Show ${rest.length} more option${rest.length === 1 ? '' : 's'}`
+            `Splurge options (${splurge.length})`
           ),
-          h('div', { class: 'card-grid' }, ...rest.map(renderLodgingCard))
+          h('div', { class: 'card-grid' }, ...splurge.map(renderLodgingCard))
         )
       : null;
 
-  const panel = h(
+  const basicBlock =
+    basic.length > 0
+      ? h(
+          'details',
+          { class: 'disclosure' },
+          h(
+            'summary',
+            { class: 'disclosure__summary' },
+            `Cheaper / more basic options (${basic.length})`
+          ),
+          h('div', { class: 'card-grid' }, ...basic.map(renderLodgingCard))
+        )
+      : null;
+
+  const notesBlock =
+    notes.length > 0
+      ? h(
+          'details',
+          { class: 'disclosure' },
+          h(
+            'summary',
+            { class: 'disclosure__summary' },
+            `Status notes (${notes.length})`
+          ),
+          h('div', { class: 'card-grid' }, ...notes.map(renderLodgingCard))
+        )
+      : null;
+
+  return h(
     'div',
     {
       class: 'tab-panel',
@@ -127,10 +168,16 @@ function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElemen
       'aria-labelledby': `lodging-tab-${id}`,
     },
     h('h3', { class: 'tab-panel__title' }, title),
-    topGrid,
-    restDisclosure
+    h(
+      'p',
+      { class: 'section__lede' },
+      `Spacious, a little nicer than basic, around $200-300 — the Terra Nova tier from last time. ${fitsBrief.length} cabin / lodge options that fit. Splurge + cheaper sit below.`
+    ),
+    fitsBriefGrid,
+    splurgeBlock,
+    basicBlock,
+    notesBlock
   );
-  return panel;
 }
 
 export function renderLodging(): HTMLElement {
@@ -165,17 +212,24 @@ export function renderLodging(): HTMLElement {
     )
   );
 
-  const westPanel = renderPanel('west', 'West side — Marblemount / Rockport / Concrete', WEST_LODGING);
+  const westPanel = renderPanel(
+    'west',
+    'West side — Marblemount / Rockport / Concrete',
+    WEST_LODGING
+  );
   const eastPanel = renderPanel('east', 'East side — Winthrop / Mazama', EAST_LODGING);
   eastPanel.hidden = true;
 
   const wrap = section(
     'lodging',
     'Lodging',
+    // Gist in 3 lines.
     h(
-      'p',
-      { class: 'section__lede' },
-      'Cabins with full kitchens take priority — both travelers keep kosher and the corridor has zero kosher restaurants, so self-catering is the plan. Every card shows kitchen status at a glance.'
+      'ul',
+      { class: 'gist' },
+      h('li', { class: 'gist__item' }, 'Two bases — west side (Marblemount/Rockport, Nights 1-2) and east side (Winthrop/Mazama, Nights 3-4).'),
+      h('li', { class: 'gist__item' }, 'Brief: spacious + a little nicer than basic + ~$200-300/night (Terra Nova-tier from last time). Kitchens are a bonus, not a requirement.'),
+      h('li', { class: 'gist__item' }, 'Splurge ($400+) and cheaper/basic options are kept behind disclosures.')
     ),
     tabs,
     westPanel,

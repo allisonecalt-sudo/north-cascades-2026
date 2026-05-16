@@ -4,17 +4,17 @@ import { h } from '../dom';
 
 const NAV_LINKS: { id: string; label: string }[] = [
   { id: 'overview', label: 'Overview' },
-  { id: 'flights', label: 'Flights' },
-  { id: 'rental', label: 'Rental car' },
-  { id: 'lodging', label: 'Lodging' },
-  { id: 'food', label: 'Food (kosher)' },
   { id: 'itinerary', label: 'Itinerary' },
   { id: 'hikes', label: 'Hikes' },
+  { id: 'lodging', label: 'Lodging' },
+  { id: 'flights', label: 'Flights' },
+  { id: 'rental', label: 'Rental' },
   { id: 'viewpoints', label: 'Viewpoints' },
-  { id: 'restaurants', label: 'Restaurants' },
-  { id: 'seattle', label: 'Seattle' },
+  { id: 'restaurants', label: 'Food + restaurants' },
+  { id: 'food', label: 'Kosher notes' },
+  { id: 'seattle', label: 'Seattle (optional)' },
   { id: 'logistics', label: 'Logistics' },
-  { id: 'decisions', label: 'Open decisions' },
+  { id: 'decisions', label: 'Decisions' },
 ];
 
 const DISMISS_KEY = 'ncades2026.closureDismissed';

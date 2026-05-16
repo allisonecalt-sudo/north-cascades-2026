@@ -1,140 +1,74 @@
 /**
- * Food Strategy — Kosher.
+ * Kosher notes — one short paragraph, no architecture.
  *
- * Both travelers keep kosher. The corridor (Marblemount → Winthrop) has
- * zero kosher restaurants. This section covers: pre-trip stocking stops,
- * trail lunch packing, hechsher cheat sheet, and Chabad / kosher community
- * contacts for emergencies or Shabbat questions.
+ * Per Allison May 16: "you can tell us all kosher stuff to know but we can
+ * also shop at reg supermarkets and buying food." The kosher footprint on
+ * this site is intentionally tight — one approach paragraph + a slim Seattle
+ * Va\'ad resources line. No Chabad-emergency rigging. No grocery-pilgrimage
+ * stops. Kosher restaurants live in the Restaurants section, not here.
  */
 
-import {
-  CHABAD_CONTACTS,
-  FOOD_STRATEGY_SUMMARY,
-  GROCERY_STOPS,
-  HECHSHER_CHEAT,
-  HIKE_LUNCHES,
-  type ChabadContact,
-  type GroceryStop,
-  type PantryNote,
-} from '../data/food';
+import { FOOD_APPROACH } from '../data/food';
 import { h, section } from '../dom';
-
-function renderGroceryStop(stop: GroceryStop): HTMLElement {
-  return h(
-    'article',
-    { class: 'card food-card' },
-    h('h4', { class: 'food-card__title' }, stop.name),
-    h('p', { class: 'food-card__address' }, stop.address),
-    stop.phone ? h('p', { class: 'food-card__phone' }, stop.phone) : null,
-    stop.hours ? h('p', { class: 'food-card__hint' }, stop.hours) : null,
-    h('p', { class: 'food-card__why' }, stop.why),
-    h(
-      'div',
-      { class: 'food-card__stock' },
-      h('strong', {}, 'Stock up on: '),
-      h('span', {}, stop.stockUp)
-    )
-  );
-}
-
-function renderPantryNote(note: PantryNote): HTMLElement {
-  return h(
-    'li',
-    { class: 'mini-list__item' },
-    h('strong', { class: 'mini-list__label' }, note.topic),
-    h('span', { class: 'mini-list__detail' }, note.detail)
-  );
-}
-
-function renderChabadContact(contact: ChabadContact): HTMLElement {
-  return h(
-    'li',
-    { class: 'mini-list__item' },
-    h('strong', { class: 'mini-list__label' }, contact.name),
-    h(
-      'span',
-      { class: 'mini-list__detail' },
-      contact.area,
-      contact.phone ? ` · ${contact.phone}` : '',
-      ' — ',
-      contact.note,
-      contact.url
-        ? h(
-            'span',
-            {},
-            ' ',
-            h(
-              'a',
-              { href: contact.url, target: '_blank', rel: 'noopener noreferrer' },
-              'website →'
-            )
-          )
-        : null
-    )
-  );
-}
 
 export function renderFood(): HTMLElement {
   return section(
     'food',
-    'Food strategy (kosher)',
-    h('p', { class: 'section__lede' }, FOOD_STRATEGY_SUMMARY),
-
-    // Stocking stops — surface the two most-important, collapse rest.
+    'Kosher notes',
     h(
       'div',
-      { class: 'subsection' },
-      h('h3', { class: 'subsection__title' }, 'Pre-trip grocery stops'),
+      { class: 'food-approach' },
+      h('h3', { class: 'food-approach__title' }, FOOD_APPROACH.headline),
+      h('p', { class: 'food-approach__body' }, FOOD_APPROACH.body)
+    ),
+    h(
+      'ul',
+      { class: 'mini-list' },
       h(
-        'div',
-        { class: 'card-grid' },
-        ...GROCERY_STOPS.slice(0, 2).map(renderGroceryStop)
+        'li',
+        { class: 'mini-list__item' },
+        h('strong', { class: 'mini-list__label' }, 'Hechsher cheat'),
+        h(
+          'span',
+          { class: 'mini-list__detail' },
+          'OU, OK, Star-K, Kof-K, CRC are widely accepted. For packaged goods, any of these on the label = good to go.'
+        )
       ),
-      GROCERY_STOPS.length > 2
-        ? h(
-            'details',
-            { class: 'disclosure' },
-            h(
-              'summary',
-              { class: 'disclosure__summary' },
-              `Other stocking stops + FYI (${GROCERY_STOPS.length - 2})`
-            ),
-            h(
-              'div',
-              { class: 'card-grid' },
-              ...GROCERY_STOPS.slice(2).map(renderGroceryStop)
-            )
+      h(
+        'li',
+        { class: 'mini-list__item' },
+        h('strong', { class: 'mini-list__label' }, 'Seattle Va\'ad'),
+        h(
+          'span',
+          { class: 'mini-list__detail' },
+          'The local certifying agency. Restaurant + grocery list: ',
+          h(
+            'a',
+            { href: 'https://seattlevaad.org/kosher-portfolio', target: '_blank', rel: 'noopener noreferrer' },
+            'seattlevaad.org/kosher-portfolio →'
           )
-        : null
-    ),
-
-    // Hike lunches.
-    h(
-      'div',
-      { class: 'subsection' },
-      h('h3', { class: 'subsection__title' }, 'Hike lunches + cooler discipline'),
-      h('ul', { class: 'mini-list' }, ...HIKE_LUNCHES.map(renderPantryNote))
-    ),
-
-    // Hechsher cheat sheet — collapsed by default.
-    h(
-      'details',
-      { class: 'disclosure' },
-      h('summary', { class: 'disclosure__summary' }, 'Hechsher cheat sheet (7)'),
-      h('ul', { class: 'mini-list' }, ...HECHSHER_CHEAT.map(renderPantryNote))
-    ),
-
-    // Chabad + kosher community contacts.
-    h(
-      'div',
-      { class: 'subsection' },
-      h('h3', { class: 'subsection__title' }, 'Chabad + kosher community contacts'),
-      h(
-        'p',
-        { class: 'section__lede' },
-        'For emergency-kosher questions, supply runs, or Shabbat hospitality. Call ahead.'
+        )
       ),
-      h('ul', { class: 'mini-list' }, ...CHABAD_CONTACTS.map(renderChabadContact))
+      h(
+        'li',
+        { class: 'mini-list__item' },
+        h('strong', { class: 'mini-list__label' }, 'Sit-down kosher in Seattle'),
+        h(
+          'span',
+          { class: 'mini-list__detail' },
+          'Listed in the Food + restaurants section — QFC Mercer Island deli, Pabla, Teapot, Einstein Bros U-Village.'
+        )
+      ),
+      h(
+        'li',
+        { class: 'mini-list__item' },
+        h('strong', { class: 'mini-list__label' }, 'Cabin meals'),
+        h(
+          'span',
+          { class: 'mini-list__detail' },
+          'Packaged hechsher goods + fridge + microwave covers most of the trip. Pasta, sealed sauces, rotisserie chicken, fruit, salad, bread, breakfast cereals all work.'
+        )
+      )
     )
   );
 }

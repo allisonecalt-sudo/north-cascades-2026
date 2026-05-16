@@ -162,12 +162,28 @@
   font-style: italic;
 }
 
-.flight-card--recommended,
-.rental-card--recommended,
-.lodging-card--top {
+/* Leading-option subtle elevation (no "Pick" badge — just a soft border). */
+.flight-card--leading {
   border-color: var(--c-forest-500);
-  border-width: 2px;
-  background: linear-gradient(180deg, var(--c-warm-50) 0%, #f6fbf7 100%);
+  border-width: 1.5px;
+}
+
+/* Lodging tier accents — no crown, just a hairline color signal. */
+.lodging-card--fits-brief {
+  border-left: 3px solid var(--c-forest-500);
+}
+
+.lodging-card--splurge {
+  border-left: 3px solid var(--c-glacier-500);
+}
+
+.lodging-card--budget-or-basic {
+  border-left: 3px solid var(--c-ink-400);
+}
+
+.lodging-card--note {
+  border-left: 3px solid var(--c-warn-border);
+  opacity: 0.85;
 }
 
 /* Badges */
@@ -221,7 +237,8 @@
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
-.option-list__item--rec {
+.option-list__item--rec,
+.option-list__item--leading {
   border-left-color: var(--c-forest-500);
   background: #f6fbf7;
 }

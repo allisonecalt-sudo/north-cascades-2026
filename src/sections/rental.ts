@@ -1,25 +1,14 @@
 import { RENTAL_OPTIONS, type RentalOption } from '../data/rental';
-import { badge, h, section } from '../dom';
-
-function recBadge(rec: RentalOption['recommended']): HTMLElement | null {
-  if (!rec) return null;
-  if (rec === 'best-value') return badge('Best value', 'good');
-  if (rec === 'cheapest') return badge('Cheapest', 'info');
-  if (rec === 'flex') return badge('Flex pick', 'info');
-  if (rec === 'avoid') return badge('Skip / avoid', 'warn');
-  return null;
-}
+import { h, section } from '../dom';
 
 function renderCard(option: RentalOption): HTMLElement {
-  const isRec = option.recommended === 'best-value';
   return h(
     'article',
-    { class: `card rental-card${isRec ? ' rental-card--recommended' : ''}` },
+    { class: 'card rental-card' },
     h(
       'header',
       { class: 'card__header' },
-      h('h3', { class: 'card__title' }, option.label),
-      recBadge(option.recommended)
+      h('h3', { class: 'card__title' }, option.label)
     ),
     h('p', { class: 'card__subtitle' }, option.vehicleType),
     h(
@@ -27,8 +16,8 @@ function renderCard(option: RentalOption): HTMLElement {
       { class: 'card__facts' },
       h('dt', {}, 'Cost (5 days)'),
       h('dd', {}, option.costRange),
-      h('dt', {}, 'Flexibility'),
-      h('dd', {}, option.flexibility)
+      h('dt', {}, 'Pairs with'),
+      h('dd', {}, option.pairsWith)
     ),
     h('p', { class: 'card__note' }, option.tradeoff)
   );
@@ -39,9 +28,15 @@ export function renderRental(): HTMLElement {
     'rental',
     'Rental car',
     h(
-      'p',
-      { class: 'section__lede' },
-      'All majors operate at both BLI and SEA. BLI→SEA distance is ~94 mi. One-way drop fees on majors are typically $50-150.'
+      'ul',
+      { class: 'gist' },
+      h('li', { class: 'gist__item' }, 'All majors operate at SEA and BLI; one-way BLI→SEA drop fees on majors run ~$50-150.'),
+      h(
+        'li',
+        { class: 'gist__item' },
+        'Compact SUV is the all-purpose pick; sedan works too — Cascade River Rd is gravel-but-passable for any car with reasonable clearance.'
+      ),
+      h('li', { class: 'gist__item' }, 'Pick the rental that pairs with whichever flight option locks in.')
     ),
     h('div', { class: 'card-grid' }, ...RENTAL_OPTIONS.map(renderCard))
   );

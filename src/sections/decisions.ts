@@ -4,11 +4,12 @@ import { h, section } from '../dom';
 export function renderDecisions(): HTMLElement {
   return section(
     'decisions',
-    'Open decisions',
+    'Decisions',
     h(
-      'p',
-      { class: 'section__lede' },
-      'What still needs to be locked, with a target-by guide. Erin: react to any of these and we move them off the list.'
+      'ul',
+      { class: 'gist' },
+      h('li', { class: 'gist__item' }, 'Things still to pick. None are urgent yet — most can wait until the WSDOT road-status check in early July.'),
+      h('li', { class: 'gist__item' }, 'Where there\'s a clear external fact (e.g. a closed property), it\'s flagged. Otherwise: pick what fits.')
     ),
     h(
       'ul',
@@ -27,7 +28,7 @@ export function renderDecisions(): HTMLElement {
               h('h3', { class: 'decisions__question' }, d.question),
               h('p', { class: 'decisions__options' }, d.options),
               h('p', { class: 'decisions__target' }, `Target: ${d.targetBy}`),
-              d.rec ? h('p', { class: 'decisions__rec' }, `Recommend: ${d.rec}`) : null
+              d.rec ? h('p', { class: 'decisions__rec' }, `Note: ${d.rec}`) : null
             )
           )
         )

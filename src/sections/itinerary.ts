@@ -1,5 +1,13 @@
+/**
+ * Itinerary — collapsed days, each with a 1-line shape summary.
+ *
+ * No "POSTCARD DAY" / "EAST-SIDE CLASSIC" badges. The day card shows the
+ * shape line in the summary so the reader can scan all five days at once
+ * without expanding.
+ */
+
 import { ITINERARY, type ItineraryDay } from '../data/itinerary';
-import { badge, h, section } from '../dom';
+import { h, section } from '../dom';
 
 function renderDay(day: ItineraryDay, defaultOpen: boolean): HTMLDetailsElement {
   const details = h(
@@ -15,7 +23,7 @@ function renderDay(day: ItineraryDay, defaultOpen: boolean): HTMLDetailsElement 
         h('span', { class: 'day__date' }, day.date),
         h('span', { class: 'day__title' }, day.title)
       ),
-      day.badge ? badge(day.badge, 'info') : null
+      h('span', { class: 'day__shape' }, day.shape)
     ),
     h(
       'div',
@@ -60,9 +68,11 @@ export function renderItinerary(): HTMLElement {
     'itinerary',
     'Itinerary',
     h(
-      'p',
-      { class: 'section__lede' },
-      'Tap a day to expand. Built around two anchor hikes — Cascade Pass (Day 2) and Maple Pass Loop (Day 4).'
+      'ul',
+      { class: 'gist' },
+      h('li', { class: 'gist__item' }, 'Five-day shape — not a script. Each day has anchor options at different effort levels.'),
+      h('li', { class: 'gist__item' }, 'Back to the cabin by 7-8 PM, balanced pace.'),
+      h('li', { class: 'gist__item' }, 'Tap any day below to expand.')
     ),
     h(
       'div',

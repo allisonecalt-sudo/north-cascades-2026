@@ -1,3 +1,11 @@
+/**
+ * Itinerary — five-day shape, not a prescription.
+ *
+ * Tone: peer-collaborator. No badges shouting "POSTCARD DAY" / "MUST-DO".
+ * Each day is a shape (anchor + options), not a step-by-step script. Meals
+ * mention kosher only where it's helpful context, never as the framing.
+ */
+
 export interface ItineraryStop {
   step: string;
   detail: string;
@@ -8,8 +16,8 @@ export interface ItineraryDay {
   day: number;
   date: string;
   title: string;
-  subtitle?: string;
-  badge?: string;
+  /** Short framing line (1 sentence) shown on the collapsed summary. */
+  shape: string;
   stops: ItineraryStop[];
   meals: { lunch?: string; dinner?: string; breakfast?: string };
 }
@@ -19,6 +27,7 @@ export const ITINERARY: ItineraryDay[] = [
     day: 1,
     date: 'Sun Aug 16',
     title: 'Arrive Bellingham, drive in',
+    shape: 'Land BLI, drive WA-20 to Marblemount, easy evening orientation.',
     stops: [
       { step: 'Land BLI', detail: 'Afternoon, via SEA layover on Alaska Airlines.' },
       { step: 'Rental car pickup', detail: 'Enterprise / Hertz / Budget / Alamo — all on-site at BLI.' },
@@ -29,31 +38,30 @@ export const ITINERARY: ItineraryDay[] = [
       },
       {
         step: 'Check in',
-        detail: 'Rhody House (Airbnb) · Cascade River House · or Glacier Peak Resort cabins (Skagit River Resort / Clark\'s Cabins is closed).',
+        detail:
+          'West-side base — see Lodging section for the Terra Nova-tier picks (Rhody House, North Cascades Hideaway, Glacier Peak Resort, etc).',
       },
       {
-        step: 'Evening orientation',
+        step: 'Evening orientation (easy)',
         detail:
-          'Newhalem Visitor Center (~25 min east) for park briefing, then Ladder Creek Falls — short paved 0.5 mi loop behind Gorge Powerhouse, lit dusk-to-11 pm.',
+          'Newhalem Visitor Center (~25 min east) for a park briefing, then Ladder Creek Falls — short paved 0.5 mi loop behind Gorge Powerhouse, lit dusk-to-11 pm.',
       },
     ],
     meals: {
-      lunch:
-        'Eat from the QFC Mercer Island / Trader Joe\'s kosher haul you stocked in Seattle/Bellingham (corridor towns have no kosher).',
       dinner:
-        'Cook in the cabin (kitchen pick: Rhody House or Cascade River House — both have full kitchens). Sealed kosher meat + Va\'ad deli from QFC Mercer Island.',
+        'Cabin dinner. Stock up on packaged groceries (hechsher-certified) at any major supermarket on the way in — Trader Joe\'s, QFC, Whole Foods, Safeway all work.',
     },
   },
   {
     day: 2,
     date: 'Mon Aug 17',
-    title: 'Cascade Pass / Sahale Arm',
-    badge: 'POSTCARD DAY',
+    title: 'Cascade Pass day',
+    shape: 'Drive Cascade River Rd, hike Cascade Pass (moderate) or add the Sahale Arm extension if both feel strong.',
     stops: [
       {
         step: 'Pre-hike fuel',
         detail:
-          'Cabin breakfast (cereal + sealed kosher dairy from your TJ\'s haul). Pack a kosher sandwich + 2L water each — Marblemount Country Store is not kosher, only useful for sealed bottled water/whole fruit.',
+          'Cabin breakfast + packed lunch + 2L water each. No services at the trailhead.',
       },
       {
         step: 'Drive Marblemount → Cascade Pass Trailhead',
@@ -62,69 +70,68 @@ export const ITINERARY: ItineraryDay[] = [
         time: '~1 hr',
       },
       {
-        step: 'Hike Cascade Pass (Option A)',
-        detail: '7.4 mi RT · ~1,700 ft gain · 3.5-4 hrs · moderate. Switchbacks up to alpine pass at 5,400 ft.',
+        step: 'Hike option — Cascade Pass (moderate)',
+        detail: '7.0 mi RT · ~1,800 ft gain · 3.5-4 hrs (WTA stats). Steady climb to a wide alpine pass at 5,400 ft.',
       },
       {
-        step: 'Hike Cascade Pass + Sahale Arm (Option B)',
+        step: 'Hike option — Sahale Arm add-on (ambitious)',
         detail:
-          '12.8 mi RT · ~4,100 ft gain · 7-8 hrs · strenuous. The postcard view of the whole park at 7,600 ft. Only if both feel strong.',
+          '12.8 mi RT · ~4,100 ft gain · 7-8 hrs. Long day with significant climb to the glacier camp basin at 7,600 ft. Only if both feel strong on the morning of, with an early start.',
       },
       { step: 'Drive back to Marblemount', detail: '~1 hr.', time: '~1 hr' },
     ],
     meals: {
-      dinner: 'Cook in the cabin. Post-hike kosher pasta + sealed sauce + pre-grilled chicken from your QFC haul travels well.',
+      dinner: 'Cabin dinner — pasta + sealed sauce is the easy post-hike option.',
     },
   },
   {
     day: 3,
     date: 'Tue Aug 18',
-    title: 'WA-20 viewpoints + transit east',
-    badge: 'DRIVE DAY',
+    title: 'Drive day — WA-20 viewpoints, transit east',
+    shape: 'Pack up, work the viewpoints west → east along WA-20, settle into the east-side base by evening.',
     stops: [
-      { step: 'Pack up, check out', detail: 'Moving lodging to Winthrop/Mazama tonight.' },
+      { step: 'Pack up, check out', detail: 'Moving lodging to Winthrop / Mazama tonight.' },
       { step: 'Gorge Creek Falls', detail: 'MP 123 · pull-out + footbridge · 5 min.' },
       {
         step: 'Diablo Lake Overlook',
-        detail: 'MP 132 · POSTCARD · glacier-flour turquoise lake · 20-30 min.',
+        detail: 'MP 132 · turquoise glacier-flour lake from above · 20-30 min.',
       },
       {
-        step: 'Thunder Knob Trail',
+        step: 'Thunder Knob Trail (optional moderate hike)',
         detail:
-          'Trailhead at Colonial Creek South Campground (MP 130) · 3.6 mi RT · ~635 ft gain · easy-moderate · 1.5-2 hrs.',
+          'Trailhead at Colonial Creek South Campground (MP 130) · 3.6 mi RT · ~635 ft · 1.5-2 hrs.',
       },
       { step: 'Ross Lake Overlook', detail: 'MP 135 · quick pull-off · 5 min.' },
       {
         step: 'Rainy Pass / Rainy Lake (optional)',
-        detail: 'MP 158 · paved 1.8 mi RT walk · skip if back here Day 4.',
+        detail: 'MP 158 · paved 1.8 mi RT walk · skip if you\'ll be back here Day 4.',
       },
       {
         step: 'Washington Pass Overlook',
         detail:
-          'MP 162 · POSTCARD · 400-ft paved trail to Liberty Bell + Early Winters Spires view · 20 min.',
+          'MP 162 · 400-ft paved trail to Liberty Bell view · 20 min.',
       },
       {
         step: 'Drive to lodging',
         detail: 'Washington Pass → Mazama ~15 min · Mazama → Winthrop ~25 min.',
       },
-      { step: 'Check in', detail: 'Freestone Inn · Sun Mountain · or Methow River Lodge.' },
+      { step: 'Check in', detail: 'East-side base — Methow River Lodge, River\'s Edge, Freestone cabins, etc.' },
     ],
     meals: {
-      lunch: 'Colonial Creek picnic area (post-hike) — bring kosher sandwiches from the cabin.',
+      lunch: 'Colonial Creek picnic area is the natural mid-drive stop.',
       dinner:
-        'Cook at the east-side cabin (Freestone cabin, River\'s Edge chalet, or Spring Creek Ranch — all have full kitchens). Winthrop restaurants are not kosher.',
+        'Either cook at the cabin or eat out in Winthrop — Old Schoolhouse Brewery + Arrowleaf Bistro are the well-reviewed options if eating out works for the night.',
     },
   },
   {
     day: 4,
     date: 'Wed Aug 19',
-    title: 'Maple Pass Loop',
-    badge: 'EAST-SIDE CLASSIC',
+    title: 'East-side hike day',
+    shape: 'Maple Pass Loop is the main option; Blue Lake is the shorter alternate, Cutthroat Pass is the harder one.',
     stops: [
       {
         step: 'Pre-hike fuel',
-        detail:
-          'Cabin breakfast — Rocking Horse Bakery in Winthrop is not kosher. Brew your own and pack sealed kosher pastries from the Trader Joe\'s/QFC haul.',
+        detail: 'Cabin breakfast, pack lunch + water.',
       },
       {
         step: 'Drive to Rainy Pass Trailhead',
@@ -132,38 +139,39 @@ export const ITINERARY: ItineraryDay[] = [
         time: '~30 min',
       },
       {
-        step: 'Maple Pass Loop (recommended)',
+        step: 'Hike option — Maple Pass Loop (moderate)',
         detail:
-          '7.2 mi loop · ~2,200 ft gain · 4-5 hrs · moderate. Counterclockwise = steeper up, gentler down. Optional 1-mi spur to Lake Ann.',
+          '7.2 mi loop · ~2,020 ft (WTA) · 4-5 hrs. Counterclockwise is easier on the knees.',
       },
       {
-        step: 'Easier alt — Blue Lake',
-        detail: '4.4 mi RT · ~1,050 ft gain · 2-3 hrs · easy-moderate. Trailhead MP 161.',
+        step: 'Shorter option — Blue Lake',
+        detail: '4.4 mi RT · ~1,050 ft · 2-3 hrs · easy-moderate. Trailhead MP 161.',
       },
       {
-        step: 'Longer alt — Cutthroat Pass via PCT',
-        detail: '10 mi RT · ~2,034 ft gain · 5 hrs · harder. Trailhead MP 158.',
+        step: 'Ambitious option — Cutthroat Pass via PCT',
+        detail: '10 mi RT · ~2,034 ft · ~5 hrs · harder. Only if Maple Pass feels too short.',
       },
       { step: 'Drive back to Winthrop', detail: '~30 min.', time: '~30 min' },
       {
-        step: 'Winthrop walkabout',
+        step: 'Afternoon — Winthrop',
         detail:
-          'Old-west boardwalk on Riverside Ave. Shafer Historical Museum if open. (Sheri\'s Sweet Shoppe + town restaurants are not kosher — sightseeing only.)',
+          'Old-west boardwalk on Riverside Ave. Shafer Historical Museum if open. Easy unwind before dinner.',
       },
     ],
     meals: {
-      dinner: 'Cook in the cabin — kosher pasta night with the salad you picked up at QFC.',
+      dinner:
+        'Arrowleaf Bistro is the nicer Winthrop dinner (book ~2 weeks out). Old Schoolhouse Brewery is the casual brewpub option.',
     },
   },
   {
     day: 5,
     date: 'Thu Aug 20',
     title: 'Slow morning, drive to SEA',
+    shape: 'Easy morning in the Methow Valley, then the ~4 hr drive to SEA for the evening flight.',
     stops: [
       {
         step: 'Breakfast',
-        detail:
-          'Cabin breakfast from your kosher stock — last morning to use what\'s left. Pack a sandwich + bars for the drive.',
+        detail: 'Cabin breakfast or a Winthrop stop on the way out.',
       },
       {
         step: 'Optional easy morning',
@@ -177,11 +185,10 @@ export const ITINERARY: ItineraryDay[] = [
         time: '~4 hrs',
       },
       {
-        step: 'Kosher lunch in Seattle',
-        detail:
-          'Stop at QFC Mercer Island (Va\'ad kosher deli, 7823 SE 28th St) for a real sit-down kosher lunch before SEA. (Leavenworth / Cle Elum have no kosher — sandwich-from-cooler only if you stop there.)',
+        step: 'Lunch en route',
+        detail: 'Leavenworth (Bavarian village on US-2) or Cle Elum (on I-90). See Seattle section for kosher-specific stop info if useful.',
       },
-      { step: 'Arrive SEA', detail: 'Mid-afternoon for evening flight east.' },
+      { step: 'Arrive SEA', detail: 'Mid-afternoon for the evening flight east.' },
     ],
     meals: {},
   },

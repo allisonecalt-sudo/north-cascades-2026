@@ -1,3 +1,11 @@
+/**
+ * Flights — leading option + collapsed alternates.
+ *
+ * Visual prominence comes from card size + ordering. No "Pick" badges, no
+ * "Best value" stamps — the lede explains the framing ("fastest + reasonable
+ * schedule") and the leading card sits at the top.
+ */
+
 import {
   AIRPORT_ALTERNATIVES,
   BOOKING_TIPS,
@@ -6,33 +14,32 @@ import {
   OTHER_FLIGHT_SUMMARIES,
   type FlightOption,
 } from '../data/flights';
-import { badge, h, section } from '../dom';
+import { h, section } from '../dom';
 
-function renderPrimaryFlightCard(option: FlightOption): HTMLElement {
+function renderLeadingFlightCard(option: FlightOption): HTMLElement {
   return h(
     'article',
     {
-      class: 'card flight-card flight-card--recommended flight-card--primary',
+      class: 'card flight-card flight-card--leading',
       'aria-label': option.label,
     },
     h(
       'header',
       { class: 'card__header' },
-      h('h3', { class: 'card__title' }, option.label),
-      badge('Pick', 'good')
+      h('h3', { class: 'card__title' }, option.label)
     ),
     h('p', { class: 'card__route' }, option.route),
     h('p', { class: 'card__diagram', 'aria-hidden': 'true' }, option.routeDiagram),
     h(
       'dl',
       { class: 'card__facts' },
-      h('dt', {}, 'Duration'),
+      h('dt', {}, 'Schedule'),
       h('dd', {}, option.drivingHours),
-      h('dt', {}, 'Cost'),
+      h('dt', {}, 'Notes'),
       h('dd', {}, option.costDelta)
     ),
-    option.recommendationNote
-      ? h('p', { class: 'card__note' }, option.recommendationNote)
+    option.leadingNote
+      ? h('p', { class: 'card__note' }, option.leadingNote)
       : null
   );
 }
@@ -47,40 +54,38 @@ function renderOptionSummary(opt: { label: string; oneLiner: string }): HTMLElem
 }
 
 export function renderFlights(): HTMLElement {
-  const primary = FLIGHT_OPTIONS.find((o) => o.recommended) ?? FLIGHT_OPTIONS[0];
-  if (!primary) {
+  const leading = FLIGHT_OPTIONS.find((o) => o.leading) ?? FLIGHT_OPTIONS[0];
+  if (!leading) {
     return section('flights', 'Flights');
   }
 
   const others = OTHER_FLIGHT_SUMMARIES;
-  const recommendedReturn = FLIGHT_RETURN_OPTIONS.find((o) => o.recommended);
-  const otherReturns = FLIGHT_RETURN_OPTIONS.filter((o) => !o.recommended);
+  const leadingReturn = FLIGHT_RETURN_OPTIONS.find((o) => o.leading);
+  const otherReturns = FLIGHT_RETURN_OPTIONS.filter((o) => !o.leading);
 
   return section(
     'flights',
     'Flights',
+    // Gist in 3 lines.
     h(
-      'p',
-      { class: 'section__lede' },
-      'One pick, fewest stopovers. Everything else is collapsed below.'
+      'ul',
+      { class: 'gist' },
+      h('li', { class: 'gist__item' }, 'Target: fastest + good times (fewest stopovers + reasonable departure).'),
+      h('li', { class: 'gist__item' }, 'SEA roundtrip nonstop on Alaska / Delta / JetBlue / United matches the brief most cleanly — leading option below.'),
+      h('li', { class: 'gist__item' }, 'Open-jaw + other routings sit below as alternatives, mostly relevant if WA-20 status changes.')
     ),
-    renderPrimaryFlightCard(primary),
-    // Return-flight timing — surface the recommended one, collapse the rest.
-    recommendedReturn
+    renderLeadingFlightCard(leading),
+    // Return timing.
+    leadingReturn
       ? h(
           'div',
           { class: 'subsection' },
           h('h3', { class: 'subsection__title' }, 'Return flight timing'),
           h(
             'div',
-            { class: 'option-list__item option-list__item--rec' },
-            h(
-              'div',
-              { class: 'option-list__head' },
-              h('strong', {}, recommendedReturn.label),
-              badge('Pick', 'good')
-            ),
-            h('p', { class: 'option-list__note' }, recommendedReturn.note)
+            { class: 'option-list__item option-list__item--leading' },
+            h('div', { class: 'option-list__head' }, h('strong', {}, leadingReturn.label)),
+            h('p', { class: 'option-list__note' }, leadingReturn.note)
           ),
           otherReturns.length > 0
             ? h(
@@ -107,7 +112,7 @@ export function renderFlights(): HTMLElement {
             : null
         )
       : null,
-    // Other flight routings — collapsed.
+    // Other routings — collapsed.
     h(
       'details',
       { class: 'disclosure' },
@@ -123,7 +128,7 @@ export function renderFlights(): HTMLElement {
         ...others.map(renderOptionSummary)
       )
     ),
-    // Airport alternatives — single line each, collapsed.
+    // Airport alternatives — collapsed.
     h(
       'details',
       { class: 'disclosure' },
