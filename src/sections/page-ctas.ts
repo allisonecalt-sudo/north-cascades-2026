@@ -83,7 +83,7 @@ const NEXT: Record<PageId, Cta[]> = {
   'driving-cascades': [
     { href: 'rental.html', label: 'Rental →' },
     { href: 'travel.html', label: 'Travel →' },
-    { href: 'top-sunsets.html', label: 'Sunsets →' },
+    { href: 'lodging.html', label: 'Lodging →' },
   ],
 };
 

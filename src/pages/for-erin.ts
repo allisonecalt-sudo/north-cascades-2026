@@ -8,6 +8,7 @@
 import '../styles/main.css';
 import { mountPageShell, attachNotesToAllSections } from '../page-shell';
 import { renderForErin } from '../sections/for-erin';
+import { renderTowns } from '../sections/towns';
 import { renderPageCtas } from '../sections/page-ctas';
 
 function mount(): void {
@@ -17,7 +18,7 @@ function mount(): void {
     lede: 'Open decisions — what we still need to lock together. Leave 💬 notes anywhere.',
   });
 
-  main.append(renderForErin(), renderPageCtas('for-erin'));
+  main.append(renderForErin(), renderTowns(), renderPageCtas('for-erin'));
   attachNotesToAllSections(main);
 }
 

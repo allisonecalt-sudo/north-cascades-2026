@@ -13,8 +13,8 @@ import { renderPageCtas } from '../sections/page-ctas';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'top-sunsets',
-    title: 'Top sunsets — ranked',
-    lede: "Erin goes to bed earlier than you. Sunset is your window. 7 spots ranked — porch picks lead.",
+    title: 'Sunsets — bonus, not centerpiece',
+    lede: "Not a sunset-focused trip. But Erin's in bed by ~8 PM and Allison's solo wind-down can land on a porch with a view. Sunset-having lodgings are flagged on the Lodging page — this page is the deeper list for the curious.",
   });
 
   main.append(renderTopSunsets(), renderPageCtas('top-sunsets'));

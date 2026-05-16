@@ -326,7 +326,7 @@ export const TRIP_PATHS: TripPath[] = [
     bestIf:
       'WA-20 reopen looks shaky in July — OR you want the simplest version with the least driving.',
     snapshot: [
-      'One base, one cabin — no mid-trip move',
+      'One base, one cabin — matches Erin\'s single-base preference',
       'Cascade Pass + WA-20 viewpoints + slow days',
       'Skips the east side (no Maple Pass, no Winthrop)',
     ],
@@ -348,7 +348,7 @@ export const TRIP_PATHS: TripPath[] = [
     snapshot: [
       'Both signature hikes: Cascade Pass + Maple Pass',
       'Both viewpoints + a real Winthrop town night',
-      'One mid-trip move — highest variety, highest road-risk',
+      'Two bases, one move — fits Erin\'s "max 2 places" rule',
     ],
     lodgingIds: [
       'cascade-river-house', 'glacier-peak', 'rhody-house',
@@ -369,7 +369,7 @@ export const TRIP_PATHS: TripPath[] = [
     bestIf:
       'Least driving, most evenings-at-the-cabin. Easy-to-moderate hikes only. More town time in Winthrop.',
     snapshot: [
-      '3 nights in Winthrop — fewest packing days',
+      '3 nights in Winthrop — fewest packing days, fits "max 2 places" rule',
       'East-side hikes only — Maple Pass, Blue Lake, Rainy Lake',
       'Skips Cascade Pass (the biggest tradeoff)',
     ],

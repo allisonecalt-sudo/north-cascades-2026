@@ -64,11 +64,6 @@ export const LOGISTICS: LogisticsItem[] = [
     detail:
       'Typically open mid-July through October. Confirm at recreation.gov or call NPS 360-854-7200 before Day 2.',
   },
-  {
-    topic: 'Shabbat',
-    detail:
-      'Trip wraps Thu Aug 20 — no Shabbat conflict with the trip itself. If you extend into Fri Aug 21, plan Shabbat in Seattle (Chabad UW or Chabad of Greater Seattle in Seward Park — both have community Shabbat dinners and minyan). See Food Strategy for contacts.',
-  },
 ];
 
 export const CONTINGENCIES = [

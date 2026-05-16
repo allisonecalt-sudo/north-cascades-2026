@@ -15,6 +15,7 @@ import { renderItinerary } from '../sections/itinerary';
 import { renderPageCtas } from '../sections/page-ctas';
 import { renderStatRow } from '../sections/stat-row';
 import { renderPeakMoment } from '../sections/peak-moment';
+import { renderTowns } from '../sections/towns';
 import { h } from '../dom';
 
 function mount(): void {
@@ -49,6 +50,7 @@ function mount(): void {
     renderMap(),
     renderOverview(),
     renderItinerary(),
+    renderTowns(),
     renderPageCtas('home')
   );
 

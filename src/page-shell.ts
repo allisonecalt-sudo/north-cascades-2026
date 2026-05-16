@@ -25,6 +25,7 @@ import { CLOSURE_ALERT } from './data/closure';
 import { h } from './dom';
 import { initNotesModal, attachNotesButton, refreshBadges } from './sections/notes-button';
 import { attachBackToTop } from './sections/back-to-top';
+import { showWelcomePopup } from './sections/welcome-popup';
 import { getSelectedPath, setSelectedPath, subscribeSelectedPath } from './state/path';
 import { TRIP_PATHS } from './data/paths';
 
@@ -53,6 +54,10 @@ interface NavEntry {
 // One nav, 14 pages. Order matches the canonical decision flow:
 // Home → who/what/where → Lodging → Hikes → Travel → Rental → Driving
 // → Costs → Pre-trip → Food → Sunsets → Seattle → For Erin → Details → Notes.
+// Sunsets demoted from main nav May 17, 2026 — Allison: *"not a big sunset trip…
+// sleeping where there is nature and amazing sunset could be really good idea
+// because erin doesnt stay out as late."* Sunset = lodging perk, not trip spine.
+// Page still builds (sunset-having lodging links there) but isn't a nav peer.
 const NAV: readonly NavEntry[] = [
   { id: 'home', href: './', label: 'Home' },
   { id: 'lodging', href: 'lodging.html', label: 'Lodging' },
@@ -63,7 +68,6 @@ const NAV: readonly NavEntry[] = [
   { id: 'costs', href: 'costs.html', label: 'Costs' },
   { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip' },
   { id: 'food', href: 'food.html', label: 'Food' },
-  { id: 'top-sunsets', href: 'top-sunsets.html', label: 'Sunsets' },
   { id: 'seattle', href: 'seattle.html', label: 'Seattle' },
   { id: 'for-erin', href: 'for-erin.html', label: 'For Erin' },
   { id: 'details', href: 'details.html', label: 'Details' },
@@ -344,6 +348,9 @@ export function mountPageShell(opts: ShellOptions): HTMLElement {
   void refreshBadges();
   attachBackToTop();
   attachNavFade(body);
+  // First-visit explainer popup (Erin's intro to the 💬 mechanic).
+  // Self-suppresses via localStorage after one show.
+  showWelcomePopup();
 
   return main;
 }

@@ -1,0 +1,155 @@
+/* welcome.css — first-visit popup for Erin.
+ *
+ * Centered modal-style explainer for the 💬 notes mechanic. Shown once,
+ * dismissed by click-anywhere or the explicit "Got it" button.
+ */
+
+.welcome-popup-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 42, 34, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  z-index: 1200;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  pointer-events: none;
+}
+
+.welcome-popup-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.welcome-popup {
+  background: var(--c-warm-50);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem 1.7rem 1.3rem;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  font-family: var(--font-stack);
+  color: var(--c-ink-900);
+  transform: translateY(10px) scale(0.98);
+  transition: transform 0.28s ease;
+  max-height: calc(100dvh - 2.4rem);
+  overflow-y: auto;
+}
+
+.welcome-popup-backdrop.open .welcome-popup {
+  transform: translateY(0) scale(1);
+}
+
+.welcome-popup__close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--c-ink-500);
+  cursor: pointer;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.welcome-popup__close:hover {
+  background: var(--c-warm-100);
+  color: var(--c-forest-700);
+}
+
+.welcome-popup__eyebrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-forest-600);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+
+.welcome-popup__title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--c-forest-800);
+  margin: 0 0 0.9rem;
+  line-height: 1.25;
+}
+
+.welcome-popup__body {
+  font-size: var(--fs-base);
+  line-height: 1.55;
+  color: var(--c-ink-700);
+  margin: 0 0 0.8rem;
+}
+
+.welcome-popup__body--small {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+}
+
+.welcome-popup__chip {
+  display: inline-block;
+  background: var(--c-good-bg);
+  border: 1px solid var(--c-good-border);
+  border-radius: 999px;
+  padding: 0.05rem 0.55rem;
+  font-size: 0.9rem;
+  vertical-align: baseline;
+}
+
+.welcome-popup__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.1rem;
+}
+
+.welcome-popup__cta {
+  background: var(--c-forest-700);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease, transform 0.1s ease;
+  min-height: 44px;
+}
+
+.welcome-popup__cta:hover {
+  background: var(--c-forest-800);
+  transform: translateY(-1px);
+}
+
+.welcome-popup__cta:active {
+  transform: translateY(0);
+}
+
+.welcome-popup__tip {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--c-ink-400);
+  margin: 0.7rem 0 0;
+  font-style: italic;
+}
+
+@media (max-width: 480px) {
+  .welcome-popup {
+    padding: 1.3rem 1.2rem 1.1rem;
+  }
+  .welcome-popup__title {
+    font-size: var(--fs-lg);
+  }
+}
