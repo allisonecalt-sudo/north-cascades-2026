@@ -38,7 +38,11 @@ export type PageId =
   | 'seattle'
   | 'for-erin'
   | 'details'
-  | 'notes';
+  | 'notes'
+  | 'costs'
+  | 'top-sunsets'
+  | 'pre-trip'
+  | 'driving-cascades';
 
 interface NavEntry {
   id: PageId;
@@ -46,15 +50,20 @@ interface NavEntry {
   label: string;
 }
 
-// One nav, eight pages. Order matches the canonical decision flow:
-// Home → who/what/where → Lodging → Hikes → Travel → Food → Seattle → For Erin → Details.
+// One nav, 14 pages. Order matches the canonical decision flow:
+// Home → who/what/where → Lodging → Hikes → Travel → Rental → Driving
+// → Costs → Pre-trip → Food → Sunsets → Seattle → For Erin → Details → Notes.
 const NAV: readonly NavEntry[] = [
   { id: 'home', href: './', label: 'Home' },
   { id: 'lodging', href: 'lodging.html', label: 'Lodging' },
   { id: 'hikes', href: 'hikes.html', label: 'Hikes' },
   { id: 'travel', href: 'travel.html', label: 'Travel' },
   { id: 'rental', href: 'rental.html', label: 'Rental' },
+  { id: 'driving-cascades', href: 'driving-cascades.html', label: 'Driving' },
+  { id: 'costs', href: 'costs.html', label: 'Costs' },
+  { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip' },
   { id: 'food', href: 'food.html', label: 'Food' },
+  { id: 'top-sunsets', href: 'top-sunsets.html', label: 'Sunsets' },
   { id: 'seattle', href: 'seattle.html', label: 'Seattle' },
   { id: 'for-erin', href: 'for-erin.html', label: 'For Erin' },
   { id: 'details', href: 'details.html', label: 'Details' },

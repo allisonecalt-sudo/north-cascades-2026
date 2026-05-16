@@ -197,6 +197,89 @@
   text-decoration-thickness: 1px;
 }
 
+/* ────────────────────────────────────────────────────────────
+   Emoji pill row (TRAVEL.md section 10 canonical pills)
+   ──────────────────────────────────────────────────────────── */
+.card__pills {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.card__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.7rem;
+  background: var(--c-warm-100);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  color: var(--c-ink-800);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.card__pill--good {
+  background: var(--c-good-bg);
+  border-color: var(--c-good-border);
+  color: var(--c-good-ink);
+  font-weight: 600;
+}
+
+.card__pill--verify {
+  background: var(--c-warn-bg);
+  border-color: var(--c-warn-border);
+  color: var(--c-warn-ink);
+  font-style: italic;
+}
+
+/* Review count emphasis — May 17 pass.
+   Allison: "focus on reviews for booking how many amt".
+   Larger font on the COUNT, score sits next to it but smaller. */
+.card__reviews-primary {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.2rem;
+}
+
+.card__reviews-score {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--c-forest-700);
+}
+
+.card__reviews-count {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--c-ink-900);
+  font-variant-numeric: tabular-nums;
+}
+
+.card__reviews-source {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-700);
+}
+
+.card__reviews-secondary {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-700);
+  margin-bottom: 0.2rem;
+}
+
+.card__reviews-secondary-score {
+  font-weight: 600;
+}
+
+.card__reviews-secondary-count {
+  font-weight: 600;
+}
+
 /* Lodging beds + bedrooms — prominent under title */
 .card__beds {
   display: flex;
@@ -1464,4 +1547,640 @@
   background: var(--c-warm-50);
   border-radius: var(--radius-md);
   border: 1px dashed var(--c-line);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Costs page — stacked-bar pattern per path × tier
+   ──────────────────────────────────────────────────────────── */
+.costs-paths {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+@media (min-width: 900px) {
+  .costs-paths {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .costs-path {
+    flex: 1 1 0;
+  }
+}
+
+.costs-path {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.costs-path--active {
+  border-color: var(--c-forest-500);
+  box-shadow: var(--shadow-md);
+}
+
+.costs-path__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.costs-path__title {
+  font-size: var(--fs-lg);
+  margin: 0;
+  color: var(--c-forest-800, #1f3b2a);
+}
+
+.costs-path__range {
+  font-size: var(--fs-base);
+  color: var(--c-ink-700);
+  margin: 0;
+}
+
+.costs-path__bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.costs-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-warm-100);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--c-line);
+}
+
+.costs-bar--low { border-left-color: var(--c-glacier-500); }
+.costs-bar--mid { border-left-color: var(--c-forest-500); }
+.costs-bar--high { border-left-color: #c08a3d; }
+
+.costs-bar__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.costs-bar__tier-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: var(--fs-xs);
+  color: var(--c-ink-700);
+}
+
+.costs-bar__total {
+  font-weight: 700;
+  font-size: var(--fs-base);
+  color: var(--c-ink-900);
+}
+
+.costs-bar__track {
+  background: rgba(0, 0, 0, 0.06);
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.costs-bar__fill {
+  height: 100%;
+  background: var(--c-forest-500, #3a6b46);
+  transition: width 250ms ease;
+}
+
+.costs-bar--low .costs-bar__fill { background: var(--c-glacier-500, #4a8aa6); }
+.costs-bar--high .costs-bar__fill { background: #c08a3d; }
+
+.costs-bar__summary {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.costs-path__detail {
+  margin-top: 0;
+}
+
+.costs-tier-block {
+  margin-top: var(--sp-3);
+}
+
+.costs-tier-block__title {
+  font-size: var(--fs-base);
+  margin: 0 0 var(--sp-2);
+  color: var(--c-forest-700);
+}
+
+.costs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-2);
+}
+
+.costs-table th,
+.costs-table td {
+  padding: var(--sp-2) var(--sp-3);
+  text-align: left;
+  border-bottom: 1px solid var(--c-line);
+  vertical-align: top;
+}
+
+.costs-table thead th {
+  background: var(--c-warm-100);
+  color: var(--c-ink-700);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.05em;
+}
+
+.costs-table__amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.costs-table__total-row {
+  background: var(--c-warm-100);
+}
+
+.costs-table__total-row th,
+.costs-table__total-row td {
+  font-weight: 700;
+  font-size: var(--fs-base);
+}
+
+.costs-fineprint {
+  margin-top: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-warm-50);
+  border-left: 3px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.costs-fineprint__line {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.costs-fineprint__verified {
+  margin: var(--sp-3) 0 0;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Top sunsets page — ranked sunset cards
+   ──────────────────────────────────────────────────────────── */
+.sunset-callouts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: var(--sp-3) 0;
+}
+
+.sunset-callout {
+  font-size: var(--fs-sm);
+  padding: var(--sp-3);
+  background: #fff4e0;
+  border-left: 3px solid #e08e3a;
+  border-radius: var(--radius-sm);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.sunset-times {
+  margin: var(--sp-4) 0;
+}
+
+.sunset-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-top: var(--sp-3);
+}
+
+.sunset-card {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-left: 4px solid #c9a35d;
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.sunset-card--in-path {
+  border-left-color: #e08e3a;
+  box-shadow: var(--shadow-sm);
+}
+
+.sunset-card--off-path {
+  opacity: 0.6;
+}
+
+.sunset-card__header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.sunset-card__rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  background: #e08e3a;
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: var(--fs-base);
+  flex: 0 0 auto;
+}
+
+.sunset-card__title {
+  font-size: var(--fs-lg);
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.sunset-card__badges {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.sunset-card__where {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin: 0;
+}
+
+.sunset-card__facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem var(--sp-3);
+  font-size: var(--fs-sm);
+  margin: var(--sp-2) 0;
+}
+
+.sunset-card__facts dt {
+  color: var(--c-ink-500);
+  font-weight: 500;
+}
+
+.sunset-card__facts dd {
+  margin: 0;
+  color: var(--c-ink-900);
+}
+
+.sunset-card__coords {
+  font-family: 'Inter', monospace;
+  font-size: var(--fs-xs);
+  color: var(--c-ink-700);
+}
+
+.sunset-card__why,
+.sunset-card__allison-fit,
+.sunset-card__lodging,
+.sunset-card__notes {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-800);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.sunset-card__allison-fit {
+  background: #fff4e0;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid #e08e3a;
+}
+
+.sunset-card__lodging {
+  background: rgba(58, 107, 70, 0.06);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--c-forest-500);
+}
+
+.sunset-card__notes {
+  color: var(--c-ink-500);
+  font-style: italic;
+}
+
+.sunset-card__source {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  margin: 0;
+  padding-top: var(--sp-2);
+  border-top: 1px dashed var(--c-line);
+}
+
+.sunset-card__source a {
+  color: var(--c-glacier-700, #1f5a76);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Pre-trip checklist page
+   ──────────────────────────────────────────────────────────── */
+.pre-trip__countdown {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--c-forest-800, #1f3b2a);
+  color: var(--c-warm-50);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--sp-4);
+}
+
+.pre-trip__countdown-days {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.pre-trip__countdown-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pre-trip__countdown-label {
+  font-size: var(--fs-base);
+  margin: 0;
+  font-weight: 600;
+}
+
+.pre-trip__progress {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0;
+  font-size: var(--fs-sm);
+}
+
+.pre-trip__progress-count {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-xs);
+}
+
+.pre-trip__progress-bar {
+  flex: 1 1 auto;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pre-trip__progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--c-glacier-500, #4a8aa6);
+  transition: width 200ms ease;
+}
+
+.pre-trip__group {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+
+.pre-trip__group-title {
+  font-size: var(--fs-lg);
+  margin: 0 0 var(--sp-1);
+  color: var(--c-forest-800, #1f3b2a);
+}
+
+.pre-trip__group-blurb {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+  margin: 0 0 var(--sp-3);
+  line-height: 1.5;
+}
+
+.pre-trip__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.pre-trip__row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  background: white;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--c-line);
+  transition: opacity 150ms ease;
+}
+
+.pre-trip__row--now { border-left-color: #e08e3a; }
+.pre-trip__row--late { border-left-color: var(--c-warn-border); background: var(--c-warn-bg); }
+.pre-trip__row--open { border-left-color: var(--c-forest-500); }
+.pre-trip__row--future { border-left-color: var(--c-ink-400); opacity: 0.85; }
+.pre-trip__row--closed { border-left-color: var(--c-ink-400); opacity: 0.5; }
+
+.pre-trip__row--done {
+  opacity: 0.5;
+}
+
+.pre-trip__row--done .pre-trip__label {
+  text-decoration: line-through;
+}
+
+.pre-trip__checkbox {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.pre-trip__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pre-trip__label {
+  font-weight: 600;
+  font-size: var(--fs-base);
+  color: var(--c-ink-900);
+  cursor: pointer;
+}
+
+.pre-trip__why {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pre-trip__meta {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  margin: 0;
+}
+
+.pre-trip__band {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pre-trip__band--now { color: #e08e3a; }
+.pre-trip__band--late { color: var(--c-warn-ink); }
+.pre-trip__band--open { color: var(--c-forest-700); }
+.pre-trip__band--future { color: var(--c-ink-500); }
+.pre-trip__band--closed { color: var(--c-ink-400); }
+
+.pre-trip__link {
+  font-size: var(--fs-sm);
+  color: var(--c-forest-700);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+  margin-top: 0.2rem;
+  display: inline-block;
+}
+
+.pre-trip__reset {
+  text-align: center;
+  margin-top: var(--sp-4);
+}
+
+.pre-trip__reset-btn {
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  background: transparent;
+  color: var(--c-ink-500);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.pre-trip__reset-btn:hover {
+  color: var(--c-warn-ink);
+  border-color: var(--c-warn-border);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Driving Cascades page
+   ──────────────────────────────────────────────────────────── */
+.driving-anchors {
+  font-size: var(--fs-sm);
+  background: var(--c-warm-50);
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--c-glacier-500);
+  line-height: 1.7;
+  margin-bottom: var(--sp-4);
+}
+
+.driving-anchors__link {
+  color: var(--c-glacier-700, #1f5a76);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+
+.driving-anchors__sep {
+  color: var(--c-ink-400);
+}
+
+.driving-topics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.driving-topic {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  border-left: 4px solid var(--c-line);
+}
+
+.driving-topic--warn { border-left-color: var(--c-warn-border, #d9a441); }
+.driving-topic--info { border-left-color: var(--c-glacier-500); }
+.driving-topic--good { border-left-color: var(--c-forest-500); }
+
+.driving-topic__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.driving-topic__title {
+  font-size: var(--fs-lg);
+  margin: 0 0 var(--sp-2);
+  color: var(--c-forest-800, #1f3b2a);
+}
+
+.driving-topic__tldr {
+  font-size: var(--fs-base);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-warm-100);
+  border-radius: var(--radius-sm);
+  margin: 0 0 var(--sp-3);
+  line-height: 1.5;
+}
+
+.driving-topic--warn .driving-topic__tldr {
+  background: var(--c-warn-bg, #fff8e7);
+}
+
+.driving-topic__body {
+  margin: 0 0 var(--sp-3);
+  padding-left: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-800);
+  line-height: 1.55;
+}
+
+.driving-topic__source {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  margin: 0;
+  padding-top: var(--sp-2);
+  border-top: 1px dashed var(--c-line);
+}
+
+.driving-topic__source a {
+  color: var(--c-glacier-700, #1f5a76);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
 }

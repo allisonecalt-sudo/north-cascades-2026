@@ -65,6 +65,26 @@ const NEXT: Record<PageId, Cta[]> = {
     { href: 'lodging.html', label: 'Lodging →' },
     { href: 'for-erin.html', label: 'For Erin →' },
   ],
+  costs: [
+    { href: 'lodging.html', label: 'Lodging →' },
+    { href: 'rental.html', label: 'Rental →' },
+    { href: 'pre-trip.html', label: 'Pre-trip →' },
+  ],
+  'top-sunsets': [
+    { href: 'lodging.html', label: 'Lodging →' },
+    { href: 'hikes.html', label: 'Hikes →' },
+    { href: 'driving-cascades.html', label: 'Driving →' },
+  ],
+  'pre-trip': [
+    { href: 'costs.html', label: 'Costs →' },
+    { href: 'lodging.html', label: 'Lodging →' },
+    { href: 'details.html', label: 'Bring list →' },
+  ],
+  'driving-cascades': [
+    { href: 'rental.html', label: 'Rental →' },
+    { href: 'travel.html', label: 'Travel →' },
+    { href: 'top-sunsets.html', label: 'Sunsets →' },
+  ],
 };
 
 export function renderPageCtas(active: PageId): HTMLElement {

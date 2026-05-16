@@ -16,11 +16,9 @@
 
 import {
   EAST_LODGING,
-  KITCHEN_LABELS,
   NATURE_LABELS,
   WEST_LODGING,
   sortByNature,
-  type KitchenLevel,
   type Lodging,
   type LodgingTier,
 } from '../data/lodging';
@@ -65,12 +63,6 @@ function renderPhoto(lodging: Lodging): HTMLElement {
   return figure;
 }
 
-function kitchenBadgeKind(level: KitchenLevel): 'good' | 'info' | 'warn' {
-  if (level === 'full') return 'good';
-  if (level === 'kitchenette') return 'info';
-  return 'warn';
-}
-
 function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
   const natureLabel = NATURE_LABELS[lodging.natureTag];
   const isTownCenter = lodging.natureTag === 'town-center';
@@ -84,21 +76,52 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       )
     : null;
 
-  // Bed + bedroom row — prominent, right under title.
-  const bedRow = h(
-    'div',
-    { class: 'card__beds' },
-    h('span', { class: 'card__beds-bedrooms' }, lodging.bedrooms),
-    h('span', { class: 'card__beds-sep' }, '·'),
-    h('span', { class: 'card__beds-beds' }, lodging.beds),
+  // Emoji-pill row — TRAVEL.md section 10 canonical pills.
+  // 🛏 Beds / 🚪 Bedrooms / 🍳 Kitchen / 🌊🏔🌲 View / 💰 tier
+  const kitchenEmoji =
+    lodging.kitchen === 'full' ? '🍳' : lodging.kitchen === 'kitchenette' ? '🍵' : '—';
+  const viewEmoji =
+    lodging.natureTag === 'lakeside'
+      ? '🌊'
+      : lodging.natureTag === 'riverside'
+        ? '💧'
+        : lodging.natureTag === 'mountain-view'
+          ? '🏔'
+          : lodging.natureTag === 'ranch-acreage'
+            ? '🐎'
+            : lodging.natureTag === 'town-center'
+              ? '🏘'
+              : '🌲';
+  const tierEmoji = lodging.tier === 'splurge' ? '💎' : '💰';
+  const pillRow = h(
+    'ul',
+    { class: 'card__pills', 'aria-label': 'At a glance' },
+    h('li', { class: 'card__pill' }, `🚪 ${lodging.bedrooms}`),
+    h('li', { class: 'card__pill' }, `🛏 ${lodging.beds}`),
+    h('li', { class: 'card__pill' }, `${kitchenEmoji} ${
+      lodging.kitchen === 'full' ? 'Full kitchen' : lodging.kitchen === 'kitchenette' ? 'Kitchenette' : 'No kitchen'
+    }`),
+    h('li', { class: 'card__pill' }, `${viewEmoji} ${NATURE_LABELS[lodging.natureTag]}`),
+    h(
+      'li',
+      { class: 'card__pill' },
+      `${tierEmoji} ${lodging.pricePerNight}`
+    ),
     lodging.verifyBeds
       ? h(
-          'span',
-          { class: 'card__beds-verify' },
-          ' [verify bed count at booking]'
+          'li',
+          { class: 'card__pill card__pill--verify' },
+          '✅ Verify beds at booking'
         )
-      : null
+      : h(
+          'li',
+          { class: 'card__pill card__pill--good' },
+          `✅ Verified ${lodging.reviews.asOf}`
+        )
   );
+
+  // Kept for legacy rendering — bedRow no longer used (replaced by pillRow above).
+  const bedRow = null;
 
   // Nature proximity line — prominent.
   const natureRow = h(
@@ -127,23 +150,35 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
         )
       : null;
 
-  // Review row — May 16 standing rule, every card surfaces score + count + source.
+  // Review row — May 17 emphasis pass: review COUNT bumped to larger font.
+  // Per Allison: "focus on reviews for booking how many amt". Score still
+  // displays prominently but the count line is the primary trust signal.
   const r = lodging.reviews;
-  const reviewLine =
+  const reviewRow =
     r.score === 'N/A'
       ? null
-      : `${r.score} · ${r.count} (${r.source}${
-          r.secondScore ? `; ${r.secondScore} · ${r.secondCount} ${r.secondSource}` : ''
-        })`;
-  const reviewRow = reviewLine
-    ? h(
-        'p',
-        { class: 'card__reviews' },
-        h('strong', {}, 'Reviews: '),
-        reviewLine,
-        h('span', { class: 'card__reviews-as-of' }, ` · as of ${r.asOf}`)
-      )
-    : null;
+      : h(
+          'div',
+          { class: 'card__reviews' },
+          h(
+            'div',
+            { class: 'card__reviews-primary' },
+            h('span', { class: 'card__reviews-score' }, r.score),
+            h('span', { class: 'card__reviews-count' }, r.count),
+            h('span', { class: 'card__reviews-source' }, ` · ${r.source}`)
+          ),
+          r.secondScore
+            ? h(
+                'div',
+                { class: 'card__reviews-secondary' },
+                h('span', { class: 'card__reviews-secondary-score' }, r.secondScore ?? ''),
+                ' · ',
+                h('span', { class: 'card__reviews-secondary-count' }, r.secondCount ?? ''),
+                ` ${r.secondSource ?? ''}`
+              )
+            : null,
+          h('span', { class: 'card__reviews-as-of' }, `Verified ${r.asOf}`)
+        );
   const reviewHighlights = r.highlights
     ? h('p', { class: 'card__review-highlights' }, r.highlights)
     : null;
@@ -164,11 +199,10 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       h(
         'div',
         { class: 'card__badges' },
-        inPath ? badge('In this path', 'good') : null,
-        badge(natureLabel, isTownCenter ? 'warn' : 'good'),
-        badge(KITCHEN_LABELS[lodging.kitchen], kitchenBadgeKind(lodging.kitchen))
+        inPath ? badge('In this path', 'good') : null
       )
     ),
+    pillRow,
     bedRow,
     h('p', { class: 'card__address' }, lodging.address),
     lodging.phone ? h('p', { class: 'card__phone' }, lodging.phone) : null,
