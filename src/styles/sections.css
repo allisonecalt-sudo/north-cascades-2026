@@ -769,8 +769,8 @@
   font-size: var(--fs-sm);
 }
 
-/* On desktop, keep the facts always-visible (no need to hide them — there's
- * room) and hide the summary toggle entirely. */
+/* On desktop, hide the summary toggle — the details element is forced [open]
+ * by JS at the desktop breakpoint, so the facts are always visible. */
 @media (min-width: 760px) {
   .path-card__details {
     padding-top: var(--sp-3);
@@ -779,13 +779,7 @@
     display: none;
   }
   .path-card__facts {
-    /* Always visible on desktop regardless of <details open> state. */
     margin-top: 0;
-  }
-  /* Force display:grid even when details is closed (browsers hide children
-   * of <details> when not open — we override via display). */
-  .path-card__details:not([open]) > .path-card__facts {
-    display: grid;
   }
 }
 

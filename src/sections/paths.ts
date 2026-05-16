@@ -78,12 +78,29 @@ function renderCard(path: TripPath, active: boolean): HTMLElement {
   return card;
 }
 
+const DESKTOP_BP = '(min-width: 760px)';
+
+function syncFactsOpenness(container: HTMLElement): void {
+  // On desktop, facts panel is always visible (room is available). On mobile,
+  // it's collapsed by default so the picker is scan-light. <details> requires
+  // the `open` attribute be added/removed via JS — pure CSS can't toggle it.
+  const isDesktop =
+    typeof window !== 'undefined' && window.matchMedia(DESKTOP_BP).matches;
+  const allDetails = container.querySelectorAll<HTMLDetailsElement>(
+    '.path-card__details'
+  );
+  allDetails.forEach((d) => {
+    d.open = isDesktop;
+  });
+}
+
 function renderPicker(container: HTMLElement, selected: string | null): void {
   const grid = container.querySelector<HTMLElement>('.path-grid');
   if (!grid) return;
   grid.replaceChildren(
     ...TRIP_PATHS.map((p) => renderCard(p, p.id === selected))
   );
+  syncFactsOpenness(container);
 
   // "Compare all" button only shows when a path is active (action: clear).
   // When nothing is selected the button is dead weight — the picker IS the
@@ -182,6 +199,15 @@ export function renderPaths(): HTMLElement {
   subscribeSelectedPath((next) => {
     renderPicker(wrap, next);
   });
+
+  // Keep the desktop/mobile facts-open state synced across resize / device
+  // rotation. Cheap — three <details> elements.
+  if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+    const mql = window.matchMedia(DESKTOP_BP);
+    // `addEventListener('change', ...)` is the modern API; some older browsers
+    // only support `addListener`. We use the modern one — CI baseline is recent.
+    mql.addEventListener('change', () => syncFactsOpenness(wrap));
+  }
 
   return wrap;
 }
