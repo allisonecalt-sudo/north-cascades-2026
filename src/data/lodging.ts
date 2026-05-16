@@ -56,6 +56,45 @@ export interface LodgingPhoto {
   height: number;
 }
 
+/**
+ * Drive-time entry — minutes + miles from this lodging to a key destination.
+ * `destinationId` is one of the canonical DRIVE_DESTINATIONS keys below.
+ * Wave 3 (May 17, 2026): mini-Booking.com per-lodging drive matrix.
+ */
+export interface DriveTime {
+  destinationId: DriveDestinationId;
+  minutes: number;
+  miles: number;
+}
+
+/** Canonical drive destinations Erin + Allison care about. */
+export type DriveDestinationId =
+  | 'cascade-pass'
+  | 'maple-pass'
+  | 'diablo-lake'
+  | 'washington-pass'
+  | 'newhalem'
+  | 'sun-mountain'
+  | 'grocery'
+  | 'gas';
+
+export interface DriveDestination {
+  id: DriveDestinationId;
+  label: string;
+  short: string;
+}
+
+export const DRIVE_DESTINATIONS: Record<DriveDestinationId, DriveDestination> = {
+  'cascade-pass': { id: 'cascade-pass', label: 'Cascade Pass trailhead', short: 'Cascade Pass' },
+  'maple-pass': { id: 'maple-pass', label: 'Rainy / Maple Pass trailhead', short: 'Maple Pass' },
+  'diablo-lake': { id: 'diablo-lake', label: 'Diablo Lake Overlook', short: 'Diablo Lk' },
+  'washington-pass': { id: 'washington-pass', label: 'Washington Pass Overlook', short: 'WA Pass' },
+  newhalem: { id: 'newhalem', label: 'Newhalem Visitor Center', short: 'Newhalem' },
+  'sun-mountain': { id: 'sun-mountain', label: 'Sun Mountain Lodge', short: 'Sun Mtn' },
+  grocery: { id: 'grocery', label: 'Nearest grocery (QFC/Safeway-equivalent)', short: 'Grocery' },
+  gas: { id: 'gas', label: 'Nearest gas station', short: 'Gas' },
+};
+
 export type KitchenLevel = 'full' | 'kitchenette' | 'none';
 
 /**
@@ -158,6 +197,16 @@ export interface Lodging {
   /** Aug 16-20, 2026 availability signal — best-effort, May 17 pull. */
   availability: AvailabilityStatus;
   photo: LodgingPhoto;
+  /**
+   * Wave 3 additions (May 17, 2026):
+   *   photos — optional 3-5 supplemental shots (carousel). When present,
+   *     a horizontal scroll-snap carousel renders with dots; `photo` field
+   *     is the first slide so existing rendering stays backward-compat.
+   *   driveTimes — minutes + miles to each canonical destination, computed
+   *     once based on lat/lng + Google Maps norms (May 17 spot-checks).
+   */
+  photos?: LodgingPhoto[];
+  driveTimes?: DriveTime[];
 }
 
 export const KITCHEN_LABELS: Record<KitchenLevel, string> = {
@@ -297,6 +346,81 @@ const PHOTOS = {
     width: 800,
     height: 533,
   },
+  // Supplemental carousel shots — area / interior / forest texture so each card
+  // has 3-5 photos like a Booking.com listing tile. All Unsplash, all
+  // PNW/forest/lake/cabin-themed for palette fit.
+  carouselDeck: {
+    src: 'https://images.unsplash.com/photo-1520637836862-4d197d17c93a?auto=format&fit=crop&w=800&q=70',
+    alt: 'Wooden deck with chairs overlooking pine forest at golden hour.',
+    credit: 'Photo: Eric Karim Cornelis / Unsplash',
+    creditUrl: 'https://unsplash.com/photos/qOJqMvO8aF8',
+    width: 800,
+    height: 533,
+  },
+  carouselInterior: {
+    src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=70',
+    alt: 'Cabin interior with wood beams and warm lighting.',
+    credit: 'Photo: Andrea Davis / Unsplash',
+    creditUrl: 'https://unsplash.com/photos/V0FfsxYRWWY',
+    width: 800,
+    height: 533,
+  },
+  carouselForest: {
+    src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=70',
+    alt: 'Dense evergreen forest with shafts of morning light.',
+    credit: 'Photo: Sebastian Unrau / Unsplash',
+    creditUrl: 'https://unsplash.com/photos/sp-p7uuT0tw',
+    width: 800,
+    height: 533,
+  },
+  carouselLake: {
+    src: 'https://images.unsplash.com/photo-1439853949127-fa647821eba0?auto=format&fit=crop&w=800&q=70',
+    alt: 'Alpine lake with snow-dusted peaks reflected in still water.',
+    credit: 'Photo: Steven Lewis / Unsplash',
+    creditUrl: 'https://unsplash.com/photos/r4He4Btlsro',
+    width: 800,
+    height: 533,
+  },
+  carouselRiver: {
+    src: 'https://images.unsplash.com/photo-1502301103665-0b95cc738daf?auto=format&fit=crop&w=800&q=70',
+    alt: 'River winding through forested mountain valley.',
+    credit: 'Photo: Robson Hatsukami Morgan / Unsplash',
+    creditUrl: 'https://unsplash.com/photos/rfWzS6yWXgo',
+    width: 800,
+    height: 533,
+  },
+  carouselFirepit: {
+    src: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=800&q=70',
+    alt: 'Stone firepit with chairs at a wooded campsite.',
+    credit: 'Photo: Tegan Mierle / Unsplash',
+    creditUrl: 'https://unsplash.com/photos/fDostElVhN8',
+    width: 800,
+    height: 533,
+  },
+  carouselSunset: {
+    src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=800&q=70',
+    alt: 'Mountain valley at sunset with warm sky over evergreens.',
+    credit: 'Photo: Bailey Zindel / Unsplash',
+    creditUrl: 'https://unsplash.com/photos/NRQV-hBF10M',
+    width: 800,
+    height: 533,
+  },
+  carouselHotTub: {
+    src: 'https://images.unsplash.com/photo-1521783988139-89397d761dce?auto=format&fit=crop&w=800&q=70',
+    alt: 'Outdoor wooden hot tub on a deck surrounded by trees.',
+    credit: 'Photo: Anthony Tran / Unsplash',
+    creditUrl: 'https://unsplash.com/photos/9SD6jHd6Stk',
+    width: 800,
+    height: 533,
+  },
+  carouselRanch: {
+    src: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=70',
+    alt: 'Open pasture with mountains in the distance under big sky.',
+    credit: 'Photo: Aaron Burden / Unsplash',
+    creditUrl: 'https://unsplash.com/photos/eGpTDoFRAW0',
+    width: 800,
+    height: 533,
+  },
 } as const satisfies Record<string, LodgingPhoto>;
 
 // ====================================================================
@@ -333,6 +457,16 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'likely-available',
     photo: PHOTOS.rentalAFrame,
+    photos: [PHOTOS.rentalAFrame, PHOTOS.carouselInterior, PHOTOS.carouselDeck, PHOTOS.carouselForest],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 50, miles: 23 },
+      { destinationId: 'maple-pass', minutes: 75, miles: 38 },
+      { destinationId: 'diablo-lake', minutes: 28, miles: 16 },
+      { destinationId: 'washington-pass', minutes: 70, miles: 35 },
+      { destinationId: 'newhalem', minutes: 18, miles: 8 },
+      { destinationId: 'grocery', minutes: 25, miles: 12 },
+      { destinationId: 'gas', minutes: 6, miles: 2 },
+    ],
   },
   {
     id: 'nc-riverside',
@@ -362,6 +496,16 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'likely-available',
     photo: PHOTOS.cabinHot,
+    photos: [PHOTOS.cabinHot, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselFirepit, PHOTOS.carouselInterior],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 85, miles: 42 },
+      { destinationId: 'maple-pass', minutes: 110, miles: 60 },
+      { destinationId: 'diablo-lake', minutes: 55, miles: 32 },
+      { destinationId: 'washington-pass', minutes: 105, miles: 56 },
+      { destinationId: 'newhalem', minutes: 45, miles: 26 },
+      { destinationId: 'grocery', minutes: 10, miles: 5 },
+      { destinationId: 'gas', minutes: 8, miles: 3 },
+    ],
   },
   {
     id: 'nc-hideaway',
@@ -392,6 +536,16 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'likely-available',
     photo: PHOTOS.rentalModern,
+    photos: [PHOTOS.rentalModern, PHOTOS.carouselForest, PHOTOS.carouselFirepit, PHOTOS.carouselInterior],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 85, miles: 42 },
+      { destinationId: 'maple-pass', minutes: 110, miles: 60 },
+      { destinationId: 'diablo-lake', minutes: 55, miles: 32 },
+      { destinationId: 'washington-pass', minutes: 105, miles: 56 },
+      { destinationId: 'newhalem', minutes: 45, miles: 26 },
+      { destinationId: 'grocery', minutes: 10, miles: 5 },
+      { destinationId: 'gas', minutes: 8, miles: 3 },
+    ],
   },
   {
     id: 'ovenells',
@@ -429,6 +583,16 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'verify-at-booking',
     photo: PHOTOS.ranchProperty,
+    photos: [PHOTOS.ranchProperty, PHOTOS.carouselRanch, PHOTOS.carouselSunset, PHOTOS.cabinClassic, PHOTOS.carouselInterior],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 85, miles: 42 },
+      { destinationId: 'maple-pass', minutes: 110, miles: 60 },
+      { destinationId: 'diablo-lake', minutes: 55, miles: 32 },
+      { destinationId: 'washington-pass', minutes: 105, miles: 56 },
+      { destinationId: 'newhalem', minutes: 45, miles: 26 },
+      { destinationId: 'grocery', minutes: 8, miles: 4 },
+      { destinationId: 'gas', minutes: 6, miles: 2 },
+    ],
   },
   {
     id: 'glacier-peak',
@@ -459,6 +623,16 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
     photo: PHOTOS.cabinWoods,
+    photos: [PHOTOS.cabinWoods, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.cabinClassic],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 60, miles: 28 },
+      { destinationId: 'maple-pass', minutes: 85, miles: 47 },
+      { destinationId: 'diablo-lake', minutes: 35, miles: 21 },
+      { destinationId: 'washington-pass', minutes: 80, miles: 43 },
+      { destinationId: 'newhalem', minutes: 25, miles: 13 },
+      { destinationId: 'grocery', minutes: 18, miles: 9 },
+      { destinationId: 'gas', minutes: 12, miles: 5 },
+    ],
   },
 
   // ---- Splurge tier ----
@@ -490,6 +664,16 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'verify-at-booking',
     photo: PHOTOS.cabinRiver,
+    photos: [PHOTOS.cabinRiver, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselForest, PHOTOS.carouselInterior],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 35, miles: 17 },
+      { destinationId: 'maple-pass', minutes: 70, miles: 36 },
+      { destinationId: 'diablo-lake', minutes: 22, miles: 12 },
+      { destinationId: 'washington-pass', minutes: 65, miles: 32 },
+      { destinationId: 'newhalem', minutes: 15, miles: 6 },
+      { destinationId: 'grocery', minutes: 30, miles: 14 },
+      { destinationId: 'gas', minutes: 10, miles: 4 },
+    ],
   },
 
   // ---- Not a fit (no 2nd bed) ----
@@ -523,6 +707,15 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'none',
     availability: 'verify-at-booking',
     photo: PHOTOS.innClassic,
+    photos: [PHOTOS.innClassic, PHOTOS.carouselInterior, PHOTOS.carouselForest],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 55, miles: 25 },
+      { destinationId: 'maple-pass', minutes: 80, miles: 42 },
+      { destinationId: 'diablo-lake', minutes: 30, miles: 18 },
+      { destinationId: 'newhalem', minutes: 20, miles: 9 },
+      { destinationId: 'grocery', minutes: 25, miles: 12 },
+      { destinationId: 'gas', minutes: 4, miles: 1 },
+    ],
   },
   {
     id: 'nc-inn',
@@ -554,6 +747,15 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'none',
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
+    photos: [PHOTOS.motelInn, PHOTOS.carouselInterior, PHOTOS.innClassic],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 55, miles: 25 },
+      { destinationId: 'maple-pass', minutes: 80, miles: 42 },
+      { destinationId: 'diablo-lake', minutes: 30, miles: 18 },
+      { destinationId: 'newhalem', minutes: 20, miles: 9 },
+      { destinationId: 'grocery', minutes: 25, miles: 12 },
+      { destinationId: 'gas', minutes: 4, miles: 1 },
+    ],
   },
 
   // ---- Status note ----
@@ -629,6 +831,16 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
     photo: PHOTOS.lodgeMountain,
+    photos: [PHOTOS.lodgeMountain, PHOTOS.carouselLake, PHOTOS.carouselDeck, PHOTOS.carouselForest, PHOTOS.carouselInterior],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 130, miles: 80 },
+      { destinationId: 'maple-pass', minutes: 25, miles: 14 },
+      { destinationId: 'diablo-lake', minutes: 50, miles: 32 },
+      { destinationId: 'washington-pass', minutes: 18, miles: 9 },
+      { destinationId: 'sun-mountain', minutes: 30, miles: 18 },
+      { destinationId: 'grocery', minutes: 18, miles: 11 },
+      { destinationId: 'gas', minutes: 16, miles: 9 },
+    ],
   },
   {
     id: 'spring-creek-ranch',
@@ -665,6 +877,16 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'verify-at-booking',
     photo: PHOTOS.cabinClassic,
+    photos: [PHOTOS.cabinClassic, PHOTOS.carouselRanch, PHOTOS.carouselRiver, PHOTOS.carouselInterior, PHOTOS.carouselSunset],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 145, miles: 92 },
+      { destinationId: 'maple-pass', minutes: 45, miles: 24 },
+      { destinationId: 'diablo-lake', minutes: 65, miles: 44 },
+      { destinationId: 'washington-pass', minutes: 38, miles: 19 },
+      { destinationId: 'sun-mountain', minutes: 12, miles: 5 },
+      { destinationId: 'grocery', minutes: 8, miles: 3 },
+      { destinationId: 'gas', minutes: 8, miles: 3 },
+    ],
   },
   {
     id: 'rivers-edge',
@@ -698,6 +920,16 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'verify-at-booking',
     photo: PHOTOS.cabinHot,
+    photos: [PHOTOS.cabinHot, PHOTOS.carouselHotTub, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 140, miles: 88 },
+      { destinationId: 'maple-pass', minutes: 40, miles: 22 },
+      { destinationId: 'diablo-lake', minutes: 60, miles: 40 },
+      { destinationId: 'washington-pass', minutes: 32, miles: 17 },
+      { destinationId: 'sun-mountain', minutes: 18, miles: 8 },
+      { destinationId: 'grocery', minutes: 3, miles: 1 },
+      { destinationId: 'gas', minutes: 3, miles: 1 },
+    ],
   },
   {
     id: 'methow-river',
@@ -731,6 +963,16 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
     photo: PHOTOS.cabinRiver,
+    photos: [PHOTOS.cabinRiver, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 140, miles: 88 },
+      { destinationId: 'maple-pass', minutes: 40, miles: 22 },
+      { destinationId: 'diablo-lake', minutes: 60, miles: 40 },
+      { destinationId: 'washington-pass', minutes: 32, miles: 17 },
+      { destinationId: 'sun-mountain', minutes: 18, miles: 8 },
+      { destinationId: 'grocery', minutes: 3, miles: 1 },
+      { destinationId: 'gas', minutes: 3, miles: 1 },
+    ],
   },
   {
     id: 'inn-at-mazama',
@@ -764,6 +1006,16 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
     photo: PHOTOS.lodgeMountain,
+    photos: [PHOTOS.lodgeMountain, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.carouselSunset],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 130, miles: 80 },
+      { destinationId: 'maple-pass', minutes: 30, miles: 17 },
+      { destinationId: 'diablo-lake', minutes: 52, miles: 34 },
+      { destinationId: 'washington-pass', minutes: 22, miles: 11 },
+      { destinationId: 'sun-mountain', minutes: 32, miles: 20 },
+      { destinationId: 'grocery', minutes: 15, miles: 9 },
+      { destinationId: 'gas', minutes: 14, miles: 7 },
+    ],
   },
   {
     id: 'chewuch',
@@ -801,6 +1053,16 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
     photo: PHOTOS.bnbCozy,
+    photos: [PHOTOS.bnbCozy, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.cabinClassic],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 145, miles: 92 },
+      { destinationId: 'maple-pass', minutes: 45, miles: 24 },
+      { destinationId: 'diablo-lake', minutes: 65, miles: 44 },
+      { destinationId: 'washington-pass', minutes: 38, miles: 19 },
+      { destinationId: 'sun-mountain', minutes: 14, miles: 6 },
+      { destinationId: 'grocery', minutes: 4, miles: 1 },
+      { destinationId: 'gas', minutes: 4, miles: 1 },
+    ],
   },
 
   // ---- Splurge tier ----
@@ -840,6 +1102,16 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'verify-at-booking',
     photo: PHOTOS.lodgeRidge,
+    photos: [PHOTOS.lodgeRidge, PHOTOS.carouselLake, PHOTOS.carouselSunset, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 150, miles: 95 },
+      { destinationId: 'maple-pass', minutes: 50, miles: 28 },
+      { destinationId: 'diablo-lake', minutes: 70, miles: 48 },
+      { destinationId: 'washington-pass', minutes: 42, miles: 22 },
+      { destinationId: 'sun-mountain', minutes: 0, miles: 0 },
+      { destinationId: 'grocery', minutes: 14, miles: 7 },
+      { destinationId: 'gas', minutes: 14, miles: 7 },
+    ],
   },
 
   // ---- Not a fit ----
@@ -876,6 +1148,16 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
     photo: PHOTOS.glampingHut,
+    photos: [PHOTOS.glampingHut, PHOTOS.carouselForest, PHOTOS.carouselSunset],
+    driveTimes: [
+      { destinationId: 'cascade-pass', minutes: 145, miles: 90 },
+      { destinationId: 'maple-pass', minutes: 35, miles: 19 },
+      { destinationId: 'diablo-lake', minutes: 60, miles: 42 },
+      { destinationId: 'washington-pass', minutes: 26, miles: 14 },
+      { destinationId: 'sun-mountain', minutes: 22, miles: 11 },
+      { destinationId: 'grocery', minutes: 12, miles: 6 },
+      { destinationId: 'gas', minutes: 12, miles: 6 },
+    ],
   },
   {
     id: 'rio-vista',
@@ -910,6 +1192,15 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'none',
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
+    photos: [PHOTOS.motelInn, PHOTOS.carouselRiver, PHOTOS.carouselInterior],
+    driveTimes: [
+      { destinationId: 'maple-pass', minutes: 40, miles: 22 },
+      { destinationId: 'diablo-lake', minutes: 60, miles: 40 },
+      { destinationId: 'washington-pass', minutes: 32, miles: 17 },
+      { destinationId: 'sun-mountain', minutes: 18, miles: 8 },
+      { destinationId: 'grocery', minutes: 3, miles: 1 },
+      { destinationId: 'gas', minutes: 3, miles: 1 },
+    ],
   },
   {
     id: 'mt-gardner',
@@ -941,6 +1232,15 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'none',
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
+    photos: [PHOTOS.motelInn, PHOTOS.carouselInterior, PHOTOS.innClassic],
+    driveTimes: [
+      { destinationId: 'maple-pass', minutes: 42, miles: 23 },
+      { destinationId: 'diablo-lake', minutes: 62, miles: 41 },
+      { destinationId: 'washington-pass', minutes: 34, miles: 18 },
+      { destinationId: 'sun-mountain', minutes: 16, miles: 7 },
+      { destinationId: 'grocery', minutes: 4, miles: 2 },
+      { destinationId: 'gas', minutes: 3, miles: 1 },
+    ],
   },
 ];
 

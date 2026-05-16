@@ -1153,3 +1153,598 @@
   color: var(--c-ink-700);
   line-height: 1.5;
 }
+
+/* ============================================================
+ * Wave 3 — Lodging mini-Booking.com UX (May 17, 2026)
+ * Filter chips · shortlist · drive matrix · photo carousel
+ * Forest/glacial palette, mobile-first (412×892), no framework.
+ * ============================================================ */
+
+/* ---- Filter chip bar ------------------------------------------------ */
+.chip-bar {
+  background: var(--c-warm-50, #fffdf7);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md, 8px);
+  padding: var(--sp-3) var(--sp-3);
+  margin: 0 0 var(--sp-4);
+}
+
+.chip-bar__lede {
+  font-size: 0.78rem;
+  color: var(--c-ink-500);
+  margin: 0 0 var(--sp-2);
+  line-height: 1.4;
+}
+
+.chip-bar__groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.chip-group {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.chip-group__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-ink-500);
+  min-width: 4.5rem;
+  padding-top: 0.35rem;
+}
+
+.chip-group__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.chip {
+  appearance: none;
+  background: var(--c-warm-100, #fdfaf3);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  padding: 0.32rem 0.7rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+  color: var(--c-ink-700);
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease;
+  line-height: 1.2;
+}
+
+.chip:hover {
+  background: var(--c-glacier-100);
+  border-color: var(--c-glacier-400);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--c-glacier-500);
+  outline-offset: 2px;
+}
+
+.chip--active {
+  background: var(--c-forest-600);
+  border-color: var(--c-forest-700);
+  color: white;
+  font-weight: 600;
+}
+
+.chip--active:hover {
+  background: var(--c-forest-700);
+}
+
+.chip-clear {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: var(--c-glacier-600);
+  font-family: inherit;
+  font-size: 0.78rem;
+  padding: var(--sp-2) 0 0;
+  cursor: pointer;
+  text-decoration: underline;
+  display: none;
+}
+
+.chip-clear--visible {
+  display: inline-block;
+}
+
+.chip-clear:hover {
+  color: var(--c-forest-700);
+}
+
+/* ---- Photo carousel ------------------------------------------------ */
+.card__figure--carousel {
+  position: relative;
+  margin: 0 0 var(--sp-2);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+.lcarousel__track {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.lcarousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.lcarousel__slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.lcarousel__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.lcarousel__dots {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(15, 42, 34, 0.55);
+  border-radius: 999px;
+}
+
+.lcarousel__dot {
+  appearance: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    transform 0.12s ease;
+}
+
+.lcarousel__dot--active {
+  background: white;
+  transform: scale(1.25);
+}
+
+.lcarousel__counter {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(15, 42, 34, 0.65);
+  color: white;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Pick button --------------------------------------------------- */
+.pick-btn {
+  appearance: none;
+  background: var(--c-warm-100, #fdfaf3);
+  border: 1px solid var(--c-forest-600);
+  color: var(--c-forest-700);
+  border-radius: 999px;
+  padding: 0.32rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    transform 0.05s ease;
+}
+
+.pick-btn:hover {
+  background: var(--c-forest-500);
+  color: white;
+}
+
+.pick-btn:active {
+  transform: scale(0.97);
+}
+
+.pick-btn--picked {
+  background: var(--c-forest-600);
+  color: white;
+  border-color: var(--c-forest-700);
+}
+
+.pick-btn--picked:hover {
+  background: var(--c-forest-700);
+}
+
+.lodging-card--picked {
+  box-shadow:
+    0 0 0 2px var(--c-forest-500),
+    0 4px 16px rgba(15, 42, 34, 0.06);
+}
+
+/* ---- Drive matrix -------------------------------------------------- */
+.drive-matrix {
+  margin: var(--sp-3) 0 var(--sp-2);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md, 8px);
+  background: var(--c-warm-50, #fffdf7);
+  padding: 0;
+}
+
+.drive-matrix__summary {
+  cursor: pointer;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-forest-700);
+  list-style: none;
+}
+
+.drive-matrix__summary::-webkit-details-marker {
+  display: none;
+}
+
+.drive-matrix__summary::before {
+  content: '🚗 ';
+  margin-right: 0.25rem;
+}
+
+.drive-matrix__summary::after {
+  content: ' ▸';
+  color: var(--c-ink-400);
+  font-size: 0.75rem;
+}
+
+.drive-matrix[open] .drive-matrix__summary::after {
+  content: ' ▾';
+}
+
+.drive-matrix__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.drive-matrix__table thead th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.72rem;
+  color: var(--c-ink-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.4rem 0.85rem;
+  border-top: 1px solid var(--c-line);
+  background: var(--c-warm-100, #fdfaf3);
+}
+
+.drive-matrix__row td,
+.drive-matrix__row th {
+  padding: 0.42rem 0.85rem;
+  border-top: 1px solid var(--c-line);
+  text-align: left;
+}
+
+.drive-matrix__row th {
+  font-weight: 500;
+  color: var(--c-ink-700);
+}
+
+.drive-matrix__min,
+.drive-matrix__mi {
+  font-variant-numeric: tabular-nums;
+  color: var(--c-ink-700);
+  white-space: nowrap;
+}
+
+.drive-matrix__note {
+  font-size: 0.72rem;
+  color: var(--c-ink-500);
+  margin: 0;
+  padding: 0.5rem 0.85rem;
+  border-top: 1px solid var(--c-line);
+  line-height: 1.4;
+}
+
+/* ---- Shortlist disclosure + FAB ----------------------------------- */
+.shortlist {
+  margin: 0 0 var(--sp-4);
+  background: var(--c-good-bg);
+  border: 1px solid var(--c-good-border);
+  border-radius: var(--radius-md, 8px);
+  padding: 0;
+}
+
+.shortlist__summary {
+  cursor: pointer;
+  padding: var(--sp-2) var(--sp-3);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--c-good-ink);
+  list-style: none;
+}
+
+.shortlist__summary::-webkit-details-marker {
+  display: none;
+}
+
+.shortlist__count {
+  display: inline-block;
+  background: var(--c-forest-700);
+  color: white;
+  border-radius: 999px;
+  padding: 0.05rem 0.55rem;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.25rem;
+}
+
+.shortlist__label {
+  color: var(--c-good-ink);
+}
+
+.shortlist__summary::after {
+  content: ' ▸';
+  color: var(--c-ink-400);
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+}
+
+.shortlist[open] .shortlist__summary::after {
+  content: ' ▾';
+}
+
+.shortlist-panel {
+  padding: var(--sp-3);
+  border-top: 1px solid var(--c-good-border);
+  background: var(--c-warm-50, #fffdf7);
+  border-radius: 0 0 var(--radius-md, 8px) var(--radius-md, 8px);
+}
+
+.shortlist-panel--empty {
+  padding: var(--sp-3);
+  font-size: 0.85rem;
+  color: var(--c-ink-700);
+  background: var(--c-warm-50, #fffdf7);
+  border-top: 1px solid var(--c-good-border);
+  border-radius: 0 0 var(--radius-md, 8px) var(--radius-md, 8px);
+}
+
+.shortlist-panel--empty p {
+  margin: 0;
+}
+
+.shortlist-panel__head {
+  margin-bottom: var(--sp-2);
+}
+
+.shortlist-panel__title {
+  font-size: 1rem;
+  margin: 0 0 0.25rem;
+  color: var(--c-forest-800);
+}
+
+.shortlist-panel__hint {
+  font-size: 0.75rem;
+  color: var(--c-ink-500);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.shortlist-table-wrap {
+  overflow-x: auto;
+  margin: var(--sp-2) 0;
+}
+
+.shortlist-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  min-width: 600px;
+}
+
+.shortlist-table thead th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-ink-500);
+  padding: 0.4rem 0.6rem;
+  border-bottom: 2px solid var(--c-line);
+  background: var(--c-warm-100, #fdfaf3);
+  white-space: nowrap;
+}
+
+.shortlist-table tbody td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--c-line);
+  vertical-align: top;
+  color: var(--c-ink-700);
+}
+
+.shortlist-name a {
+  color: var(--c-forest-700);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.shortlist-name a:hover {
+  text-decoration: underline;
+}
+
+.shortlist-actions {
+  text-align: right;
+}
+
+.shortlist-remove {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--c-line);
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1;
+  color: var(--c-ink-500);
+  cursor: pointer;
+  padding: 0;
+}
+
+.shortlist-remove:hover {
+  border-color: var(--c-warn-border);
+  color: var(--c-warn-ink);
+  background: var(--c-warn-bg);
+}
+
+.shortlist-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-line);
+}
+
+.shortlist-email {
+  display: inline-block;
+  background: var(--c-forest-600);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius-md, 8px);
+  padding: 0.55rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.shortlist-email:hover {
+  background: var(--c-forest-700);
+}
+
+.shortlist-clear {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--c-line);
+  color: var(--c-ink-700);
+  border-radius: var(--radius-md, 8px);
+  padding: 0.55rem 1rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.shortlist-clear:hover {
+  border-color: var(--c-warn-border);
+  color: var(--c-warn-ink);
+}
+
+/* Floating action button — bottom-right pill */
+.shortlist-fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  background: var(--c-forest-700);
+  color: white;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 6px 22px rgba(15, 42, 34, 0.32);
+  display: none;
+  z-index: 40;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.shortlist-fab--visible {
+  display: inline-flex;
+}
+
+.shortlist-fab:hover {
+  background: var(--c-forest-800);
+}
+
+.shortlist-fab__count {
+  background: white;
+  color: var(--c-forest-800);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Empty state inside a panel ----------------------------------- */
+.lodging-empty {
+  text-align: center;
+  padding: var(--sp-4);
+  background: var(--c-warm-50, #fffdf7);
+  border: 1px dashed var(--c-line);
+  border-radius: var(--radius-md, 8px);
+  color: var(--c-ink-500);
+  margin: var(--sp-3) 0;
+  font-size: 0.9rem;
+}
+
+.lodging-empty__clear {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: var(--c-glacier-600);
+  text-decoration: underline;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ---- Mobile tighten ------------------------------------------------ */
+@media (max-width: 540px) {
+  .chip-group__label {
+    min-width: 0;
+    width: 100%;
+    padding-top: 0;
+  }
+  .chip {
+    font-size: 0.78rem;
+    padding: 0.3rem 0.6rem;
+  }
+  .shortlist-fab {
+    right: 0.6rem;
+    bottom: 0.6rem;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.82rem;
+  }
+  .drive-matrix__table {
+    font-size: 0.78rem;
+  }
+  .drive-matrix__table thead th,
+  .drive-matrix__row td,
+  .drive-matrix__row th {
+    padding: 0.35rem 0.5rem;
+  }
+}

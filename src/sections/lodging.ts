@@ -1,68 +1,328 @@
 /**
- * Lodging — Terra Nova-tier 2-bed cabins lead, sorted nature-first within each base.
+ * Lodging — mini-Booking.com listings surface (Wave 3, May 17, 2026).
  *
- * Standing display rule (Allison May 16, 2026):
+ * Standing display rules (Allison May 16, 2026):
  *   - Beds (count + type)
  *   - Bedrooms (count or studio)
  *   - Nature proximity (one prominent line)
  *   - Worth-noting extras (kitchen, hot tub, deck, view, atypical features)
  *
- * Single-bed properties surface in a "Not a fit" disclosure with the reason
- * stated. Splurge + status notes stay collapsed below the fits-brief grid.
+ * Wave 3 additions (May 17, 2026 — pipeline doc):
+ *   *"Mini-Booking.com agent — filter starts empty + click chips to narrow,
+ *   ✓ Pick button + shortlist, per-lodging drive matrix, Booking-style
+ *   carousels + pills."*
  *
- * When a path is selected, lodging cards NOT in that path's recommended ids
- * fade into an "Other corridor options" disclosure.
+ *   1. **Filter chip row** above the cards. Starts EMPTY (no chip selected =
+ *      all cards visible). Tapping a chip narrows. Multi-select within a
+ *      group, AND across groups.
+ *   2. **Pick / Shortlist** — every card has a ✓ Pick button that adds to
+ *      localStorage. Sticky pill bottom-right when count > 0. Shortlist
+ *      panel expands to compare-table.
+ *   3. **Drive-time matrix** per card — small inline disclosure with
+ *      minutes + miles to each canonical destination (Cascade Pass / Maple
+ *      Pass / Diablo / Washington Pass / Newhalem / Sun Mountain / Grocery /
+ *      Gas).
+ *   4. **Photo carousel** — 3-5 thumbs per card, horizontal scroll-snap
+ *      with dot indicators. Backward-compat: `photo` is slide 1.
+ *
+ * Path-filter (existing) still works orthogonally: when a path is selected,
+ * cards NOT in that path's recommended ids fade into "Other corridor
+ * options" disclosure. Path-filter is independent of chip filters.
  */
 
 import {
   AVAILABILITY_LABELS,
+  DRIVE_DESTINATIONS,
   EAST_LODGING,
   NATURE_LABELS,
   WEST_LODGING,
   sortByNature,
   type Lodging,
   type LodgingTier,
+  type NatureTag,
 } from '../data/lodging';
 import { getPathById } from '../data/paths';
 import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { badge, h, section } from '../dom';
 
-function renderPhoto(lodging: Lodging): HTMLElement {
-  const { photo } = lodging;
-  const isRepresentative = photo.credit?.toLowerCase().includes('unsplash') ?? false;
-  const img = h('img', {
-    class: 'card__img',
-    src: photo.src,
-    alt: isRepresentative
-      ? `Representative photo (not actual property): ${photo.alt}`
-      : photo.alt,
-    width: photo.width,
-    height: photo.height,
-    loading: 'lazy',
-    decoding: 'async',
-  });
-  const figure = h('figure', { class: 'card__figure' }, img);
-  if (isRepresentative) {
-    figure.append(
-      h(
-        'p',
-        { class: 'card__photo-warning' },
-        'Representative photo — not the actual property. See booking link for real photos.'
-      )
-    );
+// ====================================================================
+// FILTER CHIP STATE — vanilla pub/sub. Default: empty (all visible).
+// ====================================================================
+
+interface FilterState {
+  /** Empty Set = no chip selected in this group = no filter applied. */
+  base: Set<'west' | 'east'>;
+  tier: Set<'lean' | 'standard' | 'mid-high'>;
+  /** beds is a single toggle ("2 beds min"). Off by default per Allison spec.
+   *  (Erin's 2-bed rule is already enforced by the not-a-fit grouping —
+   *  this chip is an explicit user-controllable filter, not a default.) */
+  bedsMin2: boolean;
+  kitchen: Set<'full' | 'kitchenette' | 'none'>;
+  nature: Set<NatureTag>;
+  sunsetOnly: boolean;
+}
+
+function emptyFilters(): FilterState {
+  return {
+    base: new Set(),
+    tier: new Set(),
+    bedsMin2: false,
+    kitchen: new Set(),
+    nature: new Set(),
+    sunsetOnly: false,
+  };
+}
+
+const filters: FilterState = emptyFilters();
+const filterListeners: (() => void)[] = [];
+
+function notifyFilters(): void {
+  for (const fn of filterListeners) fn();
+}
+function onFilterChange(fn: () => void): void {
+  filterListeners.push(fn);
+}
+
+// Tier mapping — parse the pricePerNight string and assign one bucket.
+//   lean       = under $200
+//   standard   = $200-300
+//   mid-high   = $300+
+// Heuristic: take the LOWER bound of the price range as the anchor.
+function lodgingTierBucket(l: Lodging): 'lean' | 'standard' | 'mid-high' {
+  const match = l.pricePerNight.match(/\$(\d+)/);
+  if (!match) return 'standard';
+  const low = parseInt(match[1] ?? '0', 10);
+  if (low < 200) return 'lean';
+  if (low < 300) return 'standard';
+  return 'mid-high';
+}
+
+function lodgingHasMin2Beds(l: Lodging): boolean {
+  // Heuristic: if `tier === 'not-a-fit'`, the under-2-beds rule already failed.
+  // For everything else assume the data is correct.
+  return l.tier !== 'not-a-fit';
+}
+
+function lodgingMatchesFilters(l: Lodging, base: 'west' | 'east'): boolean {
+  if (filters.base.size > 0 && !filters.base.has(base)) return false;
+  if (filters.tier.size > 0 && !filters.tier.has(lodgingTierBucket(l))) return false;
+  if (filters.bedsMin2 && !lodgingHasMin2Beds(l)) return false;
+  if (filters.kitchen.size > 0 && !filters.kitchen.has(l.kitchen)) return false;
+  if (filters.nature.size > 0 && !filters.nature.has(l.natureTag)) return false;
+  if (filters.sunsetOnly && (!l.sunset || l.sunset.worth !== 'yes')) return false;
+  return true;
+}
+
+function activeFilterCount(): number {
+  return (
+    filters.base.size +
+    filters.tier.size +
+    (filters.bedsMin2 ? 1 : 0) +
+    filters.kitchen.size +
+    filters.nature.size +
+    (filters.sunsetOnly ? 1 : 0)
+  );
+}
+
+// ====================================================================
+// SHORTLIST STATE — localStorage-persisted ID array.
+// ====================================================================
+
+const SHORTLIST_KEY = 'ncades2026.lodgingPicks';
+
+function loadShortlist(): Set<string> {
+  try {
+    const raw = localStorage.getItem(SHORTLIST_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return new Set(parsed.filter((x): x is string => typeof x === 'string'));
+  } catch {
+    // localStorage might be blocked or stale data; ignore.
   }
-  if (photo.credit) {
-    const credit = photo.creditUrl
+  return new Set();
+}
+
+function saveShortlist(set: Set<string>): void {
+  try {
+    localStorage.setItem(SHORTLIST_KEY, JSON.stringify([...set]));
+  } catch {
+    // ignore
+  }
+}
+
+const shortlist: Set<string> = loadShortlist();
+const shortlistListeners: (() => void)[] = [];
+
+function notifyShortlist(): void {
+  saveShortlist(shortlist);
+  for (const fn of shortlistListeners) fn();
+}
+function onShortlistChange(fn: () => void): void {
+  shortlistListeners.push(fn);
+}
+function togglePick(id: string): void {
+  if (shortlist.has(id)) shortlist.delete(id);
+  else shortlist.add(id);
+  notifyShortlist();
+}
+
+// ====================================================================
+// PHOTO CAROUSEL
+// ====================================================================
+
+function renderCarousel(lodging: Lodging): HTMLElement {
+  const photos = lodging.photos && lodging.photos.length > 0 ? lodging.photos : [lodging.photo];
+  const figure = h('figure', { class: 'card__figure card__figure--carousel' });
+  const track = h('div', {
+    class: 'lcarousel__track',
+    role: 'group',
+    'aria-label': `Photos of ${lodging.name} (${photos.length})`,
+    tabindex: '0',
+  });
+
+  photos.forEach((p, idx) => {
+    const isRepresentative = p.credit?.toLowerCase().includes('unsplash') ?? false;
+    const img = h('img', {
+      class: 'lcarousel__img',
+      src: p.src,
+      alt: isRepresentative
+        ? `Representative photo (not actual property): ${p.alt}`
+        : p.alt,
+      width: p.width,
+      height: p.height,
+      loading: idx === 0 ? 'eager' : 'lazy',
+      decoding: 'async',
+    });
+    const slide = h('div', { class: 'lcarousel__slide', 'data-slide': idx }, img);
+    track.appendChild(slide);
+  });
+
+  figure.appendChild(track);
+
+  // Dot indicators
+  const dots = h('div', { class: 'lcarousel__dots', 'aria-hidden': 'true' });
+  photos.forEach((_, idx) => {
+    const dot = h('button', {
+      type: 'button',
+      class: idx === 0 ? 'lcarousel__dot lcarousel__dot--active' : 'lcarousel__dot',
+      'aria-label': `Go to photo ${idx + 1}`,
+      'data-slide': idx,
+    });
+    dots.appendChild(dot);
+  });
+  figure.appendChild(dots);
+
+  // Count pill (Booking.com-style "1/4")
+  const counter = h('span', { class: 'lcarousel__counter' }, `1 / ${photos.length}`);
+  figure.appendChild(counter);
+
+  // Wire up: clicking dot scrolls track. IntersectionObserver updates active dot.
+  const slides = track.querySelectorAll<HTMLElement>('.lcarousel__slide');
+  const dotBtns = dots.querySelectorAll<HTMLButtonElement>('.lcarousel__dot');
+  dotBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset['slide'] ?? '0', 10);
+      const target = slides[idx];
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+      }
+    });
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+          const target = entry.target as HTMLElement;
+          const idx = parseInt(target.dataset['slide'] ?? '0', 10);
+          dotBtns.forEach((d, i) => {
+            d.classList.toggle('lcarousel__dot--active', i === idx);
+          });
+          counter.textContent = `${idx + 1} / ${photos.length}`;
+        }
+      }
+    },
+    { root: track, threshold: [0.6] }
+  );
+  slides.forEach((s) => observer.observe(s));
+
+  // Photo credit (first slide)
+  const first = photos[0];
+  if (first && first.credit) {
+    const credit = first.creditUrl
       ? h(
           'figcaption',
           { class: 'card__credit' },
-          h('a', { href: photo.creditUrl, rel: 'noopener', target: '_blank' }, photo.credit)
+          h('a', { href: first.creditUrl, rel: 'noopener', target: '_blank' }, first.credit)
         )
-      : h('figcaption', { class: 'card__credit' }, photo.credit);
-    figure.append(credit);
+      : h('figcaption', { class: 'card__credit' }, first.credit);
+    figure.appendChild(credit);
   }
+
+  // Representative-photo warning if first slide is unsplash
+  const firstIsRep = first?.credit?.toLowerCase().includes('unsplash') ?? false;
+  if (firstIsRep) {
+    figure.appendChild(
+      h(
+        'p',
+        { class: 'card__photo-warning' },
+        'Photos are representative — see booking link for actual property photos.'
+      )
+    );
+  }
+
   return figure;
 }
+
+// ====================================================================
+// DRIVE-TIME MATRIX
+// ====================================================================
+
+function renderDriveMatrix(lodging: Lodging): HTMLElement | null {
+  if (!lodging.driveTimes || lodging.driveTimes.length === 0) return null;
+
+  const rows = lodging.driveTimes.map((dt) => {
+    const dest = DRIVE_DESTINATIONS[dt.destinationId];
+    return h(
+      'tr',
+      { class: 'drive-matrix__row' },
+      h('th', { class: 'drive-matrix__dest', scope: 'row' }, dest.short),
+      h('td', { class: 'drive-matrix__min' }, `${dt.minutes} min`),
+      h('td', { class: 'drive-matrix__mi' }, `${dt.miles} mi`)
+    );
+  });
+
+  return h(
+    'details',
+    { class: 'drive-matrix' },
+    h('summary', { class: 'drive-matrix__summary' }, `Drive times from here (${lodging.driveTimes.length})`),
+    h(
+      'table',
+      { class: 'drive-matrix__table' },
+      h(
+        'thead',
+        {},
+        h(
+          'tr',
+          {},
+          h('th', { scope: 'col' }, 'Destination'),
+          h('th', { scope: 'col' }, 'Time'),
+          h('th', { scope: 'col' }, 'Distance')
+        )
+      ),
+      h('tbody', {}, ...rows)
+    ),
+    h(
+      'p',
+      { class: 'drive-matrix__note' },
+      'Drive times from Google Maps norms (May 17, 2026 spot-check). Add buffer for weekend Aug traffic on WA-20.'
+    )
+  );
+}
+
+// ====================================================================
+// CARDS
+// ====================================================================
 
 function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
   const natureLabel = NATURE_LABELS[lodging.natureTag];
@@ -77,17 +337,7 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       )
     : null;
 
-  // Emoji-pill row — May 16-17, 2026 standing rule.
-  // ALL 7 PILLS render above the fold on every card. Negatives are explicit
-  // (e.g. "No kitchen") — never omitted. Unknown values render as `[verify]`.
-  //   1. 🛏 Beds
-  //   2. 🚪 Bedrooms
-  //   3. 🍳 Kitchen status (full / kitchenette / none)
-  //   4. View / nature proximity (+ sunset hint when applicable)
-  //   5. ⭐ Reviews (score + count, count emphasized)
-  //   6. 💰 Tier (price band)
-  //   7. ✅ Verified [date]
-  // Plus an 8th availability pill (Aug 16-20 status) that always renders.
+  // Emoji-pill row — May 16-17, 2026 standing rule. (Unchanged from Wave 2.)
   const kitchenLabel =
     lodging.kitchen === 'full'
       ? 'Full kitchen'
@@ -130,7 +380,7 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
     h(
       'li',
       { class: 'card__pill' },
-      `${viewEmoji} ${NATURE_LABELS[lodging.natureTag]}${sunsetBonus}`
+      `${viewEmoji} ${natureLabel}${sunsetBonus}`
     ),
     h(
       'li',
@@ -158,9 +408,6 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       : null
   );
 
-  // Kept for legacy rendering — bedRow no longer used (replaced by pillRow above).
-  const bedRow = null;
-
   // Nature proximity line — prominent.
   const natureRow = h(
     'p',
@@ -169,8 +416,7 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
     lodging.nature
   );
 
-  // Sunset row — Allison May 16, 2026: "if place to stay with amazing sunset
-  // worth noting." Tip-the-scale fact, rendered for 'yes' and 'maybe' only.
+  // Sunset row.
   const sunsetRow =
     lodging.sunset && lodging.sunset.worth !== 'no'
       ? h(
@@ -188,9 +434,7 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
         )
       : null;
 
-  // Review row — May 17 emphasis pass: review COUNT bumped to larger font.
-  // Per Allison: "focus on reviews for booking how many amt". Score still
-  // displays prominently but the count line is the primary trust signal.
+  // Review row.
   const r = lodging.reviews;
   const reviewRow =
     r.score === 'N/A'
@@ -221,15 +465,31 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
     ? h('p', { class: 'card__review-highlights' }, r.highlights)
     : null;
 
+  // Pick button — Wave 3.
+  const isPicked = shortlist.has(lodging.id);
+  const pickBtn = h(
+    'button',
+    {
+      type: 'button',
+      class: isPicked ? 'pick-btn pick-btn--picked' : 'pick-btn',
+      'data-lodging-id': lodging.id,
+      'aria-pressed': isPicked ? 'true' : 'false',
+    },
+    isPicked ? '✓ Picked' : '✓ Pick'
+  );
+  pickBtn.addEventListener('click', () => {
+    togglePick(lodging.id);
+  });
+
   return h(
     'article',
     {
-      class: `card lodging-card lodging-card--${lodging.tier}${inPath ? ' lodging-card--in-path' : ''}`,
+      class: `card lodging-card lodging-card--${lodging.tier}${inPath ? ' lodging-card--in-path' : ''}${isPicked ? ' lodging-card--picked' : ''}`,
       'data-vibe': lodging.vibe,
       'data-lodging-id': lodging.id,
       'data-nature': lodging.natureTag,
     },
-    renderPhoto(lodging),
+    renderCarousel(lodging),
     h(
       'header',
       { class: 'card__header' },
@@ -237,11 +497,11 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       h(
         'div',
         { class: 'card__badges' },
-        inPath ? badge('In this path', 'good') : null
+        inPath ? badge('In this path', 'good') : null,
+        pickBtn
       )
     ),
     pillRow,
-    bedRow,
     h('p', { class: 'card__address' }, lodging.address),
     lodging.phone ? h('p', { class: 'card__phone' }, lodging.phone) : null,
     notFitBlock,
@@ -267,6 +527,7 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       h('dt', {}, 'Location'),
       h('dd', {}, lodging.distance)
     ),
+    renderDriveMatrix(lodging),
     h('p', { class: 'card__note' }, lodging.notes),
     lodging.bookingUrl
       ? h(
@@ -291,22 +552,45 @@ function renderPanel(
   id: string,
   title: string,
   lodgings: Lodging[],
+  base: 'west' | 'east',
   pathLodgingIds: Set<string> | null
 ): HTMLElement {
-  // Filter + re-rank by nature within each tier.
-  const fitsBrief = sortByNature(byTier(lodgings, 'fits-brief'));
-  const splurge = sortByNature(byTier(lodgings, 'splurge'));
-  const notFit = byTier(lodgings, 'not-a-fit');
-  const basic = byTier(lodgings, 'budget-or-basic');
-  const notes = byTier(lodgings, 'note');
+  // Apply chip filters FIRST. Then path filter. Then tier grouping.
+  const filtered = lodgings.filter((l) => lodgingMatchesFilters(l, base));
 
-  const inPath = (id: string) => (pathLodgingIds ? pathLodgingIds.has(id) : false);
+  const fitsBrief = sortByNature(byTier(filtered, 'fits-brief'));
+  const splurge = sortByNature(byTier(filtered, 'splurge'));
+  const notFit = byTier(filtered, 'not-a-fit');
+  const basic = byTier(filtered, 'budget-or-basic');
+  const notes = byTier(filtered, 'note');
+
+  const inPath = (lid: string) => (pathLodgingIds ? pathLodgingIds.has(lid) : false);
   const visibleFits = pathLodgingIds
     ? fitsBrief.filter((l) => inPath(l.id))
     : fitsBrief;
   const offPathFits = pathLodgingIds
     ? fitsBrief.filter((l) => !inPath(l.id))
     : [];
+
+  const totalShown = filtered.length;
+
+  const emptyState =
+    totalShown === 0
+      ? h(
+          'p',
+          { class: 'lodging-empty' },
+          'No properties on this side match your filters. ',
+          h(
+            'button',
+            {
+              type: 'button',
+              class: 'lodging-empty__clear',
+              'data-action': 'clear-filters',
+            },
+            'Clear filters'
+          )
+        )
+      : null;
 
   const fitsBriefGrid = h(
     'div',
@@ -428,8 +712,9 @@ function renderPanel(
       { class: 'section__lede' },
       pathLodgingIds
         ? `${visibleFits.length} option${visibleFits.length === 1 ? '' : 's'} in the selected path. Nature-immersed picks lead; town-center picks are flagged. Other Terra Nova-tier picks on this corridor sit below.`
-        : `Spacious, a little nicer than basic, ~$200-300 — Terra Nova tier. ${fitsBrief.length} cabin options that meet the 2-beds requirement. Nature-immersed picks lead; town-center picks are flagged.`
+        : `Spacious, a little nicer than basic, ~$200-300 — Terra Nova tier. ${fitsBrief.length} cabin option${fitsBrief.length === 1 ? '' : 's'} that meet the 2-beds requirement. Nature-immersed picks lead; town-center picks are flagged.`
     ),
+    emptyState,
     fitsBriefGrid,
     offPathBlock,
     splurgeBlock,
@@ -438,6 +723,373 @@ function renderPanel(
     notesBlock
   );
 }
+
+// ====================================================================
+// FILTER CHIP BAR
+// ====================================================================
+
+interface ChipDef {
+  key: string;
+  label: string;
+  group: 'base' | 'tier' | 'beds' | 'kitchen' | 'nature' | 'sunset';
+  isActive: () => boolean;
+  toggle: () => void;
+}
+
+function buildChipDefs(): ChipDef[] {
+  const chips: ChipDef[] = [];
+
+  // Base
+  for (const v of ['west', 'east'] as const) {
+    chips.push({
+      key: `base-${v}`,
+      label: v === 'west' ? 'West side' : 'East side',
+      group: 'base',
+      isActive: () => filters.base.has(v),
+      toggle: () => {
+        if (filters.base.has(v)) filters.base.delete(v);
+        else filters.base.add(v);
+        notifyFilters();
+      },
+    });
+  }
+
+  // Tier
+  const tierLabels: Record<'lean' | 'standard' | 'mid-high', string> = {
+    lean: 'Lean (<$200)',
+    standard: 'Standard ($200-300)',
+    'mid-high': 'Mid-high ($300+)',
+  };
+  for (const v of ['lean', 'standard', 'mid-high'] as const) {
+    chips.push({
+      key: `tier-${v}`,
+      label: tierLabels[v],
+      group: 'tier',
+      isActive: () => filters.tier.has(v),
+      toggle: () => {
+        if (filters.tier.has(v)) filters.tier.delete(v);
+        else filters.tier.add(v);
+        notifyFilters();
+      },
+    });
+  }
+
+  // Beds
+  chips.push({
+    key: 'beds-min2',
+    label: '2 beds min',
+    group: 'beds',
+    isActive: () => filters.bedsMin2,
+    toggle: () => {
+      filters.bedsMin2 = !filters.bedsMin2;
+      notifyFilters();
+    },
+  });
+
+  // Kitchen
+  const kitchenLabels = { full: 'Full kitchen', kitchenette: 'Kitchenette', none: 'No kitchen' } as const;
+  for (const v of ['full', 'kitchenette', 'none'] as const) {
+    chips.push({
+      key: `kitchen-${v}`,
+      label: kitchenLabels[v],
+      group: 'kitchen',
+      isActive: () => filters.kitchen.has(v),
+      toggle: () => {
+        if (filters.kitchen.has(v)) filters.kitchen.delete(v);
+        else filters.kitchen.add(v);
+        notifyFilters();
+      },
+    });
+  }
+
+  // Nature
+  const natureChips: NatureTag[] = ['lakeside', 'riverside', 'woods', 'mountain-view', 'ranch-acreage', 'town-center'];
+  for (const v of natureChips) {
+    chips.push({
+      key: `nature-${v}`,
+      label: NATURE_LABELS[v],
+      group: 'nature',
+      isActive: () => filters.nature.has(v),
+      toggle: () => {
+        if (filters.nature.has(v)) filters.nature.delete(v);
+        else filters.nature.add(v);
+        notifyFilters();
+      },
+    });
+  }
+
+  // Sunset
+  chips.push({
+    key: 'sunset-only',
+    label: '🌅 Sunset view',
+    group: 'sunset',
+    isActive: () => filters.sunsetOnly,
+    toggle: () => {
+      filters.sunsetOnly = !filters.sunsetOnly;
+      notifyFilters();
+    },
+  });
+
+  return chips;
+}
+
+function renderChipBar(): HTMLElement {
+  const chips = buildChipDefs();
+  const groupOrder: ChipDef['group'][] = ['base', 'tier', 'beds', 'kitchen', 'nature', 'sunset'];
+  const groupLabels: Record<ChipDef['group'], string> = {
+    base: 'Base',
+    tier: 'Price tier',
+    beds: 'Beds',
+    kitchen: 'Kitchen',
+    nature: 'Setting',
+    sunset: 'Bonus',
+  };
+
+  const groups = groupOrder.map((g) => {
+    const groupChips = chips.filter((c) => c.group === g);
+    const buttons = groupChips.map((c) =>
+      h(
+        'button',
+        {
+          type: 'button',
+          class: c.isActive() ? 'chip chip--active' : 'chip',
+          'aria-pressed': c.isActive() ? 'true' : 'false',
+          'data-chip-key': c.key,
+        },
+        c.label
+      )
+    );
+    return h(
+      'div',
+      { class: 'chip-group', 'data-group': g },
+      h('span', { class: 'chip-group__label' }, groupLabels[g]),
+      h('div', { class: 'chip-group__chips' }, ...buttons)
+    );
+  });
+
+  const count = activeFilterCount();
+  const clearBtn = h(
+    'button',
+    {
+      type: 'button',
+      class: count > 0 ? 'chip-clear chip-clear--visible' : 'chip-clear',
+      'data-action': 'clear-filters',
+    },
+    `Clear filters (${count})`
+  );
+
+  const bar = h(
+    'div',
+    { class: 'chip-bar', role: 'group', 'aria-label': 'Filter properties' },
+    h('p', { class: 'chip-bar__lede' }, 'Tap chips to narrow. Empty = show all.'),
+    h('div', { class: 'chip-bar__groups' }, ...groups),
+    clearBtn
+  );
+
+  // Delegated click handler
+  bar.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLButtonElement)) return;
+    if (target.dataset['action'] === 'clear-filters') {
+      filters.base.clear();
+      filters.tier.clear();
+      filters.bedsMin2 = false;
+      filters.kitchen.clear();
+      filters.nature.clear();
+      filters.sunsetOnly = false;
+      notifyFilters();
+      return;
+    }
+    const key = target.dataset['chipKey'];
+    if (!key) return;
+    const def = chips.find((c) => c.key === key);
+    if (def) def.toggle();
+  });
+
+  return bar;
+}
+
+function updateChipBar(bar: HTMLElement): void {
+  const chips = buildChipDefs();
+  const buttons = bar.querySelectorAll<HTMLButtonElement>('button.chip');
+  buttons.forEach((btn) => {
+    const key = btn.dataset['chipKey'];
+    const def = chips.find((c) => c.key === key);
+    if (!def) return;
+    const active = def.isActive();
+    btn.classList.toggle('chip--active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+  const count = activeFilterCount();
+  const clearBtn = bar.querySelector<HTMLButtonElement>('button.chip-clear');
+  if (clearBtn) {
+    clearBtn.classList.toggle('chip-clear--visible', count > 0);
+    clearBtn.textContent = `Clear filters (${count})`;
+  }
+}
+
+// ====================================================================
+// SHORTLIST PANEL
+// ====================================================================
+
+function allLodgings(): Lodging[] {
+  return [...WEST_LODGING, ...EAST_LODGING];
+}
+
+function pricePerNightLow(l: Lodging): number {
+  const m = l.pricePerNight.match(/\$(\d+)/);
+  return m ? parseInt(m[1] ?? '0', 10) : 0;
+}
+
+function renderShortlistPanel(): HTMLElement {
+  const picked = allLodgings().filter((l) => shortlist.has(l.id));
+
+  if (picked.length === 0) {
+    return h(
+      'div',
+      { class: 'shortlist-panel shortlist-panel--empty' },
+      h('p', {}, 'No picks yet — tap ', h('strong', {}, '✓ Pick'), ' on a card to start a shortlist.')
+    );
+  }
+
+  // Compare table
+  const headerRow = h(
+    'tr',
+    {},
+    h('th', { scope: 'col' }, 'Property'),
+    h('th', { scope: 'col' }, 'Beds'),
+    h('th', { scope: 'col' }, 'Kitchen'),
+    h('th', { scope: 'col' }, 'Setting'),
+    h('th', { scope: 'col' }, '$/night'),
+    h('th', { scope: 'col' }, '4-nt est.'),
+    h('th', { scope: 'col' }, 'Sunset'),
+    h('th', { scope: 'col' }, '')
+  );
+
+  const rows = picked.map((l) => {
+    const low = pricePerNightLow(l);
+    const fourNight = low > 0 ? `~$${low * 4}+` : '—';
+    const removeBtn = h(
+      'button',
+      {
+        type: 'button',
+        class: 'shortlist-remove',
+        'data-lodging-id': l.id,
+        'aria-label': `Remove ${l.name} from shortlist`,
+      },
+      '×'
+    );
+    removeBtn.addEventListener('click', () => togglePick(l.id));
+    return h(
+      'tr',
+      {},
+      h(
+        'td',
+        { class: 'shortlist-name' },
+        l.bookingUrl
+          ? h('a', { href: l.bookingUrl, rel: 'noopener', target: '_blank' }, l.name)
+          : document.createTextNode(l.name)
+      ),
+      h('td', {}, l.beds),
+      h(
+        'td',
+        {},
+        l.kitchen === 'full' ? 'Full' : l.kitchen === 'kitchenette' ? 'Kitchenette' : 'None'
+      ),
+      h('td', {}, NATURE_LABELS[l.natureTag]),
+      h('td', {}, l.pricePerNight),
+      h('td', {}, fourNight),
+      h('td', {}, l.sunset?.worth === 'yes' ? '⭐' : l.sunset?.worth === 'maybe' ? '~' : '—'),
+      h('td', { class: 'shortlist-actions' }, removeBtn)
+    );
+  });
+
+  // mailto link — newline-encoded summary
+  const subject = encodeURIComponent('North Cascades 2026 — lodging shortlist');
+  const bodyLines = picked.map((l) => {
+    const low = pricePerNightLow(l);
+    const fourNight = low > 0 ? `~$${low * 4}+ for 4 nights` : '';
+    return `• ${l.name} (${l.address})\n  Beds: ${l.beds} · ${l.pricePerNight}/night ${fourNight}\n  ${l.bookingUrl ?? ''}`;
+  });
+  const body = encodeURIComponent(
+    `Hey Allison — here's my shortlist from the trip site:\n\n${bodyLines.join('\n\n')}\n\nReply with which you want to book.\n\n— Erin`
+  );
+  const mailHref = `mailto:allisonecalt@gmail.com?subject=${subject}&body=${body}`;
+
+  const clearAllBtn = h(
+    'button',
+    { type: 'button', class: 'shortlist-clear' },
+    'Clear shortlist'
+  );
+  clearAllBtn.addEventListener('click', () => {
+    if (shortlist.size === 0) return;
+    shortlist.clear();
+    notifyShortlist();
+  });
+
+  return h(
+    'div',
+    { class: 'shortlist-panel' },
+    h(
+      'div',
+      { class: 'shortlist-panel__head' },
+      h('h4', { class: 'shortlist-panel__title' }, `Your shortlist (${picked.length})`),
+      h('p', { class: 'shortlist-panel__hint' }, '4-nt est. = base low rate × 4 nights, taxes/fees not included.')
+    ),
+    h(
+      'div',
+      { class: 'shortlist-table-wrap' },
+      h(
+        'table',
+        { class: 'shortlist-table' },
+        h('thead', {}, headerRow),
+        h('tbody', {}, ...rows)
+      )
+    ),
+    h(
+      'div',
+      { class: 'shortlist-actions-row' },
+      h(
+        'a',
+        { class: 'shortlist-email', href: mailHref },
+        '✉ Email shortlist to Allison'
+      ),
+      clearAllBtn
+    )
+  );
+}
+
+function renderShortlistContainer(): HTMLElement {
+  const details = h(
+    'details',
+    { class: 'shortlist', id: 'lodging-shortlist' },
+    h(
+      'summary',
+      { class: 'shortlist__summary' },
+      h('span', { class: 'shortlist__count' }, `${shortlist.size}`),
+      h('span', { class: 'shortlist__label' }, ' picked — tap to compare')
+    )
+  );
+  details.appendChild(renderShortlistPanel());
+  return details;
+}
+
+function renderShortlistFloater(): HTMLElement {
+  const btn = h(
+    'a',
+    {
+      class: shortlist.size > 0 ? 'shortlist-fab shortlist-fab--visible' : 'shortlist-fab',
+      href: '#lodging-shortlist',
+    },
+    h('span', { class: 'shortlist-fab__count' }, `${shortlist.size}`),
+    h('span', { class: 'shortlist-fab__label' }, ' picked · view shortlist →')
+  );
+  return btn;
+}
+
+// ====================================================================
+// PANEL DETERMINATION (unchanged from Wave 2)
+// ====================================================================
 
 function determinePanels(selectedId: string | null): {
   showWest: boolean;
@@ -457,6 +1109,10 @@ function determinePanels(selectedId: string | null): {
   return { showWest: true, showEast: true, westLabel: 'West · Night 1', eastLabel: 'East · Nights 2-4' };
 }
 
+// ====================================================================
+// MAIN RENDER + WIRE-UP
+// ====================================================================
+
 function renderBody(wrap: HTMLElement, selectedId: string | null): void {
   const panels = determinePanels(selectedId);
   const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
@@ -472,10 +1128,21 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
     eastTabBtn.classList.toggle('tab--disabled', !panels.showEast);
   }
 
-  const westPanel = renderPanel('west', 'West side — Marblemount / Rockport / Concrete', WEST_LODGING, pathLodgingIds);
-  const eastPanel = renderPanel('east', 'East side — Winthrop / Mazama', EAST_LODGING, pathLodgingIds);
+  const westPanel = renderPanel(
+    'west',
+    'West side — Marblemount / Rockport / Concrete',
+    WEST_LODGING,
+    'west',
+    pathLodgingIds
+  );
+  const eastPanel = renderPanel(
+    'east',
+    'East side — Winthrop / Mazama',
+    EAST_LODGING,
+    'east',
+    pathLodgingIds
+  );
 
-  // Default to whichever tab matches the path.
   const defaultSide = path?.id === 'A' ? 'west' : path?.id === 'C' ? 'east' : 'west';
   eastPanel.hidden = defaultSide !== 'east';
   westPanel.hidden = defaultSide !== 'west';
@@ -489,13 +1156,24 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
     });
   }
 
-  // Replace panel container.
   const container = wrap.querySelector<HTMLElement>('.lodging-panels');
   if (container) {
     container.replaceChildren(westPanel, eastPanel);
+    // Empty-state clear-filters delegate
+    container.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target instanceof HTMLButtonElement && target.dataset['action'] === 'clear-filters') {
+        filters.base.clear();
+        filters.tier.clear();
+        filters.bedsMin2 = false;
+        filters.kitchen.clear();
+        filters.nature.clear();
+        filters.sunsetOnly = false;
+        notifyFilters();
+      }
+    });
   }
 
-  // Update gist
   const gist = wrap.querySelector<HTMLElement>('.gist');
   if (gist) {
     gist.replaceChildren(
@@ -509,20 +1187,19 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
       h(
         'li',
         { class: 'gist__item' },
-        h('strong', {}, '2 beds required, 1-2 bedrooms, ~$200-300.'),
-        ' Nature-immersed picks lead each base; town-center picks flagged. Single-bed properties collapsed into "Not a fit".'
+        h('strong', {}, 'Filter chips above narrow the list.'),
+        ' Tap ',
+        h('strong', {}, '✓ Pick'),
+        ' on cards to build a shortlist · compare table appears below.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        path
-          ? 'Other corridor options + splurge + not-a-fit sit behind disclosures below.'
-          : 'Splurge ($400+), not-a-fit (under 2 beds), and status notes sit behind disclosures.'
+        'Each card has a photo carousel + a drive-time matrix (tap to expand). 2 beds, 1-2 bedrooms, ~$200-300 — Terra Nova tier.'
       )
     );
   }
 
-  // Tab click handling (re-bound each render).
   if (tabs) {
     const newTabs = tabs.cloneNode(true) as HTMLElement;
     tabs.replaceWith(newTabs);
@@ -576,10 +1253,6 @@ export function renderLodging(): HTMLElement {
     )
   );
 
-  // Source-citation strip (Austria-lifted). Surfaces provenance for the data
-  // displayed in lodging cards — review scores from Booking/Vrbo, prices from
-  // host listings, photos from Wikimedia/Unsplash. "✓" pills = verified; the
-  // small text below names the live-search date.
   const sourceStrip = h(
     'ul',
     { class: 'source-strip', 'aria-label': 'Data sources' },
@@ -599,17 +1272,51 @@ export function renderLodging(): HTMLElement {
     'Re-verify before booking; supply fluctuates.'
   );
 
+  const chipBar = renderChipBar();
+  const shortlistContainer = renderShortlistContainer();
+  const shortlistFab = renderShortlistFloater();
+
   const wrap = section(
     'lodging',
     'Lodging',
     h('ul', { class: 'gist' }),
     sourceStrip,
     sourceNote,
+    chipBar,
+    shortlistContainer,
     tabs,
-    h('div', { class: 'lodging-panels' })
+    h('div', { class: 'lodging-panels' }),
+    shortlistFab
   );
 
   renderBody(wrap, getSelectedPath());
+
+  // Re-render panels when filters change.
+  onFilterChange(() => {
+    updateChipBar(chipBar);
+    renderBody(wrap, getSelectedPath());
+  });
+
+  // Re-render panels (so pick states flip) + shortlist + FAB when shortlist changes.
+  onShortlistChange(() => {
+    // Update FAB
+    shortlistFab.classList.toggle('shortlist-fab--visible', shortlist.size > 0);
+    const fabCount = shortlistFab.querySelector<HTMLElement>('.shortlist-fab__count');
+    if (fabCount) fabCount.textContent = `${shortlist.size}`;
+
+    // Update shortlist panel contents
+    const oldPanel = shortlistContainer.querySelector<HTMLElement>(
+      '.shortlist-panel'
+    );
+    if (oldPanel) oldPanel.remove();
+    shortlistContainer.appendChild(renderShortlistPanel());
+    const summaryCount = shortlistContainer.querySelector<HTMLElement>('.shortlist__count');
+    if (summaryCount) summaryCount.textContent = `${shortlist.size}`;
+
+    // Re-render panels so card pick-states flip.
+    renderBody(wrap, getSelectedPath());
+  });
+
   subscribeSelectedPath((next) => renderBody(wrap, next));
 
   return wrap;
