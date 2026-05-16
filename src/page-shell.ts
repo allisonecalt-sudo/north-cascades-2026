@@ -33,6 +33,7 @@ export type PageId =
   | 'lodging'
   | 'hikes'
   | 'travel'
+  | 'rental'
   | 'food'
   | 'seattle'
   | 'for-erin'
@@ -51,6 +52,7 @@ const NAV: readonly NavEntry[] = [
   { id: 'lodging', href: 'lodging.html', label: 'Lodging' },
   { id: 'hikes', href: 'hikes.html', label: 'Hikes' },
   { id: 'travel', href: 'travel.html', label: 'Travel' },
+  { id: 'rental', href: 'rental.html', label: 'Rental' },
   { id: 'food', href: 'food.html', label: 'Food' },
   { id: 'seattle', href: 'seattle.html', label: 'Seattle' },
   { id: 'for-erin', href: 'for-erin.html', label: 'For Erin' },
@@ -67,6 +69,21 @@ interface ShellOptions {
   showClosure?: boolean;
   /** Hide the page header entirely (e.g. the home page uses a full hero). */
   hidePageHeader?: boolean;
+  /**
+   * If set, replaces the gradient page-header with an editorial image hero —
+   * Wikimedia photo, dark overlay, eyebrow + title + lede + closure banner +
+   * an inline CTA pill. Lifted from Austria's landing pattern. Used on home.
+   */
+  imageHero?: {
+    src: string;
+    /** Description for screen readers + alt fallback. */
+    alt: string;
+    /** Photo credit line shown bottom-right (small, low contrast). */
+    credit: string;
+    /** Optional CTA shown under the lede (anchor link). */
+    ctaLabel?: string;
+    ctaHref?: string;
+  };
 }
 
 function buildNav(activeId: PageId): HTMLElement {
@@ -83,20 +100,24 @@ function buildNav(activeId: PageId): HTMLElement {
         h('span', { class: 'site-nav__brand-dates' }, 'Aug 16-20')
       ),
       h(
-        'ul',
-        { class: 'site-nav__list' },
-        ...NAV.map((entry) =>
-          h(
-            'li',
-            { class: 'site-nav__item' },
+        'div',
+        { class: 'site-nav__list-wrap' },
+        h(
+          'ul',
+          { class: 'site-nav__list' },
+          ...NAV.map((entry) =>
             h(
-              'a',
-              {
-                class: `site-nav__link${entry.id === activeId ? ' site-nav__link--active' : ''}`,
-                href: entry.href,
-                'aria-current': entry.id === activeId ? 'page' : undefined,
-              },
-              entry.label
+              'li',
+              { class: 'site-nav__item' },
+              h(
+                'a',
+                {
+                  class: `site-nav__link${entry.id === activeId ? ' site-nav__link--active' : ''}`,
+                  href: entry.href,
+                  'aria-current': entry.id === activeId ? 'page' : undefined,
+                },
+                entry.label
+              )
             )
           )
         )
@@ -147,6 +168,7 @@ function buildClosureBanner(): HTMLElement {
 
 function buildPageHeader(opts: ShellOptions): HTMLElement | null {
   if (opts.hidePageHeader) return null;
+  if (opts.imageHero) return buildImageHero(opts);
   return h(
     'header',
     { class: 'page-header' },
@@ -158,6 +180,68 @@ function buildPageHeader(opts: ShellOptions): HTMLElement | null {
       opts.lede ? h('p', { class: 'page-header__lede' }, opts.lede) : null,
       buildPathIndicator(),
       opts.showClosure ? buildClosureBanner() : null
+    )
+  );
+}
+
+/**
+ * buildImageHero — Austria-lifted editorial image hero.
+ * Wikimedia photo full-bleed, dark gradient overlay, content stacked at the
+ * bottom (dates pill → headline → lede → CTA). The closure banner sits below
+ * the hero in a tinted band so it doesn't fight the photo for attention.
+ */
+function buildImageHero(opts: ShellOptions): HTMLElement {
+  const hero = opts.imageHero;
+  if (!hero) {
+    // Type guard — caller passed imageHero, but TS narrows. Should not reach.
+    return h('header', { class: 'page-header' });
+  }
+  return h(
+    'div',
+    { class: 'image-hero-wrap' },
+    h(
+      'header',
+      { class: 'image-hero', role: 'banner' },
+      h('img', {
+        class: 'image-hero__img',
+        src: hero.src,
+        alt: hero.alt,
+        loading: 'eager',
+        decoding: 'async',
+      }),
+      h(
+        'div',
+        { class: 'image-hero__overlay' },
+        h(
+          'div',
+          { class: 'image-hero__inner' },
+          h('span', { class: 'image-hero__dates' }, TRIP.dates),
+          h('h1', { class: 'image-hero__title' }, opts.title),
+          opts.lede ? h('p', { class: 'image-hero__lede' }, opts.lede) : null,
+          hero.ctaLabel && hero.ctaHref
+            ? h(
+                'a',
+                { class: 'image-hero__cta', href: hero.ctaHref },
+                hero.ctaLabel,
+                h('span', { 'aria-hidden': 'true' }, ' ↓')
+              )
+            : null
+        )
+      ),
+      h('span', { class: 'image-hero__credit' }, hero.credit)
+    ),
+    // Path indicator + closure banner ride in a tinted band BELOW the photo
+    // so the hero stays cinematic. Band always renders so the path indicator
+    // can appear later (via subscription) without re-mounting the shell.
+    h(
+      'div',
+      { class: 'image-hero-band' },
+      h(
+        'div',
+        { class: 'image-hero-band__inner' },
+        buildPathIndicator(),
+        opts.showClosure ? buildClosureBanner() : null
+      )
     )
   );
 }
@@ -240,8 +324,29 @@ export function mountPageShell(opts: ShellOptions): HTMLElement {
   initNotesModal();
   void refreshBadges();
   attachBackToTop();
+  attachNavFade(body);
 
   return main;
+}
+
+/**
+ * Mobile nav fade — toggle the right-edge gradient off when the user has
+ * scrolled to the end of the nav list. Lifted from Austria 2026 horizontal-
+ * scroll patterns. Pure visual signal; doesn't affect functionality if it
+ * fails (the nav already scrolls fine).
+ */
+function attachNavFade(body: HTMLElement): void {
+  const list = body.querySelector<HTMLElement>('.site-nav__list');
+  const wrap = body.querySelector<HTMLElement>('.site-nav__list-wrap');
+  if (!list || !wrap) return;
+  const update = (): void => {
+    const atEnd = list.scrollLeft + list.clientWidth >= list.scrollWidth - 4;
+    wrap.classList.toggle('site-nav__list-wrap--at-end', atEnd);
+  };
+  list.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  // Run once on mount to catch the case where no overflow exists.
+  setTimeout(update, 0);
 }
 
 /**

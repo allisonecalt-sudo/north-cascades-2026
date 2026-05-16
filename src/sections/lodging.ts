@@ -504,10 +504,35 @@ export function renderLodging(): HTMLElement {
     )
   );
 
+  // Source-citation strip (Austria-lifted). Surfaces provenance for the data
+  // displayed in lodging cards — review scores from Booking/Vrbo, prices from
+  // host listings, photos from Wikimedia/Unsplash. "✓" pills = verified; the
+  // small text below names the live-search date.
+  const sourceStrip = h(
+    'ul',
+    { class: 'source-strip', 'aria-label': 'Data sources' },
+    h('li', { class: 'source-pill' }, 'Booking.com · live'),
+    h('li', { class: 'source-pill' }, 'Vrbo · live'),
+    h('li', { class: 'source-pill' }, 'Airbnb · live'),
+    h('li', { class: 'source-pill source-pill--warn' }, 'Photos partly representative')
+  );
+  const sourceNote = h(
+    'p',
+    {
+      style:
+        'font-size: 0.78rem; color: var(--c-ink-500); margin: 0 0 var(--sp-4); line-height: 1.45;',
+    },
+    'Review scores + prices searched live May 16, 2026 for Aug 16-20, 2026 dates. ',
+    'Some listing photos are representative (Unsplash) — see booking links for actual property photos. ',
+    'Re-verify before booking; supply fluctuates.'
+  );
+
   const wrap = section(
     'lodging',
     'Lodging',
     h('ul', { class: 'gist' }),
+    sourceStrip,
+    sourceNote,
     tabs,
     h('div', { class: 'lodging-panels' })
   );

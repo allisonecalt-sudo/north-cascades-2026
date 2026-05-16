@@ -227,6 +227,14 @@ export function renderRental(): HTMLElement {
       h('strong', {}, 'Hard rules: '),
       'automatic, gas or hybrid, prices include full insurance (CDW/LDW + SLI). All quotes verified May 16, 2026.'
     ),
+    // Source-citation strip — Austria pattern, applied to rental quotes.
+    h(
+      'ul',
+      { class: 'source-strip', 'aria-label': 'Rental data sources' },
+      h('li', { class: 'source-pill' }, 'Costco Travel · verified'),
+      h('li', { class: 'source-pill' }, 'Direct vendor quotes'),
+      h('li', { class: 'source-pill source-pill--warn' }, 'NPS road status · re-check')
+    ),
     h(
       'ul',
       { class: 'gist' },

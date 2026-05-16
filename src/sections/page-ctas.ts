@@ -23,7 +23,7 @@ const NEXT: Record<PageId, Cta[]> = {
   lodging: [
     { href: 'hikes.html', label: 'Hikes →' },
     { href: 'travel.html', label: 'Travel →' },
-    { href: 'food.html', label: 'Food →' },
+    { href: 'rental.html', label: 'Rental →' },
   ],
   hikes: [
     { href: 'lodging.html', label: 'Lodging →' },
@@ -31,9 +31,14 @@ const NEXT: Record<PageId, Cta[]> = {
     { href: 'food.html', label: 'Food →' },
   ],
   travel: [
+    { href: 'rental.html', label: 'Rental →' },
+    { href: 'lodging.html', label: 'Lodging →' },
+    { href: 'seattle.html', label: 'Seattle →' },
+  ],
+  rental: [
+    { href: 'travel.html', label: 'Travel →' },
     { href: 'lodging.html', label: 'Lodging →' },
     { href: 'hikes.html', label: 'Hikes →' },
-    { href: 'seattle.html', label: 'Seattle →' },
   ],
   food: [
     { href: 'details.html', label: 'Bring list →' },
