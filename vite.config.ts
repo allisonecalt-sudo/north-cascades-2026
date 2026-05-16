@@ -1,10 +1,27 @@
 import { defineConfig } from 'vite';
+import { fileURLToPath, URL } from 'url';
 
 // GitHub Pages serves the site under /north-cascades-2026/. Local dev uses '/'.
+// Multi-page (May 16, 2026 — Austria-inspired digestibility pass). Each .html
+// is a separate Rollup input so Vite emits a working dist for each.
+const here = (p: string): string => fileURLToPath(new URL(p, import.meta.url));
+
 export default defineConfig(({ command }) => ({
   base: command === 'build' ? '/north-cascades-2026/' : '/',
   build: {
     outDir: 'dist',
     sourcemap: false,
+    rollupOptions: {
+      input: {
+        home: here('index.html'),
+        lodging: here('lodging.html'),
+        hikes: here('hikes.html'),
+        travel: here('travel.html'),
+        food: here('food.html'),
+        seattle: here('seattle.html'),
+        forErin: here('for-erin.html'),
+        details: here('details.html'),
+      },
+    },
   },
 }));

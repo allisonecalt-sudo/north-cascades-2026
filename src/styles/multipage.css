@@ -1,0 +1,293 @@
+/* multipage.css — sticky top nav + per-page header + footer + CTA strip.
+ * Added 2026-05-16 (Austria-inspired digestibility pass). Each page is now a
+ * focused landing; this stylesheet gives them shared chrome.
+ */
+
+/* ───────── Sticky top nav ───────── */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(253, 250, 243, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.site-nav__inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0.6rem var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.site-nav__brand {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.1;
+  color: var(--c-forest-800);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+
+.site-nav__brand-name {
+  font-size: var(--fs-base);
+}
+
+.site-nav__brand-dates {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.site-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.2rem;
+  justify-content: flex-end;
+}
+
+.site-nav__item {
+  margin: 0;
+}
+
+.site-nav__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.65rem;
+  color: var(--c-ink-700);
+  background: transparent;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  min-height: 36px;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.site-nav__link:hover,
+.site-nav__link:focus-visible {
+  background: var(--c-warm-100);
+  color: var(--c-forest-700);
+}
+
+.site-nav__link--active {
+  background: var(--c-forest-700);
+  color: var(--c-warm-50);
+  font-weight: 600;
+}
+
+.site-nav__link--active:hover,
+.site-nav__link--active:focus-visible {
+  background: var(--c-forest-800);
+  color: var(--c-warm-50);
+}
+
+@media (max-width: 720px) {
+  .site-nav__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem var(--gutter);
+    gap: 0.35rem;
+  }
+  .site-nav__list {
+    justify-content: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.2rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .site-nav__list::-webkit-scrollbar {
+    display: none;
+  }
+  .site-nav__link {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* ───────── Page header (lighter than the old big hero) ───────── */
+.page-header {
+  background: linear-gradient(
+    155deg,
+    var(--c-forest-800) 0%,
+    var(--c-forest-700) 60%,
+    var(--c-glacier-600) 100%
+  );
+  color: var(--c-warm-50);
+  padding: var(--sp-6) var(--gutter) var(--sp-6);
+}
+
+.page-header__inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.page-header__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: var(--fs-xs);
+  color: var(--c-glacier-100);
+  margin: 0;
+  font-weight: 600;
+}
+
+.page-header__title {
+  color: var(--c-warm-50);
+  font-size: clamp(1.8rem, 5.5vw, 2.6rem);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.page-header__lede {
+  color: var(--c-glacier-100);
+  font-size: var(--fs-lg);
+  line-height: 1.45;
+  margin: 0;
+  max-width: 60ch;
+}
+
+.page-header__path-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.page-header__path-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.85rem;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-warm-50);
+}
+
+.page-header__path-clear {
+  appearance: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: var(--c-warm-50);
+  font: inherit;
+  font-size: var(--fs-sm);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  min-height: 32px;
+  transition: background-color 120ms ease;
+}
+
+.page-header__path-clear:hover,
+.page-header__path-clear:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Closure banner needs to read against the dark page-header bg.
+ * Inline modifier scales the contrast up vs the original-on-white styling.
+ */
+.closure-banner--inline {
+  margin-top: var(--sp-3);
+}
+
+/* ───────── Page main + footer ───────── */
+.page-main {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: var(--sp-6) var(--gutter) var(--sp-7);
+}
+
+.site-footer {
+  background: var(--c-forest-900);
+  color: var(--c-glacier-100);
+  padding: var(--sp-6) var(--gutter);
+  margin-top: var(--sp-7);
+}
+
+.site-footer__inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  text-align: center;
+}
+
+.site-footer__inner p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.site-footer__meta {
+  font-size: var(--fs-xs) !important;
+  color: var(--c-ink-400);
+}
+
+.site-footer__back {
+  color: var(--c-glacier-100);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: var(--sp-2);
+}
+
+.site-footer__back:hover {
+  color: var(--c-warm-50);
+}
+
+/* ───────── Bottom-of-page CTA strip ───────── */
+.page-ctas {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: 1fr;
+  margin-top: var(--sp-3);
+}
+
+@media (min-width: 600px) {
+  .page-ctas {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.page-ctas__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.1rem;
+  background: var(--c-warm-100);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--fs-base);
+  color: var(--c-forest-800);
+  text-decoration: none;
+  min-height: 52px;
+  transition: all 120ms ease;
+}
+
+.page-ctas__link:hover,
+.page-ctas__link:focus-visible {
+  background: var(--c-forest-700);
+  color: var(--c-warm-50);
+  border-color: var(--c-forest-700);
+}
