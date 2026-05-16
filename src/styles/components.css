@@ -1127,3 +1127,57 @@
   font-style: italic;
   line-height: 1.45;
 }
+
+/* ============================================================
+ * Back-to-top floating button — appears after 1 viewport scroll
+ * ============================================================ */
+.back-to-top {
+  position: fixed;
+  bottom: calc(var(--sp-4) + env(safe-area-inset-bottom, 0px));
+  right: var(--sp-4);
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 10px 14px;
+  background: var(--c-forest-800);
+  color: var(--c-warm-50);
+  border: 1px solid var(--c-forest-700);
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.back-to-top:hover {
+  background: var(--c-forest-700);
+  box-shadow: var(--shadow-lg);
+}
+.back-to-top--visible {
+  opacity: 0.92;
+  transform: translateY(0);
+}
+.back-to-top__label {
+  /* Hide the word "Top" on the smallest phones — leave just the arrow. */
+}
+@media (max-width: 380px) {
+  .back-to-top__label {
+    display: none;
+  }
+  .back-to-top {
+    padding: 10px 12px;
+  }
+}
+
+/* ============================================================
+ * Bring-group item-count chip in summary
+ * ============================================================ */
+.bring-group__count {
+  color: var(--c-ink-500);
+  font-weight: 400;
+  font-size: var(--fs-sm);
+}

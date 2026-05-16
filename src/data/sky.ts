@@ -68,27 +68,17 @@ export interface DarkSkySpot {
   note?: string;
 }
 
+// Dark-sky only — sunset-overlap spots (Washington Pass, Diablo Lake) live in
+// SUNSET_SPOTS; if a guest goes there at sunset, staying through astro-dark
+// gets her stars from the same pull-off. This list is the "stars-specific"
+// additions: a Methow Valley site + the advanced Hart's Pass option.
 export const DARK_SKY_SPOTS: DarkSkySpot[] = [
-  {
-    name: 'Washington Pass Overlook',
-    where: 'MP 162 WA-20 (east side)',
-    why:
-      'Highest-elevation paved overlook on WA-20 (5,477 ft). Open to the south. Already a planned daytime stop — easy after-dinner return for stars if you stay east side.',
-    note: 'No services after dusk. Bring layers; pass-level temps drop into the 40s.',
-  },
-  {
-    name: 'Diablo Lake Overlook',
-    where: 'MP 132 WA-20 (west side)',
-    why:
-      'South-facing, water-foreground composition for Milky Way photos. The Cascade peaks frame the sky.',
-    note: 'Easy 5-min walk to the overlook from parking. Stay vehicle-side for the full sky.',
-  },
   {
     name: 'Patterson Lake (Sun Mountain area)',
     where: '~15 min south of Winthrop',
     why:
       'Methow Valley is an International Dark Sky community (designated 2023). Lake reflects stars in calm conditions.',
-    note: 'Quieter than Washington Pass. Mosquitos are real in August — DEET.',
+    note: 'Mosquitos are real in August — DEET.',
   },
   {
     name: 'Hart\'s Pass (advanced)',

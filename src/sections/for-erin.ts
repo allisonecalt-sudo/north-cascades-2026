@@ -16,7 +16,7 @@ export function renderForErin(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'The site is Allison\'s first pass. These are the open decisions where your read matters. Leave a note on any section (💬 button) or just talk it through.'
+      'Open decisions where your read matters. Leave a note on any section (💬 button) or just talk it through.'
     ),
     h(
       'ul',

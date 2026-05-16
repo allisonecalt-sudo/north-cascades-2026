@@ -17,11 +17,13 @@ export function renderBring(): HTMLElement {
     h(
       'div',
       { class: 'bring-groups' },
-      ...BRING_GROUPS.map((group) =>
+      ...BRING_GROUPS.map((group, idx) =>
         h(
           'details',
-          { class: 'bring-group', open: true },
-          h('summary', { class: 'bring-group__summary' }, group.group),
+          // First group open by default so the section doesn't read empty;
+          // rest collapsed so the section is scannable at ~600px not 2,076px.
+          idx === 0 ? { class: 'bring-group', open: true } : { class: 'bring-group' },
+          h('summary', { class: 'bring-group__summary' }, group.group, h('span', { class: 'bring-group__count' }, ` · ${group.items.length}`)),
           h(
             'ul',
             { class: 'bring-group__list' },

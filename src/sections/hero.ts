@@ -2,15 +2,17 @@ import { TRIP } from '../data/trip';
 import { CLOSURE_ALERT } from '../data/closure';
 import { h } from '../dom';
 
-// Six chips — the access patterns we actually expect. Everything else is one
-// scroll away. Long sitemap-style chip walls eat hero real estate and rarely
-// get used. Path picker IS the primary nav.
+// Seven chips — the access patterns we actually expect. Map + For-Erin earn
+// their spots: Erin needs to find her own section without scrolling past 18
+// sections; Map is the geographic-orient surface and was previously buried.
+// Everything else is one scroll away.
 const NAV_LINKS: { id: string; label: string }[] = [
   { id: 'paths', label: 'Paths' },
+  { id: 'map', label: 'Map' },
   { id: 'itinerary', label: 'Itinerary' },
   { id: 'lodging', label: 'Lodging' },
   { id: 'hikes', label: 'Hikes' },
-  { id: 'viewpoints', label: 'Viewpoints' },
+  { id: 'for-erin', label: 'For Erin' },
   { id: 'decisions', label: 'Decisions' },
 ];
 
@@ -41,7 +43,7 @@ function buildBanner(): HTMLElement {
         h('strong', {}, 'WA-20 currently CLOSED through the park.'),
         ' WSDOT target reopen: ',
         h('strong', {}, 'July 4, 2026'),
-        ' (a goal, not a promise). The 3 paths below all assume worst case.'
+        '. The 3 paths below assume worst case.'
       )
     ),
     h(

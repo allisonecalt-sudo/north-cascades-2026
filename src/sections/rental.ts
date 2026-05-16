@@ -225,23 +225,7 @@ export function renderRental(): HTMLElement {
       'p',
       { class: 'section__lede rental__hard-rules' },
       h('strong', {}, 'Hard rules: '),
-      'automatic transmission, gas or hybrid powertrain, prices include full insurance (CDW/LDW + supplemental liability). All quotes verified May 16, 2026 for Aug 16-20 pickup window.'
-    ),
-    h(
-      'div',
-      { class: 'rental__unpaved-note' },
-      h('strong', {}, 'Heads-up on Cascade River Rd: '),
-      'all major US rental brands (Hertz, Avis, Enterprise, Budget, Alamo, National) restrict driving on unpaved roads in their contracts. The final ~13 mi to the Cascade Pass trailhead is NPS-maintained gravel — sedan-passable in August, routinely driven by tourists — but technically a contract violation that can void CDW. ',
-      h(
-        'a',
-        {
-          href: 'https://www.nps.gov/noca/planyourvisit/cascade-river-road.htm',
-          target: '_blank',
-          rel: 'noopener noreferrer',
-        },
-        'NPS road status'
-      ),
-      '. Mitigations: premium-credit-card primary CDW (Chase Sapphire Reserve, Amex Platinum) covers where rental contract does not; some Turo hosts explicitly allow gravel forest roads.'
+      'automatic, gas or hybrid, prices include full insurance (CDW/LDW + SLI). All quotes verified May 16, 2026.'
     ),
     h(
       'ul',
@@ -249,27 +233,39 @@ export function renderRental(): HTMLElement {
       h(
         'li',
         { class: 'gist__item' },
-        'Cheapest verified live quote (May 16, 2026): Turo Toyota Corolla at $262 5-day pre-tax-pre-protection. Cheapest full-stack major: Costco Compact sedan at $674-825 all-in.'
+        'Cheapest verified all-in: ',
+        h('strong', {}, 'Costco Compact sedan, $674-825'),
+        ' (5 days, CDW + SLI bundled). Costco Travel is the consistent value across classes — fulfilled by Alamo/Enterprise/Avis/Budget.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        'Costco Travel is the consistent value across classes — fulfilled by Alamo/Enterprise/Avis/Budget, 10-25% under brand-direct, free additional driver included.'
+        h('strong', {}, 'Mid-size SUV is +$27 over Compact SUV at Costco'),
+        ' — worth the bump for clearance + cargo on Cascade River Rd gravel.'
+      )
+    ),
+    h(
+      'details',
+      { class: 'disclosure rental__unpaved-disclosure' },
+      h(
+        'summary',
+        { class: 'disclosure__summary' },
+        'Cascade River Rd gravel — read before booking'
       ),
       h(
-        'li',
-        { class: 'gist__item' },
-        'Mid-size SUV is only $27 over Compact SUV at Costco — verified May 16 quote. Worth the bump for clearance + cargo if you want margin on Cascade River Rd gravel.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
+        'p',
+        { class: 'disclosure__lede' },
+        'All major US rental brands (Hertz, Avis, Enterprise, Budget, Alamo, National) restrict driving on unpaved roads. The final ~13 mi to the Cascade Pass trailhead is NPS-maintained gravel — sedan-passable in August, routinely driven by tourists — but technically a contract violation that can void CDW. ',
         h(
           'a',
-          { href: 'https://www.autoslash.com/', target: '_blank', rel: 'noopener noreferrer' },
-          'AutoSlash'
+          {
+            href: 'https://www.nps.gov/noca/planyourvisit/cascade-river-road.htm',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+          'NPS road status →'
         ),
-        ' is the right shop for one-way drop fees and coupon hunting — emails comparison results across brands. Not a direct booking surface but useful as a price-tracker after booking.'
+        ' Mitigations: premium-credit-card primary CDW (Chase Sapphire Reserve, Amex Platinum) covers where rental contract does not; some Turo hosts explicitly allow gravel forest roads.'
       )
     ),
     h('div', { class: 'card-grid' }, ...lead.map(renderCard)),

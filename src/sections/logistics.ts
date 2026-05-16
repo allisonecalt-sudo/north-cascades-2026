@@ -6,6 +6,11 @@ export function renderLogistics(): HTMLElement {
     'logistics',
     'Logistics',
     h(
+      'p',
+      { class: 'section__lede' },
+      'Permits, cell coverage, weather windows, fire risk — the boring-but-true mechanics.'
+    ),
+    h(
       'ul',
       { class: 'logistics' },
       ...LOGISTICS.map((item) =>

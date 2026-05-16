@@ -21,6 +21,7 @@ import { renderForErin } from './sections/for-erin';
 import { renderDecisions } from './sections/decisions';
 import { renderFooter } from './sections/footer';
 import { attachNotesButton, initNotesModal, refreshBadges } from './sections/notes-button';
+import { attachBackToTop } from './sections/back-to-top';
 
 function mount(): void {
   const app = document.getElementById('app');
@@ -60,6 +61,9 @@ function mount(): void {
     attachNotesButton(sec);
   }
   void refreshBadges();
+
+  // Floating back-to-top — appears after first viewport of scroll.
+  attachBackToTop();
 }
 
 mount();
