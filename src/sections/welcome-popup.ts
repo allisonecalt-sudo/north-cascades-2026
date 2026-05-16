@@ -77,7 +77,13 @@ function buildPopup(): HTMLDivElement {
  * If `force` is true, ignore the localStorage flag (used by a re-show hook).
  */
 export function showWelcomePopup(force = false): void {
-  if (!force && hasSeenWelcome()) return;
+  // Query-string override: ?welcome=1 re-shows for testing / Allison previews.
+  const wantsForce =
+    force ||
+    (typeof window !== 'undefined' &&
+      typeof window.location !== 'undefined' &&
+      window.location.search.includes('welcome=1'));
+  if (!wantsForce && hasSeenWelcome()) return;
 
   const popup = buildPopup();
   document.body.appendChild(popup);
