@@ -1,15 +1,24 @@
 /**
- * Lodging — re-ranked on the Terra Nova brief.
+ * Lodging — re-ranked on the Terra Nova brief + May 16, 2026 hard rules.
  *
- * Axis (per Allison May 16, 2026):
+ * Axes (per Allison May 16, 2026):
  *   - Spacious, a little nicer than basic, ~$200-300 per night.
- *   - Kitchens are a NICE-TO-HAVE, not the gating criterion (kosher is flexible —
- *     packaged hechsher goods + a fridge cover most of the trip).
- *   - Splurge options ($400+) are demoted, not removed — kept as "if you want
- *     to splurge" cards near the bottom.
+ *   - **2 BEDS REQUIRED.** *"1-2 bedrooms, definitely 2 beds!!!"* Single-bed
+ *     studios are NOT a fit — surfaced in "Not a fit" section with the reason.
+ *   - **Nature-near is a strong preference.** *"i love staying near nature if
+ *     possible so show options."* Lakeside / woods-set / riverside / mountain-
+ *     view properties lead each base. Town-center properties get listed but
+ *     flagged with the "walkable to dinner, not woods-set" tradeoff.
+ *   - Kitchens are a nice-to-have, not the gating criterion.
+ *   - Splurge options ($400+) are demoted, not removed.
  *
- * No "top pick" badges. Every card just shows what it costs, what it has, and
- * who it might fit. Reader decides.
+ * Standing description rule — every card surfaces:
+ *   1. Beds (count + type)
+ *   2. Bedrooms (count or "Studio")
+ *   3. Nature proximity (one line, prominent)
+ *   4. Worth-noting extras (kitchen, hot tub, deck, view, atypical features)
+ *
+ * No "top pick" badges. Reader decides.
  */
 
 export type LodgingVibe =
@@ -22,7 +31,21 @@ export type LodgingVibe =
   | 'inn';
 
 /** Loose tier signal — replaces "top pick" without crowning. */
-export type LodgingTier = 'fits-brief' | 'splurge' | 'budget-or-basic' | 'note';
+export type LodgingTier =
+  | 'fits-brief'
+  | 'splurge'
+  | 'budget-or-basic'
+  | 'not-a-fit'
+  | 'note';
+
+/** Nature-proximity tag — drives re-rank within each base. */
+export type NatureTag =
+  | 'lakeside'
+  | 'riverside'
+  | 'woods'
+  | 'mountain-view'
+  | 'ranch-acreage'
+  | 'town-center';
 
 export interface LodgingPhoto {
   src: string;
@@ -44,6 +67,20 @@ export interface Lodging {
   vibe: LodgingVibe;
   pricePerNight: string;
   distance: string;
+  /** Beds count + type. e.g. "2 queens" / "1 king + 1 queen" / "1 king (NO second bed — not a fit)". */
+  beds: string;
+  /** Bedrooms count or "Studio". */
+  bedrooms: string;
+  /** Nature proximity — one line, prominent. */
+  nature: string;
+  /** Nature tag — drives within-base sort. */
+  natureTag: NatureTag;
+  /** "Worth noting" extras — kitchen, hot tub, deck, view, atypical features. */
+  extras: string;
+  /** True if bed count needs confirmation at booking (multi-unit properties). */
+  verifyBeds?: boolean;
+  /** For "Not a fit" entries — one-line reason (e.g. "Single king only, no second bed"). */
+  notFitReason?: string;
   notes: string;
   bookingHint?: string;
   bookingUrl?: string;
@@ -57,6 +94,32 @@ export const KITCHEN_LABELS: Record<KitchenLevel, string> = {
   kitchenette: 'Kitchenette',
   none: 'No kitchen',
 };
+
+export const NATURE_LABELS: Record<NatureTag, string> = {
+  lakeside: 'Lakeside',
+  riverside: 'Riverside',
+  woods: 'Woods-set',
+  'mountain-view': 'Mountain-view',
+  'ranch-acreage': 'Ranch acreage',
+  'town-center': 'Town-center',
+};
+
+/** Sort priority — lower = leads. Nature-immersed first, town-center last. */
+const NATURE_PRIORITY: Record<NatureTag, number> = {
+  lakeside: 1,
+  riverside: 2,
+  woods: 3,
+  'ranch-acreage': 4,
+  'mountain-view': 5,
+  'town-center': 9,
+};
+
+/** Sort a list of lodgings so nature-immersed leads, town-center trails. */
+export function sortByNature(list: Lodging[]): Lodging[] {
+  return [...list].sort(
+    (a, b) => NATURE_PRIORITY[a.natureTag] - NATURE_PRIORITY[b.natureTag]
+  );
+}
 
 const PHOTOS = {
   cabinWoods: {
@@ -169,7 +232,7 @@ const PHOTOS = {
 // WEST SIDE — Marblemount / Rockport / Concrete
 // ====================================================================
 export const WEST_LODGING: Lodging[] = [
-  // ---- Fits the Terra Nova brief ($200-300, spacious, a little nicer) ----
+  // ---- Fits the brief (2 beds confirmed, Terra Nova tier) ----
   {
     id: 'rhody-house',
     name: 'The Rhody House',
@@ -178,29 +241,19 @@ export const WEST_LODGING: Lodging[] = [
     vibe: 'rental',
     pricePerNight: '$190-260',
     distance: 'Marblemount · ~50 min to Cascade Pass trailhead',
+    beds: '1 queen + 1 queen (2 bedrooms)',
+    bedrooms: '2-bedroom cabin',
+    nature: 'Woods-set, quiet residential lot in Marblemount — not lakeside but tree-shaded.',
+    natureTag: 'woods',
+    extras: 'Full kitchen, outdoor space, bright open layout. Spacious.',
+    verifyBeds: true,
     notes:
-      'Bright cabin rental, well-reviewed, room to spread out. Full kitchen + outdoor space. Sits in the Terra Nova-tier sweet spot — spacious, a little nicer than basic, not a splurge.',
+      'Bright two-bedroom cabin rental — well-reviewed, room to spread out. Lands squarely in the Terra Nova-tier sweet spot. Confirm exact bed type at booking — listings vary by season.',
     bookingHint: 'Listed on Airbnb — search "Rhody House Marblemount".',
     bookingUrl: 'https://www.airbnb.com/marblemount-wa/stays',
     tier: 'fits-brief',
     kitchen: 'full',
     photo: PHOTOS.rentalAFrame,
-  },
-  {
-    id: 'nc-hideaway',
-    name: 'North Cascades Hideaway',
-    address: 'Concrete, WA · vacation rental',
-    type: 'Cabin vacation rental with fenced yard + firepit',
-    vibe: 'rental',
-    pricePerNight: '$200-280',
-    distance: '~25 min west of Marblemount · ~1 hr 25 min to Cascade Pass',
-    notes:
-      'Full kitchen, front + back decks, fire pit, quiet setting. Further from the trailhead but a calm base if the cabin matters more than the drive minutes.',
-    bookingHint: 'Listed on Airbnb.',
-    bookingUrl: 'https://www.airbnb.com/rooms/724602112999024219',
-    tier: 'fits-brief',
-    kitchen: 'full',
-    photo: PHOTOS.rentalModern,
   },
   {
     id: 'nc-riverside',
@@ -210,12 +263,62 @@ export const WEST_LODGING: Lodging[] = [
     vibe: 'rental',
     pricePerNight: '$250-350',
     distance: '~25 min west of Marblemount · ~1 hr 25 min to Cascade Pass',
+    beds: '1 queen + 1 queen (plus sofa-sleeper)',
+    bedrooms: '2-bedroom cabin',
+    nature: 'Riverside on the Skagit — water sound, deck overlooks the river.',
+    natureTag: 'riverside',
+    extras: 'Full kitchen, private hot tub on the deck, firepit, river access. Family-cabin feel.',
+    verifyBeds: true,
     notes:
-      'Family-cabin feel, full kitchen, private hot tub on the deck, river access. Reviewers call out the deck and the water sound.',
+      'Strongest "nature-near" pick on the west side — actual riverside, hot tub on the water-facing deck. Reviewers call out the deck and the water sound. Confirm bedroom configuration at booking.',
     bookingUrl: 'https://www.airbnb.com/rooms/1159630003390456641',
     tier: 'fits-brief',
     kitchen: 'full',
     photo: PHOTOS.cabinHot,
+  },
+  {
+    id: 'nc-hideaway',
+    name: 'North Cascades Hideaway',
+    address: 'Concrete, WA · vacation rental',
+    type: 'Cabin vacation rental with fenced yard + firepit',
+    vibe: 'rental',
+    pricePerNight: '$200-280',
+    distance: '~25 min west of Marblemount · ~1 hr 25 min to Cascade Pass',
+    beds: '1 queen + 1 queen (per recent listing)',
+    bedrooms: '2-bedroom cabin',
+    nature: 'Woods-set, quiet — front + back decks open to trees, no neighbors visible.',
+    natureTag: 'woods',
+    extras: 'Full kitchen, front + back decks, firepit, fenced yard. Calm setting.',
+    verifyBeds: true,
+    notes:
+      'Further from Cascade Pass trailhead than Marblemount picks, but a calm wooded base if the cabin matters more than drive minutes. Verify exact bed counts at booking.',
+    bookingHint: 'Listed on Airbnb.',
+    bookingUrl: 'https://www.airbnb.com/rooms/724602112999024219',
+    tier: 'fits-brief',
+    kitchen: 'full',
+    photo: PHOTOS.rentalModern,
+  },
+  {
+    id: 'ovenells',
+    name: 'Ovenell\'s Heritage Inn & Log Cabins',
+    address: '46276 Concrete Sauk Valley Rd, Concrete, WA 98237',
+    phone: '(360) 853-8494',
+    type: 'Log cabins on a 580-acre cattle ranch — BOOK A CABIN, not a guesthouse room',
+    vibe: 'ranch',
+    pricePerNight: '$200-330',
+    distance: '~25 min west of Marblemount · ~1 hr 25 min to Cascade Pass',
+    beds: 'Log cabins: 1 queen + 1 queen (2BR cabins) or 1 king + sofa-sleeper (1BR cabin) — verify per cabin',
+    bedrooms: '1-bedroom + 2-bedroom log cabins',
+    nature: 'Ranch acreage — 580 acres of pasture, Mt. Baker visible from the property.',
+    natureTag: 'ranch-acreage',
+    extras: 'Full kitchens in the log cabins, Mt. Baker views, working cattle ranch setting. Distinctive.',
+    verifyBeds: true,
+    notes:
+      'Working cattle ranch with Mt. Baker views — distinctive setting. **Book a log cabin specifically**, NOT a guesthouse inn room (those are 1 bed only and not a fit). Log cabins have full kitchens.',
+    bookingUrl: 'https://www.ovenells-inn.com/',
+    tier: 'fits-brief',
+    kitchen: 'full',
+    photo: PHOTOS.ranchProperty,
   },
   {
     id: 'glacier-peak',
@@ -226,28 +329,18 @@ export const WEST_LODGING: Lodging[] = [
     vibe: 'cabin',
     pricePerNight: '$150-220',
     distance: '~10 min west of Marblemount · ~1 hr to Cascade Pass',
+    beds: '1 queen + 1 sofa-sleeper (most cabins) — verify per cabin type',
+    bedrooms: 'Studio + 1-bedroom cabins',
+    nature: 'Woods-set among the resort grounds — not riverside despite the name.',
+    natureTag: 'woods',
+    extras: 'Kitchenettes, sofa beds, smart TVs, free WiFi, on-site restaurant + winery.',
+    verifyBeds: true,
     notes:
-      'Cabins with kitchenettes, sofa beds, smart TVs, free WiFi. A bit under the Terra Nova price band — fine if you want simple. (This is the property that operated as Skagit River Resort / Clark\'s Cabins until early 2026; call to confirm cabin scope before booking.)',
+      'A bit under the Terra Nova price band — fine if you want simple. Most cabins have a queen + sofa-sleeper (2 sleep spots, not 2 separate proper beds — ask which units have two queens). (This is the property that operated as Skagit River Resort / Clark\'s Cabins until early 2026.)',
     bookingUrl: 'https://glacierpeakresortandwinery.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
     photo: PHOTOS.cabinWoods,
-  },
-  {
-    id: 'ovenells',
-    name: 'Ovenell\'s Heritage Inn & Log Cabins',
-    address: '46276 Concrete Sauk Valley Rd, Concrete, WA 98237',
-    phone: '(360) 853-8494',
-    type: 'Log cabins + guesthouses on a 580-acre cattle ranch',
-    vibe: 'ranch',
-    pricePerNight: '$200-330',
-    distance: '~25 min west of Marblemount · ~1 hr 25 min to Cascade Pass',
-    notes:
-      'Working cattle ranch with Mt. Baker views. Log cabins have full kitchens; guesthouse rooms do not. Distinctive setting — pick a cabin specifically if cooking matters.',
-    bookingUrl: 'https://www.ovenells-inn.com/',
-    tier: 'fits-brief',
-    kitchen: 'full',
-    photo: PHOTOS.ranchProperty,
   },
 
   // ---- Splurge tier ----
@@ -259,28 +352,41 @@ export const WEST_LODGING: Lodging[] = [
     vibe: 'rental',
     pricePerNight: '$350-500',
     distance: 'On Cascade River Rd · ~30-45 min to Cascade Pass trailhead',
+    beds: '1 king + 1 queen + 1 queen (sleeps 6 — 2-3 actual bedrooms)',
+    bedrooms: '3-bedroom riverfront house',
+    nature: 'Riverside on the Cascade River — closest rental to the trailhead, deep woods setting.',
+    natureTag: 'riverside',
+    extras: 'Full kitchen, riverfront, closest rental to Cascade Pass trailhead. Splurge tier.',
+    verifyBeds: true,
     notes:
-      'Riverfront private house with full kitchen, closest rental to the Cascade Pass trailhead. Splurge tier — listed if you want a step up from Terra Nova-tier.',
+      'Riverfront private house — biggest, most-nature-immersed west-side option. Splurge tier ($350-500), listed if you want a step up from Terra Nova-tier. Verify exact bedroom layout at booking — 2BR and 3BR configurations exist.',
     bookingUrl: 'https://www.cascaderiverhouse.com/',
     tier: 'splurge',
     kitchen: 'full',
     photo: PHOTOS.cabinRiver,
   },
 
-  // ---- Budget / basic / status notes ----
+  // ---- Not a fit (no 2nd bed) ----
   {
     id: 'buffalo-run',
     name: 'Buffalo Run Inn',
     address: '60084 WA-20, Marblemount, WA 98267',
     phone: '(360) 873-2103',
-    type: 'Historic inn (1889, renovated 2004)',
+    type: 'Historic inn (1889, renovated 2004) — single rooms',
     vibe: 'inn',
     pricePerNight: '$130-180',
     distance: 'WA-20 in Marblemount center · ~55 min to Cascade Pass',
+    beds: '1 queen OR 1 king per room (NO second bed)',
+    bedrooms: 'Single room',
+    nature: 'Town-center on WA-20 — not nature-immersed.',
+    natureTag: 'town-center',
+    extras: 'Inn-style rooms — no in-room cooking.',
+    notFitReason:
+      'Single-bed rooms only — does NOT meet the 2-beds rule. Listed for transparency, not as an option.',
     notes:
-      'Inn-style rooms — no in-room cooking. Cheaper, simpler — listed in case price drops are the priority.',
+      'Cheaper, simpler — but each room has only one bed. **Not a fit for this trip\'s 2-beds requirement.**',
     bookingUrl: 'https://www.buffalorunrestaurant.com/',
-    tier: 'budget-or-basic',
+    tier: 'not-a-fit',
     kitchen: 'none',
     photo: PHOTOS.innClassic,
   },
@@ -293,13 +399,22 @@ export const WEST_LODGING: Lodging[] = [
     vibe: 'inn',
     pricePerNight: '$135-180',
     distance: 'WA-20 Marblemount center · ~55 min to Cascade Pass',
+    beds: '1 queen per room (NO second bed in standard rooms)',
+    bedrooms: 'Single room',
+    nature: 'Town-center on WA-20 — not nature-immersed.',
+    natureTag: 'town-center',
+    extras: 'Traditional rooms, no in-room kitchens.',
+    notFitReason:
+      'Single-bed rooms only — does NOT meet the 2-beds rule.',
     notes:
-      'Traditional rooms, no in-room kitchens. Same budget-tier tradeoff as Buffalo Run — fine if a cabin isn\'t available.',
+      'Same single-room layout as Buffalo Run. **Not a fit for the 2-beds requirement.**',
     bookingUrl: 'https://www.northcascadesinn.com/',
-    tier: 'budget-or-basic',
+    tier: 'not-a-fit',
     kitchen: 'none',
     photo: PHOTOS.motelInn,
   },
+
+  // ---- Status note ----
   {
     id: 'skagit-river-resort-note',
     name: 'Skagit River Resort / Clark\'s Cabins — closed (status note)',
@@ -309,6 +424,11 @@ export const WEST_LODGING: Lodging[] = [
     vibe: 'cabin',
     pricePerNight: 'See Glacier Peak Resort above',
     distance: 'Same address, new operator',
+    beds: 'N/A',
+    bedrooms: 'N/A',
+    nature: 'See Glacier Peak Resort listing.',
+    natureTag: 'woods',
+    extras: 'Status note only — see Glacier Peak Resort listing.',
     notes:
       'Status note only — if you see this name in older guides, the property is now Glacier Peak Resort (above). Don\'t book under the old name or (360) 873-2250 number. [verified 2026-05-15]',
     bookingHint: 'See Glacier Peak Resort listing.',
@@ -323,22 +443,49 @@ export const WEST_LODGING: Lodging[] = [
 // EAST SIDE — Winthrop / Mazama
 // ====================================================================
 export const EAST_LODGING: Lodging[] = [
-  // ---- Fits the Terra Nova brief ($200-300, spacious, a little nicer) ----
+  // ---- Fits the brief (2 beds confirmed, Terra Nova tier) ----
   {
-    id: 'methow-river',
-    name: 'Methow River Lodge & Cabins',
-    address: '110 White Ave, Winthrop, WA 98862',
-    phone: '(509) 996-4348',
-    type: 'Cabins + lodge rooms on the Methow River',
-    vibe: 'cabin',
-    pricePerNight: '$200-250',
-    distance: 'Walking distance to Winthrop boardwalk · ~40 min to Rainy Pass',
+    id: 'freestone',
+    name: 'Freestone Inn — cabins',
+    address: '31 Early Winters Dr, Mazama, WA 98833',
+    phone: '(509) 996-3906',
+    type: 'Rustic cabins with apartment-sized kitchens — BOOK A 2BR CABIN',
+    vibe: 'lodge',
+    pricePerNight: '$300+ cabins (Aug peak)',
+    distance: '15 mi west of Winthrop · ~25 min to Rainy Pass',
+    beds: '2BR cabin: 1 queen + 1 queen · 1BR cabin: 1 king + sofa-sleeper (verify)',
+    bedrooms: '1-bedroom + 2-bedroom cabins',
+    nature: 'Lakeside on Freestone Lake — woods-set property, lake-front cabins.',
+    natureTag: 'lakeside',
+    extras: 'Apartment-sized kitchens, pool, hot tub, on-site restaurant. Closest east-side stay to Rainy Pass.',
+    verifyBeds: true,
     notes:
-      'River setting, walkable to downtown Winthrop for dinner if you want to eat out. Cabins have kitchenettes (microwave + fridge + small stove); inn rooms are basic. Lands squarely in the Terra Nova-tier sweet spot.',
-    bookingUrl: 'https://www.methowriverlodge.com/',
+      'Strongest east-side "nature-near" pick — actual lakeside, woods-set property. Apartment-sized kitchens. Closest east-side stay to Rainy Pass, which matters on Maple Pass morning. **Book the 2-bedroom cabin** for two real beds. Top of the Terra Nova band.',
+    bookingUrl: 'https://www.freestoneinn.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
-    photo: PHOTOS.cabinRiver,
+    photo: PHOTOS.lodgeMountain,
+  },
+  {
+    id: 'spring-creek-ranch',
+    name: 'Spring Creek Ranch',
+    address: 'Winthrop, WA 98862',
+    type: 'Three private cabins on 60 acres — BOOK Spring Creek Cabin (2BR)',
+    vibe: 'ranch',
+    pricePerNight: '$220-340',
+    distance: 'On the Methow River · ~7 min to downtown · ~45 min to Rainy Pass',
+    beds: 'Spring Creek Cabin (2BR log): 1 queen + 1 queen · Owl\'s Nest is a studio (NOT a fit) · Ranch House: 1 king + 1 queen',
+    bedrooms: '2-bedroom log cabin (Spring Creek) · 3-bedroom (Ranch House)',
+    nature: 'Riverside on the Methow + ranch acreage — alfalfa-field setting, private and quiet.',
+    natureTag: 'riverside',
+    extras: 'Full kitchens, 60-acre property, river access. Private and quiet.',
+    verifyBeds: true,
+    notes:
+      '**Book the Spring Creek Cabin (2BR log) or Ranch House — skip Owl\'s Nest (studio, single bed, not a fit).** Riverside alfalfa-field setting. Top of the Terra Nova band.',
+    bookingUrl: 'https://springcreekwinthrop.com/lodging/',
+    tier: 'fits-brief',
+    kitchen: 'full',
+    photo: PHOTOS.cabinClassic,
   },
   {
     id: 'rivers-edge',
@@ -349,25 +496,59 @@ export const EAST_LODGING: Lodging[] = [
     vibe: 'cabin',
     pricePerNight: '$210-310',
     distance: 'Downtown Winthrop on the Chewuch River · ~40 min to Rainy Pass',
+    beds: 'Chalets: 1 queen + 1 queen (or 1 king + 1 queen) — verify per unit',
+    bedrooms: '1-bedroom chalets + 2-bedroom cottages',
+    nature: 'Riverside on the Chewuch — downtown-adjacent though, walkable to dinner.',
+    natureTag: 'riverside',
+    extras: 'Full kitchens, private hot tubs, river access, walkable to Winthrop boardwalk.',
+    verifyBeds: true,
     notes:
-      'Riverside chalets with full kitchens + private hot tubs. Walkable to Winthrop boardwalk. Solid spacious-cabin pick at the upper end of the Terra Nova band.',
+      'Riverside chalets with full kitchens + private hot tubs. Walkable to Winthrop boardwalk — bridges downtown convenience with riverside. Verify 2-bed configuration per chalet at booking.',
     bookingUrl: 'https://riversedgewinthrop.com/',
     tier: 'fits-brief',
     kitchen: 'full',
     photo: PHOTOS.cabinHot,
   },
   {
-    id: 'freestone',
-    name: 'Freestone Inn — cabins',
-    address: '31 Early Winters Dr, Mazama, WA 98833',
-    phone: '(509) 996-3906',
-    type: 'Rustic cabins with apartment-sized kitchens',
-    vibe: 'lodge',
-    pricePerNight: '$300+ cabins (Aug peak)',
-    distance: '15 mi west of Winthrop · ~25 min to Rainy Pass',
+    id: 'methow-river',
+    name: 'Methow River Lodge & Cabins',
+    address: '110 White Ave, Winthrop, WA 98862',
+    phone: '(509) 996-4348',
+    type: 'Cabins on the Methow River — BOOK A 2-QUEEN CABIN',
+    vibe: 'cabin',
+    pricePerNight: '$200-250',
+    distance: 'Walking distance to Winthrop boardwalk · ~40 min to Rainy Pass',
+    beds: 'Riverside cabin: 1 queen + 1 queen (some cabins have 2 queens; lodge rooms are 1 bed — skip those)',
+    bedrooms: '1-bedroom cabins',
+    nature: 'Riverside on the Methow — walkable to downtown for dinner.',
+    natureTag: 'riverside',
+    extras: 'Kitchenettes (microwave + fridge + small stove), private decks, river access.',
+    verifyBeds: true,
     notes:
-      'Cabins have apartment-sized kitchens (smaller than full but workable). Pool, hot tub, on-site restaurant. Closest east-side stay to Rainy Pass, which matters on Maple Pass morning. Top of the Terra Nova band.',
-    bookingUrl: 'https://www.freestoneinn.com/',
+      '**Book a cabin with two queens — skip the lodge rooms (single bed, not a fit).** River setting + walkable to Winthrop boardwalk = best-of-both. Lands squarely in the Terra Nova sweet spot.',
+    bookingUrl: 'https://www.methowriverlodge.com/',
+    tier: 'fits-brief',
+    kitchen: 'kitchenette',
+    photo: PHOTOS.cabinRiver,
+  },
+  {
+    id: 'inn-at-mazama',
+    name: 'The Inn at Mazama (Mazama Country Inn)',
+    address: '15 Country Rd, Mazama, WA 98833',
+    phone: '(509) 996-2681',
+    type: 'Lodge rooms + nightly cabins — BOOK A CABIN, NOT A LODGE ROOM',
+    vibe: 'lodge',
+    pricePerNight: '$200-375',
+    distance: 'Mazama village · ~30 min to Rainy Pass',
+    beds: 'Cabins: 1 queen + 1 queen (verify) · Lodge rooms are typically 1 queen — skip',
+    bedrooms: '1-bedroom cabins · lodge rooms (skip)',
+    nature: 'Woods-set, mountain-view — Mazama village setting, quiet.',
+    natureTag: 'mountain-view',
+    extras: 'Pool, hot tub, yoga studio. Some cabins have kitchens.',
+    verifyBeds: true,
+    notes:
+      '**Book a cabin specifically — confirm 2-bed configuration and kitchen at booking.** Lodge rooms are single-bed and not a fit. Solid Mazama-side option close to Rainy Pass.',
+    bookingUrl: 'https://www.innmazama.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
     photo: PHOTOS.lodgeMountain,
@@ -377,47 +558,22 @@ export const EAST_LODGING: Lodging[] = [
     name: 'Chewuch Inn & Cabins',
     address: '223 White Ave, Winthrop, WA 98862',
     phone: '(509) 996-3107',
-    type: 'B&B inn (11 rooms) + 6 cabins',
+    type: 'B&B inn + 6 cabins — BOOK A CABIN, NOT AN INN ROOM',
     vibe: 'bnb',
     pricePerNight: '$160-260',
     distance: 'Half-mile from downtown Winthrop · ~40 min to Rainy Pass',
+    beds: 'Cabins: 1 queen + 1 queen (most) · Inn rooms are 1 queen — skip',
+    bedrooms: '1-bedroom cabins · inn rooms (skip)',
+    nature: 'Woods-set, half-mile from downtown — quiet residential edge, trees around.',
+    natureTag: 'woods',
+    extras: 'Cabins have kitchenettes, buffet breakfast at the inn, walkable to boardwalk.',
+    verifyBeds: true,
     notes:
-      'Cabins (with kitchenettes) sit in the Terra Nova band; inn rooms are bare. Buffet breakfast included but not relevant here. Walkable to the Old-West boardwalk.',
+      '**Book a cabin — inn rooms are single-bed and not a fit.** Cabins with kitchenettes sit in the Terra Nova band. Walkable to the Old-West boardwalk.',
     bookingUrl: 'https://chewuchinn.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
     photo: PHOTOS.bnbCozy,
-  },
-  {
-    id: 'inn-at-mazama',
-    name: 'The Inn at Mazama (Mazama Country Inn)',
-    address: '15 Country Rd, Mazama, WA 98833',
-    phone: '(509) 996-2681',
-    type: 'Lodge rooms + nightly cabins',
-    vibe: 'lodge',
-    pricePerNight: '$200-375',
-    distance: 'Mazama village · ~30 min to Rainy Pass',
-    notes:
-      'Pool, hot tub, yoga studio. Some cabins have kitchens, lodge rooms do not — confirm per-unit at booking. Solid Mazama-side option close to Rainy Pass.',
-    bookingUrl: 'https://www.innmazama.com/',
-    tier: 'fits-brief',
-    kitchen: 'kitchenette',
-    photo: PHOTOS.lodgeMountain,
-  },
-  {
-    id: 'spring-creek-ranch',
-    name: 'Spring Creek Ranch',
-    address: 'Winthrop, WA 98862',
-    type: 'Three private cabins on 60 acres · full kitchens',
-    vibe: 'ranch',
-    pricePerNight: '$220-340',
-    distance: 'On the Methow River · ~7 min to downtown · ~45 min to Rainy Pass',
-    notes:
-      'Spring Creek Cabin (2BR log), Owl\'s Nest (studio), Ranch House — all full kitchens, alfalfa-field setting. Private and quiet. Top of the Terra Nova band.',
-    bookingUrl: 'https://springcreekwinthrop.com/lodging/',
-    tier: 'fits-brief',
-    kitchen: 'full',
-    photo: PHOTOS.cabinClassic,
   },
 
   // ---- Splurge tier ----
@@ -430,28 +586,41 @@ export const EAST_LODGING: Lodging[] = [
     vibe: 'lodge',
     pricePerNight: 'Cabins $400+ Aug peak · main lodge $270+',
     distance: '~10 min from Winthrop · ~45 min to Rainy Pass',
+    beds: '2BR cabins: 1 queen + 1 queen (verify) · main lodge rooms vary',
+    bedrooms: '1-bedroom + 2-bedroom cabins',
+    nature: 'Lakeside on Patterson Lake + 1,500 acres of trails — most-nature-immersed east-side option.',
+    natureTag: 'lakeside',
+    extras: 'Full kitchens, fireplaces, porches, on-site spa + marina + 1,500 acres of trails.',
+    verifyBeds: true,
     notes:
-      '1,500 acres of trails + spa. Patterson Lake Cabins have full kitchens, fireplaces, porches. Splurge tier — listed if you want the resort feel; otherwise Terra Nova-tier picks above match the brief better.',
+      '1,500 acres of trails + spa + lakeside cabins. **Book a 2BR Patterson Lake Cabin.** Splurge tier — listed if you want the resort feel; otherwise Terra Nova-tier picks above match the brief better.',
     bookingUrl: 'https://www.sunmountainlodge.com/',
     tier: 'splurge',
     kitchen: 'full',
     photo: PHOTOS.lodgeRidge,
   },
 
-  // ---- Budget / different vibe ----
+  // ---- Not a fit ----
   {
     id: 'rolling-huts',
     name: 'Rolling Huts',
     address: '18381 WA-20, Winthrop, WA 98862',
     phone: '(509) 996-4442',
-    type: 'Modern minimalist huts (glamping)',
+    type: 'Modern minimalist huts (glamping) — single sleeping platform',
     vibe: 'glamping',
     pricePerNight: '$145-200',
     distance: '~10 min from Winthrop · ~35 min to Rainy Pass',
+    beds: '1 queen platform bed (NO second bed)',
+    bedrooms: 'Studio hut',
+    nature: 'Mountain-view, meadow setting — open glamping field.',
+    natureTag: 'mountain-view',
+    extras: 'Tea kettle + mini-fridge + fireplace, no stove. Bathrooms in central barn.',
+    notFitReason:
+      'Single platform bed per hut — does NOT meet the 2-beds rule.',
     notes:
-      'Tea kettle + mini-fridge + fireplace, no stove. Bathrooms in a central barn. Two-night minimum. Different vibe — listed in case the aesthetic is the draw.',
+      '**Not a fit — each hut has only one queen platform.** Aesthetic is striking but the bed configuration rules it out.',
     bookingUrl: 'https://rollinghuts.com/',
-    tier: 'budget-or-basic',
+    tier: 'not-a-fit',
     kitchen: 'kitchenette',
     photo: PHOTOS.glampingHut,
   },
@@ -460,14 +629,21 @@ export const EAST_LODGING: Lodging[] = [
     name: 'Hotel Rio Vista',
     address: '285 Riverside Ave, Winthrop, WA 98862',
     phone: '(509) 996-3535',
-    type: 'Boutique riverside hotel (no in-room kitchens)',
+    type: 'Boutique riverside hotel — single-bed rooms',
     vibe: 'inn',
     pricePerNight: '$170-260',
     distance: 'Downtown Winthrop · ~40 min to Rainy Pass',
+    beds: '1 queen or 1 king per room (NO second bed)',
+    bedrooms: 'Single room',
+    nature: 'Riverside but downtown — walk-to-dinner location, not woods-set.',
+    natureTag: 'town-center',
+    extras: 'Riverfront, private balconies, hot tub. No in-room cooking.',
+    notFitReason:
+      'Single-bed rooms only — does NOT meet the 2-beds rule.',
     notes:
-      'Riverfront, private balconies, hot tub. No in-room cooking — fine if eating out / cold-meal mode is OK.',
+      '**Not a fit — single-bed rooms only.** Riverfront and downtown-adjacent, but the bed configuration rules it out.',
     bookingUrl: 'https://hotelriovista.com/',
-    tier: 'budget-or-basic',
+    tier: 'not-a-fit',
     kitchen: 'none',
     photo: PHOTOS.motelInn,
   },
@@ -476,14 +652,21 @@ export const EAST_LODGING: Lodging[] = [
     name: 'Mt. Gardner Inn',
     address: '611 WA-20, Winthrop, WA 98862',
     phone: '(509) 996-2000',
-    type: 'Mid-tier inn (no kitchens)',
+    type: 'Mid-tier inn — single-bed rooms',
     vibe: 'inn',
     pricePerNight: '$149-353',
     distance: 'WA-20 south edge of Winthrop · ~40 min to Rainy Pass',
+    beds: '1 queen per standard room (NO second bed)',
+    bedrooms: 'Single room',
+    nature: 'Town-center on WA-20.',
+    natureTag: 'town-center',
+    extras: 'Reliable, quiet, family-run. No in-room kitchens.',
+    notFitReason:
+      'Single-bed rooms only — does NOT meet the 2-beds rule.',
     notes:
-      'Reliable, quiet, family-run. No in-room kitchens. Cheaper end of the spectrum.',
+      '**Not a fit — single-bed rooms only.**',
     bookingUrl: 'https://mtgardnerinn.com/',
-    tier: 'budget-or-basic',
+    tier: 'not-a-fit',
     kitchen: 'none',
     photo: PHOTOS.motelInn,
   },
@@ -503,5 +686,6 @@ export const TIER_LABELS: Record<LodgingTier, string> = {
   'fits-brief': 'Terra Nova tier',
   splurge: 'Splurge',
   'budget-or-basic': 'Basic / cheaper',
+  'not-a-fit': 'Not a fit (under 2 beds)',
   note: 'Status note',
 };

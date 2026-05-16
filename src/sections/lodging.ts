@@ -1,16 +1,25 @@
 /**
- * Lodging — Terra Nova-tier cabins lead, splurge + basic collapsed below.
+ * Lodging — Terra Nova-tier 2-bed cabins lead, sorted nature-first within each base.
+ *
+ * Standing display rule (Allison May 16, 2026):
+ *   - Beds (count + type)
+ *   - Bedrooms (count or studio)
+ *   - Nature proximity (one prominent line)
+ *   - Worth-noting extras (kitchen, hot tub, deck, view, atypical features)
+ *
+ * Single-bed properties surface in a "Not a fit" disclosure with the reason
+ * stated. Splurge + status notes stay collapsed below the fits-brief grid.
  *
  * When a path is selected, lodging cards NOT in that path's recommended ids
- * fade (class `lodging-card--off-path`) and a path notice shows the path's
- * lodging shape at the top of the section. Non-path-matching cards collapse
- * into a "Other options on this corridor" disclosure.
+ * fade into an "Other corridor options" disclosure.
  */
 
 import {
   EAST_LODGING,
   KITCHEN_LABELS,
+  NATURE_LABELS,
   WEST_LODGING,
+  sortByNature,
   type KitchenLevel,
   type Lodging,
   type LodgingTier,
@@ -63,12 +72,49 @@ function kitchenBadgeKind(level: KitchenLevel): 'good' | 'info' | 'warn' {
 }
 
 function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
+  const natureLabel = NATURE_LABELS[lodging.natureTag];
+  const isTownCenter = lodging.natureTag === 'town-center';
+
+  const notFitBlock = lodging.notFitReason
+    ? h(
+        'p',
+        { class: 'card__not-fit' },
+        h('strong', {}, 'Not a fit: '),
+        lodging.notFitReason
+      )
+    : null;
+
+  // Bed + bedroom row — prominent, right under title.
+  const bedRow = h(
+    'div',
+    { class: 'card__beds' },
+    h('span', { class: 'card__beds-bedrooms' }, lodging.bedrooms),
+    h('span', { class: 'card__beds-sep' }, '·'),
+    h('span', { class: 'card__beds-beds' }, lodging.beds),
+    lodging.verifyBeds
+      ? h(
+          'span',
+          { class: 'card__beds-verify' },
+          ' [verify bed count at booking]'
+        )
+      : null
+  );
+
+  // Nature proximity line — prominent.
+  const natureRow = h(
+    'p',
+    { class: `card__nature card__nature--${lodging.natureTag}` },
+    h('strong', {}, `${natureLabel}: `),
+    lodging.nature
+  );
+
   return h(
     'article',
     {
       class: `card lodging-card lodging-card--${lodging.tier}${inPath ? ' lodging-card--in-path' : ''}`,
       'data-vibe': lodging.vibe,
       'data-lodging-id': lodging.id,
+      'data-nature': lodging.natureTag,
     },
     renderPhoto(lodging),
     h(
@@ -79,11 +125,23 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
         'div',
         { class: 'card__badges' },
         inPath ? badge('In this path', 'good') : null,
+        badge(natureLabel, isTownCenter ? 'warn' : 'good'),
         badge(KITCHEN_LABELS[lodging.kitchen], kitchenBadgeKind(lodging.kitchen))
       )
     ),
+    bedRow,
     h('p', { class: 'card__address' }, lodging.address),
     lodging.phone ? h('p', { class: 'card__phone' }, lodging.phone) : null,
+    notFitBlock,
+    natureRow,
+    h('p', { class: 'card__extras' }, h('strong', {}, 'Worth noting: '), lodging.extras),
+    isTownCenter
+      ? h(
+          'p',
+          { class: 'card__tradeoff' },
+          'Walkable to dinner, not woods-set — tradeoff vs nature-immersed picks.'
+        )
+      : null,
     h(
       'dl',
       { class: 'card__facts' },
@@ -120,9 +178,10 @@ function renderPanel(
   lodgings: Lodging[],
   pathLodgingIds: Set<string> | null
 ): HTMLElement {
-  // If a path is selected, split fits-brief into in-path vs off-path.
-  const fitsBrief = byTier(lodgings, 'fits-brief');
-  const splurge = byTier(lodgings, 'splurge');
+  // Filter + re-rank by nature within each tier.
+  const fitsBrief = sortByNature(byTier(lodgings, 'fits-brief'));
+  const splurge = sortByNature(byTier(lodgings, 'splurge'));
+  const notFit = byTier(lodgings, 'not-a-fit');
   const basic = byTier(lodgings, 'budget-or-basic');
   const notes = byTier(lodgings, 'note');
 
@@ -153,7 +212,7 @@ function renderPanel(
           h(
             'p',
             { class: 'disclosure__lede' },
-            'Not part of the selected path\'s default plan but bookable here too.'
+            'Not part of the selected path\'s default plan but bookable here too. Same 2-beds + nature-first sort applies.'
           ),
           h(
             'div',
@@ -177,6 +236,29 @@ function renderPanel(
             'div',
             { class: 'card-grid' },
             ...splurge.map((l) => renderLodgingCard(l, inPath(l.id)))
+          )
+        )
+      : null;
+
+  const notFitBlock =
+    notFit.length > 0
+      ? h(
+          'details',
+          { class: 'disclosure disclosure--not-fit' },
+          h(
+            'summary',
+            { class: 'disclosure__summary' },
+            `Not a fit — under 2 beds (${notFit.length})`
+          ),
+          h(
+            'p',
+            { class: 'disclosure__lede' },
+            'Properties that don\'t meet the 2-beds rule. Listed for transparency so you know why they\'re not above.'
+          ),
+          h(
+            'div',
+            { class: 'card-grid' },
+            ...notFit.map((l) => renderLodgingCard(l, false))
           )
         )
       : null;
@@ -230,12 +312,13 @@ function renderPanel(
       'p',
       { class: 'section__lede' },
       pathLodgingIds
-        ? `${visibleFits.length} option${visibleFits.length === 1 ? '' : 's'} in the selected path. Other Terra Nova-tier picks on this corridor sit below.`
-        : `Spacious, a little nicer than basic, around $200-300 — the Terra Nova tier. ${fitsBrief.length} cabin / lodge options that fit. Splurge + cheaper sit below.`
+        ? `${visibleFits.length} option${visibleFits.length === 1 ? '' : 's'} in the selected path. Nature-immersed picks lead; town-center picks are flagged. Other Terra Nova-tier picks on this corridor sit below.`
+        : `Spacious, a little nicer than basic, ~$200-300 — Terra Nova tier. ${fitsBrief.length} cabin options that meet the 2-beds requirement. Nature-immersed picks lead; town-center picks are flagged.`
     ),
     fitsBriefGrid,
     offPathBlock,
     splurgeBlock,
+    notFitBlock,
     basicBlock,
     notesBlock
   );
@@ -311,14 +394,15 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
       h(
         'li',
         { class: 'gist__item' },
-        'Brief: spacious + a little nicer than basic + ~$200-300/night (Terra Nova-tier). Kitchens are a bonus, not a requirement.'
+        h('strong', {}, '2 beds required, 1-2 bedrooms, ~$200-300.'),
+        ' Nature-immersed picks lead each base; town-center picks flagged. Single-bed properties collapsed into "Not a fit".'
       ),
       h(
         'li',
         { class: 'gist__item' },
         path
-          ? 'Other corridor options + splurge + cheaper sit behind disclosures below.'
-          : 'Splurge ($400+) and cheaper/basic options are kept behind disclosures.'
+          ? 'Other corridor options + splurge + not-a-fit sit behind disclosures below.'
+          : 'Splurge ($400+), not-a-fit (under 2 beds), and status notes sit behind disclosures.'
       )
     );
   }

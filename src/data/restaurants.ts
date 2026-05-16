@@ -1,15 +1,17 @@
 /**
- * Restaurants — practical mix.
+ * Restaurants — KOSHER ONLY.
  *
- * Both travelers keep kosher but flexibly (packaged hechsher goods + a fridge
- * cover the trip). This section lists:
- *   1. Worth-knowing places in the corridor towns (Marblemount, Winthrop) — non-
- *      kosher but useful to know when eating out makes sense.
- *   2. The handful of Va\'ad-certified kosher options in Seattle, for the Day-5
- *      stop or anyone who wants a kosher sit-down meal.
+ * Tightened May 16, 2026 (Allison): *"no eating idf not kosher restaurant"* +
+ * *"we dont need to see none kosher places."*
  *
- * No "NO KOSHER HERE" panic-blocks. The kosher footprint is tight and
- * informational.
+ * UI/IA rule: every restaurant entry across this site is hechsher-certified.
+ * Non-kosher restaurants are simply not in scope — not even as "context" or
+ * "worth knowing about." Corridor towns (Marblemount, Rockport, Concrete,
+ * Winthrop, Mazama, Bellingham) have no kosher restaurants → single-line
+ * "no kosher options here" notice that points back to cabin-cooking strategy.
+ *
+ * Seattle Va\'ad-certified options are the only sit-down kosher meals on the
+ * trip route.
  */
 
 export interface Restaurant {
@@ -17,87 +19,42 @@ export interface Restaurant {
   address: string;
   note: string;
   phone?: string;
-  /** Only filled for kosher-certified places. */
-  hechsher?: string;
+  /** Kosher-only — hechsher always present. */
+  hechsher: string;
   website?: string;
 }
 
 export interface RestaurantTown {
   town: string;
-  /** Optional 1-line context for the section. */
+  /** Single-line context. */
   context?: string;
+  /** True when no kosher options exist here — town renders the "no kosher" notice instead of a list. */
+  noKosher?: boolean;
   places: Restaurant[];
 }
 
 export const RESTAURANTS: RestaurantTown[] = [
-  // ---------- Corridor (non-kosher; worth knowing) ----------
+  // ---------- Corridor towns — no kosher options ----------
   {
-    town: 'Marblemount · Rockport',
-    context: 'Casual spots if eating out one night makes sense. No kosher restaurants in these towns — cabin dinners are the easier default.',
-    places: [
-      {
-        name: 'Buffalo Run Restaurant',
-        address: '60084 WA-20, Marblemount',
-        note: 'American, elk + buffalo burgers, casual roadhouse.',
-      },
-      {
-        name: 'Mondo Restaurant',
-        address: '60102 WA-20, Marblemount',
-        note: 'American + Korean fusion. Slightly higher reviews than Buffalo Run.',
-      },
-      {
-        name: 'Birdsview Brewing Co',
-        address: '38302 WA-20, Concrete (~25 min west of Marblemount)',
-        note: 'Brewery + pub food on the drive in from Bellingham. Easy first-night option.',
-      },
-      {
-        name: 'Marblemount Country Store',
-        address: '59924 WA-20, Marblemount',
-        note: 'Sandwiches + supplies. Useful trailhead-lunch stop.',
-      },
-    ],
+    town: 'Marblemount · Rockport · Concrete',
+    context:
+      'No kosher restaurants in these towns. Default to cabin meals — see Kosher notes section for the supermarket strategy.',
+    noKosher: true,
+    places: [],
   },
   {
     town: 'Winthrop · Mazama',
-    context: 'Mix of casual and a nicer-night option. No kosher restaurants here either; eating in is the default but eating out works if the night calls for it.',
-    places: [
-      {
-        name: 'Arrowleaf Bistro',
-        address: '207 White Ave, Winthrop',
-        note: 'Seasonal local cuisine, river deck. The nicer Winthrop dinner option — books up, reserve ~2 weeks out.',
-      },
-      {
-        name: 'Old Schoolhouse Brewery',
-        address: '155 Riverside Ave, Winthrop',
-        note: 'Brewpub on the Chewuch River, live music summer weekends. Casual.',
-      },
-      {
-        name: 'Rocking Horse Bakery',
-        address: '265 Riverside Ave, Winthrop',
-        note: 'Coffee, pastries, breakfast.',
-      },
-      {
-        name: 'Mazama Store',
-        address: '50 Lost River Rd, Mazama',
-        note: 'Bakery + deli sandwiches + coffee. Great trailhead-lunch stop if staying near Freestone.',
-      },
-      {
-        name: 'East 20 Pizza',
-        address: '720 WA-20, Winthrop',
-        note: 'Casual pizza option.',
-      },
-      {
-        name: 'Three Fingered Jacks Saloon',
-        address: '176 Riverside Ave, Winthrop',
-        note: 'Old-west saloon, breakfast + dinner.',
-      },
-    ],
+    context:
+      'No kosher restaurants here. Default to cabin meals — see Kosher notes section for the supermarket strategy.',
+    noKosher: true,
+    places: [],
   },
 
-  // ---------- Seattle kosher options ----------
+  // ---------- Seattle Va\'ad-certified ----------
   {
     town: 'Seattle — kosher options',
-    context: 'Useful for the Day-5 stop or if eating kosher out matters that day. All Seattle Va\'ad-certified unless flagged otherwise.',
+    context:
+      'Va\'ad-certified sit-down + grocery options. The only kosher restaurants on the trip route — useful for a Day-5 stop or a pre/post-trip Seattle overnight.',
     places: [
       {
         name: 'QFC Mercer Island — kosher deli counter',
@@ -105,14 +62,15 @@ export const RESTAURANTS: RestaurantTown[] = [
         phone: '(206) 230-0745',
         hechsher: 'Seattle Va\'ad',
         note:
-          'Full kosher deli inside the QFC supermarket — ready meals, rotisserie chicken, sushi, deli platters. ~10 min off I-90 between Winthrop and SEA.',
+          'Full kosher deli inside the QFC supermarket — ready meals, rotisserie chicken, sushi, deli platters. ~10 min off I-90 between Winthrop and SEA — natural Day-5 lunch stop.',
       },
       {
         name: 'Pabla Indian Cuisine',
         address: '364 Renton Center Way SW, Renton, WA 98057',
         phone: '(425) 228-4625',
         hechsher: 'Seattle Va\'ad (dairy)',
-        note: 'Vegetarian + dairy Indian. ~15 min from SEA. Sit-down option if the Day-5 wait stretches.',
+        note:
+          'Vegetarian + dairy Indian. ~15 min from SEA. Sit-down option if the Day-5 wait stretches.',
         website: 'https://www.pablaindiancuisine.com/',
       },
       {

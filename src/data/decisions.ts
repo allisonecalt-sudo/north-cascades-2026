@@ -67,10 +67,10 @@ export const OPEN_DECISIONS: OpenDecision[] = [
     targetBy: 'Before trip — confirm resident status (nonresident annual is $250)',
   },
   {
-    id: 'arrowleaf',
-    question: 'Reserve Arrowleaf Bistro dinner',
-    options: 'Yes (book ~2 wks out) · no',
-    targetBy: 'Early August',
+    id: 'kosher-stock-day',
+    question: 'Kosher stock-up day',
+    options: 'Stock at Seattle (Day 1 / pre-trip) · stock at Marblemount/Winthrop grocery · pre-order Seattle Kosher delivery',
+    targetBy: 'Before leaving Seattle',
   },
   {
     id: 'offline-maps',

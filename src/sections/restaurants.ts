@@ -1,13 +1,13 @@
 /**
- * Food + restaurants.
+ * Food + restaurants — KOSHER ONLY.
  *
- * Mixed list — non-kosher corridor spots that are worth knowing for nights
- * you want to eat out, plus the slim set of Va\'ad-certified kosher options
- * in Seattle. No panic blocks. No "NO KOSHER HERE" alarms.
+ * Tightened May 16, 2026: non-kosher restaurants do NOT appear here (not even
+ * as "context" or "worth knowing about"). Corridor towns with no kosher options
+ * render a single-line notice pointing back to cabin-cooking strategy. Seattle
+ * Va\'ad-certified options are the only sit-down picks.
  *
- * Path-aware (Pass 1, 2026-05-16): when the selected path excludes Seattle,
- * the Seattle kosher town collapses into a disclosure so the corridor towns
- * (which are what the trip actually visits) lead the section.
+ * Path-aware: when the selected path excludes Seattle, the Seattle kosher town
+ * collapses into a disclosure (kept accessible if plans bend).
  */
 
 import { RESTAURANTS, type Restaurant, type RestaurantTown } from '../data/restaurants';
@@ -25,9 +25,7 @@ function renderPlace(place: Restaurant): HTMLElement {
       h('strong', { class: 'restaurants__name' }, place.name),
       h('span', { class: 'restaurants__address' }, place.address),
       place.phone ? h('span', { class: 'restaurants__phone' }, place.phone) : null,
-      place.hechsher
-        ? h('span', { class: 'restaurants__hechsher' }, `Hechsher: ${place.hechsher}`)
-        : null
+      h('span', { class: 'restaurants__hechsher' }, `Hechsher: ${place.hechsher}`)
     ),
     h('p', { class: 'restaurants__note' }, place.note),
     place.website
@@ -45,6 +43,21 @@ function renderPlace(place: Restaurant): HTMLElement {
 }
 
 function renderTown(town: RestaurantTown): HTMLElement {
+  if (town.noKosher) {
+    return h(
+      'div',
+      { class: 'restaurants__town restaurants__town--no-kosher' },
+      h('h3', { class: 'subsection__title' }, town.town),
+      h(
+        'p',
+        { class: 'restaurants__no-kosher' },
+        h('strong', {}, 'No kosher restaurants here. '),
+        'Default to cabin meals — see ',
+        h('a', { href: '#food' }, 'Kosher notes'),
+        ' for the supermarket strategy.'
+      )
+    );
+  }
   return h(
     'div',
     { class: 'restaurants__town' },
@@ -65,10 +78,8 @@ function isEastSideTown(town: RestaurantTown): boolean {
 }
 
 /**
- * Path A is west-side-only (single base in Marblemount). When it's active,
- * the east-side restaurants (Winthrop · Mazama) are noise — the user will
- * never eat there on this path. Demote into a disclosure rather than scroll
- * past them. Paths B and C both visit Winthrop, so this only fires for A.
+ * Path A is west-side-only. East-side notice still useful (no kosher there
+ * either) but demoted into a disclosure on Path A.
  */
 function pathExcludesEastSide(pathId: string | null): boolean {
   return pathId === 'A';
@@ -103,7 +114,7 @@ function renderBody(selectedId: string | null): HTMLElement {
         h(
           'p',
           { class: 'disclosure__lede' },
-          'Path A skips the east side. Listed for completeness if plans shift.'
+          'Path A skips the east side. No kosher restaurants there either — same cabin-meals default.'
         ),
         ...hiddenEast.map(renderTown)
       )
@@ -144,10 +155,15 @@ function renderGist(selectedId: string | null): HTMLElement {
   return h(
     'ul',
     { class: 'gist' },
-    h('li', { class: 'gist__item' }, 'Cabin meals are the easier default; eating out works when the night calls for it.'),
+    h(
+      'li',
+      { class: 'gist__item' },
+      h('strong', {}, 'Kosher only. '),
+      'Corridor towns have no kosher restaurants — cabin meals from packaged hechsher goods are the default.'
+    ),
     seattleExcluded
-      ? h('li', { class: 'gist__item' }, 'Corridor towns lead. Seattle kosher options sit collapsed below — this path skips Seattle.')
-      : h('li', { class: 'gist__item' }, 'Corridor towns have no kosher restaurants. Seattle Va\'ad options listed if a sit-down kosher meal matters.')
+      ? h('li', { class: 'gist__item' }, 'Seattle Va\'ad options sit collapsed below — this path skips Seattle.')
+      : h('li', { class: 'gist__item' }, 'Seattle Va\'ad-certified options listed for sit-down kosher meals on the Day-5 SEA leg or a pre/post-trip overnight.')
   );
 }
 

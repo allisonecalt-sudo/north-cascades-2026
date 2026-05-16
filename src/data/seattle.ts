@@ -272,7 +272,7 @@ export const SEATTLE_ITINERARIES: SeattleItinerary[] = [
     steps: [
       'Drop the rental at SEA — Link light rail to Westlake in 40 min.',
       'Check into Hotel Andra (Belltown) — walking distance to Pike Place + waterfront.',
-      'Dinner — Teapot Vegetarian House (kosher pareve, Capitol Hill) or Pabla Indian (kosher dairy, Renton) are the kosher sit-down options.',
+      'Dinner — Teapot Vegetarian House (kosher pareve, Capitol Hill) or Pabla Indian (kosher dairy, Renton). See Food + restaurants for the full Va\'ad-certified list.',
       'Sunday morning: Uber to SEA, pick up the rental, drive ~2 hrs to Marblemount.',
     ],
   },

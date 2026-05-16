@@ -186,6 +186,170 @@
   opacity: 0.85;
 }
 
+.lodging-card--not-a-fit {
+  border-left: 3px solid var(--c-ink-400);
+  opacity: 0.78;
+}
+
+.lodging-card--not-a-fit .card__title {
+  text-decoration: line-through;
+  text-decoration-color: var(--c-ink-400);
+  text-decoration-thickness: 1px;
+}
+
+/* Lodging beds + bedrooms — prominent under title */
+.card__beds {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5ch;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-ink-900);
+  margin: 0;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-warm-100, #f6f3ed);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--c-forest-500);
+}
+
+.card__beds-bedrooms {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--fs-xs);
+  color: var(--c-forest-700, #2d4d33);
+}
+
+.card__beds-sep {
+  color: var(--c-ink-400);
+  font-weight: 400;
+}
+
+.card__beds-beds {
+  font-weight: 600;
+}
+
+.card__beds-verify {
+  display: block;
+  width: 100%;
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--c-ink-500);
+  margin-top: 0.25rem;
+}
+
+/* Lodging nature proximity line — prominent */
+.card__nature {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-900);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.card__nature--lakeside,
+.card__nature--riverside,
+.card__nature--woods,
+.card__nature--ranch-acreage {
+  color: var(--c-forest-700, #2d4d33);
+}
+
+.card__nature--town-center {
+  color: var(--c-ink-700);
+}
+
+.card__extras {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.card__tradeoff {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  font-style: italic;
+  margin: 0;
+}
+
+.card__not-fit {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-900);
+  margin: 0;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-warn-bg);
+  border: 1px solid var(--c-warn-border);
+  border-radius: var(--radius-sm);
+}
+
+/* Rental card — all-in price + bare price */
+.rental-card__price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-warm-100, #f6f3ed);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--c-forest-500);
+}
+
+.rental-card__price-allin {
+  font-size: var(--fs-base);
+  color: var(--c-ink-900);
+  margin: 0;
+}
+
+.rental-card__price-bare {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  margin: 0;
+}
+
+.rental-card__price-note {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-700);
+  margin: 0;
+  font-style: italic;
+}
+
+.rental-card--hybrid {
+  border-left: 3px solid var(--c-forest-500);
+}
+
+.rental-card--gas {
+  border-left: 3px solid var(--c-glacier-500);
+}
+
+.rental__hard-rules {
+  background: var(--c-info-bg);
+  border-left: 3px solid var(--c-info-border);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+}
+
+/* Restaurants — no-kosher town notice */
+.restaurants__town--no-kosher {
+  background: var(--c-warm-100, #f6f3ed);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--c-ink-400);
+}
+
+.restaurants__no-kosher {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin: var(--sp-2) 0 0 0;
+  line-height: 1.5;
+}
+
+.restaurants__no-kosher a {
+  color: var(--c-forest-700, #2d4d33);
+}
+
+.disclosure--not-fit > summary {
+  color: var(--c-ink-500);
+}
+
 /* Badges */
 .badge {
   display: inline-block;

@@ -90,7 +90,7 @@ export const ITINERARY: ItineraryDay[] = [
     title: 'Drive day — WA-20 viewpoints, transit east',
     shape: 'Pack up, work the viewpoints west → east along WA-20, settle into the east-side base by evening.',
     stops: [
-      { step: 'Pack up, check out', detail: 'Moving lodging to Winthrop / Mazama tonight.' },
+      { step: 'Pack up, check out', detail: 'Moving lodging to Winthrop / Mazama tonight. Restock packaged kosher goods in Marblemount or en route.' },
       { step: 'Gorge Creek Falls', detail: 'MP 123 · pull-out + footbridge · 5 min.' },
       {
         step: 'Diablo Lake Overlook',
@@ -120,7 +120,7 @@ export const ITINERARY: ItineraryDay[] = [
     meals: {
       lunch: 'Colonial Creek picnic area is the natural mid-drive stop.',
       dinner:
-        'Either cook at the cabin or eat out in Winthrop — Old Schoolhouse Brewery + Arrowleaf Bistro are the well-reviewed options if eating out works for the night.',
+        'Cabin dinner at the new east-side base. No kosher restaurants in Winthrop / Mazama — see Kosher notes for the supermarket strategy.',
     },
   },
   {
@@ -160,7 +160,7 @@ export const ITINERARY: ItineraryDay[] = [
     ],
     meals: {
       dinner:
-        'Arrowleaf Bistro is the nicer Winthrop dinner (book ~2 weeks out). Old Schoolhouse Brewery is the casual brewpub option.',
+        'Cabin dinner — nicer kosher meal cooked at home (sealed-sauce pasta, sealed kosher meats, or Seattle Kosher prepared meals if you stocked up).',
     },
   },
   {

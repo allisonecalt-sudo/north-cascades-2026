@@ -57,16 +57,16 @@ const PATH_A_ITINERARY: ItineraryDay[] = [
       { step: 'Rental pickup', detail: 'SEA has every major rental on-site.' },
       {
         step: 'Drive SEA → Marblemount',
-        detail: '~2 hrs via I-5 north → WA-20 east. Lunch en route at Birdsview Brewing or Marblemount Country Store.',
+        detail: '~2 hrs via I-5 north → WA-20 east. Stock packaged kosher goods at a Trader Joe\'s / QFC / Whole Foods / Safeway on the way out of Seattle.',
         time: '~2 hrs',
       },
-      { step: 'Check in', detail: 'Same base for all 4 nights — Cascade River House or Glacier Peak Resort.' },
+      { step: 'Check in', detail: 'Same base for all 4 nights — Cascade River House or one of the 2BR Terra Nova-tier cabins.' },
       {
         step: 'Ladder Creek Falls (easy)',
         detail: 'MP 120 · <0.5 mi paved loop behind Gorge Powerhouse, Newhalem. Lit at dusk.',
       },
     ],
-    meals: { dinner: 'Buffalo Run Restaurant or Mondo in Marblemount.' },
+    meals: { dinner: 'Cabin dinner from packaged kosher goods picked up en route.' },
   },
   {
     day: 2,
@@ -120,7 +120,7 @@ const PATH_A_ITINERARY: ItineraryDay[] = [
       { step: 'Concrete stop on return', detail: 'Cascadian Farm stand for snacks.' },
       { step: 'Home by 6 PM', detail: 'Easy evening at the cabin.' },
     ],
-    meals: { dinner: 'Cabin dinner or back to Buffalo Run.' },
+    meals: { dinner: 'Cabin dinner.' },
   },
   {
     day: 5,
@@ -155,7 +155,7 @@ const PATH_B_ITINERARY: ItineraryDay[] = [
         detail: 'MP 120 · <0.5 mi paved loop · lit at dusk.',
       },
     ],
-    meals: { dinner: 'Buffalo Run or Mondo, Marblemount.' },
+    meals: { dinner: 'Cabin dinner from packaged kosher goods picked up en route.' },
   },
   {
     day: 2,
@@ -189,8 +189,8 @@ const PATH_B_ITINERARY: ItineraryDay[] = [
       { step: 'Check in (east)', detail: 'Methow River Lodge (Winthrop) or Freestone (Mazama).' },
     ],
     meals: {
-      lunch: 'Colonial Creek picnic area, MP 130.',
-      dinner: 'Old Schoolhouse Brewery (casual) or Arrowleaf Bistro (nicer) in Winthrop.',
+      lunch: 'Picnic at Colonial Creek picnic area, MP 130 — packaged kosher snacks from the cabin.',
+      dinner: 'Cabin dinner at the new east-side base.',
     },
   },
   {
@@ -203,9 +203,9 @@ const PATH_B_ITINERARY: ItineraryDay[] = [
       { step: 'Drive to Rainy Pass', detail: 'MP 158 · ~30 min from Winthrop / ~25 min from Mazama.', time: '~30 min' },
       { step: 'Maple Pass Loop (moderate)', detail: '7.2 mi loop · ~2,020 ft · 4-5 hrs. Counterclockwise is easier on knees.' },
       { step: 'Shorter option — Blue Lake', detail: '4.4 mi RT · ~1,050 ft · 2-3 hrs · easy-moderate.' },
-      { step: 'Back to Winthrop', detail: 'Late afternoon walkabout — boardwalk + Sheri\'s ice cream.' },
+      { step: 'Back to Winthrop', detail: 'Late afternoon walkabout — boardwalk + browse shops.' },
     ],
-    meals: { dinner: 'The nicer of the two restaurants you didn\'t do Tuesday.' },
+    meals: { dinner: 'Cabin dinner — restock at Winthrop\'s grocery for packaged kosher goods if running low.' },
   },
   {
     day: 5,
@@ -240,7 +240,7 @@ const PATH_C_ITINERARY: ItineraryDay[] = [
       { step: 'Drive SEA → Marblemount', detail: '~2 hrs.', time: '~2 hrs' },
       { step: 'Light evening', detail: 'Ladder Creek Falls at dusk, or just check in + cabin time.' },
     ],
-    meals: { dinner: 'Buffalo Run or Mondo, Marblemount.' },
+    meals: { dinner: 'Cabin dinner from packaged kosher goods picked up en route.' },
   },
   {
     day: 2,
@@ -260,7 +260,7 @@ const PATH_C_ITINERARY: ItineraryDay[] = [
       { step: 'Check in (3 nights)', detail: 'Methow River Lodge or Freestone Inn.' },
       { step: 'Boardwalk walk', detail: 'Old-west boardwalk in evening light.' },
     ],
-    meals: { dinner: 'Old Schoolhouse Brewery — casual first night.' },
+    meals: { dinner: 'Cabin dinner at the new Winthrop base.' },
   },
   {
     day: 3,
@@ -272,9 +272,9 @@ const PATH_C_ITINERARY: ItineraryDay[] = [
       { step: 'Maple Pass Loop (moderate)', detail: '7.2 mi · ~2,020 ft · 4-5 hrs.' },
       { step: 'Or Blue Lake (easy-mod)', detail: '4.4 mi RT · ~1,050 ft · 2-3 hrs.' },
       { step: 'Home by 4 PM', detail: 'Long afternoon in Winthrop.' },
-      { step: 'Boardwalk + Sheri\'s ice cream', detail: 'Maybe Shafer Museum exterior.' },
+      { step: 'Boardwalk walk', detail: 'Old-west boardwalk + Shafer Museum exterior in the late-afternoon light.' },
     ],
-    meals: { dinner: 'Arrowleaf Bistro — the nicer Winthrop dinner.' },
+    meals: { dinner: 'Cabin dinner — nicer kosher meal cooked at home (steak + sealed sauce, or a packaged-prepared option from Seattle Kosher if you stocked up).' },
   },
   {
     day: 4,
@@ -294,7 +294,7 @@ const PATH_C_ITINERARY: ItineraryDay[] = [
       { step: 'Lazy lunch', detail: 'In town or a picnic.' },
       { step: 'Second town evening', detail: 'Boardwalk light walk before dinner.' },
     ],
-    meals: { dinner: 'Old Schoolhouse Brewery (the casual night, again — it\'s the good local).' },
+    meals: { dinner: 'Cabin dinner — easy night, leftovers or pasta.' },
   },
   {
     day: 5,
