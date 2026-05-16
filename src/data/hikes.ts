@@ -54,12 +54,12 @@ export const HIKES: Hike[] = [
     description:
       'Flat paved walk to an alpine lake basin. Good first-morning warm-up or rest-day option.',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/f/fc/View_from_Maple_Pass.jpg',
-      alt: 'Alpine lake basin near Rainy Pass with surrounding ridgelines.',
-      credit: 'Photo: Wikimedia · CC BY 2.0',
-      creditUrl: 'https://commons.wikimedia.org/wiki/File:View_from_Maple_Pass.jpg',
-      width: 1200,
-      height: 844,
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Between_Rainy_and_Washington_Pass_(36871032836).jpg?width=1280',
+      alt: 'Alpine peak and meadows in the Rainy Pass corridor along WA-20 in summer.',
+      credit: 'Photo: Robert Ashworth · CC BY 2.0 (Wikimedia)',
+      creditUrl: 'https://commons.wikimedia.org/wiki/File:Between_Rainy_and_Washington_Pass_(36871032836).jpg',
+      width: 2048,
+      height: 1536,
     },
   },
   {
@@ -74,12 +74,12 @@ export const HIKES: Hike[] = [
     side: 'west',
     description: 'Short paved loop. Lit at night until 11 pm — easy first-evening option.',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Gorge_Creek_Falls_-_01.jpg',
-      alt: 'Tall narrow waterfall threading through mossy granite walls.',
-      credit: 'Photo: Joe Mabel · CC BY-SA 4.0 (Wikimedia)',
-      creditUrl: 'https://commons.wikimedia.org/wiki/File:Gorge_Creek_Falls_-_01.jpg',
-      width: 800,
-      height: 1200,
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ladder_Creek_Falls_at_Newhalem,_WA.jpg?width=1280',
+      alt: 'Ladder Creek Falls plunging through narrow mossy granite walls behind the Gorge Powerhouse in Newhalem.',
+      credit: 'Photo: Ron Clausen · CC BY-SA 4.0 (Wikimedia)',
+      creditUrl: 'https://commons.wikimedia.org/wiki/File:Ladder_Creek_Falls_at_Newhalem,_WA.jpg',
+      width: 1280,
+      height: 1707,
     },
   },
 
@@ -152,12 +152,12 @@ export const HIKES: Hike[] = [
     description:
       'Short, scenic, and big payoff: alpine lake right under Liberty Bell. Quick option for the east-side day, or pair with a Washington Pass stop.',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Washington_Pass_and_Liberty_Bell_Mountain.JPG',
-      alt: 'Liberty Bell Mountain group rising above pine forest.',
-      credit: 'Photo: Jsayre64 · CC BY-SA 3.0 (Wikimedia)',
-      creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_Pass_and_Liberty_Bell_Mountain.JPG',
-      width: 1200,
-      height: 800,
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Blue_Lake_in_Okanogan_National_Forest.jpg?width=1280',
+      alt: 'Blue Lake under the granite spires of the Liberty Bell group on a clear summer day.',
+      credit: 'Photo: Miguel Vieira · CC BY 2.0 (Wikimedia)',
+      creditUrl: 'https://commons.wikimedia.org/wiki/File:Blue_Lake_in_Okanogan_National_Forest.jpg',
+      width: 1280,
+      height: 960,
     },
   },
   {
@@ -215,13 +215,13 @@ export const HIKES: Hike[] = [
     description:
       'Switchbacks up to a wide alpine pass at 5,400 ft with views into Stehekin valley. Sustained climb but the trail is steady, never technical.',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/0/02/Sahale_Arm_and_Cascade_Pass_at_North_Cascades_in_Washington_02.jpg',
-      alt: 'Alpine ridgeline near Cascade Pass with glaciated peaks beyond.',
-      credit: 'Photo: Wikimedia · CC BY-SA 4.0',
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cascade_Pass_Trail_at_North_Cascades_in_Washington_15.jpg?width=1280',
+      alt: 'Summer view from Cascade Pass looking west into Stehekin valley with glaciated peaks beyond.',
+      credit: 'Photo: Jeffhollett · CC BY-SA 4.0 (Wikimedia)',
       creditUrl:
-        'https://commons.wikimedia.org/wiki/File:Sahale_Arm_and_Cascade_Pass_at_North_Cascades_in_Washington_02.jpg',
-      width: 1200,
-      height: 675,
+        'https://commons.wikimedia.org/wiki/File:Cascade_Pass_Trail_at_North_Cascades_in_Washington_15.jpg',
+      width: 1280,
+      height: 960,
     },
   },
   {

@@ -51,12 +51,12 @@ export const VIEWPOINTS: Viewpoint[] = [
     timeNeeded: '20 min',
     featured: true,
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/a/a8/Washington_Pass_and_Liberty_Bell_Mountain.JPG',
-      alt: 'Liberty Bell Mountain and Early Winters Spires from Washington Pass Overlook.',
-      credit: 'Photo: Jsayre64 · CC BY-SA 3.0 (Wikimedia)',
-      creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_Pass_and_Liberty_Bell_Mountain.JPG',
-      width: 1200,
-      height: 800,
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Liberty_Bell_Group,_North_Cascades_Highway.jpg?width=1280',
+      alt: 'Liberty Bell Mountain and Early Winters Spires above the WA-20 hairpin from Washington Pass Overlook on a summer day.',
+      credit: 'Photo: Laurel F · CC BY-SA 2.0 (Wikimedia)',
+      creditUrl: 'https://commons.wikimedia.org/wiki/File:Liberty_Bell_Group,_North_Cascades_Highway.jpg',
+      width: 1280,
+      height: 860,
     },
   },
   {
