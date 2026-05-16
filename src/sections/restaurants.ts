@@ -60,14 +60,55 @@ function isSeattleTown(town: RestaurantTown): boolean {
   return /seattle/i.test(town.town);
 }
 
+function isEastSideTown(town: RestaurantTown): boolean {
+  return /winthrop|mazama/i.test(town.town);
+}
+
+/**
+ * Path A is west-side-only (single base in Marblemount). When it's active,
+ * the east-side restaurants (Winthrop · Mazama) are noise — the user will
+ * never eat there on this path. Demote into a disclosure rather than scroll
+ * past them. Paths B and C both visit Winthrop, so this only fires for A.
+ */
+function pathExcludesEastSide(pathId: string | null): boolean {
+  return pathId === 'A';
+}
+
 function renderBody(selectedId: string | null): HTMLElement {
   const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
   const seattleExcluded = path !== null && !path.includeSeattle;
+  const eastExcluded = pathExcludesEastSide(selectedId);
 
-  const corridor = RESTAURANTS.filter((t) => !isSeattleTown(t));
+  const inCorridor = (t: RestaurantTown): boolean =>
+    !isSeattleTown(t) && (!eastExcluded || !isEastSideTown(t));
+
+  const visibleCorridor = RESTAURANTS.filter(inCorridor);
+  const hiddenEast = eastExcluded
+    ? RESTAURANTS.filter((t) => !isSeattleTown(t) && isEastSideTown(t))
+    : [];
   const seattle = RESTAURANTS.filter(isSeattleTown);
 
-  const children: (HTMLElement | null)[] = corridor.map(renderTown);
+  const children: (HTMLElement | null)[] = visibleCorridor.map(renderTown);
+
+  if (hiddenEast.length > 0) {
+    children.push(
+      h(
+        'details',
+        { class: 'disclosure' },
+        h(
+          'summary',
+          { class: 'disclosure__summary' },
+          'East-side towns — Winthrop · Mazama (not in this path)'
+        ),
+        h(
+          'p',
+          { class: 'disclosure__lede' },
+          'Path A skips the east side. Listed for completeness if plans shift.'
+        ),
+        ...hiddenEast.map(renderTown)
+      )
+    );
+  }
 
   if (seattle.length > 0) {
     if (seattleExcluded) {
