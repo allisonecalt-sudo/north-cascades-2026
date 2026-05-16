@@ -11,9 +11,13 @@ import { renderFood } from './sections/food';
 import { renderItinerary } from './sections/itinerary';
 import { renderHikes } from './sections/hikes';
 import { renderViewpoints } from './sections/viewpoints';
+import { renderActivities } from './sections/activities';
 import { renderRestaurants } from './sections/restaurants';
+import { renderSky } from './sections/sky';
+import { renderBring } from './sections/bring';
 import { renderSeattle } from './sections/seattle';
 import { renderLogistics } from './sections/logistics';
+import { renderForErin } from './sections/for-erin';
 import { renderDecisions } from './sections/decisions';
 import { renderFooter } from './sections/footer';
 import { attachNotesButton, initNotesModal, refreshBadges } from './sections/notes-button';
@@ -38,9 +42,13 @@ function mount(): void {
     renderItinerary(),
     renderHikes(),
     renderViewpoints(),
+    renderActivities(),
     renderRestaurants(),
+    renderSky(),
+    renderBring(),
     renderSeattle(),
     renderLogistics(),
+    renderForErin(),
     renderDecisions(),
   ];
   main.append(...sections);

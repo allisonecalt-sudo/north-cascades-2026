@@ -896,3 +896,236 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* ============================================================
+ * Bring list — compact, mobile-friendly
+ * ============================================================ */
+.bring-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.bring-group {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.bring-group__summary {
+  font-weight: 600;
+  font-size: var(--fs-base);
+  cursor: pointer;
+  padding: var(--sp-2) 0;
+}
+
+.bring-group__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.bring-group__item {
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.bring-group__item-name {
+  color: var(--c-ink-900);
+  margin-right: 0.5ch;
+}
+
+.bring-group__item-why {
+  color: var(--c-ink-700);
+}
+
+/* ============================================================
+ * Sky / sunrise / sunset table
+ * ============================================================ */
+.sky-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  margin-top: var(--sp-2);
+}
+
+.sky-table th,
+.sky-table td {
+  text-align: left;
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.sky-table th {
+  background: var(--c-warm-100);
+  color: var(--c-ink-700);
+  font-weight: 600;
+}
+
+@media (max-width: 540px) {
+  .sky-table {
+    font-size: var(--fs-xs);
+  }
+  .sky-table th,
+  .sky-table td {
+    padding: var(--sp-2);
+  }
+}
+
+.sky-notes {
+  margin-top: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.sky-notes__item {
+  font-size: var(--fs-sm);
+  background: var(--c-warm-100);
+  padding: var(--sp-2) var(--sp-3);
+  border-left: 3px solid var(--c-forest-500);
+  border-radius: var(--radius-sm);
+  margin: 0;
+}
+
+.sky-spots__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+.sky-spots__item {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3);
+}
+
+.sky-spots__name {
+  color: var(--c-ink-900);
+  font-size: var(--fs-base);
+}
+
+.sky-spots__where {
+  color: var(--c-ink-500);
+  font-size: var(--fs-sm);
+}
+
+.sky-spots__why {
+  font-size: var(--fs-sm);
+  margin: var(--sp-2) 0 0;
+  color: var(--c-ink-700);
+  line-height: 1.5;
+}
+
+.sky-spots__note {
+  font-size: var(--fs-xs);
+  font-style: italic;
+  color: var(--c-ink-500);
+  margin: var(--sp-2) 0 0;
+}
+
+/* ============================================================
+ * Activities
+ * ============================================================ */
+.activities__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.activities__item {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-glacier-500);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.activities__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+
+.activities__name {
+  font-size: var(--fs-base);
+}
+
+.activities__path-fit {
+  font-size: var(--fs-xs);
+  color: var(--c-forest-700);
+  background: var(--c-warm-100);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.activities__where,
+.activities__meta,
+.activities__desc {
+  font-size: var(--fs-sm);
+  margin: var(--sp-2) 0 0;
+  color: var(--c-ink-700);
+  line-height: 1.5;
+}
+
+.ruled-out__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.ruled-out__item {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  background: var(--c-warm-100);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+}
+
+.ruled-out__why {
+  margin: 0.25rem 0 0;
+  color: var(--c-ink-500);
+  font-style: italic;
+}
+
+/* ============================================================
+ * For Erin
+ * ============================================================ */
+.for-erin__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.for-erin__item {
+  background: var(--c-cream-100, #faf6ee);
+  border-left: 3px solid var(--c-glacier-500);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.for-erin__question {
+  font-size: var(--fs-base);
+  margin: 0 0 var(--sp-2);
+  color: var(--c-ink-900);
+}
+
+.for-erin__context {
+  font-size: var(--fs-sm);
+  margin: 0;
+  color: var(--c-ink-700);
+  line-height: 1.5;
+}

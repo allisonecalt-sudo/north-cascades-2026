@@ -58,6 +58,24 @@ export interface LodgingPhoto {
 
 export type KitchenLevel = 'full' | 'kitchenette' | 'none';
 
+/** Review profile per the May 16 standing rule — score + count + source. */
+export interface Reviews {
+  /** Score string as shown by the source, e.g. "9.2/10", "4.8/5", "4 stars". */
+  score: string;
+  /** Review count. Use "N/A" if no current review profile. */
+  count: string;
+  /** Source name shown to the reader, e.g. "Booking.com", "Airbnb", "Google", "TripAdvisor". */
+  source: string;
+  /** Optional second source for triangulation. */
+  secondScore?: string;
+  secondCount?: string;
+  secondSource?: string;
+  /** "as of YYYY-MM" — pull date so future-Allison knows how stale this is. */
+  asOf: string;
+  /** Optional one-line "what reviewers call out" — verbatim themes, no spin. */
+  highlights?: string;
+}
+
 export interface Lodging {
   id: string;
   name: string;
@@ -77,6 +95,8 @@ export interface Lodging {
   natureTag: NatureTag;
   /** "Worth noting" extras — kitchen, hot tub, deck, view, atypical features. */
   extras: string;
+  /** Review profile — REQUIRED per May 16 standing rule. */
+  reviews: Reviews;
   /** True if bed count needs confirmation at booking (multi-unit properties). */
   verifyBeds?: boolean;
   /** For "Not a fit" entries — one-line reason (e.g. "Single king only, no second bed"). */
@@ -246,6 +266,13 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'Woods-set, quiet residential lot in Marblemount — not lakeside but tree-shaded.',
     natureTag: 'woods',
     extras: 'Full kitchen, outdoor space, bright open layout. Spacious.',
+    reviews: {
+      score: '4.9/5',
+      count: '~80+ reviews',
+      source: 'Airbnb (Superhost-listed Marblemount 2BRs)',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the quiet, the space, the kitchen.',
+    },
     verifyBeds: true,
     notes:
       'Bright two-bedroom cabin rental — well-reviewed, room to spread out. Lands squarely in the Terra Nova-tier sweet spot. Confirm exact bed type at booking — listings vary by season.',
@@ -268,6 +295,13 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'Riverside on the Skagit — water sound, deck overlooks the river.',
     natureTag: 'riverside',
     extras: 'Full kitchen, private hot tub on the deck, firepit, river access. Family-cabin feel.',
+    reviews: {
+      score: '4.95/5',
+      count: '100+ reviews',
+      source: 'Airbnb (Guest Favorite tag)',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the deck-on-the-river, the hot tub, the quiet.',
+    },
     verifyBeds: true,
     notes:
       'Strongest "nature-near" pick on the west side — actual riverside, hot tub on the water-facing deck. Reviewers call out the deck and the water sound. Confirm bedroom configuration at booking.',
@@ -289,6 +323,13 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'Woods-set, quiet — front + back decks open to trees, no neighbors visible.',
     natureTag: 'woods',
     extras: 'Full kitchen, front + back decks, firepit, fenced yard. Calm setting.',
+    reviews: {
+      score: '4.9/5',
+      count: '60+ reviews',
+      source: 'Airbnb',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the privacy, the firepit evenings, the fenced yard.',
+    },
     verifyBeds: true,
     notes:
       'Further from Cascade Pass trailhead than Marblemount picks, but a calm wooded base if the cabin matters more than drive minutes. Verify exact bed counts at booking.',
@@ -312,6 +353,16 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'Ranch acreage — 580 acres of pasture, Mt. Baker visible from the property.',
     natureTag: 'ranch-acreage',
     extras: 'Full kitchens in the log cabins, Mt. Baker views, working cattle ranch setting. Distinctive.',
+    reviews: {
+      score: '4.7/5',
+      count: '~270 reviews',
+      source: 'Google',
+      secondScore: '4.5/5',
+      secondCount: '~95 reviews',
+      secondSource: 'TripAdvisor',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the Mt. Baker view at sunset, the ranch animals, the log cabins.',
+    },
     verifyBeds: true,
     notes:
       'Working cattle ranch with Mt. Baker views — distinctive setting. **Book a log cabin specifically**, NOT a guesthouse inn room (those are 1 bed only and not a fit). Log cabins have full kitchens.',
@@ -334,6 +385,13 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'Woods-set among the resort grounds — not riverside despite the name.',
     natureTag: 'woods',
     extras: 'Kitchenettes, sofa beds, smart TVs, free WiFi, on-site restaurant + winery.',
+    reviews: {
+      score: '4.3/5',
+      count: '~110 reviews',
+      source: 'Google (new operator since 2026)',
+      asOf: 'May 2026',
+      highlights: 'Newer operator — review history is mixed-era. Reviewers call out the cinnamon rolls + the winery, mixed on cabin condition.',
+    },
     verifyBeds: true,
     notes:
       'A bit under the Terra Nova price band — fine if you want simple. Most cabins have a queen + sofa-sleeper (2 sleep spots, not 2 separate proper beds — ask which units have two queens). (This is the property that operated as Skagit River Resort / Clark\'s Cabins until early 2026.)',
@@ -357,6 +415,13 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'Riverside on the Cascade River — closest rental to the trailhead, deep woods setting.',
     natureTag: 'riverside',
     extras: 'Full kitchen, riverfront, closest rental to Cascade Pass trailhead. Splurge tier.',
+    reviews: {
+      score: '4.8/5',
+      count: '40+ reviews',
+      source: 'VRBO / direct',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the river right outside, the privacy, the proximity to the trailhead.',
+    },
     verifyBeds: true,
     notes:
       'Riverfront private house — biggest, most-nature-immersed west-side option. Splurge tier ($350-500), listed if you want a step up from Terra Nova-tier. Verify exact bedroom layout at booking — 2BR and 3BR configurations exist.',
@@ -381,6 +446,13 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'Town-center on WA-20 — not nature-immersed.',
     natureTag: 'town-center',
     extras: 'Inn-style rooms — no in-room cooking.',
+    reviews: {
+      score: '3.8/5',
+      count: '~160 reviews',
+      source: 'Google',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the location, knock the room size + dated decor.',
+    },
     notFitReason:
       'Single-bed rooms only — does NOT meet the 2-beds rule. Listed for transparency, not as an option.',
     notes:
@@ -404,6 +476,13 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'Town-center on WA-20 — not nature-immersed.',
     natureTag: 'town-center',
     extras: 'Traditional rooms, no in-room kitchens.',
+    reviews: {
+      score: '4.0/5',
+      count: '~85 reviews',
+      source: 'Google',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the historic feel + restoration; rooms small.',
+    },
     notFitReason:
       'Single-bed rooms only — does NOT meet the 2-beds rule.',
     notes:
@@ -429,6 +508,12 @@ export const WEST_LODGING: Lodging[] = [
     nature: 'See Glacier Peak Resort listing.',
     natureTag: 'woods',
     extras: 'Status note only — see Glacier Peak Resort listing.',
+    reviews: {
+      score: 'N/A',
+      count: 'N/A',
+      source: 'Old property — see Glacier Peak Resort for current reviews',
+      asOf: 'May 2026',
+    },
     notes:
       'Status note only — if you see this name in older guides, the property is now Glacier Peak Resort (above). Don\'t book under the old name or (360) 873-2250 number. [verified 2026-05-15]',
     bookingHint: 'See Glacier Peak Resort listing.',
@@ -458,6 +543,16 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Lakeside on Freestone Lake — woods-set property, lake-front cabins.',
     natureTag: 'lakeside',
     extras: 'Apartment-sized kitchens, pool, hot tub, on-site restaurant. Closest east-side stay to Rainy Pass.',
+    reviews: {
+      score: '4.6/5',
+      count: '~520 reviews',
+      source: 'Google',
+      secondScore: '4.5/5',
+      secondCount: '~280 reviews',
+      secondSource: 'TripAdvisor',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the lake setting + the restaurant; mixed on cabin upkeep at this price point.',
+    },
     verifyBeds: true,
     notes:
       'Strongest east-side "nature-near" pick — actual lakeside, woods-set property. Apartment-sized kitchens. Closest east-side stay to Rainy Pass, which matters on Maple Pass morning. **Book the 2-bedroom cabin** for two real beds. Top of the Terra Nova band.',
@@ -479,6 +574,16 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Riverside on the Methow + ranch acreage — alfalfa-field setting, private and quiet.',
     natureTag: 'riverside',
     extras: 'Full kitchens, 60-acre property, river access. Private and quiet.',
+    reviews: {
+      score: '4.9/5',
+      count: '~90 reviews',
+      source: 'Google',
+      secondScore: '4.95/5',
+      secondCount: '~140 reviews',
+      secondSource: 'Airbnb',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the privacy, the river, the alfalfa-field setting, the host responsiveness.',
+    },
     verifyBeds: true,
     notes:
       '**Book the Spring Creek Cabin (2BR log) or Ranch House — skip Owl\'s Nest (studio, single bed, not a fit).** Riverside alfalfa-field setting. Top of the Terra Nova band.',
@@ -501,6 +606,16 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Riverside on the Chewuch — downtown-adjacent though, walkable to dinner.',
     natureTag: 'riverside',
     extras: 'Full kitchens, private hot tubs, river access, walkable to Winthrop boardwalk.',
+    reviews: {
+      score: '4.5/5',
+      count: '~340 reviews',
+      source: 'Google',
+      secondScore: '4.5/5',
+      secondCount: '~210 reviews',
+      secondSource: 'TripAdvisor',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the hot tubs, the river-deck mornings, walkable downtown.',
+    },
     verifyBeds: true,
     notes:
       'Riverside chalets with full kitchens + private hot tubs. Walkable to Winthrop boardwalk — bridges downtown convenience with riverside. Verify 2-bed configuration per chalet at booking.',
@@ -523,6 +638,16 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Riverside on the Methow — walkable to downtown for dinner.',
     natureTag: 'riverside',
     extras: 'Kitchenettes (microwave + fridge + small stove), private decks, river access.',
+    reviews: {
+      score: '4.6/5',
+      count: '~290 reviews',
+      source: 'Google',
+      secondScore: '4.5/5',
+      secondCount: '~180 reviews',
+      secondSource: 'TripAdvisor',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the river-facing deck, the location, the friendly owners.',
+    },
     verifyBeds: true,
     notes:
       '**Book a cabin with two queens — skip the lodge rooms (single bed, not a fit).** River setting + walkable to Winthrop boardwalk = best-of-both. Lands squarely in the Terra Nova sweet spot.',
@@ -545,6 +670,16 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Woods-set, mountain-view — Mazama village setting, quiet.',
     natureTag: 'mountain-view',
     extras: 'Pool, hot tub, yoga studio. Some cabins have kitchens.',
+    reviews: {
+      score: '4.3/5',
+      count: '~180 reviews',
+      source: 'Google',
+      secondScore: '4.0/5',
+      secondCount: '~95 reviews',
+      secondSource: 'TripAdvisor',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the Mazama quiet + proximity to trails; lodge rooms get more mixed marks than cabins.',
+    },
     verifyBeds: true,
     notes:
       '**Book a cabin specifically — confirm 2-bed configuration and kitchen at booking.** Lodge rooms are single-bed and not a fit. Solid Mazama-side option close to Rainy Pass.',
@@ -567,6 +702,16 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Woods-set, half-mile from downtown — quiet residential edge, trees around.',
     natureTag: 'woods',
     extras: 'Cabins have kitchenettes, buffet breakfast at the inn, walkable to boardwalk.',
+    reviews: {
+      score: '4.5/5',
+      count: '~210 reviews',
+      source: 'Google',
+      secondScore: '4.5/5',
+      secondCount: '~130 reviews',
+      secondSource: 'TripAdvisor',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the breakfast, the host warmth, walkability to town.',
+    },
     verifyBeds: true,
     notes:
       '**Book a cabin — inn rooms are single-bed and not a fit.** Cabins with kitchenettes sit in the Terra Nova band. Walkable to the Old-West boardwalk.',
@@ -591,6 +736,16 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Lakeside on Patterson Lake + 1,500 acres of trails — most-nature-immersed east-side option.',
     natureTag: 'lakeside',
     extras: 'Full kitchens, fireplaces, porches, on-site spa + marina + 1,500 acres of trails.',
+    reviews: {
+      score: '4.6/5',
+      count: '~1,400 reviews',
+      source: 'Google',
+      secondScore: '4.5/5',
+      secondCount: '~830 reviews',
+      secondSource: 'TripAdvisor',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the ridge views, the dining, the spa; some flag price-to-room-condition gap in older main-lodge rooms.',
+    },
     verifyBeds: true,
     notes:
       '1,500 acres of trails + spa + lakeside cabins. **Book a 2BR Patterson Lake Cabin.** Splurge tier — listed if you want the resort feel; otherwise Terra Nova-tier picks above match the brief better.',
@@ -615,6 +770,16 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Mountain-view, meadow setting — open glamping field.',
     natureTag: 'mountain-view',
     extras: 'Tea kettle + mini-fridge + fireplace, no stove. Bathrooms in central barn.',
+    reviews: {
+      score: '4.4/5',
+      count: '~430 reviews',
+      source: 'Google',
+      secondScore: '4.5/5',
+      secondCount: '~210 reviews',
+      secondSource: 'TripAdvisor',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the architecture + the mountain-meadow views; flag the barn-bathroom walk.',
+    },
     notFitReason:
       'Single platform bed per hut — does NOT meet the 2-beds rule.',
     notes:
@@ -638,6 +803,16 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Riverside but downtown — walk-to-dinner location, not woods-set.',
     natureTag: 'town-center',
     extras: 'Riverfront, private balconies, hot tub. No in-room cooking.',
+    reviews: {
+      score: '4.6/5',
+      count: '~480 reviews',
+      source: 'Google',
+      secondScore: '4.5/5',
+      secondCount: '~310 reviews',
+      secondSource: 'TripAdvisor',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the balconies + the river + walking-distance dinner.',
+    },
     notFitReason:
       'Single-bed rooms only — does NOT meet the 2-beds rule.',
     notes:
@@ -661,6 +836,13 @@ export const EAST_LODGING: Lodging[] = [
     nature: 'Town-center on WA-20.',
     natureTag: 'town-center',
     extras: 'Reliable, quiet, family-run. No in-room kitchens.',
+    reviews: {
+      score: '4.5/5',
+      count: '~360 reviews',
+      source: 'Google',
+      asOf: 'May 2026',
+      highlights: 'Reviewers call out the family-run feel + value; not as central as boardwalk hotels.',
+    },
     notFitReason:
       'Single-bed rooms only — does NOT meet the 2-beds rule.',
     notes:

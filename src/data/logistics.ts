@@ -37,8 +37,19 @@ export const LOGISTICS: LogisticsItem[] = [
   {
     topic: 'Wildfire / smoke risk',
     detail:
-      'August is fire season. SR-20 has closed for fire before (Sourdough Fire 2023, ~2 weeks). Monitor InciWeb + AirNow from ~Aug 1.',
+      'August is fire season. SR-20 has closed for fire before (Sourdough Fire 2023, ~2 weeks; Diamond Creek 2017). Methow Valley east side has had multiple August fire-smoke events — AQI can move from "good" to "unhealthy" in 24 hrs when winds shift. Tuck 2-3 N95/KN95 masks per person; monitor InciWeb + AirNow from ~Aug 1. Path A (west-side only) is more fire-resilient than Paths B + C.',
     link: { label: 'InciWeb (active wildfires)', url: 'https://inciweb.nwcg.gov/' },
+  },
+  {
+    topic: 'Air quality (AirNow)',
+    detail:
+      'Live AQI for Marblemount, Newhalem, Mazama, Winthrop. Threshold: AQI <100 = fine; 100-150 = sensitive groups; 150+ = swap to indoor day. Check 24-48 hrs before any pass-hike day.',
+    link: { label: 'AirNow live AQI map', url: 'https://www.airnow.gov/' },
+  },
+  {
+    topic: 'Cascade River Rd drive timing',
+    detail:
+      'Last 13 mi is compacted dirt + gravel, narrow in spots, one-vehicle-wide in places. Plan ~1 hr Marblemount → trailhead (not the 30 min Google Maps suggests). Typically open mid-July through October.',
   },
   {
     topic: 'WA-20 live road status',

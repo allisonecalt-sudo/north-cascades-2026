@@ -96,3 +96,43 @@ export const VIEWPOINTS: Viewpoint[] = [
     timeNeeded: 'Hike stop',
   },
 ];
+
+/**
+ * Mt. Baker corridor (WA-542) viewpoints — bonus, off-WA-20.
+ *
+ * Only realistic on Path A (west-side anchor) or on a Day 1 detour from BLI.
+ * Surfaced separately so they don\'t pollute the WA-20 mileage list.
+ */
+export interface BakerViewpoint {
+  name: string;
+  where: string;
+  description: string;
+  timeNeeded: string;
+}
+
+export const BAKER_VIEWPOINTS: BakerViewpoint[] = [
+  {
+    name: 'Picture Lake',
+    where: 'WA-542 end · Heather Meadows · ~1 hr east of Bellingham',
+    description:
+      'Maybe the most-photographed scene in Washington — Mt. Shuksan mirrored in the lake. Easy 0.5 mi paved loop around the water. Iconic at sunrise + sunset.',
+    timeNeeded: '30-45 min',
+  },
+  {
+    name: 'Artist Point',
+    where: 'End of WA-542 · ~5 min past Picture Lake',
+    description:
+      'Drive-up panorama of Mt. Baker + Mt. Shuksan. Multiple short walks from the parking area. Road closes by snow late October; mid-August always open.',
+    timeNeeded: '30-60 min',
+  },
+  {
+    name: 'Heather Meadows',
+    where: 'WA-542 · ~10 min before Artist Point',
+    description:
+      'Wildflower meadows in August, easy walking trails, alpine tarns. Pair with Chain Lakes hike (6-7 mi loop, see Hikes).',
+    timeNeeded: '1-2 hrs',
+  },
+];
+
+export const BAKER_NOTE =
+  'These are off WA-20 — they sit on the Mt. Baker corridor (WA-542) east of Bellingham. Best fit: Path A (west-side anchor) Day 4 swap-in, OR a Day 1 detour from BLI before driving to Marblemount.';

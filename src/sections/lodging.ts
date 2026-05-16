@@ -108,6 +108,27 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
     lodging.nature
   );
 
+  // Review row — May 16 standing rule, every card surfaces score + count + source.
+  const r = lodging.reviews;
+  const reviewLine =
+    r.score === 'N/A'
+      ? null
+      : `${r.score} · ${r.count} (${r.source}${
+          r.secondScore ? `; ${r.secondScore} · ${r.secondCount} ${r.secondSource}` : ''
+        })`;
+  const reviewRow = reviewLine
+    ? h(
+        'p',
+        { class: 'card__reviews' },
+        h('strong', {}, 'Reviews: '),
+        reviewLine,
+        h('span', { class: 'card__reviews-as-of' }, ` · as of ${r.asOf}`)
+      )
+    : null;
+  const reviewHighlights = r.highlights
+    ? h('p', { class: 'card__review-highlights' }, r.highlights)
+    : null;
+
   return h(
     'article',
     {
@@ -134,6 +155,8 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
     lodging.phone ? h('p', { class: 'card__phone' }, lodging.phone) : null,
     notFitBlock,
     natureRow,
+    reviewRow,
+    reviewHighlights,
     h('p', { class: 'card__extras' }, h('strong', {}, 'Worth noting: '), lodging.extras),
     isTownCenter
       ? h(

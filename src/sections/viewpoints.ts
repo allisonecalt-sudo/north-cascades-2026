@@ -5,7 +5,7 @@
  * pull-offs sit below as a milepost timeline. No "postcard" hierarchy.
  */
 
-import { VIEWPOINTS, type Viewpoint } from '../data/viewpoints';
+import { BAKER_NOTE, BAKER_VIEWPOINTS, VIEWPOINTS, type Viewpoint } from '../data/viewpoints';
 import { h, section } from '../dom';
 
 function renderViewpointPhoto(v: Viewpoint): HTMLElement | null {
@@ -96,6 +96,28 @@ export function renderViewpoints(): HTMLElement {
           ),
           h('ul', { class: 'mini-list' }, ...rest.map(renderViewpointSummary))
         )
-      : null
+      : null,
+    h(
+      'details',
+      { class: 'disclosure' },
+      h(
+        'summary',
+        { class: 'disclosure__summary' },
+        `Bonus — Mt. Baker corridor (WA-542, off WA-20)`
+      ),
+      h('p', { class: 'disclosure__lede' }, BAKER_NOTE),
+      h(
+        'ul',
+        { class: 'mini-list' },
+        ...BAKER_VIEWPOINTS.map((v) =>
+          h(
+            'li',
+            { class: 'mini-list__item' },
+            h('strong', { class: 'mini-list__label' }, v.name),
+            h('span', { class: 'mini-list__detail' }, `${v.description} · ${v.where} · ${v.timeNeeded}`)
+          )
+        )
+      )
+    )
   );
 }
