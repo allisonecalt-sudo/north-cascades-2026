@@ -15,20 +15,18 @@ import { renderSeattle } from './sections/seattle';
 import { renderLogistics } from './sections/logistics';
 import { renderDecisions } from './sections/decisions';
 import { renderFooter } from './sections/footer';
+import { attachNotesButton, initNotesModal, refreshBadges } from './sections/notes-button';
 
 function mount(): void {
   const app = document.getElementById('app');
   if (!app) {
     throw new Error('Missing #app root');
   }
-  app.replaceChildren(
-    renderHero(),
-    document.createElement('main'),
-  );
+  app.replaceChildren(renderHero(), document.createElement('main'));
   const main = app.querySelector('main');
   if (!main) return;
   main.className = 'main';
-  main.append(
+  const sections = [
     renderPaths(),
     renderOverview(),
     renderFlights(),
@@ -41,9 +39,17 @@ function mount(): void {
     renderRestaurants(),
     renderSeattle(),
     renderLogistics(),
-    renderDecisions()
-  );
+    renderDecisions(),
+  ];
+  main.append(...sections);
   app.append(renderFooter());
+
+  // Notes UI — modal mounts once, button attached per section, badges refreshed.
+  initNotesModal();
+  for (const sec of sections) {
+    attachNotesButton(sec);
+  }
+  void refreshBadges();
 }
 
 mount();
