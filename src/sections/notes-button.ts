@@ -10,9 +10,15 @@
  *     <h2>. Tap opens a single shared modal pre-scoped to that section.
  *   - Active path awareness: at submit time, reads current `selectedPath`
  *     (A/B/C) so the row carries the path context.
- *   - Badge counts shown next to each section's button (e.g. "💬 2").
- *   - Modal also shows existing notes for THIS section, scrollable.
+ *   - Badge counts shown next to each section's button — ONLY pending (unseen)
+ *     notes count, so the badge reflects "fresh feedback Allison hasn't read."
+ *     Once Allison opens /notes.html the pending → seen flip clears badges.
+ *   - Modal also shows existing notes for THIS section, scrollable, with
+ *     status pills (pending / seen / applied) + "You" indicator on the
+ *     author's own notes (matched against the stored author name).
  *   - Author name persisted in localStorage so they don't retype each time.
+ *   - Post-submit toast: "Saved — Allison will see this next time she opens
+ *     the site." Wave 3 polish (May 17, 2026).
  *
  * What's built: attachNotesButton(sectionEl), initNotesModal().
  * What's next: optional "addressed" toggle in admin view (Allison-side).
@@ -70,7 +76,7 @@ function escapeText(s: string): string {
   return s;
 }
 
-function showToast(text: string, ms = 2400): void {
+function showToast(text: string, ms = 3000): void {
   const t = document.createElement('div');
   t.className = 'notes-toast';
   t.textContent = text;
@@ -122,6 +128,16 @@ function buildModal(): HTMLDivElement {
   return wrap;
 }
 
+function statusPill(status: Note['status']): HTMLElement {
+  const label =
+    status === 'applied'
+      ? '✓ applied'
+      : status === 'seen'
+        ? '· seen'
+        : '· new';
+  return h('span', { class: `notes-item__status notes-item__status--${status}` }, label);
+}
+
 function renderExisting(listEl: HTMLElement, notes: Note[]): void {
   listEl.replaceChildren();
   if (notes.length === 0) {
@@ -131,16 +147,21 @@ function renderExisting(listEl: HTMLElement, notes: Note[]): void {
     listEl.appendChild(empty);
     return;
   }
+  const storedAuthor = readStoredAuthor().trim().toLowerCase();
+  // Notes already come back newest-first from the API (order=created_at.desc).
   for (const n of notes) {
-    const item = h('div', { class: 'notes-item' });
+    const item = h('div', { class: `notes-item notes-item--${n.status}` });
     const body = h('div', { class: 'notes-item__body' }, n.note);
+    const authorMatchesStored =
+      storedAuthor.length > 0 && n.author.trim().toLowerCase() === storedAuthor;
     const meta = h(
       'div',
       { class: 'notes-item__meta' },
       h('span', {}, `👤 ${escapeText(n.author)}`),
+      authorMatchesStored ? h('span', { class: 'notes-item__you' }, 'You') : null,
       h('span', {}, `🕒 ${formatRelative(n.created_at)}`),
       n.path_id ? h('span', {}, `🥾 Path ${n.path_id}`) : null,
-      n.addressed ? h('span', { class: 'notes-item__addressed' }, '✓ addressed') : null
+      statusPill(n.status)
     );
     item.append(body, meta);
     listEl.appendChild(item);
@@ -219,7 +240,7 @@ async function submitNote(): Promise<void> {
       path_id: path,
       note: text,
     });
-    showToast('Note saved. Allison will see it.');
+    showToast('Saved — Allison will see this next time she opens the site.');
     textEl.value = '';
     // Refresh existing list + badge counts.
     await loadExistingForSection(currentSection);
@@ -284,6 +305,8 @@ export function attachNotesButton(sectionEl: HTMLElement): void {
 
 /**
  * Refresh count badges across all section triggers in one round-trip.
+ * Counts ONLY pending notes — once Allison opens /notes.html, those flip to
+ * `seen` and the badge clears.
  */
 export async function refreshBadges(): Promise<void> {
   try {

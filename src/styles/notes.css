@@ -228,6 +228,54 @@
   border-radius: 999px;
 }
 
+/* Status pills inside the modal's per-section existing list */
+.notes-item__status {
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.notes-item__status--pending {
+  background: #fff4d6;
+  color: #6b4d00;
+  border: 1px solid #f0d27d;
+}
+.notes-item__status--seen {
+  background: var(--c-glacier-100, #e3f1f8);
+  color: #1f4e66;
+  border: 1px solid #b9d8e6;
+}
+.notes-item__status--applied {
+  background: var(--c-good-bg);
+  color: var(--c-good-ink);
+  border: 1px solid var(--c-good-border);
+}
+
+/* Subtle left-border accent on the note card by status. */
+.notes-item--pending {
+  border-left: 3px solid #f0c14b;
+}
+.notes-item--seen {
+  border-left: 3px solid #b9d8e6;
+}
+.notes-item--applied {
+  border-left: 3px solid var(--c-good-border);
+  background: color-mix(in srgb, var(--c-good-bg) 35%, white);
+}
+
+/* "You" indicator — small chip on notes the current author left. */
+.notes-item__you {
+  background: var(--c-forest-700);
+  color: white;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+}
+
 /* Toast */
 .notes-toast {
   position: fixed;

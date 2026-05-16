@@ -45,26 +45,42 @@ function buildPopup(): HTMLDivElement {
       <button class="welcome-popup__close" type="button" aria-label="Close welcome">×</button>
       <div class="welcome-popup__eyebrow">Hi Erin —</div>
       <h2 class="welcome-popup__title" id="welcome-popup-title">Allison built this for our trip.</h2>
-      <p class="welcome-popup__body">
-        You'll see a small <span class="welcome-popup__chip">💬</span> button next to every
-        section title — <strong>tap it to leave a note.</strong> Whatever you're thinking
-        about that section: "I like this lodging," "this drive looks too long," "swap
-        this hike for that one," "this part isn't for me." Anything.
-      </p>
-      <p class="welcome-popup__body">
-        Allison's AI assistant reads the notes and she updates the site to match.
-        Think of it as a shared whiteboard — your edits land in her hands.
-      </p>
+
+      <div class="welcome-popup__steps">
+        <div class="welcome-popup__step">
+          <span class="welcome-popup__step-num">1</span>
+          <div class="welcome-popup__step-body">
+            <strong>Tap <span class="welcome-popup__chip">💬</span></strong> next to any section
+            title (you'll see them everywhere — lodging, hikes, food, etc).
+          </div>
+        </div>
+        <div class="welcome-popup__step">
+          <span class="welcome-popup__step-num">2</span>
+          <div class="welcome-popup__step-body">
+            <strong>Type whatever you're thinking.</strong> "I love this lodging." "Too much
+            driving." "Swap this hike." "Not for me." No filter needed.
+          </div>
+        </div>
+        <div class="welcome-popup__step">
+          <span class="welcome-popup__step-num">3</span>
+          <div class="welcome-popup__step-body">
+            <strong>Allison sees it</strong> next time she opens the site, then updates the
+            trip to match. Like a shared whiteboard.
+          </div>
+        </div>
+      </div>
+
       <p class="welcome-popup__body welcome-popup__body--small">
-        Three paths up top (A / B / C) — pick one to filter the site, or
-        compare all three. Nothing's locked. This is a draft.
+        Three paths up top (A / B / C) — pick one to filter the site, or compare all three.
+        Nothing's locked. This is a draft.
       </p>
+
       <div class="welcome-popup__actions">
         <button class="welcome-popup__cta" type="button" data-action="dismiss">
           Got it — show me the trip
         </button>
       </div>
-      <p class="welcome-popup__tip">Or click anywhere to dismiss.</p>
+      <p class="welcome-popup__tip">3-second read · or click anywhere to dismiss</p>
     </div>
   `;
   return wrap;
