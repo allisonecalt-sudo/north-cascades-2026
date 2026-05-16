@@ -14,7 +14,14 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'costs',
     title: 'Budget — three paths, three tiers',
-    lede: 'Total trip cost for 2 travelers. Verified May 16 quotes (flights, rental, lodging). Pick a path above; the active path highlights here.',
+    lede: 'Total trip cost for 2 travelers. Exact tier numbers — not ranges. Verified May 16-17 quotes. Pick a path; the active path highlights here.',
+    imageHero: {
+      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Diablo_Lake_%28Washington_State%29.jpg/1920px-Diablo_Lake_%28Washington_State%29.jpg',
+      alt: 'Diablo Lake with turquoise glacier-flour water and surrounding peaks',
+      credit: 'Photo: Wikimedia · CC',
+      ctaLabel: 'See the numbers',
+      ctaHref: '#costs',
+    },
   });
 
   main.append(renderCosts(), renderPageCtas('costs'));

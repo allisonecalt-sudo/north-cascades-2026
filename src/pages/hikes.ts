@@ -16,6 +16,13 @@ function mount(): void {
     pageId: 'hikes',
     title: 'Hikes, viewpoints, and sky',
     lede: 'Easy-to-moderate only — no scrambling, no big-mileage days. Trailhead facts, distance, elevation.',
+    imageHero: {
+      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Maple_Pass_Loop%2C_North_Cascades.jpg/1920px-Maple_Pass_Loop%2C_North_Cascades.jpg',
+      alt: 'Maple Pass Loop with alpine larches and ridgeline views in the North Cascades',
+      credit: 'Photo: Wikimedia · CC',
+      ctaLabel: 'See the hikes',
+      ctaHref: '#hikes',
+    },
   });
 
   main.append(renderHikes(), renderViewpoints(), renderSky(), renderPageCtas('hikes'));

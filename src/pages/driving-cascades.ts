@@ -16,6 +16,13 @@ function mount(): void {
     pageId: 'driving-cascades',
     title: 'Driving in the Cascades',
     lede: 'WA-20 closure, Cascade River Rd gravel, Stevens Pass detour, cell dead zones, gas spacing, wildlife, fire/smoke.',
+    imageHero: {
+      src: 'https://upload.wikimedia.org/wikipedia/commons/d/db/Washington_Highway_20_North_Cascades.jpg',
+      alt: 'Washington Highway 20 winding through the North Cascades',
+      credit: 'Photo: Wikimedia · CC',
+      ctaLabel: 'See the driving notes',
+      ctaHref: '#driving-cascades',
+    },
   });
 
   main.append(renderDrivingCascades(), renderPageCtas('driving-cascades'));
