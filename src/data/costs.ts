@@ -1,7 +1,12 @@
 /**
  * costs.ts — budget breakdown per path × category × tier.
  *
- * Per Allison's May 16 ask: *"also give range of budget options"*.
+ * Wave 3 GENIUS UX pass (May 17, 2026):
+ *  - Per-tier trim-moves (concrete USD savings)
+ *  - Per-category locked/flexible flag (lodging/rental/flights = locked; food/activities/fuel = flexible)
+ *  - Per-category source-href for deep links from the breakdown rows
+ *  - perPersonShare() helper for Splitwise math
+ *  - Public-facing tier labels: Lean / Standard / Splurge
  *
  * Three paths (A / B / C), each with low / mid / high tiers built from:
  *   - flights.ts (SEA RT NYC, peak Aug)
@@ -11,33 +16,43 @@
  *   - park pass + activity costs
  *   - 10% contingency on subtotal
  *
- * Path A = 4 west nights, no east-side driving (~600 mi).
- * Path B = 2 west + 2 east, mid-trip move (~900 mi).
- * Path C = 1 west + 3 east, less driving but longer drive home (~750 mi).
- *
- * All numbers in USD, all-in (rental quoted with CDW+SLI bundle). Two-person
- * trip totals (both share the cabin + rental + groceries; flights are per-person
- * × 2). Tier-low ≈ cheapest reasonable; tier-mid ≈ typical comfortable; tier-
- * high ≈ splurge cabin + Standard SUV.
+ * All numbers in USD, all-in. Two-person trip totals (both share the cabin +
+ * rental + groceries; flights are per-person × 2).
  */
 
 export type PathLetter = 'A' | 'B' | 'C';
 export type Tier = 'low' | 'mid' | 'high';
 
+export type CategoryKey =
+  | 'flights'
+  | 'rental'
+  | 'lodging'
+  | 'food'
+  | 'activities'
+  | 'fuel'
+  | 'contingency';
+
 export interface CostCategory {
-  /** Display label. */
+  key: CategoryKey;
   label: string;
-  /** One-line note on what's in this bucket. */
   note: string;
-  /** USD amount for this tier × path. */
   amount: number;
+  /** "locked" = mostly fixed once booked; "flexible" = compressible. */
+  flex: 'locked' | 'flexible';
+  sourceHref: string;
+  sourceLabel: string;
+}
+
+export interface TrimMove {
+  label: string;
+  saves: number;
 }
 
 export interface CostTier {
   tier: Tier;
-  /** Short description: "Cheapest reasonable / Typical comfortable / Splurge". */
   summary: string;
   categories: CostCategory[];
+  trims: TrimMove[];
 }
 
 export interface PathCost {
@@ -46,67 +61,44 @@ export interface PathCost {
   tiers: CostTier[];
 }
 
+/** Public-facing tier names. */
+export const TIER_LABEL: Record<Tier, string> = {
+  low: 'Lean',
+  mid: 'Standard',
+  high: 'Splurge',
+};
+
 // ─────────────────────────────────────────────────────────────
 // Shared per-person flight estimates (peak Aug NYC↔SEA, nonstop)
 //   - Low: $380 (12-week book-ahead, midweek)
 //   - Mid: $470 (typical Aug peak)
 //   - High: $580 (last-minute or premium-economy seat)
-// Per-trip = ×2 passengers.
 // ─────────────────────────────────────────────────────────────
 const FLIGHT_LOW_PP = 380;
 const FLIGHT_MID_PP = 470;
 const FLIGHT_HIGH_PP = 580;
 
 // Rental — from rental.ts verified Costco quotes May 16, 2026.
-//   Low all-in:  $674 (Compact sedan, Versa/Corolla)
-//   Mid all-in:  $743-755 (Compact SUV gas OR Hybrid sedan) → use $750
-//   High all-in: $815 (Standard Elite SUV — Audi Q3/Cadillac XT4)
 const RENTAL_LOW = 674;
 const RENTAL_MID = 750;
 const RENTAL_HIGH = 815;
 
-// Lodging — from lodging.ts per-night ranges (4 nights total).
-//   Path A: 4 nights one west cabin
-//     Low: 4 × $190 (Rhody House low) = $760
-//     Mid: 4 × $255 (Riverside Retreat mid) = $1,020
-//     High: 4 × $425 (Cascade River House splurge mid) = $1,700
-//   Path B: 2 west + 2 east
-//     Low:  2×$190 + 2×$200 = $780
-//     Mid:  2×$255 + 2×$260 = $1,030
-//     High: 2×$425 + 2×$400 = $1,650
-//   Path C: 1 west + 3 east
-//     Low:  1×$190 + 3×$200 = $790
-//     Mid:  1×$255 + 3×$260 = $1,035
-//     High: 1×$425 + 3×$400 = $1,625
-
 // Food — kosher self-cater + 1-2 treat-meals.
-//   Low (groceries-heavy): $250 for two over 5 days
-//   Mid (groceries + 2 packaged-prepared dinners + winery stop): $380
-//   High (premium grocery haul + winery + Sun Mountain drink + ice cream): $520
 const FOOD_LOW = 250;
 const FOOD_MID = 380;
 const FOOD_HIGH = 520;
 
 // Activities + parks
-//   Low: park pass $30 + Discover Pass $10/day × 2 = $50 → ~$80 total
-//   Mid: + 1 Patterson Lake kayak rental (~$50) + Cascadian Farm stop ($20) = ~$150
-//   High: + Sun Mountain spa pass ($95 each) + extras = ~$340
 const ACTIVITIES_LOW = 80;
 const ACTIVITIES_MID = 150;
 const ACTIVITIES_HIGH = 340;
 
 // Fuel — depends on path miles + vehicle mpg.
-//   Path A ~600 mi · Path B ~900 mi · Path C ~750 mi.
-//   Hybrid sedan (~50 mpg) @ $4.40 PNW Aug avg, gas (~28 mpg) ~ same price.
-//   Low/Mid uses gas-compact maths; High uses gas-SUV maths.
 const fuel = (miles: number, mpg: number): number =>
   Math.round((miles / mpg) * 4.4);
 
 const PATH_MILES: Record<PathLetter, number> = { A: 600, B: 900, C: 750 };
 
-// ─────────────────────────────────────────────────────────────
-// Build the tier × path matrix
-// ─────────────────────────────────────────────────────────────
 function buildTier(
   pathId: PathLetter,
   tier: Tier,
@@ -130,16 +122,50 @@ function buildTier(
         ? 'Typical comfortable — mid-tier cabin, compact SUV or hybrid sedan, 1-2 treat-meals.'
         : 'Splurge — premium cabin (Cascade River House / Sun Mountain), Standard Elite SUV, spa/extras.';
 
+  const lodgingAnchor =
+    tier === 'low'
+      ? 'Rhody House / lean cabin'
+      : tier === 'mid'
+        ? 'Riverside Retreat / Terra Nova-tier'
+        : 'Cascade River House / Sun Mountain Lodge';
+
+  const trims: TrimMove[] =
+    tier === 'low'
+      ? [
+          { label: 'Book flights 14+ weeks out (vs 12)', saves: 80 },
+          { label: 'Skip 1 packaged-prepared dinner, grocery cook instead', saves: 25 },
+          { label: 'Single-tank rental return (vs full)', saves: 30 },
+        ]
+      : tier === 'mid'
+        ? [
+            { label: 'Compact sedan instead of SUV/hybrid', saves: 75 },
+            { label: 'Skip the Patterson Lake kayak rental', saves: 50 },
+            { label: 'Trade 1 restaurant lunch for cabin lunch', saves: 60 },
+            { label: 'Earlier-book flights (12+ weeks out)', saves: 90 },
+          ]
+        : [
+            { label: 'Skip Sun Mountain spa pass for 1 person', saves: 95 },
+            { label: 'Trade Standard Elite SUV for Compact SUV', saves: 65 },
+            { label: 'Skip the Sun Mountain ridge dinner / drink', saves: 80 },
+            { label: 'Drop premium grocery haul to mid-tier', saves: 140 },
+          ];
+
   return {
     tier,
     summary,
+    trims,
     categories: [
       {
+        key: 'flights',
         label: 'Flights',
-        note: `2 × NYC↔SEA nonstop · ~$${flightPp}/person`,
+        note: `2 × NYC↔SEA nonstop · ~$${flightPp}/person · independent of each other`,
         amount: flightPp * 2,
+        flex: 'locked',
+        sourceHref: 'travel.html',
+        sourceLabel: 'See flight options on Travel →',
       },
       {
+        key: 'rental',
         label: 'Rental car',
         note:
           tier === 'low'
@@ -148,28 +174,40 @@ function buildTier(
               ? 'Compact SUV or hybrid sedan all-in (CDW+SLI bundled)'
               : 'Standard Elite SUV (Audi Q3 / Cadillac XT4) all-in',
         amount: rental,
+        flex: 'locked',
+        sourceHref: 'rental.html',
+        sourceLabel: 'See rental quotes on Rental →',
       },
       {
+        key: 'lodging',
         label: 'Lodging',
         note:
-          pathId === 'A'
-            ? '4 nights, one west cabin'
+          (pathId === 'A'
+            ? '4 nights, one west cabin · '
             : pathId === 'B'
-              ? '2 west + 2 east, mid-trip move'
-              : '1 west + 3 east',
+              ? '2 west + 2 east, mid-trip move · '
+              : '1 west + 3 east · ') + lodgingAnchor,
         amount: lodgingTotal,
+        flex: 'locked',
+        sourceHref: 'lodging.html',
+        sourceLabel: 'See lodging options on Lodging →',
       },
       {
+        key: 'food',
         label: 'Food + treats',
         note:
           tier === 'low'
-            ? 'Kosher groceries + cabin cooking, minimal eat-out'
+            ? 'Kosher groceries + cabin cooking, minimal eat-out · ~$25/day/person'
             : tier === 'mid'
-              ? 'Groceries + 2 packaged-prepared dinners + Cascadian Farm + winery stop'
-              : 'Premium grocery + winery + Sun Mountain drink + ice cream',
+              ? 'Groceries + 2 packaged-prepared dinners + Cascadian Farm + winery stop · ~$40/day/person'
+              : 'Premium grocery + winery + Sun Mountain drink + ice cream · ~$55/day/person',
         amount: food,
+        flex: 'flexible',
+        sourceHref: 'food.html',
+        sourceLabel: 'See kosher strategy on Food →',
       },
       {
+        key: 'activities',
         label: 'Activities + passes',
         note:
           tier === 'low'
@@ -178,16 +216,27 @@ function buildTier(
               ? '+ Patterson kayak rental + Cascadian Farm stop'
               : '+ Sun Mountain spa pass per person + extras',
         amount: activities,
+        flex: 'flexible',
+        sourceHref: 'details.html',
+        sourceLabel: 'See trip details on Details →',
       },
       {
+        key: 'fuel',
         label: 'Fuel',
         note: `${PATH_MILES[pathId]} mi @ ~${mpg} mpg combined (PNW Aug ~$4.40/gal)`,
         amount: fuelCost,
+        flex: 'flexible',
+        sourceHref: 'driving-cascades.html',
+        sourceLabel: 'See driving notes →',
       },
       {
+        key: 'contingency',
         label: 'Contingency (10%)',
         note: 'Buffer for price drift, gear, parking, unplanned ice cream',
         amount: contingency,
+        flex: 'flexible',
+        sourceHref: 'notes.html',
+        sourceLabel: 'See notes →',
       },
     ],
   };
@@ -238,6 +287,33 @@ export function pathRange(path: PathCost): { low: number; mid: number; high: num
     mid: tierTotal(path.tiers[1] as CostTier),
     high: tierTotal(path.tiers[2] as CostTier),
   };
+}
+
+export function findPath(id: PathLetter): PathCost {
+  const p = PATH_COSTS.find((x) => x.pathId === id);
+  if (!p) throw new Error(`Unknown path: ${id}`);
+  return p;
+}
+
+export function findTier(path: PathCost, tier: Tier): CostTier {
+  const t = path.tiers.find((x) => x.tier === tier);
+  if (!t) throw new Error(`Unknown tier ${tier} on path ${path.pathId}`);
+  return t;
+}
+
+/** Per-person split for a 2-traveler trip.
+ * Flights = independent (each person pays their own seat).
+ * Everything else (rental, lodging, food, activities, fuel, contingency) = 50/50.
+ * Returns one traveler's total share.
+ */
+export function perPersonShare(tier: CostTier): number {
+  let share = 0;
+  for (const c of tier.categories) {
+    // Flights amount = pp × 2, so /2 gives per-person.
+    // Other categories are split 50/50, so /2 gives per-person.
+    share += c.amount / 2;
+  }
+  return Math.round(share);
 }
 
 export const COSTS_NOTES = {

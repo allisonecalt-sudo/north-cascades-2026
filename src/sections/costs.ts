@@ -1,179 +1,514 @@
 /**
- * costs.ts — visual budget breakdown per path × tier.
+ * costs.ts — Wave 3 GENIUS UX pass (May 17, 2026).
  *
- * Per TRAVEL.md section 1 — "Costs page UX" + stacked-bar pattern.
- * Allison May 16: "also give range of budget options" — answered by 3 tiers per path.
+ * Spec: 5-second-grasp test. Allison or Erin opens on mobile, must answer
+ * in 5 seconds:
+ *   - Roughly what does each path cost?      → BIG TOTAL on each card
+ *   - Roughly what's my share?               → per-person split right below
+ *   - What's the biggest line item?          → category bar visually emphasizes lodging
+ *   - What's flexible if we need to trim?    → locked/flexible flag + concrete trim moves
  *
  * Layout:
- *   - TLDR (≤50 words above the fold) — range per path × tier
- *   - Stacked-bar pattern: 3 paths side-by-side, each with low/mid/high pills
- *   - Per-category breakdown table (flights/rental/lodging/food/activities/fuel/contingency)
- *   - Includes/excludes line at bottom
- *   - Verified date pill
+ *   1. Global tier toggle (Lean / Standard / Splurge) sets all 3 cards.
+ *   2. Three big path hero cards. HUGE total. Per-person split. Per-card tier override.
+ *   3. Compare strip (only when no path selected) — 3 mini-totals to nudge a pick.
+ *   4. Active-path category breakdown — rows with icon, label, locked/flex chip, amount,
+ *      mini bar, deep-link to source page.
+ *   5. Trim suggestions — "If you need to trim $X…" with concrete moves.
+ *   6. Splitwise CTA — bottom of page. Split rules + button.
+ *   7. USD only. No ILS. No EUR.
  */
 
-import { PATH_COSTS, tierTotal, pathRange, COSTS_NOTES, type CostTier } from '../data/costs';
-import { getSelectedPath, subscribeSelectedPath } from '../state/path';
+import {
+  PATH_COSTS,
+  tierTotal,
+  pathRange,
+  perPersonShare,
+  findPath,
+  findTier,
+  TIER_LABEL,
+  COSTS_NOTES,
+  type PathCost,
+  type Tier,
+  type PathLetter,
+  type CategoryKey,
+} from '../data/costs';
+import { getSelectedPath, setSelectedPath, subscribeSelectedPath } from '../state/path';
 import { h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
+
+const TIER_STORAGE_KEY = 'ncades2026.costsTier';
+const PER_PATH_TIER_KEY = 'ncades2026.costsTier.path';
 
 function usd(n: number): string {
   return '$' + n.toLocaleString('en-US');
 }
 
-function tierBar(tier: CostTier, max: number): HTMLElement {
-  const total = tierTotal(tier);
-  const pct = Math.round((total / max) * 100);
-  const tierLabel =
-    tier.tier === 'low' ? 'Low' : tier.tier === 'mid' ? 'Mid' : 'High';
-  return h(
-    'div',
-    { class: `costs-bar costs-bar--${tier.tier}` },
-    h(
-      'div',
-      { class: 'costs-bar__head' },
-      h('span', { class: 'costs-bar__tier-label' }, tierLabel),
-      h('span', { class: 'costs-bar__total' }, usd(total))
-    ),
-    h(
-      'div',
-      { class: 'costs-bar__track' },
-      h('div', {
-        class: 'costs-bar__fill',
-        style: `width: ${pct}%`,
-      })
-    ),
-    h('p', { class: 'costs-bar__summary' }, tier.summary)
-  );
+function readStoredTier(): Tier {
+  try {
+    const v = localStorage.getItem(TIER_STORAGE_KEY);
+    if (v === 'low' || v === 'mid' || v === 'high') return v;
+  } catch {
+    // ignore
+  }
+  return 'mid';
+}
+function persistTier(t: Tier): void {
+  try {
+    localStorage.setItem(TIER_STORAGE_KEY, t);
+  } catch {
+    // ignore
+  }
 }
 
-function renderCategoryTable(tier: CostTier): HTMLElement {
-  const total = tierTotal(tier);
-  return h(
-    'table',
-    { class: 'costs-table' },
-    h(
-      'thead',
-      {},
-      h(
-        'tr',
-        {},
-        h('th', { scope: 'col' }, 'Category'),
-        h('th', { scope: 'col' }, 'What'),
-        h('th', { scope: 'col', class: 'costs-table__amount' }, 'USD')
-      )
-    ),
-    h(
-      'tbody',
-      {},
-      ...tier.categories.map((c) =>
-        h(
-          'tr',
-          {},
-          h('th', { scope: 'row' }, c.label),
-          h('td', {}, c.note),
-          h('td', { class: 'costs-table__amount' }, usd(c.amount))
-        )
-      ),
-      h(
-        'tr',
-        { class: 'costs-table__total-row' },
-        h('th', { scope: 'row' }, 'Total'),
-        h('td', {}, ''),
-        h('td', { class: 'costs-table__amount' }, usd(total))
-      )
-    )
-  );
+function readPerPathTier(pathId: PathLetter, fallback: Tier): Tier {
+  try {
+    const v = localStorage.getItem(`${PER_PATH_TIER_KEY}.${pathId}`);
+    if (v === 'low' || v === 'mid' || v === 'high') return v;
+  } catch {
+    // ignore
+  }
+  return fallback;
+}
+function persistPerPathTier(pathId: PathLetter, t: Tier): void {
+  try {
+    localStorage.setItem(`${PER_PATH_TIER_KEY}.${pathId}`, t);
+  } catch {
+    // ignore
+  }
 }
 
-function renderPathBlock(pathCost: (typeof PATH_COSTS)[number], maxTotal: number, highlight: boolean): HTMLElement {
+// ─────────────────────────────────────────────────────────────
+// Tier toggle (segmented control)
+// ─────────────────────────────────────────────────────────────
+function renderTierToggle(
+  current: Tier,
+  onChange: (t: Tier) => void,
+  options: { compact?: boolean; ariaLabel: string }
+): HTMLElement {
+  const tiers: Tier[] = ['low', 'mid', 'high'];
+  const wrap = h('div', {
+    class: `costs-toggle${options.compact ? ' costs-toggle--compact' : ''}`,
+    role: 'group',
+    'aria-label': options.ariaLabel,
+  });
+  for (const t of tiers) {
+    const btn = h(
+      'button',
+      {
+        type: 'button',
+        class: `costs-toggle__btn${t === current ? ' costs-toggle__btn--active' : ''}`,
+        'data-tier': t,
+        'aria-pressed': t === current ? 'true' : 'false',
+      },
+      TIER_LABEL[t]
+    );
+    btn.addEventListener('click', () => onChange(t));
+    wrap.appendChild(btn);
+  }
+  return wrap;
+}
+
+function pathContextLine(pathId: PathLetter): string {
+  switch (pathId) {
+    case 'A':
+      return '4 nights west side · 2 travelers · all-in';
+    case 'B':
+      return '2 west + 2 east · 2 travelers · all-in';
+    case 'C':
+      return '1 west + 3 east · 2 travelers · all-in';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Path hero card (big total + per-person + per-card tier toggle)
+// ─────────────────────────────────────────────────────────────
+function renderPathHero(
+  pathCost: PathCost,
+  tier: Tier,
+  isActive: boolean,
+  onTierChange: (t: Tier) => void,
+  onSelectPath: () => void
+): HTMLElement {
+  const t = findTier(pathCost, tier);
+  const total = tierTotal(t);
+  const pp = perPersonShare(t);
   const range = pathRange(pathCost);
-  return h(
+
+  const card = h(
     'article',
     {
-      class: `costs-path${highlight ? ' costs-path--active' : ''}`,
+      class: `costs-hero${isActive ? ' costs-hero--active' : ''}`,
       'data-path-id': pathCost.pathId,
     },
     h(
       'header',
-      { class: 'costs-path__header' },
-      h('h3', { class: 'costs-path__title' }, pathCost.pathName),
-      h(
-        'p',
-        { class: 'costs-path__range' },
-        h('strong', {}, `${usd(range.low)} – ${usd(range.high)}`),
-        ' total for 2 travelers · mid ',
-        h('strong', {}, usd(range.mid))
-      )
+      { class: 'costs-hero__head' },
+      h('span', { class: 'costs-hero__chip' }, `Path ${pathCost.pathId}`),
+      h('h3', { class: 'costs-hero__title' }, pathCost.pathName.replace(/^Path [A-C] · /, ''))
     ),
     h(
       'div',
-      { class: 'costs-path__bars' },
-      ...pathCost.tiers.map((t) => tierBar(t, maxTotal))
-    ),
-    h(
-      'details',
-      { class: 'disclosure costs-path__detail' },
+      { class: 'costs-hero__numbers' },
       h(
-        'summary',
-        { class: 'disclosure__summary' },
-        'Per-category breakdown · all three tiers'
+        'div',
+        { class: 'costs-hero__total-wrap' },
+        h('div', { class: 'costs-hero__total' }, usd(total)),
+        h('div', { class: 'costs-hero__total-label' }, 'total for 2')
       ),
-      ...pathCost.tiers.map((t, i) =>
+      h(
+        'div',
+        { class: 'costs-hero__pp-wrap' },
         h(
           'div',
-          { class: 'costs-tier-block' },
+          { class: 'costs-hero__pp' },
+          usd(pp),
+          h('span', { class: 'costs-hero__pp-suffix' }, ' / person')
+        ),
+        h('div', { class: 'costs-hero__pp-label' }, 'your share after splitting')
+      )
+    ),
+    h('p', { class: 'costs-hero__context' }, pathContextLine(pathCost.pathId)),
+    renderTierToggle(tier, onTierChange, {
+      compact: true,
+      ariaLabel: `Tier for ${pathCost.pathName}`,
+    }),
+    h(
+      'p',
+      { class: 'costs-hero__range' },
+      'Range: ',
+      h('strong', {}, usd(range.low)),
+      ' (Lean) – ',
+      h('strong', {}, usd(range.high)),
+      ' (Splurge)'
+    )
+  );
+
+  card.addEventListener('click', (ev) => {
+    const target = ev.target as HTMLElement | null;
+    if (!target) return;
+    if (target.closest('.costs-toggle__btn')) return; // tier buttons handle themselves
+    onSelectPath();
+  });
+
+  return card;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Active-path category breakdown
+// ─────────────────────────────────────────────────────────────
+const CATEGORY_ICON: Record<CategoryKey, string> = {
+  flights: '✈',
+  rental: '🚙',
+  lodging: '🏡',
+  food: '🛒',
+  activities: '🥾',
+  fuel: '⛽',
+  contingency: '🪙',
+};
+
+function renderBreakdown(pathCost: PathCost, tier: Tier): HTMLElement {
+  const t = findTier(pathCost, tier);
+  const total = tierTotal(t);
+  const maxAmount = Math.max(...t.categories.map((c) => c.amount));
+
+  return h(
+    'div',
+    { class: 'costs-breakdown' },
+    h(
+      'header',
+      { class: 'costs-breakdown__head' },
+      h(
+        'h3',
+        { class: 'costs-breakdown__title' },
+        `Where the money goes · Path ${pathCost.pathId} · ${TIER_LABEL[tier]}`
+      ),
+      h(
+        'p',
+        { class: 'costs-breakdown__total' },
+        h('strong', {}, usd(total)),
+        ' total · ',
+        h('strong', {}, usd(perPersonShare(t))),
+        ' per person'
+      )
+    ),
+    h(
+      'ul',
+      { class: 'costs-rows' },
+      ...t.categories.map((c) => {
+        const pct = Math.round((c.amount / maxAmount) * 100);
+        const isBiggest = c.amount === maxAmount;
+        return h(
+          'li',
+          { class: `costs-row${isBiggest ? ' costs-row--biggest' : ''}` },
           h(
-            'h4',
-            { class: 'costs-tier-block__title' },
-            `Tier ${i + 1} · ${t.tier === 'low' ? 'Low' : t.tier === 'mid' ? 'Mid' : 'High'} · ${usd(tierTotal(t))}`
+            'div',
+            { class: 'costs-row__main' },
+            h('span', { class: 'costs-row__icon', 'aria-hidden': 'true' }, CATEGORY_ICON[c.key]),
+            h(
+              'div',
+              { class: 'costs-row__text' },
+              h(
+                'div',
+                { class: 'costs-row__label-line' },
+                h('span', { class: 'costs-row__label' }, c.label),
+                h(
+                  'span',
+                  {
+                    class: `costs-row__flex costs-row__flex--${c.flex}`,
+                    title:
+                      c.flex === 'locked'
+                        ? 'Mostly locked once booked'
+                        : 'Flexible — compressible if budget tight',
+                  },
+                  c.flex === 'locked' ? '🔒 Locked' : '🔓 Flex'
+                )
+              ),
+              h('div', { class: 'costs-row__note' }, c.note),
+              h(
+                'a',
+                {
+                  class: 'costs-row__source',
+                  href: c.sourceHref,
+                  'aria-label': c.sourceLabel,
+                },
+                'source ↗'
+              )
+            )
           ),
-          renderCategoryTable(t)
+          h(
+            'div',
+            { class: 'costs-row__amount-wrap' },
+            h('div', { class: 'costs-row__amount' }, usd(c.amount)),
+            h(
+              'div',
+              { class: 'costs-row__bar' },
+              h('div', { class: 'costs-row__bar-fill', style: `width: ${pct}%` })
+            )
+          )
+        );
+      })
+    )
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Trim suggestions
+// ─────────────────────────────────────────────────────────────
+function renderTrims(pathCost: PathCost, tier: Tier): HTMLElement {
+  const t = findTier(pathCost, tier);
+  const totalSavings = t.trims.reduce((sum, m) => sum + m.saves, 0);
+  return h(
+    'div',
+    { class: 'costs-trims' },
+    h(
+      'h3',
+      { class: 'costs-trims__title' },
+      `If you need to trim ~${usd(totalSavings)}…`
+    ),
+    h(
+      'p',
+      { class: 'costs-trims__lede' },
+      'Concrete moves for Path ' + pathCost.pathId + ' · ' + TIER_LABEL[tier] + ' tier. Stack as needed.'
+    ),
+    h(
+      'ul',
+      { class: 'costs-trims__list' },
+      ...t.trims.map((m) =>
+        h(
+          'li',
+          { class: 'costs-trim' },
+          h('span', { class: 'costs-trim__label' }, m.label),
+          h('span', { class: 'costs-trim__saves' }, '−' + usd(m.saves))
         )
       )
     )
   );
 }
 
-export function renderCosts(): HTMLElement {
-  const maxTotal = Math.max(
-    ...PATH_COSTS.flatMap((p) => p.tiers.map((t) => tierTotal(t)))
+// ─────────────────────────────────────────────────────────────
+// Splitwise CTA
+// ─────────────────────────────────────────────────────────────
+function renderSplitwise(pathCost: PathCost, tier: Tier): HTMLElement {
+  const t = findTier(pathCost, tier);
+  const pp = perPersonShare(t);
+  return h(
+    'aside',
+    { class: 'costs-splitwise' },
+    h('h3', { class: 'costs-splitwise__title' }, 'Split with Erin via Splitwise'),
+    h(
+      'p',
+      { class: 'costs-splitwise__lede' },
+      'Each of you owes roughly ',
+      h('strong', {}, usd(pp)),
+      ' for Path ' + pathCost.pathId + ' / ' + TIER_LABEL[tier] + '. Drop a group in Splitwise and add the shared lines as you book them.'
+    ),
+    h(
+      'ul',
+      { class: 'costs-splitwise__rules' },
+      h('li', {}, h('strong', {}, 'Lodging'), ' — 50 / 50.'),
+      h('li', {}, h('strong', {}, 'Rental car + fuel'), ' — 50 / 50.'),
+      h('li', {}, h('strong', {}, 'Groceries'), ' — 50 / 50. Treat-meals = whoever pays at the table.'),
+      h('li', {}, h('strong', {}, 'Flights'), ' — independent (each books their own seat).'),
+      h('li', {}, h('strong', {}, 'Activities + passes'), ' — 50 / 50 unless one person opts out (e.g. one spa pass).')
+    ),
+    h(
+      'a',
+      {
+        class: 'costs-splitwise__cta',
+        href: 'https://www.splitwise.com/',
+        rel: 'noopener noreferrer',
+        target: '_blank',
+      },
+      'Open Splitwise ↗'
+    )
   );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Compare-all strip (when no path is selected)
+// ─────────────────────────────────────────────────────────────
+function renderCompareStrip(
+  globalTier: Tier,
+  onPickPath: (id: PathLetter) => void
+): HTMLElement {
+  return h(
+    'div',
+    { class: 'costs-compare' },
+    h(
+      'p',
+      { class: 'costs-compare__lede' },
+      'No path picked yet — tap a card to lock it in. The breakdown below switches to whichever path is active.'
+    ),
+    h(
+      'div',
+      { class: 'costs-compare__row' },
+      ...PATH_COSTS.map((p) => {
+        const t = findTier(p, globalTier);
+        const total = tierTotal(t);
+        const pp = perPersonShare(t);
+        const btn = h(
+          'button',
+          {
+            type: 'button',
+            class: 'costs-compare__btn',
+            'data-path-id': p.pathId,
+          },
+          h('span', { class: 'costs-compare__btn-path' }, `Path ${p.pathId}`),
+          h('span', { class: 'costs-compare__btn-total' }, usd(total)),
+          h('span', { class: 'costs-compare__btn-pp' }, usd(pp) + ' / person')
+        );
+        btn.addEventListener('click', () => onPickPath(p.pathId));
+        return btn;
+      })
+    )
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Main entrypoint
+// ─────────────────────────────────────────────────────────────
+export function renderCosts(): HTMLElement {
+  let globalTier: Tier = readStoredTier();
 
   const wrap = section(
     'costs',
-    'Budget — three paths × three tiers',
+    'Budget — 5-second grasp',
     h(
       'p',
       { class: 'section__lede' },
-      'Total for two travelers, 5 days, all-in (flights + 5-day rental with CDW+SLI + 4 nights cabin + groceries + passes + fuel + 10% buffer). Tier = booking-and-stay choices, not trip ambition.'
+      'Three paths, three tiers, two travelers. Big number = total. Per-person = your share after the 50/50 split (flights independent). Pick your path on any card; the breakdown below follows.'
     ),
     renderSectionSources({
       label: 'Sources',
       sources: [
-        { name: 'Costco Travel · live SEA Aug 16-20 quote', url: 'https://www.costcotravel.com/Rental-Cars' },
+        {
+          name: 'Costco Travel · live SEA Aug 16-20 quote',
+          url: 'https://www.costcotravel.com/Rental-Cars',
+        },
         { name: 'Google Flights · NYC↔SEA', url: 'https://www.google.com/travel/flights' },
-        { name: 'Booking + Airbnb listings per lodging.ts', url: '#' },
+        { name: 'Booking + Airbnb listings per Lodging page', url: 'lodging.html' },
       ],
       asOf: COSTS_NOTES.asOf,
-    }),
-    h('div', { class: 'costs-paths' })
+    })
   );
 
-  function paint(selectedId: string | null): void {
-    const container = wrap.querySelector<HTMLElement>('.costs-paths');
-    if (!container) return;
-    container.replaceChildren(
-      ...PATH_COSTS.map((p) =>
-        renderPathBlock(p, maxTotal, selectedId === p.pathId)
-      )
+  const globalToggleWrap = h(
+    'div',
+    { class: 'costs-global-toggle' },
+    h('span', { class: 'costs-global-toggle__label' }, 'Show me:'),
+    renderTierToggle(
+      globalTier,
+      (t) => {
+        globalTier = t;
+        persistTier(t);
+        for (const p of PATH_COSTS) persistPerPathTier(p.pathId, t);
+        paintAll();
+      },
+      { ariaLabel: 'Global tier toggle' }
+    )
+  );
+
+  const heroRow = h('div', { class: 'costs-hero-row' });
+  const breakdownSlot = h('div', { class: 'costs-breakdown-slot' });
+  const trimsSlot = h('div', { class: 'costs-trims-slot' });
+  const splitwiseSlot = h('div', { class: 'costs-splitwise-slot' });
+  const compareSlot = h('div', { class: 'costs-compare-slot' });
+
+  function paintHero(selectedId: PathLetter | null): void {
+    heroRow.replaceChildren(
+      ...PATH_COSTS.map((p) => {
+        const tier = readPerPathTier(p.pathId, globalTier);
+        return renderPathHero(
+          p,
+          tier,
+          selectedId === p.pathId,
+          (t) => {
+            persistPerPathTier(p.pathId, t);
+            paintAll();
+          },
+          () => {
+            setSelectedPath(p.pathId);
+          }
+        );
+      })
     );
   }
 
-  paint(getSelectedPath());
-  subscribeSelectedPath(paint);
+  function paintBreakdown(selectedId: PathLetter | null): void {
+    if (!selectedId) {
+      breakdownSlot.replaceChildren();
+      trimsSlot.replaceChildren();
+      splitwiseSlot.replaceChildren();
+      compareSlot.replaceChildren(
+        renderCompareStrip(globalTier, (id) => setSelectedPath(id))
+      );
+      return;
+    }
+    const path = findPath(selectedId);
+    const tier = readPerPathTier(selectedId, globalTier);
+    breakdownSlot.replaceChildren(renderBreakdown(path, tier));
+    trimsSlot.replaceChildren(renderTrims(path, tier));
+    splitwiseSlot.replaceChildren(renderSplitwise(path, tier));
+    compareSlot.replaceChildren();
+  }
+
+  function paintAll(): void {
+    const id = getSelectedPath();
+    paintHero(id);
+    paintBreakdown(id);
+  }
+
+  paintAll();
+  subscribeSelectedPath(paintAll);
 
   wrap.append(
+    globalToggleWrap,
+    heroRow,
+    compareSlot,
+    breakdownSlot,
+    trimsSlot,
+    splitwiseSlot,
     h(
       'div',
       { class: 'costs-fineprint' },

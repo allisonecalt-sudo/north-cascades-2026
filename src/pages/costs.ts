@@ -13,8 +13,8 @@ import { renderPageCtas } from '../sections/page-ctas';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'costs',
-    title: 'Budget — three paths, three tiers',
-    lede: 'Total trip cost for 2 travelers. Exact tier numbers — not ranges. Verified May 16-17 quotes. Pick a path; the active path highlights here.',
+    title: 'Budget — totals, splits, trims',
+    lede: 'Five-second read. Big totals, per-person shares, what is locked vs flexible, and concrete trim moves. USD, all-in, 2 travelers.',
     imageHero: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Diablo_Lake_%28Washington_State%29.jpg/1920px-Diablo_Lake_%28Washington_State%29.jpg',
       alt: 'Diablo Lake with turquoise glacier-flour water and surrounding peaks',
