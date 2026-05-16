@@ -33,6 +33,10 @@ export interface Hike {
   side: 'west' | 'east' | 'either';
   description: string;
   photo?: HikePhoto;
+  /** Lesser-known options beyond the curated core. Surface with a badge. */
+  hiddenGem?: boolean;
+  /** WTA / NPS source link for the trail. Optional — added for hidden gems. */
+  sourceUrl?: string;
 }
 
 export const HIKES: Hike[] = [
@@ -77,6 +81,61 @@ export const HIKES: Hike[] = [
       width: 800,
       height: 1200,
     },
+  },
+
+  // ---------- Easy hidden gems ----------
+  {
+    id: 'trail-of-cedars',
+    name: 'Trail of the Cedars',
+    trailhead: 'End of Main St, Newhalem · MP 120 (west)',
+    mileage: '0.3 mi loop',
+    elevation: 'Minimal',
+    duration: '~20 min',
+    difficulty: 'Wheelchair-friendly, paved/gravel',
+    level: 'easy',
+    side: 'west',
+    description:
+      'Suspension bridge over the Skagit then a short interpretive loop through old-growth Western red cedar. Easy add-on to any Newhalem stop — pair with Ladder Creek Falls.',
+    hiddenGem: true,
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/trail-of-the-cedars',
+  },
+  {
+    id: 'picture-lake',
+    name: 'Picture Lake Loop',
+    trailhead: 'WA-542 past Heather Meadows · Mt. Baker Hwy (west)',
+    mileage: '0.6 mi loop',
+    elevation: '45 ft',
+    duration: '~30 min',
+    difficulty: 'Paved, ADA-accessible',
+    level: 'easy',
+    side: 'west',
+    description:
+      "Mt. Shuksan reflected in a tiny tarn — said to be one of the most photographed views in America. Pair with Chain Lakes / Artist Point on a Day-1 Bellingham detour.",
+    hiddenGem: true,
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/picture-lake',
+    photo: {
+      src: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/MountShuksanPictureLake.JPG',
+      alt: 'Mount Shuksan reflected in Picture Lake on a calm summer morning.',
+      credit: 'Photo: Siradia · Public domain (Wikimedia)',
+      creditUrl: 'https://commons.wikimedia.org/wiki/File:MountShuksanPictureLake.JPG',
+      width: 1600,
+      height: 1200,
+    },
+  },
+  {
+    id: 'bagley-lakes',
+    name: 'Bagley Lakes',
+    trailhead: 'Heather Meadows, Mt. Baker Ski Area · WA-542 (west)',
+    mileage: '2.0 mi loop',
+    elevation: '+150 ft',
+    duration: '~1 hr',
+    difficulty: 'Easy',
+    level: 'easy',
+    side: 'west',
+    description:
+      'Two alpine lakes + a year-round snowfield + wildflowers, right inside Heather Meadows. Pair with Picture Lake on the same Mt. Baker corridor swing.',
+    hiddenGem: true,
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/bagley-lakes',
   },
 
   // ---------- Moderate (the sweet spot — beautiful, doable) ----------
@@ -190,6 +249,68 @@ export const HIKES: Hike[] = [
     side: 'west',
     description:
       'Heather Meadows / Artist Point — alpine lakes with Baker + Shuksan views. Works as a Day 1 detour from BLI.',
+  },
+
+  // ---------- More hidden gems (moderate — extend the menu) ----------
+  {
+    id: 'patterson-lake',
+    name: 'Patterson Lake Trail',
+    trailhead: 'Chickadee TH / Sun Mountain Lodge · 15 min south of Winthrop (east)',
+    mileage: '~3.5 mi loop options',
+    elevation: '+200-400 ft',
+    duration: '1.5-2 hrs',
+    difficulty: 'Easy-moderate',
+    level: 'easy',
+    side: 'east',
+    description:
+      'Forested lake-edge walk in the Sun Mountain trail web — picnic viewpoint on the southwest side, optional dip. Easy rest-day option from Winthrop or pair with the marina kayak rental.',
+    hiddenGem: true,
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/sun-mountain-trails',
+  },
+  {
+    id: 'cedar-creek-falls',
+    name: 'Cedar Creek Falls',
+    trailhead: 'FR 5310 off WA-20 · 8 min west of Mazama (east)',
+    mileage: '3.6 mi RT',
+    elevation: '+500 ft',
+    duration: '2-2.5 hrs',
+    difficulty: 'Easy-moderate',
+    level: 'moderate',
+    side: 'east',
+    description:
+      'Short, gradual climb through east-side pine + wildflowers to a two-tier falls. Steep first stretch then gentle. Quiet east-side option if Maple Pass is your big-hike day and you want something light.',
+    hiddenGem: true,
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/cedar-creek',
+  },
+  {
+    id: 'sauk-mountain',
+    name: 'Sauk Mountain',
+    trailhead: 'FR 1030 off WA-20 · ~25 min west of Marblemount (west)',
+    mileage: '4.2 mi RT',
+    elevation: '+1,200 ft',
+    duration: '2.5-3.5 hrs',
+    difficulty: 'Moderate',
+    level: 'moderate',
+    side: 'west',
+    description:
+      'Wildflower-streaked switchbacks up to a 5,500 ft summit with Baker, Shuksan, Pickets, San Juans on clear days. South-facing + exposed — sun protection mandatory. Steep FR 1030 is rough but passable for the rental.',
+    hiddenGem: true,
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/sauk-mountain',
+  },
+  {
+    id: 'heliotrope-ridge',
+    name: 'Heliotrope Ridge',
+    trailhead: 'FR 39 (Glacier Creek Rd) off WA-542 (west · Mt. Baker corridor)',
+    mileage: '5.5 mi RT',
+    elevation: '+1,400 ft',
+    duration: '3-4 hrs',
+    difficulty: 'Moderate',
+    level: 'moderate',
+    side: 'west',
+    description:
+      'Forest + meadows to a nose-to-nose Coleman Glacier overlook on Mt. Baker. Notable: a real creek crossing with slick rocks — go in the morning when flow is low. Mt. Baker corridor side trip — far from Marblemount, plan it as a Day-1 Bellingham detour or skip.',
+    hiddenGem: true,
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/heliotrope-ridge',
   },
 
   // ---------- Ambitious (long days — optional add-ons, not the plan) ----------

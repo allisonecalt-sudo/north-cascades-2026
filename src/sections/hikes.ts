@@ -63,7 +63,8 @@ function renderHikeCard(hike: Hike, inPath: boolean, pathSelected: boolean): HTM
         'div',
         { class: 'card__badges' },
         inPath ? badge('In your path', 'good') : null,
-        badge(sideLabel(hike.side), 'info')
+        badge(sideLabel(hike.side), 'info'),
+        hike.hiddenGem ? badge('Hidden gem', 'warn') : null
       )
     ),
     h('p', { class: 'card__subtitle' }, hike.trailhead),
@@ -79,7 +80,18 @@ function renderHikeCard(hike: Hike, inPath: boolean, pathSelected: boolean): HTM
       h('dt', {}, 'Difficulty'),
       h('dd', {}, hike.difficulty)
     ),
-    h('p', { class: 'card__note' }, hike.description)
+    h('p', { class: 'card__note' }, hike.description),
+    hike.sourceUrl
+      ? h(
+          'p',
+          { class: 'card__source' },
+          h(
+            'a',
+            { href: hike.sourceUrl, rel: 'noopener', target: '_blank' },
+            'WTA trail page →'
+          )
+        )
+      : null
   );
 }
 

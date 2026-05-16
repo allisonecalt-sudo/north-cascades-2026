@@ -1078,6 +1078,30 @@
   line-height: 1.5;
 }
 
+.activities__source {
+  font-size: var(--fs-xs);
+  margin: var(--sp-2) 0 0;
+}
+.activities__source a {
+  color: var(--c-ink-600);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.activities__source a:hover {
+  color: var(--c-forest-700);
+}
+
+.activities__group {
+  margin-top: var(--sp-4);
+}
+.activities__group:first-of-type {
+  margin-top: var(--sp-3);
+}
+.activities__group-lede {
+  margin-top: var(--sp-1);
+  margin-bottom: var(--sp-3);
+}
+
 .ruled-out__list {
   list-style: none;
   display: flex;

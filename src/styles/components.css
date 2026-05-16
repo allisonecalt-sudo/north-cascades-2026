@@ -162,6 +162,19 @@
   font-style: italic;
 }
 
+.card__source {
+  font-size: var(--fs-xs);
+  margin-top: var(--sp-2);
+}
+.card__source a {
+  color: var(--c-ink-600);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.card__source a:hover {
+  color: var(--c-forest-700);
+}
+
 /* Leading-option subtle elevation (no "Pick" badge — just a soft border). */
 .flight-card--leading {
   border-color: var(--c-forest-500);
