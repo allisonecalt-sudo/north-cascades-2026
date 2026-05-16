@@ -2,38 +2,51 @@ import { TRIP } from '../data/trip';
 import { CLOSURE_ALERT } from '../data/closure';
 import { h } from '../dom';
 
+// Six chips — the access patterns we actually expect. Everything else is one
+// scroll away. Long sitemap-style chip walls eat hero real estate and rarely
+// get used. Path picker IS the primary nav.
 const NAV_LINKS: { id: string; label: string }[] = [
   { id: 'paths', label: 'Paths' },
-  { id: 'overview', label: 'Overview' },
   { id: 'itinerary', label: 'Itinerary' },
-  { id: 'hikes', label: 'Hikes' },
   { id: 'lodging', label: 'Lodging' },
-  { id: 'flights', label: 'Flights' },
-  { id: 'rental', label: 'Rental' },
+  { id: 'hikes', label: 'Hikes' },
   { id: 'viewpoints', label: 'Viewpoints' },
-  { id: 'restaurants', label: 'Food + restaurants' },
-  { id: 'food', label: 'Kosher notes' },
-  { id: 'seattle', label: 'Seattle (optional)' },
-  { id: 'logistics', label: 'Logistics' },
   { id: 'decisions', label: 'Decisions' },
 ];
 
-const DISMISS_KEY = 'ncades2026.closureDismissed';
-
+/**
+ * Closure banner — compact <details> by default.
+ *
+ * The road-closure premise IS the trip's contingency framing, so we don't hide
+ * it entirely. But the V1 banner was 229px of orange wall above the hero
+ * content + path picker — disproportionate for what's basically a status note.
+ * Now: single-line summary expandable in place. No "Dismiss" — the closure is
+ * load-bearing for the path-picker context.
+ */
 function buildBanner(): HTMLElement {
-  const dismissed = localStorage.getItem(DISMISS_KEY) === '1';
-  const banner = h(
-    'aside',
+  return h(
+    'details',
     {
-      class: `closure-banner${dismissed ? ' closure-banner--collapsed' : ''}`,
-      role: 'alert',
-      'aria-live': 'polite',
+      class: 'closure-banner',
+      role: 'group',
+      'aria-label': 'WA-20 road status',
     },
-    h('div', { class: 'closure-banner__icon', 'aria-hidden': 'true' }, '⚠'),
+    h(
+      'summary',
+      { class: 'closure-banner__summary' },
+      h('span', { class: 'closure-banner__icon', 'aria-hidden': 'true' }, '⚠'),
+      h(
+        'span',
+        { class: 'closure-banner__summary-text' },
+        h('strong', {}, 'WA-20 currently CLOSED through the park.'),
+        ' WSDOT target reopen: ',
+        h('strong', {}, 'July 4, 2026'),
+        ' (a goal, not a promise). The 3 paths below all assume worst case.'
+      )
+    ),
     h(
       'div',
       { class: 'closure-banner__body' },
-      h('h3', { class: 'closure-banner__title' }, CLOSURE_ALERT.headline),
       h('p', { class: 'closure-banner__detail' }, CLOSURE_ALERT.detail),
       h('p', { class: 'closure-banner__target' }, CLOSURE_ALERT.target),
       h(
@@ -46,25 +59,8 @@ function buildBanner(): HTMLElement {
         },
         'Live WSDOT status →'
       )
-    ),
-    h(
-      'button',
-      {
-        class: 'closure-banner__dismiss',
-        type: 'button',
-        'aria-label': 'Dismiss closure banner',
-      },
-      'Dismiss'
     )
   );
-
-  const dismiss = banner.querySelector<HTMLButtonElement>('.closure-banner__dismiss');
-  dismiss?.addEventListener('click', () => {
-    banner.classList.add('closure-banner--collapsed');
-    localStorage.setItem(DISMISS_KEY, '1');
-  });
-
-  return banner;
 }
 
 export function renderHero(): HTMLElement {

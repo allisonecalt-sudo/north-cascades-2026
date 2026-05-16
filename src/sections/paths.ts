@@ -62,7 +62,7 @@ function renderCard(path: TripPath, active: boolean): HTMLElement {
           'data-action': active ? 'clear' : 'select',
           'data-path': path.id,
         },
-        active ? '✓ Viewing this path' : 'View this path\'s details'
+        active ? '✓ Selected' : 'Use this path'
       )
     )
   );
@@ -130,17 +130,12 @@ export function renderPaths(): HTMLElement {
       h(
         'li',
         { class: 'gist__item' },
-        'Three different shapes for the same five days. Pick one to filter the rest of the site, or compare them all.'
+        'Three shapes for the same five days. Pick one to filter the rest of the page — or browse all three.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        'None is "the recommendation" — they trade simplicity, variety, and east-side time differently.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        'Your pick persists across visits and is shareable via the URL hash.'
+        'None is "the recommendation." They trade simplicity, variety, and east-side time differently.'
       )
     ),
     grid,

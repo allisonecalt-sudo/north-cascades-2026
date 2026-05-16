@@ -105,6 +105,16 @@ function byLevel(level: HikeLevel): Hike[] {
   return HIKES.filter((hike) => hike.level === level);
 }
 
+function sortInPathFirst(hikes: Hike[], inPath: (id: string) => boolean): Hike[] {
+  // When a path is selected, lead with in-path hikes — off-path stay visible
+  // (still options if she wants to swap on the day) but don't block the scan.
+  return [...hikes].sort((a, b) => {
+    const aIn = inPath(a.id) ? 0 : 1;
+    const bIn = inPath(b.id) ? 0 : 1;
+    return aIn - bIn;
+  });
+}
+
 function renderBody(wrap: HTMLElement, selectedId: string | null): void {
   const easy = byLevel('easy');
   const moderate = byLevel('moderate');
@@ -114,6 +124,9 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
   const pathSelected = path !== null;
   const inPath = (id: string): boolean => pathHikeIds.has(id);
 
+  const easyOrdered = pathSelected ? sortInPathFirst(easy, inPath) : easy;
+  const modOrdered = pathSelected ? sortInPathFirst(moderate, inPath) : moderate;
+
   const gist = wrap.querySelector<HTMLElement>('.gist');
   if (gist) {
     gist.replaceChildren(
@@ -121,13 +134,8 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
         'li',
         { class: 'gist__item' },
         path
-          ? `${path.name} — hikes in this path are flagged. Others stay visible as day-of swap options.`
+          ? `${path.name} — in-path hikes lead. Others stay visible as day-of swap options.`
           : 'Options at different levels — beautiful nature, easy → moderate is the sweet spot.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        'Moderate cards lead (Maple Pass, Cascade Pass, Blue Lake, Thunder Knob). Easy walks sit above; ambitious add-ons collapse below.'
       ),
       h('li', { class: 'gist__item' }, 'No must-dos — pick by energy on the day.')
     );
@@ -135,11 +143,11 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
 
   const easyWrap = wrap.querySelector<HTMLElement>('.hikes-easy');
   if (easyWrap) {
-    easyWrap.replaceChildren(...easy.map((hike) => renderHikeCard(hike, inPath(hike.id), pathSelected)));
+    easyWrap.replaceChildren(...easyOrdered.map((hike) => renderHikeCard(hike, inPath(hike.id), pathSelected)));
   }
   const modWrap = wrap.querySelector<HTMLElement>('.hikes-moderate');
   if (modWrap) {
-    modWrap.replaceChildren(...moderate.map((hike) => renderHikeCard(hike, inPath(hike.id), pathSelected)));
+    modWrap.replaceChildren(...modOrdered.map((hike) => renderHikeCard(hike, inPath(hike.id), pathSelected)));
   }
 }
 

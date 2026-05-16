@@ -68,45 +68,76 @@
   color: var(--c-warm-50);
 }
 
-/* Closure banner */
+/* Closure banner — compact details/summary
+ * Was 229px of orange wall above the hero + path picker. Now a single-line
+ * summary with the load-bearing facts (closed + July 4 target + "paths handle
+ * this") inline. Expand for the longer narrative. The trip's premise IS this
+ * closure but it doesn't need a wall to communicate "watch the WSDOT page."
+ */
 .closure-banner {
+  background: var(--c-warn-bg);
+  border: 1px solid var(--c-warn-border);
+  border-radius: var(--radius-md);
+  color: var(--c-warn-ink);
+  margin-top: var(--sp-2);
+}
+
+.closure-banner__summary {
+  list-style: none;
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: var(--sp-3);
-  align-items: start;
-  padding: var(--sp-4);
-  border-radius: var(--radius-md);
-  background: var(--c-warn-bg);
-  border: 2px solid var(--c-warn-border);
-  color: var(--c-warn-ink);
-  box-shadow: var(--shadow-md);
+  align-items: center;
+  padding: var(--sp-3) var(--sp-4);
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  line-height: 1.45;
 }
 
-.closure-banner--collapsed {
+.closure-banner__summary::-webkit-details-marker {
   display: none;
 }
 
+.closure-banner__summary::after {
+  content: '＋';
+  color: var(--c-warn-ink);
+  font-size: var(--fs-lg);
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.closure-banner[open] .closure-banner__summary::after {
+  content: '−';
+}
+
 .closure-banner__icon {
-  font-size: 1.75rem;
+  font-size: 1.1rem;
   line-height: 1;
 }
 
-.closure-banner__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
+.closure-banner__summary-text {
   min-width: 0;
 }
 
-.closure-banner__title {
+.closure-banner__summary-text strong {
   color: var(--c-warn-ink);
-  font-size: var(--fs-lg);
+}
+
+.closure-banner__body {
+  padding: 0 var(--sp-4) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  border-top: 1px solid var(--c-warn-border);
+  padding-top: var(--sp-3);
+  margin-top: var(--sp-1);
 }
 
 .closure-banner__detail,
 .closure-banner__target {
   font-size: var(--fs-sm);
   line-height: 1.5;
+  margin: 0;
 }
 
 .closure-banner__target {
@@ -117,29 +148,16 @@
   color: var(--c-warn-ink);
   font-weight: 600;
   font-size: var(--fs-sm);
-}
-
-.closure-banner__dismiss {
-  background: transparent;
-  border: 1px solid var(--c-warn-border);
-  color: var(--c-warn-ink);
-  padding: 0.3rem 0.7rem;
-  border-radius: var(--radius-sm);
-  font-size: var(--fs-xs);
   align-self: start;
 }
 
-.closure-banner__dismiss:hover {
-  background: var(--c-warn-border);
-  color: white;
-}
-
 @media (max-width: 540px) {
-  .closure-banner {
+  .closure-banner__summary {
     grid-template-columns: auto 1fr;
+    gap: var(--sp-2) var(--sp-3);
   }
-  .closure-banner__dismiss {
-    grid-column: 1 / -1;
+  .closure-banner__summary::after {
+    grid-column: 2;
     justify-self: end;
   }
 }

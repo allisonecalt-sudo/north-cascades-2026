@@ -4,6 +4,12 @@
  * Per Allison May 16: "give suggestions if worth it." Section opens with
  * "skip if you don't want it" framing. Itineraries are listed as scenarios,
  * no "Pick" badge — none is the answer.
+ *
+ * Filter behavior (added Pass 1, 2026-05-16): when a path is selected that
+ * excludes Seattle (Path A), the whole content body collapses into a single
+ * disclosure. The section title + one-line path note remain visible — but the
+ * 1,855px of "section kept for reference" wall stops blocking scroll-flow when
+ * the path explicitly skips Seattle. "Compare all" mode still shows everything.
  */
 
 import {
@@ -93,33 +99,35 @@ function renderPathNotice(selectedId: string | null): HTMLElement {
     return h(
       'ul',
       { class: 'gist' },
-      h('li', { class: 'gist__item' }, 'Day 5 flow has 4-6 hours in Seattle between the drive in and the evening flight — natural fit for a stop if you want one.'),
-      h('li', { class: 'gist__item' }, 'Skip the whole section if you\'d rather go straight to SEA. Nothing here is core.'),
+      h('li', { class: 'gist__item' }, 'Day 5 has 4-6 hours between the drive in and the evening flight — natural fit for a stop if you want one.'),
       h('li', { class: 'gist__item' }, 'No museums. Walkables + outdoorsy stops only.')
     );
   }
+  if (path.includeSeattle) {
+    return h(
+      'ul',
+      { class: 'gist' },
+      h('li', { class: 'gist__item' }, `${path.name}: ${path.seattleNote}`),
+      h('li', { class: 'gist__item' }, 'No museums. Walkables + outdoorsy stops only.')
+    );
+  }
+  // Path excludes Seattle — single calm sentence, no scenarios pile.
   return h(
     'ul',
     { class: 'gist' },
-    h('li', { class: 'gist__item' }, `${path.name}: ${path.seattleNote}`),
-    path.includeSeattle
-      ? h('li', { class: 'gist__item' }, 'A Leavenworth lunch stop on the Day-5 scenic US-2 return is the only "town" stop flagged for this path.')
-      : h('li', { class: 'gist__item' }, 'This path doesn\'t plan a Seattle stop. Section kept for reference if you change plans.'),
-    h('li', { class: 'gist__item' }, 'No museums. Walkables + outdoorsy stops only.')
+    h(
+      'li',
+      { class: 'gist__item' },
+      `${path.name} skips Seattle — drive straight to the park, fly home from SEA. `,
+      h('strong', {}, 'Section collapsed below.')
+    )
   );
 }
 
-export function renderSeattle(): HTMLElement {
-  const wrap = section(
-    'seattle',
-    'Seattle (optional)',
-    renderPathNotice(getSelectedPath()),
-
-    // Scenarios — all neutral.
+function renderFullContent(): HTMLElement[] {
+  return [
     h('h3', { class: 'subsection__title' }, 'When-it-fits scenarios'),
     h('div', { class: 'option-list' }, ...SEATTLE_ITINERARIES.map(renderItinerary)),
-
-    // Sights — collapsed.
     h(
       'details',
       { class: 'disclosure' },
@@ -130,8 +138,6 @@ export function renderSeattle(): HTMLElement {
       ),
       h('div', { class: 'card-grid' }, ...SEATTLE_STOPS.map(renderStopCard))
     ),
-
-    // Logistics — collapsed.
     h(
       'details',
       { class: 'disclosure' },
@@ -152,13 +158,47 @@ export function renderSeattle(): HTMLElement {
           )
         )
       )
-    )
+    ),
+  ];
+}
+
+function renderBody(selectedId: string | null): HTMLElement {
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const seattleExcluded = path !== null && !path.includeSeattle;
+
+  if (seattleExcluded) {
+    return h(
+      'details',
+      { class: 'disclosure disclosure--seattle-collapsed' },
+      h(
+        'summary',
+        { class: 'disclosure__summary' },
+        'Browse Seattle options anyway (scenarios + stops + logistics)'
+      ),
+      ...renderFullContent()
+    );
+  }
+  return h('div', { class: 'seattle-body' }, ...renderFullContent());
+}
+
+export function renderSeattle(): HTMLElement {
+  const wrap = section(
+    'seattle',
+    'Seattle (optional)',
+    renderPathNotice(getSelectedPath()),
+    renderBody(getSelectedPath())
   );
 
   subscribeSelectedPath((next) => {
     const oldGist = wrap.querySelector('.gist');
     if (oldGist) {
       oldGist.replaceWith(renderPathNotice(next));
+    }
+    const oldBody =
+      wrap.querySelector('.seattle-body') ||
+      wrap.querySelector('.disclosure--seattle-collapsed');
+    if (oldBody) {
+      oldBody.replaceWith(renderBody(next));
     }
   });
 
