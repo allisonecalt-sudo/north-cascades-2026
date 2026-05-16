@@ -3,6 +3,7 @@ import './styles/main.css';
 import { renderHero } from './sections/hero';
 import { renderOverview } from './sections/overview';
 import { renderPaths } from './sections/paths';
+import { renderMap } from './sections/map';
 import { renderFlights } from './sections/flights';
 import { renderRental } from './sections/rental';
 import { renderLodging } from './sections/lodging';
@@ -28,6 +29,7 @@ function mount(): void {
   main.className = 'main';
   const sections = [
     renderPaths(),
+    renderMap(),
     renderOverview(),
     renderFlights(),
     renderRental(),

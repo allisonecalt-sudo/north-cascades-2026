@@ -12,7 +12,11 @@
     "format": "prettier --write \"src/**/*.{ts,css,html}\" index.html",
     "check": "npm run lint && npm run typecheck && npm run build"
   },
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  },
   "devDependencies": {
+    "@types/leaflet": "^1.9.21",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^9.0.0",
