@@ -3,6 +3,7 @@ import { CLOSURE_ALERT } from '../data/closure';
 import { h } from '../dom';
 
 const NAV_LINKS: { id: string; label: string }[] = [
+  { id: 'paths', label: 'Paths' },
   { id: 'overview', label: 'Overview' },
   { id: 'itinerary', label: 'Itinerary' },
   { id: 'hikes', label: 'Hikes' },

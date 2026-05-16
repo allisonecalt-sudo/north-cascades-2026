@@ -1,12 +1,14 @@
 /**
  * Itinerary — collapsed days, each with a 1-line shape summary.
  *
- * No "POSTCARD DAY" / "EAST-SIDE CLASSIC" badges. The day card shows the
- * shape line in the summary so the reader can scan all five days at once
- * without expanding.
+ * When a path is selected, this section shows ONLY that path's day-by-day
+ * (paths each have their own 5-day shape). In compare-all mode, shows the
+ * default generic itinerary with branch points called out.
  */
 
 import { ITINERARY, type ItineraryDay } from '../data/itinerary';
+import { getPathById, TRIP_PATHS } from '../data/paths';
+import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { h, section } from '../dom';
 
 function renderDay(day: ItineraryDay, defaultOpen: boolean): HTMLDetailsElement {
@@ -63,21 +65,78 @@ function renderMeals(day: ItineraryDay): HTMLElement | null {
   );
 }
 
-export function renderItinerary(): HTMLElement {
-  return section(
-    'itinerary',
-    'Itinerary',
-    h(
-      'ul',
-      { class: 'gist' },
-      h('li', { class: 'gist__item' }, 'Five-day shape — not a script. Each day has anchor options at different effort levels.'),
+function renderBody(container: HTMLElement, selectedId: string | null): void {
+  const days = selectedId
+    ? getPathById(selectedId as 'A' | 'B' | 'C')?.itinerary ?? ITINERARY
+    : ITINERARY;
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+
+  const gist = container.querySelector<HTMLElement>('.gist');
+  if (gist) {
+    gist.replaceChildren(
+      h(
+        'li',
+        { class: 'gist__item' },
+        path
+          ? `Filtered to ${path.name} — ${path.lodgingShape}. Switch path or compare all from the picker at top.`
+          : 'No path selected — showing the default five-day shape. Pick a path above to filter.'
+      ),
       h('li', { class: 'gist__item' }, 'Back to the cabin by 7-8 PM, balanced pace.'),
       h('li', { class: 'gist__item' }, 'Tap any day below to expand.')
-    ),
-    h(
-      'div',
-      { class: 'days' },
-      ...ITINERARY.map((day, idx) => renderDay(day, idx === 0))
-    )
+    );
+  }
+
+  const daysWrap = container.querySelector<HTMLElement>('.days');
+  if (daysWrap) {
+    daysWrap.replaceChildren(...days.map((day, idx) => renderDay(day, idx === 0)));
+  }
+
+  // Compare-all-mode hint about per-path itineraries.
+  let comparison = container.querySelector<HTMLElement>('.itin-compare');
+  if (!selectedId) {
+    if (!comparison) {
+      comparison = h(
+        'details',
+        { class: 'disclosure itin-compare' },
+        h(
+          'summary',
+          { class: 'disclosure__summary' },
+          'How the three paths differ day-by-day'
+        ),
+        h(
+          'ul',
+          { class: 'mini-list' },
+          ...TRIP_PATHS.map((p) =>
+            h(
+              'li',
+              { class: 'mini-list__item' },
+              h('strong', { class: 'mini-list__label' }, p.name),
+              h(
+                'span',
+                { class: 'mini-list__detail' },
+                p.itinerary.map((d) => `Day ${d.day}: ${d.title}`).join(' · ')
+              )
+            )
+          )
+        )
+      );
+      container.append(comparison);
+    }
+  } else if (comparison) {
+    comparison.remove();
+  }
+}
+
+export function renderItinerary(): HTMLElement {
+  const wrap = section(
+    'itinerary',
+    'Itinerary',
+    h('ul', { class: 'gist' }),
+    h('div', { class: 'days' })
   );
+
+  renderBody(wrap, getSelectedPath());
+  subscribeSelectedPath((next) => renderBody(wrap, next));
+
+  return wrap;
 }

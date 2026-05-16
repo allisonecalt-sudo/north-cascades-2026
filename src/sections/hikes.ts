@@ -1,12 +1,14 @@
 /**
  * Hikes — grouped by effort level. Easy + moderate lead.
  *
- * Ambitious add-ons (Sahale Arm, Cutthroat Pass) sit at the bottom inside a
- * disclosure with an honest framing line. No "must-do" / "the trail" /
- * crowned hikes. Each card shows level + side so the reader scans by fit.
+ * When a path is selected, hikes that are part of that path get an "In your
+ * path" badge. Hikes NOT in the path fade slightly but stay visible (they're
+ * still options if she wants to swap on the day).
  */
 
 import { HIKES, LEVEL_LABELS, type Hike, type HikeLevel } from '../data/hikes';
+import { getPathById } from '../data/paths';
+import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { badge, h, section } from '../dom';
 
 function renderHikePhoto(hike: Hike): HTMLElement | null {
@@ -44,16 +46,24 @@ function sideLabel(side: Hike['side']): string {
   return 'Either side';
 }
 
-function renderHikeCard(hike: Hike): HTMLElement {
+function renderHikeCard(hike: Hike, inPath: boolean, pathSelected: boolean): HTMLElement {
   return h(
     'article',
-    { class: `card hike-card hike-card--${hike.level}` },
+    {
+      class: `card hike-card hike-card--${hike.level}${pathSelected && !inPath ? ' hike-card--off-path' : ''}${pathSelected && inPath ? ' hike-card--in-path' : ''}`,
+      'data-hike-id': hike.id,
+    },
     renderHikePhoto(hike),
     h(
       'header',
       { class: 'card__header' },
       h('h3', { class: 'card__title' }, hike.name),
-      badge(sideLabel(hike.side), 'info')
+      h(
+        'div',
+        { class: 'card__badges' },
+        inPath ? badge('In your path', 'good') : null,
+        badge(sideLabel(hike.side), 'info')
+      )
     ),
     h('p', { class: 'card__subtitle' }, hike.trailhead),
     h(
@@ -92,7 +102,45 @@ function renderHikeSummary(hike: Hike): HTMLElement {
 }
 
 function byLevel(level: HikeLevel): Hike[] {
-  return HIKES.filter((h) => h.level === level);
+  return HIKES.filter((hike) => hike.level === level);
+}
+
+function renderBody(wrap: HTMLElement, selectedId: string | null): void {
+  const easy = byLevel('easy');
+  const moderate = byLevel('moderate');
+
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const pathHikeIds = path ? new Set(path.hikeIds) : new Set<string>();
+  const pathSelected = path !== null;
+  const inPath = (id: string): boolean => pathHikeIds.has(id);
+
+  const gist = wrap.querySelector<HTMLElement>('.gist');
+  if (gist) {
+    gist.replaceChildren(
+      h(
+        'li',
+        { class: 'gist__item' },
+        path
+          ? `${path.name} — hikes in this path are flagged. Others stay visible as day-of swap options.`
+          : 'Options at different levels — beautiful nature, easy → moderate is the sweet spot.'
+      ),
+      h(
+        'li',
+        { class: 'gist__item' },
+        'Moderate cards lead (Maple Pass, Cascade Pass, Blue Lake, Thunder Knob). Easy walks sit above; ambitious add-ons collapse below.'
+      ),
+      h('li', { class: 'gist__item' }, 'No must-dos — pick by energy on the day.')
+    );
+  }
+
+  const easyWrap = wrap.querySelector<HTMLElement>('.hikes-easy');
+  if (easyWrap) {
+    easyWrap.replaceChildren(...easy.map((hike) => renderHikeCard(hike, inPath(hike.id), pathSelected)));
+  }
+  const modWrap = wrap.querySelector<HTMLElement>('.hikes-moderate');
+  if (modWrap) {
+    modWrap.replaceChildren(...moderate.map((hike) => renderHikeCard(hike, inPath(hike.id), pathSelected)));
+  }
 }
 
 export function renderHikes(): HTMLElement {
@@ -100,31 +148,14 @@ export function renderHikes(): HTMLElement {
   const moderate = byLevel('moderate');
   const ambitious = byLevel('ambitious');
 
-  return section(
+  const wrap = section(
     'hikes',
     'Hikes',
-    // Gist in 3 lines.
-    h(
-      'ul',
-      { class: 'gist' },
-      h('li', { class: 'gist__item' }, 'Options at different levels — beautiful nature, easy → moderate is the sweet spot.'),
-      h(
-        'li',
-        { class: 'gist__item' },
-        'Moderate cards lead (Maple Pass, Cascade Pass, Blue Lake, Thunder Knob). Easy walks sit above; ambitious add-ons collapse below.'
-      ),
-      h('li', { class: 'gist__item' }, 'No must-dos — pick by energy on the day.')
-    ),
-
-    // Easy walks
+    h('ul', { class: 'gist' }),
     h('h3', { class: 'subsection__title' }, `Easy walks (${easy.length})`),
-    h('div', { class: 'card-grid card-grid--hikes' }, ...easy.map(renderHikeCard)),
-
-    // Moderate (the sweet spot)
+    h('div', { class: 'card-grid card-grid--hikes hikes-easy' }),
     h('h3', { class: 'subsection__title' }, `Moderate hikes — beautiful + doable (${moderate.length})`),
-    h('div', { class: 'card-grid card-grid--hikes' }, ...moderate.map(renderHikeCard)),
-
-    // Ambitious — collapsed.
+    h('div', { class: 'card-grid card-grid--hikes hikes-moderate' }),
     ambitious.length > 0
       ? h(
           'details',
@@ -143,4 +174,9 @@ export function renderHikes(): HTMLElement {
         )
       : null
   );
+
+  renderBody(wrap, getSelectedPath());
+  subscribeSelectedPath((next) => renderBody(wrap, next));
+
+  return wrap;
 }

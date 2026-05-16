@@ -618,3 +618,235 @@
 .footer__back:hover {
   color: white;
 }
+
+/* ============================================================
+ * Paths picker — top-level "choose a path" section
+ * ============================================================ */
+.path-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+  margin: var(--sp-5) 0 var(--sp-4);
+}
+
+@media (min-width: 760px) {
+  .path-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.path-card {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
+}
+
+.path-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.path-card--active {
+  border-color: var(--c-forest-500);
+  border-width: 2px;
+  background: linear-gradient(180deg, var(--c-warm-50) 0%, var(--c-glacier-100) 100%);
+  box-shadow: var(--shadow-md);
+}
+
+.path-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.path-card__id {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--c-forest-500);
+}
+
+.path-card__name {
+  font-size: var(--fs-xl);
+  color: var(--c-forest-800);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.path-card__tagline {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.path-card__bestif {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-900);
+  margin: 0;
+  background: var(--c-glacier-100);
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--c-glacier-500);
+  line-height: 1.5;
+}
+
+.path-card__bestif strong {
+  color: var(--c-glacier-600);
+}
+
+.path-card__snapshot {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+}
+
+.path-card__bullet {
+  position: relative;
+  padding-left: var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-900);
+  line-height: 1.5;
+}
+
+.path-card__bullet::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--c-forest-500);
+  font-size: var(--fs-sm);
+}
+
+.path-card__facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--sp-2) var(--sp-3);
+  margin: 0;
+  font-size: var(--fs-sm);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-line);
+}
+
+.path-card__facts dt {
+  font-weight: 600;
+  color: var(--c-ink-500);
+  text-transform: uppercase;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  align-self: start;
+  padding-top: 2px;
+}
+
+.path-card__facts dd {
+  margin: 0;
+  color: var(--c-ink-900);
+  line-height: 1.45;
+}
+
+.path-card__tradeoff {
+  color: var(--c-warn-ink);
+  font-style: italic;
+}
+
+.path-card__actions {
+  margin-top: auto;
+  padding-top: var(--sp-3);
+}
+
+.path-card__cta {
+  width: 100%;
+  background: var(--c-forest-700);
+  color: white;
+  border: none;
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--fs-base);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.18s;
+}
+
+.path-card__cta:hover {
+  background: var(--c-forest-800);
+}
+
+.path-card__cta--active {
+  background: var(--c-good-border);
+}
+
+.path-card__cta--active:hover {
+  background: var(--c-good-ink);
+}
+
+.path-controls {
+  margin-top: var(--sp-2);
+  display: flex;
+  justify-content: center;
+}
+
+.path-compare {
+  background: transparent;
+  border: 1px solid var(--c-line);
+  color: var(--c-ink-700);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.path-compare:hover {
+  background: var(--c-warm-50);
+  border-color: var(--c-forest-500);
+}
+
+.path-compare--active {
+  background: var(--c-glacier-100);
+  border-color: var(--c-glacier-500);
+  color: var(--c-glacier-600);
+  font-weight: 600;
+}
+
+.path-status {
+  margin: var(--sp-4) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+  text-align: center;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ============================================================
+ * Path filtering — visual cues on filtered cards
+ * ============================================================ */
+.lodging-card--in-path,
+.hike-card--in-path {
+  border-left-width: 4px;
+  border-left-color: var(--c-forest-500);
+  box-shadow: 0 0 0 1px var(--c-forest-400) inset, var(--shadow-sm);
+}
+
+.hike-card--off-path {
+  opacity: 0.55;
+}
+
+.hike-card--off-path:hover {
+  opacity: 1;
+}
+
+.tab--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

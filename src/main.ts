@@ -2,6 +2,7 @@ import './styles/main.css';
 
 import { renderHero } from './sections/hero';
 import { renderOverview } from './sections/overview';
+import { renderPaths } from './sections/paths';
 import { renderFlights } from './sections/flights';
 import { renderRental } from './sections/rental';
 import { renderLodging } from './sections/lodging';
@@ -28,6 +29,7 @@ function mount(): void {
   if (!main) return;
   main.className = 'main';
   main.append(
+    renderPaths(),
     renderOverview(),
     renderFlights(),
     renderRental(),

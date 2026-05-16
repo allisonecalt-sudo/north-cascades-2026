@@ -1,9 +1,10 @@
 /**
  * Lodging — Terra Nova-tier cabins lead, splurge + basic collapsed below.
  *
- * No "Top pick" crown. Cards group by tier (fits-brief / splurge / basic) so
- * the reader sees the cluster that matches the brief first; the rest sit
- * behind disclosures.
+ * When a path is selected, lodging cards NOT in that path's recommended ids
+ * fade (class `lodging-card--off-path`) and a path notice shows the path's
+ * lodging shape at the top of the section. Non-path-matching cards collapse
+ * into a "Other options on this corridor" disclosure.
  */
 
 import {
@@ -14,6 +15,8 @@ import {
   type Lodging,
   type LodgingTier,
 } from '../data/lodging';
+import { getPathById } from '../data/paths';
+import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { badge, h, section } from '../dom';
 
 function renderPhoto(lodging: Lodging): HTMLElement {
@@ -59,12 +62,13 @@ function kitchenBadgeKind(level: KitchenLevel): 'good' | 'info' | 'warn' {
   return 'warn';
 }
 
-function renderLodgingCard(lodging: Lodging): HTMLElement {
+function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
   return h(
     'article',
     {
-      class: `card lodging-card lodging-card--${lodging.tier}`,
+      class: `card lodging-card lodging-card--${lodging.tier}${inPath ? ' lodging-card--in-path' : ''}`,
       'data-vibe': lodging.vibe,
+      'data-lodging-id': lodging.id,
     },
     renderPhoto(lodging),
     h(
@@ -74,6 +78,7 @@ function renderLodgingCard(lodging: Lodging): HTMLElement {
       h(
         'div',
         { class: 'card__badges' },
+        inPath ? badge('In this path', 'good') : null,
         badge(KITCHEN_LABELS[lodging.kitchen], kitchenBadgeKind(lodging.kitchen))
       )
     ),
@@ -109,13 +114,54 @@ function byTier(lodgings: Lodging[], tier: LodgingTier): Lodging[] {
   return lodgings.filter((l) => l.tier === tier);
 }
 
-function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElement {
+function renderPanel(
+  id: string,
+  title: string,
+  lodgings: Lodging[],
+  pathLodgingIds: Set<string> | null
+): HTMLElement {
+  // If a path is selected, split fits-brief into in-path vs off-path.
   const fitsBrief = byTier(lodgings, 'fits-brief');
   const splurge = byTier(lodgings, 'splurge');
   const basic = byTier(lodgings, 'budget-or-basic');
   const notes = byTier(lodgings, 'note');
 
-  const fitsBriefGrid = h('div', { class: 'card-grid' }, ...fitsBrief.map(renderLodgingCard));
+  const inPath = (id: string) => (pathLodgingIds ? pathLodgingIds.has(id) : false);
+  const visibleFits = pathLodgingIds
+    ? fitsBrief.filter((l) => inPath(l.id))
+    : fitsBrief;
+  const offPathFits = pathLodgingIds
+    ? fitsBrief.filter((l) => !inPath(l.id))
+    : [];
+
+  const fitsBriefGrid = h(
+    'div',
+    { class: 'card-grid' },
+    ...visibleFits.map((l) => renderLodgingCard(l, inPath(l.id)))
+  );
+
+  const offPathBlock =
+    offPathFits.length > 0
+      ? h(
+          'details',
+          { class: 'disclosure' },
+          h(
+            'summary',
+            { class: 'disclosure__summary' },
+            `Other Terra Nova-tier options on this corridor (${offPathFits.length})`
+          ),
+          h(
+            'p',
+            { class: 'disclosure__lede' },
+            'Not part of the selected path\'s default plan but bookable here too.'
+          ),
+          h(
+            'div',
+            { class: 'card-grid' },
+            ...offPathFits.map((l) => renderLodgingCard(l, false))
+          )
+        )
+      : null;
 
   const splurgeBlock =
     splurge.length > 0
@@ -127,7 +173,11 @@ function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElemen
             { class: 'disclosure__summary' },
             `Splurge options (${splurge.length})`
           ),
-          h('div', { class: 'card-grid' }, ...splurge.map(renderLodgingCard))
+          h(
+            'div',
+            { class: 'card-grid' },
+            ...splurge.map((l) => renderLodgingCard(l, inPath(l.id)))
+          )
         )
       : null;
 
@@ -141,7 +191,11 @@ function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElemen
             { class: 'disclosure__summary' },
             `Cheaper / more basic options (${basic.length})`
           ),
-          h('div', { class: 'card-grid' }, ...basic.map(renderLodgingCard))
+          h(
+            'div',
+            { class: 'card-grid' },
+            ...basic.map((l) => renderLodgingCard(l, false))
+          )
         )
       : null;
 
@@ -155,7 +209,11 @@ function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElemen
             { class: 'disclosure__summary' },
             `Status notes (${notes.length})`
           ),
-          h('div', { class: 'card-grid' }, ...notes.map(renderLodgingCard))
+          h(
+            'div',
+            { class: 'card-grid' },
+            ...notes.map((l) => renderLodgingCard(l, false))
+          )
         )
       : null;
 
@@ -171,13 +229,120 @@ function renderPanel(id: string, title: string, lodgings: Lodging[]): HTMLElemen
     h(
       'p',
       { class: 'section__lede' },
-      `Spacious, a little nicer than basic, around $200-300 — the Terra Nova tier from last time. ${fitsBrief.length} cabin / lodge options that fit. Splurge + cheaper sit below.`
+      pathLodgingIds
+        ? `${visibleFits.length} option${visibleFits.length === 1 ? '' : 's'} in the selected path. Other Terra Nova-tier picks on this corridor sit below.`
+        : `Spacious, a little nicer than basic, around $200-300 — the Terra Nova tier. ${fitsBrief.length} cabin / lodge options that fit. Splurge + cheaper sit below.`
     ),
     fitsBriefGrid,
+    offPathBlock,
     splurgeBlock,
     basicBlock,
     notesBlock
   );
+}
+
+function determinePanels(selectedId: string | null): {
+  showWest: boolean;
+  showEast: boolean;
+  westLabel: string;
+  eastLabel: string;
+} {
+  if (!selectedId) {
+    return { showWest: true, showEast: true, westLabel: 'West · Nights 1-2', eastLabel: 'East · Nights 3-4' };
+  }
+  const path = getPathById(selectedId as 'A' | 'B' | 'C');
+  if (!path) {
+    return { showWest: true, showEast: true, westLabel: 'West', eastLabel: 'East' };
+  }
+  if (path.id === 'A') return { showWest: true, showEast: false, westLabel: 'West · all 4 nights', eastLabel: 'East · not in this path' };
+  if (path.id === 'B') return { showWest: true, showEast: true, westLabel: 'West · Nights 1-2', eastLabel: 'East · Nights 3-4' };
+  return { showWest: true, showEast: true, westLabel: 'West · Night 1', eastLabel: 'East · Nights 2-4' };
+}
+
+function renderBody(wrap: HTMLElement, selectedId: string | null): void {
+  const panels = determinePanels(selectedId);
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const pathLodgingIds = path ? new Set(path.lodgingIds) : null;
+
+  const tabs = wrap.querySelector<HTMLElement>('.tabs');
+  const westTabBtn = wrap.querySelector<HTMLButtonElement>('#lodging-tab-west');
+  const eastTabBtn = wrap.querySelector<HTMLButtonElement>('#lodging-tab-east');
+  if (westTabBtn) westTabBtn.textContent = panels.westLabel;
+  if (eastTabBtn) eastTabBtn.textContent = panels.eastLabel;
+  if (eastTabBtn) {
+    eastTabBtn.disabled = !panels.showEast;
+    eastTabBtn.classList.toggle('tab--disabled', !panels.showEast);
+  }
+
+  const westPanel = renderPanel('west', 'West side — Marblemount / Rockport / Concrete', WEST_LODGING, pathLodgingIds);
+  const eastPanel = renderPanel('east', 'East side — Winthrop / Mazama', EAST_LODGING, pathLodgingIds);
+
+  // Default to whichever tab matches the path.
+  const defaultSide = path?.id === 'A' ? 'west' : path?.id === 'C' ? 'east' : 'west';
+  eastPanel.hidden = defaultSide !== 'east';
+  westPanel.hidden = defaultSide !== 'west';
+
+  if (tabs) {
+    const allTabs = tabs.querySelectorAll<HTMLButtonElement>('.tab');
+    allTabs.forEach((t) => {
+      const active = t.dataset['target'] === defaultSide;
+      t.classList.toggle('tab--active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
+  // Replace panel container.
+  const container = wrap.querySelector<HTMLElement>('.lodging-panels');
+  if (container) {
+    container.replaceChildren(westPanel, eastPanel);
+  }
+
+  // Update gist
+  const gist = wrap.querySelector<HTMLElement>('.gist');
+  if (gist) {
+    gist.replaceChildren(
+      h(
+        'li',
+        { class: 'gist__item' },
+        path
+          ? `Filtered to ${path.name}: ${path.lodgingShape}.`
+          : 'Two bases — west side (Marblemount/Rockport, Nights 1-2) and east side (Winthrop/Mazama, Nights 3-4).'
+      ),
+      h(
+        'li',
+        { class: 'gist__item' },
+        'Brief: spacious + a little nicer than basic + ~$200-300/night (Terra Nova-tier). Kitchens are a bonus, not a requirement.'
+      ),
+      h(
+        'li',
+        { class: 'gist__item' },
+        path
+          ? 'Other corridor options + splurge + cheaper sit behind disclosures below.'
+          : 'Splurge ($400+) and cheaper/basic options are kept behind disclosures.'
+      )
+    );
+  }
+
+  // Tab click handling (re-bound each render).
+  if (tabs) {
+    const newTabs = tabs.cloneNode(true) as HTMLElement;
+    tabs.replaceWith(newTabs);
+    newTabs.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLButtonElement)) return;
+      if (target.disabled) return;
+      const side = target.dataset['target'];
+      if (side !== 'west' && side !== 'east') return;
+      const allTabs = newTabs.querySelectorAll<HTMLButtonElement>('.tab');
+      allTabs.forEach((t) => {
+        const active = t.dataset['target'] === side;
+        t.classList.toggle('tab--active', active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      westPanel.hidden = side !== 'west';
+      eastPanel.hidden = side !== 'east';
+    });
+  }
 }
 
 export function renderLodging(): HTMLElement {
@@ -195,7 +360,7 @@ export function renderLodging(): HTMLElement {
         'aria-controls': 'lodging-panel-west',
         'data-target': 'west',
       },
-      `West · Nights 1-2`
+      'West · Nights 1-2'
     ),
     h(
       'button',
@@ -208,48 +373,20 @@ export function renderLodging(): HTMLElement {
         'aria-controls': 'lodging-panel-east',
         'data-target': 'east',
       },
-      `East · Nights 3-4`
+      'East · Nights 3-4'
     )
   );
-
-  const westPanel = renderPanel(
-    'west',
-    'West side — Marblemount / Rockport / Concrete',
-    WEST_LODGING
-  );
-  const eastPanel = renderPanel('east', 'East side — Winthrop / Mazama', EAST_LODGING);
-  eastPanel.hidden = true;
 
   const wrap = section(
     'lodging',
     'Lodging',
-    // Gist in 3 lines.
-    h(
-      'ul',
-      { class: 'gist' },
-      h('li', { class: 'gist__item' }, 'Two bases — west side (Marblemount/Rockport, Nights 1-2) and east side (Winthrop/Mazama, Nights 3-4).'),
-      h('li', { class: 'gist__item' }, 'Brief: spacious + a little nicer than basic + ~$200-300/night (Terra Nova-tier from last time). Kitchens are a bonus, not a requirement.'),
-      h('li', { class: 'gist__item' }, 'Splurge ($400+) and cheaper/basic options are kept behind disclosures.')
-    ),
+    h('ul', { class: 'gist' }),
     tabs,
-    westPanel,
-    eastPanel
+    h('div', { class: 'lodging-panels' })
   );
 
-  tabs.addEventListener('click', (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLButtonElement)) return;
-    const side = target.dataset['target'];
-    if (side !== 'west' && side !== 'east') return;
-    const allTabs = tabs.querySelectorAll<HTMLButtonElement>('.tab');
-    allTabs.forEach((t) => {
-      const active = t.dataset['target'] === side;
-      t.classList.toggle('tab--active', active);
-      t.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-    westPanel.hidden = side !== 'west';
-    eastPanel.hidden = side !== 'east';
-  });
+  renderBody(wrap, getSelectedPath());
+  subscribeSelectedPath((next) => renderBody(wrap, next));
 
   return wrap;
 }

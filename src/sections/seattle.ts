@@ -14,6 +14,8 @@ import {
   type SeattleItinerary,
   type SeattleStop,
 } from '../data/seattle';
+import { getPathById } from '../data/paths';
+import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { badge, h, section } from '../dom';
 
 function renderPhoto(stop: SeattleStop): HTMLElement {
@@ -85,17 +87,33 @@ function renderItinerary(it: SeattleItinerary): HTMLElement {
   );
 }
 
-export function renderSeattle(): HTMLElement {
-  return section(
-    'seattle',
-    'Seattle (optional)',
-    h(
+function renderPathNotice(selectedId: string | null): HTMLElement {
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  if (!path) {
+    return h(
       'ul',
       { class: 'gist' },
       h('li', { class: 'gist__item' }, 'Day 5 flow has 4-6 hours in Seattle between the drive in and the evening flight — natural fit for a stop if you want one.'),
       h('li', { class: 'gist__item' }, 'Skip the whole section if you\'d rather go straight to SEA. Nothing here is core.'),
       h('li', { class: 'gist__item' }, 'No museums. Walkables + outdoorsy stops only.')
-    ),
+    );
+  }
+  return h(
+    'ul',
+    { class: 'gist' },
+    h('li', { class: 'gist__item' }, `${path.name}: ${path.seattleNote}`),
+    path.includeSeattle
+      ? h('li', { class: 'gist__item' }, 'A Leavenworth lunch stop on the Day-5 scenic US-2 return is the only "town" stop flagged for this path.')
+      : h('li', { class: 'gist__item' }, 'This path doesn\'t plan a Seattle stop. Section kept for reference if you change plans.'),
+    h('li', { class: 'gist__item' }, 'No museums. Walkables + outdoorsy stops only.')
+  );
+}
+
+export function renderSeattle(): HTMLElement {
+  const wrap = section(
+    'seattle',
+    'Seattle (optional)',
+    renderPathNotice(getSelectedPath()),
 
     // Scenarios — all neutral.
     h('h3', { class: 'subsection__title' }, 'When-it-fits scenarios'),
@@ -136,4 +154,13 @@ export function renderSeattle(): HTMLElement {
       )
     )
   );
+
+  subscribeSelectedPath((next) => {
+    const oldGist = wrap.querySelector('.gist');
+    if (oldGist) {
+      oldGist.replaceWith(renderPathNotice(next));
+    }
+  });
+
+  return wrap;
 }
