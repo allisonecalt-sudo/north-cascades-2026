@@ -250,6 +250,35 @@
   font-style: italic;
 }
 
+/* Availability pill variants — May 17 booking-deep-verify pass.
+   Distinct from the good/verify pair so 8-pill row is scannable at a glance. */
+.card__pill--info {
+  background: var(--c-warm-200, #f0e9d8);
+  border-color: var(--c-line);
+  color: var(--c-ink-800);
+  font-weight: 600;
+}
+
+.card__pill--warn {
+  background: var(--c-warn-bg);
+  border-color: var(--c-warn-border);
+  color: var(--c-warn-ink);
+  font-weight: 700;
+}
+
+/* Reviews pill — bumps the COUNT font per the May 17 emphasis pass.
+   Score sits at base size, count sits one step larger inside the same pill. */
+.card__pill--reviews {
+  gap: 0.4rem;
+}
+
+.card__pill-count {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--c-ink-900);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Review count emphasis — May 17 pass.
    Allison: "focus on reviews for booking how many amt".
    Larger font on the COUNT, score sits next to it but smaller. */

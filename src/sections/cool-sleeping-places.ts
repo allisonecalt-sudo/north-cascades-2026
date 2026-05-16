@@ -83,6 +83,59 @@ function renderCard(place: CoolSleepingPlace): HTMLElement {
     )
   );
 
+  // 7-pill row standardized May 17, 2026 to match standard lodging cards.
+  // Cool-sleeping-places don't have an explicit kitchen field, but bed +
+  // bedroom + sunset + reviews + price + verified-date + access all render.
+  const sunsetBonus = place.sunsetNote ? ' · 🌅 sunset' : '';
+  const reviewsPillScore =
+    place.reviews.score === 'N/A' ? '[verify]' : place.reviews.score;
+  const reviewsPillCount =
+    place.reviews.count === 'N/A' ? '' : ` · ${place.reviews.count}`;
+  const accessEmoji =
+    place.access === 'drive-in'
+      ? '🚗'
+      : place.access === 'boat-in'
+        ? '⛴'
+        : place.access === 'hike-in'
+          ? '🥾'
+          : '🚌';
+  const bedRuleEmoji = place.meetsBedRule ? '✅' : '⚠️';
+  const bedRuleLabel = place.meetsBedRule
+    ? '2-bed rule: meets'
+    : '2-bed rule: inspiration only';
+  const pillRow = h(
+    'ul',
+    { class: 'card__pills', 'aria-label': 'At a glance' },
+    h('li', { class: 'card__pill' }, `🛏 ${place.beds}`),
+    h('li', { class: 'card__pill' }, `🚪 ${place.bedrooms}`),
+    h('li', { class: 'card__pill' }, `${accessEmoji} ${accessLabel}`),
+    h('li', { class: 'card__pill' }, `🌲 ${tierLabel}${sunsetBonus}`),
+    h(
+      'li',
+      { class: 'card__pill card__pill--reviews' },
+      `⭐ ${reviewsPillScore}`,
+      h('span', { class: 'card__pill-count' }, reviewsPillCount)
+    ),
+    h('li', { class: 'card__pill' }, `💰 ${place.priceRange}`),
+    h(
+      'li',
+      { class: 'card__pill card__pill--good' },
+      `✅ Verified ${place.reviews.asOf}`
+    ),
+    h(
+      'li',
+      {
+        class: `card__pill card__pill--${place.bookingStatus === 'open-bookable' ? 'good' : place.bookingStatus === 'lottery' ? 'warn' : 'info'}`,
+      },
+      `📅 ${statusLabel}`
+    ),
+    h(
+      'li',
+      { class: `card__pill card__pill--${place.meetsBedRule ? 'good' : 'warn'}` },
+      `${bedRuleEmoji} ${bedRuleLabel}`
+    )
+  );
+
   return h(
     'article',
     {
@@ -102,6 +155,7 @@ function renderCard(place: CoolSleepingPlace): HTMLElement {
         fitBadge
       )
     ),
+    pillRow,
     h('p', { class: 'card__address' }, place.region),
     notFitRow,
     h(

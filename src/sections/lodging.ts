@@ -15,6 +15,7 @@
  */
 
 import {
+  AVAILABILITY_LABELS,
   EAST_LODGING,
   NATURE_LABELS,
   WEST_LODGING,
@@ -76,10 +77,25 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       )
     : null;
 
-  // Emoji-pill row — TRAVEL.md section 10 canonical pills.
-  // 🛏 Beds / 🚪 Bedrooms / 🍳 Kitchen / 🌊🏔🌲 View / 💰 tier
+  // Emoji-pill row — May 16-17, 2026 standing rule.
+  // ALL 7 PILLS render above the fold on every card. Negatives are explicit
+  // (e.g. "No kitchen") — never omitted. Unknown values render as `[verify]`.
+  //   1. 🛏 Beds
+  //   2. 🚪 Bedrooms
+  //   3. 🍳 Kitchen status (full / kitchenette / none)
+  //   4. View / nature proximity (+ sunset hint when applicable)
+  //   5. ⭐ Reviews (score + count, count emphasized)
+  //   6. 💰 Tier (price band)
+  //   7. ✅ Verified [date]
+  // Plus an 8th availability pill (Aug 16-20 status) that always renders.
+  const kitchenLabel =
+    lodging.kitchen === 'full'
+      ? 'Full kitchen'
+      : lodging.kitchen === 'kitchenette'
+        ? 'Kitchenette'
+        : 'No kitchen';
   const kitchenEmoji =
-    lodging.kitchen === 'full' ? '🍳' : lodging.kitchen === 'kitchenette' ? '🍵' : '—';
+    lodging.kitchen === 'full' ? '🍳' : lodging.kitchen === 'kitchenette' ? '🍵' : '🚫';
   const viewEmoji =
     lodging.natureTag === 'lakeside'
       ? '🌊'
@@ -93,31 +109,53 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
               ? '🏘'
               : '🌲';
   const tierEmoji = lodging.tier === 'splurge' ? '💎' : '💰';
+  const sunsetBonus =
+    lodging.sunset && lodging.sunset.worth === 'yes' ? ' · 🌅 sunset' : '';
+  const reviewsPillScore =
+    lodging.reviews.score === 'N/A' ? '[verify]' : lodging.reviews.score;
+  const reviewsPillCount =
+    lodging.reviews.count === 'N/A' ? '' : ` · ${lodging.reviews.count}`;
+  const availabilityPillKind =
+    lodging.availability === 'confirmed-aug-16-20'
+      ? 'good'
+      : lodging.availability === 'sold-out-or-unavailable'
+        ? 'warn'
+        : 'info';
   const pillRow = h(
     'ul',
     { class: 'card__pills', 'aria-label': 'At a glance' },
-    h('li', { class: 'card__pill' }, `🚪 ${lodging.bedrooms}`),
     h('li', { class: 'card__pill' }, `🛏 ${lodging.beds}`),
-    h('li', { class: 'card__pill' }, `${kitchenEmoji} ${
-      lodging.kitchen === 'full' ? 'Full kitchen' : lodging.kitchen === 'kitchenette' ? 'Kitchenette' : 'No kitchen'
-    }`),
-    h('li', { class: 'card__pill' }, `${viewEmoji} ${NATURE_LABELS[lodging.natureTag]}`),
+    h('li', { class: 'card__pill' }, `🚪 ${lodging.bedrooms}`),
+    h('li', { class: 'card__pill' }, `${kitchenEmoji} ${kitchenLabel}`),
     h(
       'li',
       { class: 'card__pill' },
-      `${tierEmoji} ${lodging.pricePerNight}`
+      `${viewEmoji} ${NATURE_LABELS[lodging.natureTag]}${sunsetBonus}`
+    ),
+    h(
+      'li',
+      { class: 'card__pill card__pill--reviews' },
+      `⭐ ${reviewsPillScore}`,
+      h('span', { class: 'card__pill-count' }, reviewsPillCount)
+    ),
+    h('li', { class: 'card__pill' }, `${tierEmoji} ${lodging.pricePerNight}`),
+    h(
+      'li',
+      { class: 'card__pill card__pill--good' },
+      `✅ Verified ${lodging.reviews.asOf}`
+    ),
+    h(
+      'li',
+      { class: `card__pill card__pill--${availabilityPillKind}` },
+      `📅 ${AVAILABILITY_LABELS[lodging.availability]}`
     ),
     lodging.verifyBeds
       ? h(
           'li',
           { class: 'card__pill card__pill--verify' },
-          '✅ Verify beds at booking'
+          '⚠️ Verify beds at booking'
         )
-      : h(
-          'li',
-          { class: 'card__pill card__pill--good' },
-          `✅ Verified ${lodging.reviews.asOf}`
-        )
+      : null
   );
 
   // Kept for legacy rendering — bedRow no longer used (replaced by pillRow above).

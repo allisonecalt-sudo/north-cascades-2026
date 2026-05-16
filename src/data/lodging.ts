@@ -59,6 +59,34 @@ export interface LodgingPhoto {
 export type KitchenLevel = 'full' | 'kitchenette' | 'none';
 
 /**
+ * Aug 16-20, 2026 availability signal — best-effort.
+ *
+ *   - 'confirmed-aug-16-20': URL + date pre-fill returned a bookable result;
+ *     property has real-time inventory and current dates show as available.
+ *   - 'likely-available': property has online booking but Aug 16-20 was not
+ *     directly date-checked (e.g. Airbnb listings — JS-challenged so we can't
+ *     date-pre-fill verify, but the listing itself resolves and is active).
+ *   - 'verify-at-booking': no real-time online booking (B&B, small operator,
+ *     phone/form only) — caller must confirm at booking time.
+ *   - 'sold-out-or-unavailable': date-checked and confirmed unavailable, or
+ *     property closed for the window.
+ *
+ * Pulled May 17, 2026.
+ */
+export type AvailabilityStatus =
+  | 'confirmed-aug-16-20'
+  | 'likely-available'
+  | 'verify-at-booking'
+  | 'sold-out-or-unavailable';
+
+export const AVAILABILITY_LABELS: Record<AvailabilityStatus, string> = {
+  'confirmed-aug-16-20': 'Aug 16-20: bookable',
+  'likely-available': 'Aug 16-20: likely',
+  'verify-at-booking': 'Aug 16-20: verify',
+  'sold-out-or-unavailable': 'Aug 16-20: sold out',
+};
+
+/**
  * Sunset call-out per property.
  *   - 'yes': specific evidence (review hits, property language, geographic
  *     orientation) that this property is a notable sunset stay. Renders as a
@@ -127,6 +155,8 @@ export interface Lodging {
   bookingUrl?: string;
   tier: LodgingTier;
   kitchen: KitchenLevel;
+  /** Aug 16-20, 2026 availability signal — best-effort, May 17 pull. */
+  availability: AvailabilityStatus;
   photo: LodgingPhoto;
 }
 
@@ -301,6 +331,7 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.airbnb.com/marblemount-wa/stays',
     tier: 'fits-brief',
     kitchen: 'full',
+    availability: 'likely-available',
     photo: PHOTOS.rentalAFrame,
   },
   {
@@ -326,9 +357,10 @@ export const WEST_LODGING: Lodging[] = [
     verifyBeds: true,
     notes:
       'Strongest "nature-near" pick on the west side — actual riverside, hot tub on the water-facing deck. Reviewers call out the deck and the water sound. Confirm bedroom configuration at booking.',
-    bookingUrl: 'https://www.airbnb.com/rooms/1159630003390456641',
+    bookingUrl: 'https://www.airbnb.com/rooms/1159630003390456641?check_in=2026-08-16&check_out=2026-08-20&adults=2',
     tier: 'fits-brief',
     kitchen: 'full',
+    availability: 'likely-available',
     photo: PHOTOS.cabinHot,
   },
   {
@@ -355,9 +387,10 @@ export const WEST_LODGING: Lodging[] = [
     notes:
       'Further from Cascade Pass trailhead than Marblemount picks, but a calm wooded base if the cabin matters more than drive minutes. Verify exact bed counts at booking.',
     bookingHint: 'Listed on Airbnb.',
-    bookingUrl: 'https://www.airbnb.com/rooms/724602112999024219',
+    bookingUrl: 'https://www.airbnb.com/rooms/724602112999024219?check_in=2026-08-16&check_out=2026-08-20&adults=2',
     tier: 'fits-brief',
     kitchen: 'full',
+    availability: 'likely-available',
     photo: PHOTOS.rentalModern,
   },
   {
@@ -394,6 +427,7 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.ovenells-inn.com/',
     tier: 'fits-brief',
     kitchen: 'full',
+    availability: 'verify-at-booking',
     photo: PHOTOS.ranchProperty,
   },
   {
@@ -423,6 +457,7 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://glacierpeakresortandwinery.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    availability: 'verify-at-booking',
     photo: PHOTOS.cabinWoods,
   },
 
@@ -453,6 +488,7 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.cascaderiverhouse.com/',
     tier: 'splurge',
     kitchen: 'full',
+    availability: 'verify-at-booking',
     photo: PHOTOS.cabinRiver,
   },
 
@@ -485,6 +521,7 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.buffalorunrestaurant.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
+    availability: 'verify-at-booking',
     photo: PHOTOS.innClassic,
   },
   {
@@ -515,6 +552,7 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.northcascadesinn.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
+    availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
   },
 
@@ -545,6 +583,7 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://glacierpeakresortandwinery.com/',
     tier: 'note',
     kitchen: 'kitchenette',
+    availability: 'verify-at-booking',
     photo: PHOTOS.cabinClassic,
   },
 ];
@@ -588,6 +627,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.freestoneinn.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    availability: 'verify-at-booking',
     photo: PHOTOS.lodgeMountain,
   },
   {
@@ -623,6 +663,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://springcreekwinthrop.com/lodging/',
     tier: 'fits-brief',
     kitchen: 'full',
+    availability: 'verify-at-booking',
     photo: PHOTOS.cabinClassic,
   },
   {
@@ -655,6 +696,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://riversedgewinthrop.com/',
     tier: 'fits-brief',
     kitchen: 'full',
+    availability: 'verify-at-booking',
     photo: PHOTOS.cabinHot,
   },
   {
@@ -684,9 +726,10 @@ export const EAST_LODGING: Lodging[] = [
     verifyBeds: true,
     notes:
       '**Book a cabin with two queens — skip the lodge rooms (single bed, not a fit).** River setting + walkable to Winthrop boardwalk = best-of-both. Lands squarely in the Terra Nova sweet spot.',
-    bookingUrl: 'https://www.methowriverlodge.com/',
+    bookingUrl: 'https://methowriverlodge.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    availability: 'verify-at-booking',
     photo: PHOTOS.cabinRiver,
   },
   {
@@ -719,6 +762,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.innmazama.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    availability: 'verify-at-booking',
     photo: PHOTOS.lodgeMountain,
   },
   {
@@ -755,6 +799,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://chewuchinn.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    availability: 'verify-at-booking',
     photo: PHOTOS.bnbCozy,
   },
 
@@ -793,6 +838,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.sunmountainlodge.com/',
     tier: 'splurge',
     kitchen: 'full',
+    availability: 'verify-at-booking',
     photo: PHOTOS.lodgeRidge,
   },
 
@@ -828,6 +874,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://rollinghuts.com/',
     tier: 'not-a-fit',
     kitchen: 'kitchenette',
+    availability: 'verify-at-booking',
     photo: PHOTOS.glampingHut,
   },
   {
@@ -861,6 +908,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://hotelriovista.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
+    availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
   },
   {
@@ -891,6 +939,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://mtgardnerinn.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
+    availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
   },
 ];

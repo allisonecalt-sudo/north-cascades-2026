@@ -285,10 +285,10 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'phone-or-form',
     bookingNote:
-      'NO BOOKING. FCFS means anyone arriving can claim it. 9 mi / 3,400 ft strenuous hike-in disqualifies under "practical-not-extreme" — listed as inspiration only.',
-    bookingUrl: 'https://www.fohll.org/',
+      'NO BOOKING. FCFS means anyone arriving can claim it. 9 mi / 3,400 ft strenuous hike-in disqualifies under "practical-not-extreme" — listed as inspiration only. [Note 2026-05-17: fohll.org host not responding — direct site may be down. WTA write-up is the live source.]',
+    bookingUrl: 'https://www.wta.org/news/magazine/features/what-you-need-to-know-about-spending-the-night-in-a-fire-lookout',
     sourceUrl: 'https://www.wta.org/news/magazine/features/what-you-need-to-know-about-spending-the-night-in-a-fire-lookout',
-    sourceName: 'WTA · fohll.org',
+    sourceName: 'WTA (fohll.org host down 2026-05-17)',
     meetsBedRule: false,
     notFitReason:
       'Floor-space only (BYO bag + pad), NO beds. Strenuous 9 mi RT / 3,400 ft hike-in. Listed for the distinctive experience, NOT as a real option for this trip.',
@@ -299,7 +299,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
   // ============================================================
   {
     id: 'treehouse-concrete',
-    name: 'Concrete Treehouse (2BR Airbnb)',
+    name: 'Twin Cedars Treehouse (Concrete WA · 2BR Airbnb)',
     region: 'Concrete, WA · ~25 min west of Marblemount',
     locationTier: 'quirky',
     access: 'drive-in',
@@ -321,7 +321,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     bookingStatus: 'check-availability',
     bookingNote:
       'Search "treehouse Concrete WA" on Airbnb for Aug 16-20. Multiple 2BR options exist — pick the one with two real bedrooms and stable date availability.',
-    bookingUrl: 'https://www.airbnb.com/rooms/619805721232504402',
+    bookingUrl: 'https://www.airbnb.com/rooms/619805721232504402?check_in=2026-08-16&check_out=2026-08-20&adults=2',
     sourceUrl: 'https://www.airbnb.com/s/concrete--wa/homes?refinement_paths%5B%5D=%2Fhomes&search_type=filter_change&adults=2&zoom_level=14',
     sourceName: 'Airbnb · Concrete WA treehouses',
     meetsBedRule: true,
@@ -378,10 +378,10 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'phone-or-form',
     bookingNote:
-      'Book via methowreservations.com or call (509) 996-2148. Book a 2BR cabin specifically (River House is the largest). Likely available for Aug 16-20 with some lead time.',
-    bookingUrl: 'https://www.methowreservations.com/lodging/lostriverresort',
-    sourceUrl: 'https://www.methowreservations.com/lodging/lostriverresort',
-    sourceName: 'methowreservations.com',
+      'Book direct via lostriverresort.com or call (509) 996-2537. Book a 2BR cabin specifically (River House is the largest). Likely available for Aug 16-20 with some lead time. [URL refreshed 2026-05-17 — direct site is more reliable than methowreservations.com which 403s.]',
+    bookingUrl: 'https://www.lostriverresort.com/',
+    sourceUrl: 'https://www.lostriverresort.com/',
+    sourceName: 'lostriverresort.com',
     meetsBedRule: true,
   },
   {
