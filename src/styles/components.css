@@ -1181,3 +1181,14 @@
   font-weight: 400;
   font-size: var(--fs-sm);
 }
+
+/* Restaurants — inline no-kosher line (replaces the two empty subsection blocks). */
+.restaurants__no-kosher--inline {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin: 0 0 var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-warm-100);
+  border-left: 3px solid var(--c-ink-400);
+  border-radius: var(--radius-sm);
+}

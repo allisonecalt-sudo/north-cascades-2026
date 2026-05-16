@@ -43,19 +43,16 @@ function renderPlace(place: Restaurant): HTMLElement {
 }
 
 function renderTown(town: RestaurantTown): HTMLElement {
+  // No-kosher towns: rendered as compact single-row notice (not a full subsection).
+  // Stops the "Marblemount · No kosher" + "Winthrop · No kosher" two-block wall.
   if (town.noKosher) {
     return h(
-      'div',
-      { class: 'restaurants__town restaurants__town--no-kosher' },
-      h('h3', { class: 'subsection__title' }, town.town),
-      h(
-        'p',
-        { class: 'restaurants__no-kosher' },
-        h('strong', {}, 'No kosher restaurants here. '),
-        'Default to cabin meals — see ',
-        h('a', { href: '#food' }, 'Kosher notes'),
-        ' for the supermarket strategy.'
-      )
+      'p',
+      { class: 'restaurants__no-kosher restaurants__no-kosher--inline' },
+      h('strong', {}, `${town.town}: `),
+      'no kosher options — cabin meals (see ',
+      h('a', { href: '#food' }, 'Kosher notes'),
+      ').'
     );
   }
   return h(

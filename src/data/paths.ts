@@ -324,7 +324,7 @@ export const TRIP_PATHS: TripPath[] = [
     name: 'Path A · West-Side Anchor',
     tagline: 'One Marblemount cabin all 4 nights. Lowest WA-20 risk.',
     bestIf:
-      'WA-20 reopen looks shaky in July, OR you want the simplest version with the least driving and the lowest contingency risk.',
+      'WA-20 reopen looks shaky in July — OR you want the simplest version with the least driving.',
     snapshot: [
       'One base, one cabin — no mid-trip move',
       'Cascade Pass + WA-20 viewpoints + slow days',
@@ -344,7 +344,7 @@ export const TRIP_PATHS: TripPath[] = [
     name: 'Path B · Both Sides, Balanced',
     tagline: 'Marblemount 2 nights → Winthrop 2 nights. The full park.',
     bestIf:
-      'WA-20 looks solid by mid-July AND you want the full park experience — both signature viewpoints AND both signature hikes AND a real town night in Winthrop.',
+      'WA-20 looks solid by mid-July AND you want the full park — both signature hikes, both viewpoints, a Winthrop town night.',
     snapshot: [
       'Both signature hikes: Cascade Pass + Maple Pass',
       'Both viewpoints + a real Winthrop town night',
@@ -367,7 +367,7 @@ export const TRIP_PATHS: TripPath[] = [
     name: 'Path C · Slow Winthrop Base',
     tagline: '1 night Marblemount + 3 nights Winthrop. Less driving, more porch.',
     bestIf:
-      'She wants the least driving and the most evenings-at-the-cabin. Easy-to-moderate hikes only. More town time in Winthrop.',
+      'Least driving, most evenings-at-the-cabin. Easy-to-moderate hikes only. More town time in Winthrop.',
     snapshot: [
       '3 nights in Winthrop — fewest packing days',
       'East-side hikes only — Maple Pass, Blue Lake, Rainy Lake',
