@@ -265,6 +265,30 @@
   line-height: 1.45;
 }
 
+.card__reviews {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-900);
+  margin: 0;
+  line-height: 1.4;
+  background: var(--c-cream-100, #faf6ee);
+  padding: 6px 10px;
+  border-radius: 6px;
+  border-left: 3px solid var(--c-forest-500, #4a7150);
+}
+
+.card__reviews-as-of {
+  color: var(--c-ink-500);
+  font-size: var(--fs-xs);
+}
+
+.card__review-highlights {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-700);
+  margin: 0;
+  font-style: italic;
+  line-height: 1.45;
+}
+
 .card__tradeoff {
   font-size: var(--fs-xs);
   color: var(--c-ink-500);
@@ -325,6 +349,104 @@
   border-left: 3px solid var(--c-info-border);
   padding: var(--sp-2) var(--sp-3);
   border-radius: var(--radius-sm);
+}
+
+.rental__unpaved-note {
+  background: var(--c-warn-bg, #fff8e7);
+  border-left: 3px solid var(--c-warn-border, #d9a441);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  margin: var(--sp-3) 0;
+  color: var(--c-ink-800);
+}
+
+.rental__unpaved-note a {
+  color: var(--c-forest-700, #2d4d33);
+  text-decoration: underline;
+}
+
+.rental-card__specs {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  margin: 0 0 var(--sp-2) 0;
+  font-style: italic;
+}
+
+.rental-card__breakdown {
+  margin: var(--sp-2) 0;
+  font-size: var(--fs-xs);
+}
+
+.rental-card__breakdown-summary {
+  cursor: pointer;
+  color: var(--c-ink-700);
+  font-weight: 600;
+  padding: var(--sp-1) 0;
+}
+
+.rental-card__breakdown-summary:hover {
+  color: var(--c-forest-700, #2d4d33);
+}
+
+.rental-card__breakdown-list {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem var(--sp-3);
+  margin: var(--sp-2) 0 0 0;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-warm-100, #f6f3ed);
+  border-radius: var(--radius-sm);
+}
+
+.rental-card__breakdown-list dt {
+  color: var(--c-ink-500);
+  margin: 0;
+}
+
+.rental-card__breakdown-list dd {
+  color: var(--c-ink-800);
+  margin: 0;
+}
+
+.rental-card__breakdown-total {
+  font-weight: 700;
+  color: var(--c-ink-900) !important;
+  border-top: 1px solid var(--c-ink-200, #e0dcd3);
+  padding-top: 0.25rem;
+  margin-top: 0.25rem !important;
+}
+
+.rental-card__cta {
+  margin: var(--sp-3) 0 0 0;
+}
+
+.rental-card__book-link {
+  display: inline-block;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--c-forest-500, #3a6b46);
+  color: #fff;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s ease;
+}
+
+.rental-card__book-link:hover,
+.rental-card__book-link:focus {
+  background: var(--c-forest-700, #2d4d33);
+  text-decoration: none;
+}
+
+@media (max-width: 480px) {
+  .rental-card__breakdown-list {
+    grid-template-columns: 1fr;
+  }
+  .rental-card__breakdown-list dt {
+    margin-top: 0.25rem;
+  }
 }
 
 /* Restaurants — no-kosher town notice */
