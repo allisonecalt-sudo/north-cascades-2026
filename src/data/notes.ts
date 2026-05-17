@@ -50,6 +50,7 @@ export interface Note {
   created_at: string;
   addressed: boolean;
   status: NoteStatus;
+  photo_url: string | null;
 }
 
 export interface InsertNoteInput {
@@ -57,13 +58,54 @@ export interface InsertNoteInput {
   section: string | null;
   path_id: PathLetter | null;
   note: string;
+  photo_url?: string | null;
+}
+
+/**
+ * Upload a photo for a note to the north-cascades-note-photos bucket.
+ * Returns the public URL. Mirrors the Austria implementation exactly so
+ * the UX is identical across both trip sites.
+ *
+ * Filename pattern: {timestamp}-{random}.{ext} — no PII, collision-resistant.
+ * Throws on failure so the caller can surface a toast and refuse to submit
+ * the note text-only (fail-loud rule).
+ */
+export async function uploadNotePhoto(file: File): Promise<string> {
+  const rawExt = file.name.split('.').pop() ?? 'jpg';
+  const ext = rawExt.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const safeExt = ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext) ? ext : 'jpg';
+  const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}.${safeExt}`;
+  const res = await fetch(
+    `${SUPABASE_URL}/storage/v1/object/north-cascades-note-photos/${filename}`,
+    {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': file.type || 'image/jpeg',
+      },
+      body: file,
+    }
+  );
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Photo upload failed (${res.status}): ${text}`);
+  }
+  return `${SUPABASE_URL}/storage/v1/object/public/north-cascades-note-photos/${filename}`;
 }
 
 export async function insertNote(input: InsertNoteInput): Promise<Note> {
+  const body = {
+    author: input.author,
+    section: input.section,
+    path_id: input.path_id,
+    note: input.note,
+    photo_url: input.photo_url ?? null,
+  };
   const res = await fetch(`${SUPABASE_URL}/rest/v1/north_cascades_notes`, {
     method: 'POST',
     headers: { ...headers, Prefer: 'return=representation' },
-    body: JSON.stringify(input),
+    body: JSON.stringify(body),
   });
   if (!res.ok) {
     const text = await res.text();

@@ -30,16 +30,21 @@ import {
   insertNote,
   listNotesBySection,
   countsBySection,
+  uploadNotePhoto,
   type Note,
   type PathLetter,
 } from '../data/notes';
 import { getSelectedPath } from '../state/path';
 import { h } from '../dom';
+import { openLightbox } from './lightbox';
 
 const AUTHOR_KEY = 'ncades2026.noteAuthor';
 
 let modalEl: HTMLDivElement | null = null;
 let currentSection: string | null = null;
+// Object-URL for the in-modal preview thumbnail. Revoked on clear/submit/close
+// to avoid blob-URL leaks across multiple opens.
+let currentPreviewUrl: string | null = null;
 
 function readStoredAuthor(): string {
   try {
@@ -115,6 +120,17 @@ function buildModal(): HTMLDivElement {
         <span>Note</span>
         <textarea id="notes-text" placeholder="Say what you're thinking…"></textarea>
       </label>
+      <div class="modal-row note-photo-row">
+        <label for="note-photo" class="note-photo-label">
+          <span>📷 Attach photo (optional)</span>
+          <span class="note-photo-hint">screenshot something to show, or a photo of what's wrong</span>
+        </label>
+        <input type="file" id="note-photo" accept="image/*" />
+        <div id="note-photo-preview" class="note-photo-preview" hidden>
+          <img id="note-photo-preview-img" alt="preview" />
+          <button type="button" id="note-photo-clear" class="note-photo-clear" aria-label="Remove photo">✕</button>
+        </div>
+      </div>
       <div class="notes-modal__path" data-bind="path-line"></div>
       <div class="notes-modal__actions">
         <button class="notes-btn" type="button" data-action="cancel">Cancel</button>
@@ -166,7 +182,21 @@ function renderExisting(listEl: HTMLElement, notes: Note[]): void {
       n.path_id ? h('span', {}, `🥾 Path ${n.path_id}`) : null,
       statusPill(n.status)
     );
-    item.append(body, meta);
+    item.append(body);
+    if (n.photo_url) {
+      const photoWrap = h('div', { class: 'notes-item__photo-wrap' });
+      const photo = h('img', {
+        src: n.photo_url,
+        alt: 'note photo',
+        class: 'notes-item__photo',
+        loading: 'lazy',
+      }) as HTMLImageElement;
+      const url = n.photo_url;
+      photo.addEventListener('click', () => openLightbox(url));
+      photoWrap.appendChild(photo);
+      item.append(photoWrap);
+    }
+    item.append(meta);
     listEl.appendChild(item);
   }
 }
@@ -208,6 +238,10 @@ function openModal(section: string, sectionLabel: string): void {
   const text = modalEl.querySelector<HTMLTextAreaElement>('#notes-text');
   if (text) text.value = '';
 
+  // Reset photo input + preview every time the modal opens — stale previews
+  // from a previous session would be confusing.
+  clearPhotoPreview();
+
   modalEl.classList.add('open');
   void loadExistingForSection(section);
 
@@ -215,9 +249,24 @@ function openModal(section: string, sectionLabel: string): void {
   setTimeout(() => text?.focus(), 50);
 }
 
+function clearPhotoPreview(): void {
+  if (!modalEl) return;
+  const photoInput = modalEl.querySelector<HTMLInputElement>('#note-photo');
+  const photoPreview = modalEl.querySelector<HTMLDivElement>('#note-photo-preview');
+  const photoPreviewImg = modalEl.querySelector<HTMLImageElement>('#note-photo-preview-img');
+  if (photoInput) photoInput.value = '';
+  if (photoPreview) photoPreview.hidden = true;
+  if (photoPreviewImg) photoPreviewImg.removeAttribute('src');
+  if (currentPreviewUrl) {
+    URL.revokeObjectURL(currentPreviewUrl);
+    currentPreviewUrl = null;
+  }
+}
+
 function closeModal(): void {
   if (!modalEl) return;
   modalEl.classList.remove('open');
+  clearPhotoPreview();
 }
 
 async function submitNote(): Promise<void> {
@@ -225,6 +274,7 @@ async function submitNote(): Promise<void> {
   const authorEl = modalEl.querySelector<HTMLSelectElement>('#notes-author');
   const textEl = modalEl.querySelector<HTMLTextAreaElement>('#notes-text');
   const submitBtn = modalEl.querySelector<HTMLButtonElement>('[data-action="submit"]');
+  const photoInput = modalEl.querySelector<HTMLInputElement>('#note-photo');
   if (!authorEl || !textEl || !submitBtn) return;
 
   const author = authorEl.value.trim() || 'anonymous';
@@ -240,14 +290,32 @@ async function submitNote(): Promise<void> {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Sending…';
   try {
+    // If a photo is attached, upload it FIRST. Fail-loud: if upload fails,
+    // we don't silently submit text-only — surface the error so the user
+    // can retry or remove the photo. Same UX pattern as Austria.
+    let photoUrl: string | null = null;
+    const file = photoInput?.files?.[0] ?? null;
+    if (file) {
+      submitBtn.textContent = 'Uploading photo…';
+      try {
+        photoUrl = await uploadNotePhoto(file);
+      } catch (uploadErr) {
+        const msg = uploadErr instanceof Error ? uploadErr.message : 'Unknown error';
+        showToast(`Photo upload failed: ${msg}. Note not sent — try again or remove the photo.`, 5000);
+        return;
+      }
+      submitBtn.textContent = 'Sending…';
+    }
     await insertNote({
       author,
       section: currentSection,
       path_id: path,
       note: text,
+      photo_url: photoUrl,
     });
     showToast('Saved — Allison will see this next time she opens the site.');
     textEl.value = '';
+    clearPhotoPreview();
     // Refresh existing list + badge counts.
     await loadExistingForSection(currentSection);
     await refreshBadges();
@@ -288,6 +356,28 @@ export function initNotesModal(): void {
     ?.addEventListener('click', () => {
       void submitNote();
     });
+
+  // Photo input — preview the selected image inline. Object URLs revoked
+  // on clear/close/submit to avoid leaks across opens.
+  const photoInput = modalEl.querySelector<HTMLInputElement>('#note-photo');
+  const photoPreview = modalEl.querySelector<HTMLDivElement>('#note-photo-preview');
+  const photoPreviewImg = modalEl.querySelector<HTMLImageElement>('#note-photo-preview-img');
+  const photoClearBtn = modalEl.querySelector<HTMLButtonElement>('#note-photo-clear');
+  if (photoInput && photoPreview && photoPreviewImg && photoClearBtn) {
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files?.[0] ?? null;
+      if (!file) {
+        clearPhotoPreview();
+        return;
+      }
+      if (currentPreviewUrl) URL.revokeObjectURL(currentPreviewUrl);
+      currentPreviewUrl = URL.createObjectURL(file);
+      photoPreviewImg.src = currentPreviewUrl;
+      photoPreview.hidden = false;
+    });
+    photoClearBtn.addEventListener('click', () => clearPhotoPreview());
+  }
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modalEl?.classList.contains('open')) closeModal();
   });

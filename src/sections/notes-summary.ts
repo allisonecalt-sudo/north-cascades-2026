@@ -29,6 +29,7 @@ import {
   type NoteStatus,
 } from '../data/notes';
 import { h, section } from '../dom';
+import { openLightbox } from './lightbox';
 
 const SECTION_LABELS: Record<string, { label: string; page: string }> = {
   paths: { label: 'Path picker', page: './' },
@@ -103,6 +104,20 @@ function renderNote(n: Note, onChange: () => void): HTMLElement {
 
   const body = h('p', { class: 'notes-summary__note-body' }, n.note);
 
+  // Optional photo — rendered as a tappable thumbnail; click opens lightbox.
+  let photoEl: HTMLElement | null = null;
+  if (n.photo_url) {
+    const url = n.photo_url;
+    const img = h('img', {
+      src: url,
+      alt: 'note photo',
+      class: 'notes-summary__note-photo',
+      loading: 'lazy',
+    }) as HTMLImageElement;
+    img.addEventListener('click', () => openLightbox(url));
+    photoEl = h('div', { class: 'notes-summary__note-photo-wrap' }, img);
+  }
+
   const meta = h(
     'div',
     { class: 'notes-summary__note-meta' },
@@ -164,7 +179,11 @@ function renderNote(n: Note, onChange: () => void): HTMLElement {
     actions.appendChild(reopenBtn);
   }
 
-  card.append(body, meta, actions);
+  if (photoEl) {
+    card.append(body, photoEl, meta, actions);
+  } else {
+    card.append(body, meta, actions);
+  }
   return card;
 }
 
