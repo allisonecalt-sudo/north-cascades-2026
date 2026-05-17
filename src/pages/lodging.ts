@@ -17,10 +17,12 @@ function mount(): void {
     title: 'Where we sleep',
     lede: 'Real cabin options for each base. 2 beds, 1-2 bedrooms, ~$200-300. Nature-immersed picks lead.',
     imageHero: {
-      // Unsplash — riverside cabin in PNW forest. Brand-fit: forest palette.
-      src: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=1920&q=70',
-      alt: 'Rustic cabin beside a forested river with wooden deck',
-      credit: 'Photo: Cherise Evertz / Unsplash',
+      // Unsplash — summer A-frame cabin tucked in green PNW forest.
+      // Replaced May 17, 2026 — prior hero was a snow-covered winter scene
+      // (violates Aug-trip "no snow" rule).
+      src: 'https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=1920&q=70',
+      alt: 'A-frame cabin tucked into a green evergreen forest in summer light',
+      credit: 'Photo: Sterling Davis / Unsplash',
       ctaLabel: 'See the cabins',
       ctaHref: '#lodging',
     },

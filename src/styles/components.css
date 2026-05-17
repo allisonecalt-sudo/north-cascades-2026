@@ -269,6 +269,13 @@
   font-style: italic;
 }
 
+.card__pill--bad {
+  background: var(--c-bad-bg);
+  border-color: var(--c-bad-border);
+  color: var(--c-bad-ink);
+  font-weight: 700;
+}
+
 /* Amenity pills — neutral tone, lighter weight than primary at-a-glance
    facts. Visually distinct from the louder good/warn/verify variants so
    the eye still lands on beds/kitchen first. */

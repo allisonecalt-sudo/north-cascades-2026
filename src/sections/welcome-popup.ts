@@ -43,36 +43,47 @@ function buildPopup(): HTMLDivElement {
   wrap.innerHTML = `
     <div class="welcome-popup">
       <button class="welcome-popup__close" type="button" aria-label="Close welcome">×</button>
-      <div class="welcome-popup__eyebrow">Hi Erin —</div>
-      <h2 class="welcome-popup__title" id="welcome-popup-title">Allison built this for our trip.</h2>
+      <div class="welcome-popup__eyebrow">Hey Erin —</div>
+      <h2 class="welcome-popup__title" id="welcome-popup-title">This is a draft of our trip. React to it.</h2>
+      <p class="welcome-popup__body">
+        Your Google Doc is still the plan. This site is just so you can
+        <em>see</em> the options laid out — lodging, hikes, drive times — and tell
+        me what to change. Nothing here is locked.
+      </p>
 
       <div class="welcome-popup__steps">
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">1</span>
           <div class="welcome-popup__step-body">
-            <strong>Tap <span class="welcome-popup__chip">💬</span></strong> next to any section
-            title (you'll see them everywhere — lodging, hikes, food, etc).
+            <strong>Tap the
+              <span class="welcome-popup__chip">💬&nbsp;Note</span> button</strong>
+            in the bottom-right of any page (it's there on every page).
+            Or tap a <span class="welcome-popup__chip">💬</span> next to a section
+            title to scope your note to that thing.
           </div>
         </div>
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">2</span>
           <div class="welcome-popup__step-body">
-            <strong>Type whatever you're thinking.</strong> "I love this lodging." "Too much
-            driving." "Swap this hike." "Not for me." No filter needed.
+            <strong>Type it like you'd text me.</strong>
+            "Cascade River House looks great." "Swap Maple Pass for something easier."
+            "Too much driving on day 3." "I want to spend a night in Winthrop."
+            No filter.
           </div>
         </div>
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">3</span>
           <div class="welcome-popup__step-body">
-            <strong>Allison sees it</strong> next time she opens the site, then updates the
-            trip to match. Like a shared whiteboard.
+            <strong>I'm 10 hours ahead</strong> — leave a note before bed,
+            by the time you wake up the site will already reflect it.
+            Refresh and see.
           </div>
         </div>
       </div>
 
       <p class="welcome-popup__body welcome-popup__body--small">
-        Three paths up top (A / B / C) — pick one to filter the site, or compare all three.
-        Nothing's locked. This is a draft.
+        Three paths up top (A / B / C) for how to spend the 4 nights — pick one to filter
+        the site, or leave it on "compare all" to see every option side-by-side.
       </p>
 
       <div class="welcome-popup__actions">
@@ -80,7 +91,7 @@ function buildPopup(): HTMLDivElement {
           Got it — show me the trip
         </button>
       </div>
-      <p class="welcome-popup__tip">3-second read · or click anywhere to dismiss</p>
+      <p class="welcome-popup__tip">Click anywhere outside this box to close.</p>
     </div>
   `;
   return wrap;

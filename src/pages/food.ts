@@ -13,8 +13,8 @@ import { renderPageCtas } from '../sections/page-ctas';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'food',
-    title: 'Food strategy',
-    lede: 'Cook from the cabin. Groceries on the drive in. No non-kosher restaurants.',
+    title: 'Groceries + kosher notes',
+    lede: 'Food is not a thing on this trip — both keep kosher, both cook. Grocery stop in Seattle, cook from the cabin, done. This page is just the reference.',
     imageHero: {
       // Unsplash — cabin kitchen with wood + warm light.
       src: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1920&q=70',

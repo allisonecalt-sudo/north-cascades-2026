@@ -1169,11 +1169,39 @@
   margin: 0 0 var(--sp-4);
 }
 
+.chip-bar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin: 0 0 var(--sp-2);
+}
+
 .chip-bar__lede {
   font-size: 0.78rem;
   color: var(--c-ink-500);
-  margin: 0 0 var(--sp-2);
+  margin: 0;
   line-height: 1.4;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* "X of Y showing" pill — Booking.com filter affordance. */
+.chip-showing {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--c-glacier-100, #e8f3f7);
+  color: var(--c-forest-700, #1f4a3a);
+  border: 1px solid var(--c-glacier-300, #b8d8e3);
+  border-radius: 999px;
+  padding: 0.28rem 0.65rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 
 .chip-bar__groups {
@@ -1280,6 +1308,11 @@
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  /* Belt + suspenders so a flex/grid parent can shrink the track below its
+   * intrinsic content width on narrow viewports. Pairs with the
+   * .card-grid minmax(0, 1fr) fix from May 17, 2026. */
+  min-width: 0;
+  max-width: 100%;
 }
 
 .lcarousel__track::-webkit-scrollbar {

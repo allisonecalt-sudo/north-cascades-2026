@@ -38,6 +38,7 @@ import {
   WEST_LODGING,
   sortByNature,
   type Lodging,
+  type LodgingAmenities,
   type LodgingTier,
   type NatureTag,
 } from '../data/lodging';
@@ -103,6 +104,52 @@ function lodgingHasMin2Beds(l: Lodging): boolean {
   return l.tier !== 'not-a-fit';
 }
 
+/**
+ * Render the optional amenity-pill set per the May 17, 2026 mini-Booking.com
+ * spec: laundry / baths / AC / parking / wifi / pets / hot tub. Only renders
+ * a pill when the value is known (i.e. not undefined and not 'unknown') — we
+ * intentionally skip rather than render "Unknown" pills, per the fail-loud
+ * rule. Returns an array of HTMLElement | null so the caller can spread it
+ * into the larger pillRow without empty wrappers.
+ */
+function renderAmenityPills(a: LodgingAmenities | undefined): (HTMLElement | null)[] {
+  if (!a) return [];
+  const pills: (HTMLElement | null)[] = [];
+  const pill = (text: string): HTMLElement => h('li', { class: 'card__pill card__pill--amenity' }, text);
+
+  if (a.baths) pills.push(pill(`🛁 ${a.baths} bath${a.baths === '1' ? '' : 's'}`));
+  if (a.laundry && a.laundry !== 'unknown') {
+    const label = a.laundry === 'in-unit' ? 'In-unit laundry'
+      : a.laundry === 'on-site' ? 'On-site laundry'
+      : a.laundry === 'shared' ? 'Shared laundry'
+      : 'No laundry';
+    pills.push(pill(`🧺 ${label}`));
+  }
+  if (a.ac && a.ac !== 'unknown') {
+    pills.push(pill(a.ac === 'yes' ? '❄️ AC' : '🚫 No AC'));
+  }
+  if (a.parking && a.parking !== 'unknown') {
+    const label = a.parking === 'free' ? 'Free parking'
+      : a.parking === 'paid' ? 'Paid parking'
+      : 'Street parking';
+    pills.push(pill(`🅿 ${label}`));
+  }
+  if (a.wifi && a.wifi !== 'unknown') {
+    const label = a.wifi === 'strong' ? 'Strong wifi'
+      : a.wifi === 'basic' ? 'Basic wifi'
+      : 'No wifi';
+    pills.push(pill(`📶 ${label}`));
+  }
+  if (a.pets && a.pets !== 'unknown') {
+    const label = a.pets === 'yes' ? 'Pets OK'
+      : a.pets === 'fee' ? 'Pets (fee)'
+      : 'No pets';
+    pills.push(pill(`🐾 ${label}`));
+  }
+  if (a.hotTub) pills.push(pill('♨ Hot tub'));
+  return pills;
+}
+
 function lodgingMatchesFilters(l: Lodging, base: 'west' | 'east'): boolean {
   if (filters.base.size > 0 && !filters.base.has(base)) return false;
   if (filters.tier.size > 0 && !filters.tier.has(lodgingTierBucket(l))) return false;
@@ -122,6 +169,13 @@ function activeFilterCount(): number {
     filters.nature.size +
     (filters.sunsetOnly ? 1 : 0)
   );
+}
+
+/** Live total of properties matching the current filters across both bases. */
+function currentShowingCount(): number {
+  const west = WEST_LODGING.filter((l) => lodgingMatchesFilters(l, 'west')).length;
+  const east = EAST_LODGING.filter((l) => lodgingMatchesFilters(l, 'east')).length;
+  return west + east;
 }
 
 // ====================================================================
@@ -371,6 +425,7 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       : lodging.availability === 'sold-out-or-unavailable'
         ? 'warn'
         : 'info';
+  const amenityPills = renderAmenityPills(lodging.amenities);
   const pillRow = h(
     'ul',
     { class: 'card__pills', 'aria-label': 'At a glance' },
@@ -382,6 +437,7 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       { class: 'card__pill' },
       `${viewEmoji} ${natureLabel}${sunsetBonus}`
     ),
+    ...amenityPills,
     h(
       'li',
       { class: 'card__pill card__pill--reviews' },
@@ -404,6 +460,13 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
           'li',
           { class: 'card__pill card__pill--verify' },
           '⚠️ Verify beds at booking'
+        )
+      : null,
+    lodging.kosherCookingFit === false
+      ? h(
+          'li',
+          { class: 'card__pill card__pill--bad' },
+          '🚫 No real kitchen — won\'t work for cook-in'
         )
       : null
   );
@@ -878,10 +941,29 @@ function renderChipBar(): HTMLElement {
     `Clear filters (${count})`
   );
 
+  // Showing-count pill — Booking.com "X of Y showing" affordance. Updates
+  // live when filters change via updateChipBar().
+  const showingCount = currentShowingCount();
+  const totalCount = WEST_LODGING.length + EAST_LODGING.length;
+  const showingPill = h(
+    'span',
+    {
+      class: 'chip-showing',
+      'data-showing-pill': 'true',
+      'aria-live': 'polite',
+    },
+    `${showingCount} of ${totalCount} showing`
+  );
+
   const bar = h(
     'div',
     { class: 'chip-bar', role: 'group', 'aria-label': 'Filter properties' },
-    h('p', { class: 'chip-bar__lede' }, 'Tap chips to narrow. Empty = show all.'),
+    h(
+      'div',
+      { class: 'chip-bar__head' },
+      h('p', { class: 'chip-bar__lede' }, 'Tap chips to narrow. Empty = show all.'),
+      showingPill
+    ),
     h('div', { class: 'chip-bar__groups' }, ...groups),
     clearBtn
   );
@@ -925,6 +1007,12 @@ function updateChipBar(bar: HTMLElement): void {
   if (clearBtn) {
     clearBtn.classList.toggle('chip-clear--visible', count > 0);
     clearBtn.textContent = `Clear filters (${count})`;
+  }
+  // Refresh the "X of Y showing" pill.
+  const showingPill = bar.querySelector<HTMLElement>('[data-showing-pill="true"]');
+  if (showingPill) {
+    const total = WEST_LODGING.length + EAST_LODGING.length;
+    showingPill.textContent = `${currentShowingCount()} of ${total} showing`;
   }
 }
 

@@ -105,8 +105,11 @@ function buildModal(): HTMLDivElement {
         and iterates the site.
       </p>
       <label class="notes-modal__field">
-        <span>Your name</span>
-        <input type="text" id="notes-author" placeholder="Erin / Allison / your name" autocomplete="given-name" />
+        <span>Who's this from?</span>
+        <select id="notes-author">
+          <option value="Erin">Erin</option>
+          <option value="Allison">Allison</option>
+        </select>
       </label>
       <label class="notes-modal__field">
         <span>Note</span>
@@ -196,8 +199,11 @@ function openModal(section: string, sectionLabel: string): void {
       : 'No path selected — note is general (Compare-all mode).';
   }
 
-  const author = modalEl.querySelector<HTMLInputElement>('#notes-author');
-  if (author && !author.value) author.value = readStoredAuthor();
+  const authorSel = modalEl.querySelector<HTMLSelectElement>('#notes-author');
+  if (authorSel) {
+    const stored = readStoredAuthor();
+    if (stored === 'Erin' || stored === 'Allison') authorSel.value = stored;
+  }
 
   const text = modalEl.querySelector<HTMLTextAreaElement>('#notes-text');
   if (text) text.value = '';
@@ -216,7 +222,7 @@ function closeModal(): void {
 
 async function submitNote(): Promise<void> {
   if (!modalEl || !currentSection) return;
-  const authorEl = modalEl.querySelector<HTMLInputElement>('#notes-author');
+  const authorEl = modalEl.querySelector<HTMLSelectElement>('#notes-author');
   const textEl = modalEl.querySelector<HTMLTextAreaElement>('#notes-text');
   const submitBtn = modalEl.querySelector<HTMLButtonElement>('[data-action="submit"]');
   if (!authorEl || !textEl || !submitBtn) return;
@@ -253,6 +259,17 @@ async function submitNote(): Promise<void> {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Send';
   }
+}
+
+/**
+ * Public wrapper for opening the notes modal scoped to an arbitrary section.
+ * Used by the global FAB (`global-fab.ts`) to open the modal pre-scoped to
+ * `whole-trip` (the FAB isn't attached to a section header). Idempotently
+ * ensures the modal DOM exists, then delegates to the internal `openModal`.
+ */
+export function openGlobalScopeModal(section: string, sectionLabel: string): void {
+  initNotesModal();
+  openModal(section, sectionLabel);
 }
 
 export function initNotesModal(): void {
@@ -293,7 +310,8 @@ export function attachNotesButton(sectionEl: HTMLElement): void {
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'notes-trigger';
-  btn.setAttribute('aria-label', `Leave a note about ${sectionLabel}`);
+  btn.setAttribute('aria-label', `Note about "${sectionLabel}" — tell Allison what to change`);
+  btn.setAttribute('title', `Tell Allison what to change about "${sectionLabel}"`);
   btn.dataset.section = sectionId;
   btn.innerHTML = `<span aria-hidden="true">💬</span><span class="notes-trigger__count" data-bind="count" hidden>0</span>`;
   btn.addEventListener('click', () => {
