@@ -18,6 +18,7 @@ export default defineConfig(({ command }) => ({
         hikes: here('hikes.html'),
         viewpoints: here('viewpoints.html'),
         activities: here('activities.html'),
+        lakes: here('lakes.html'),
         towns: here('towns.html'),
         travel: here('travel.html'),
         rental: here('rental.html'),
