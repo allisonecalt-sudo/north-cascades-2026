@@ -1060,6 +1060,27 @@ function renderChipBar(): HTMLElement {
     `${showingCount} of ${totalCount} showing`
   );
 
+  // Sold-out banner — only renders when there ARE sold-out entries AND they're
+  // currently being hidden. Click flips showSoldOut to true.
+  const hiddenSoldOut = soldOutCount();
+  const soldOutBanner =
+    hiddenSoldOut > 0 && !filters.showSoldOut
+      ? h(
+          'div',
+          {
+            class: 'chip-bar__soldout-banner',
+            'data-soldout-banner': 'true',
+            role: 'note',
+          },
+          `Hiding ${hiddenSoldOut} sold-out propert${hiddenSoldOut === 1 ? 'y' : 'ies'} — `,
+          h(
+            'button',
+            { type: 'button', class: 'link-btn', 'data-action': 'show-sold-out' },
+            'show all'
+          )
+        )
+      : null;
+
   const bar = h(
     'div',
     { class: 'chip-bar', role: 'group', 'aria-label': 'Filter properties' },
@@ -1070,7 +1091,8 @@ function renderChipBar(): HTMLElement {
       showingPill
     ),
     h('div', { class: 'chip-bar__groups' }, ...groups),
-    clearBtn
+    clearBtn,
+    soldOutBanner
   );
 
   // Delegated click handler
@@ -1085,6 +1107,12 @@ function renderChipBar(): HTMLElement {
       filters.nature.clear();
       filters.sunsetOnly = false;
       filters.freeCancelOnly = false;
+      filters.showSoldOut = false;
+      notifyFilters();
+      return;
+    }
+    if (target.dataset['action'] === 'show-sold-out') {
+      filters.showSoldOut = true;
       notifyFilters();
       return;
     }
@@ -1364,6 +1392,7 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
         filters.nature.clear();
         filters.sunsetOnly = false;
         filters.freeCancelOnly = false;
+        filters.showSoldOut = false;
         notifyFilters();
       }
     });
