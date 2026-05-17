@@ -34,11 +34,13 @@ import {
   WA20_CONTINGENCY,
   WA20_TIMELINE,
   WA20_PAGE_META,
+  WA20_CORRIDOR_VIDEO,
   type Wa20Impact,
   type AffectedItem,
 } from '../data/wa20-status';
 import { h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
+import { renderVideoEmbed } from './video-embed';
 
 // ====================================================================
 // 1. STATUS PILL
@@ -92,6 +94,29 @@ function renderTldr(): HTMLElement {
       { class: 'wa20-tldr__list' },
       ...WA20_TLDR.map((line) => h('li', { class: 'wa20-tldr__item' }, line))
     )
+  );
+}
+
+// ====================================================================
+// 2b. CORRIDOR DRIVE VIDEO — what the road actually looks like
+// ====================================================================
+
+function renderCorridorVideo(): HTMLElement {
+  return h(
+    'div',
+    { class: 'wa20-corridor-video' },
+    h('h3', { class: 'wa20-block-title' }, 'What the corridor actually looks like'),
+    h(
+      'p',
+      { class: 'wa20-block-lede' },
+      'A short drive-through of SR-20 (filmed when the highway was open through). Shows the scale of the closure-affected mid-corridor + the kind of road experience you\'re budgeting for.'
+    ),
+    renderVideoEmbed({
+      videoId: WA20_CORRIDOR_VIDEO.youtubeId,
+      title: WA20_CORRIDOR_VIDEO.title,
+      creator: WA20_CORRIDOR_VIDEO.creator,
+      className: 'video-embed--wa20',
+    })
   );
 }
 
@@ -730,6 +755,7 @@ export function renderWa20Status(): HTMLElement {
     }),
     renderStatusPill(),
     renderTldr(),
+    renderCorridorVideo(),
     renderSources(),
     renderPhoneProtocol(),
     renderAffected(),

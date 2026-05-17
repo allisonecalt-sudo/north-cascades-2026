@@ -55,6 +55,16 @@ export interface Activity {
   needsWa20Through?: boolean;
   /** Carousel photos — first slide is also the card thumbnail. */
   photos?: CarouselPhoto[];
+  /**
+   * Optional YouTube preview clip (May 17, 2026 buildout — Allison brief:
+   * *"embed videos where helpful simple videos"*). Click-to-load embed via
+   * `renderVideoEmbed`. See `sections/video-embed.ts` for constraints.
+   */
+  video?: {
+    youtubeId: string;
+    title: string;
+    creator: string;
+  };
 }
 
 // ----------------------------------------------------------------------------
@@ -123,6 +133,11 @@ export const ACTIVITIES: Activity[] = [
     sourceUrl: 'https://northcascadekayaks.com/',
     sourceLabel: 'North Cascade Kayaks',
     category: 'water',
+    video: {
+      youtubeId: 'fY2HaIimbA8',
+      title: 'Diablo Lake Kayaking and Paddleboarding',
+      creator: 'Wandering Through Time and Place',
+    },
     photos: [
       {
         src: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Diablo_Lake_from_Overlook_03.jpg',

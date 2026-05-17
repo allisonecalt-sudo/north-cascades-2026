@@ -23,6 +23,7 @@ import { ACTIVITIES, RULED_OUT, type Activity, type ActivityCategory, type Activ
 import { h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
+import { renderVideoEmbed } from './video-embed';
 
 // ====================================================================
 // FILTER CHIP STATE
@@ -181,6 +182,14 @@ function renderActivityCard(act: Activity): HTMLElement {
     h('p', { class: 'card__subtitle' }, act.where),
     renderActivityPills(act),
     h('p', { class: 'card__note' }, act.description),
+    act.video
+      ? renderVideoEmbed({
+          videoId: act.video.youtubeId,
+          title: act.video.title,
+          creator: act.video.creator,
+          className: 'video-embed--activity',
+        })
+      : null,
     h(
       'p',
       { class: 'card__source activity-card__cost' },

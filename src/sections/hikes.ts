@@ -25,6 +25,7 @@ import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { badge, h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
+import { renderVideoEmbed } from './video-embed';
 
 // ====================================================================
 // FILTER CHIP STATE
@@ -273,6 +274,14 @@ function renderHikeCard(hike: Hike, inPath: boolean, pathSelected: boolean): HTM
     renderHikePills(hike),
     renderHikeStatusAlert(hike),
     h('p', { class: 'card__note' }, hike.description),
+    hike.video
+      ? renderVideoEmbed({
+          videoId: hike.video.youtubeId,
+          title: hike.video.title,
+          creator: hike.video.creator,
+          className: 'video-embed--hike',
+        })
+      : null,
     hike.sourceUrl
       ? h(
           'p',

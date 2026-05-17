@@ -474,3 +474,20 @@ export const WA20_PAGE_META = {
   /** Researched on — feeds the section-sources strip. */
   asOf: 'May 17, 2026',
 } as const;
+
+// ====================================================================
+// CORRIDOR DRIVE-THROUGH VIDEO
+// --------------------------------------------------------------------
+// May 17, 2026 — Allison brief: *"embed videos where helpful simple
+// videos"*. The WA-20 page is the right home for one corridor drive
+// clip: it shows the road experience + scenery + the closure-affected
+// stretch in a way that paragraph copy can't. Rendered under the TLDR
+// (above the source-by-source table) so the reader sees what they're
+// budgeting risk against before diving into the WSDOT vs NPS reconcile.
+// ====================================================================
+
+export const WA20_CORRIDOR_VIDEO = {
+  youtubeId: 'f-OKYwPlJPc',
+  title: "Exploring Washington's North Cascades Highway · SR-20 Road Trip Guide",
+  creator: "Travellin' While Black",
+} as const;

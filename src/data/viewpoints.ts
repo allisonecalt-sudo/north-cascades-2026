@@ -215,6 +215,17 @@ export interface ViewpointDestination {
   verifiedAsOf: string;
   /** Optional caveat — fail-loud, e.g. cell-dead-zone, gravel road, etc. */
   caveat?: string;
+  /**
+   * Optional YouTube preview clip (May 17, 2026 buildout — Allison brief:
+   * *"embed videos where helpful simple videos"*). Click-to-load embed via
+   * `renderVideoEmbed`. See `sections/video-embed.ts` for constraints
+   * (summer, 1-5 min preferred, recent, no autoplay).
+   */
+  video?: {
+    youtubeId: string;
+    title: string;
+    creator: string;
+  };
 }
 
 export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
@@ -267,6 +278,11 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     verifiedAsOf: 'May 17, 2026',
     caveat:
       'Requires WA-20 through the closure zone — re-check WSDOT before counting on it (see closure banner).',
+    video: {
+      youtubeId: 'TzW6nDSOFZc',
+      title: 'Diablo Lake Overlook · North Cascades National Park',
+      creator: 'Discover with Don',
+    },
   },
   {
     id: 'washington-pass-overlook',
@@ -315,6 +331,11 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     sourceUrl: 'https://www.fs.usda.gov/recarea/okawen/recarea/?recid=59140',
     sourceLabel: 'USFS · Washington Pass Observation Site',
     verifiedAsOf: 'May 17, 2026',
+    video: {
+      youtubeId: 'bb-Y8zp-RqU',
+      title: 'Washington Pass Overlook · Washington USA',
+      creator: 'World Travel Hops',
+    },
   },
   {
     id: 'picture-lake',
@@ -364,6 +385,11 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     verifiedAsOf: 'May 17, 2026',
     caveat:
       'Mt. Baker Hwy (WA-542) — separate corridor from WA-20. Only realistic as a Day-1 detour from BLI or on a west-side anchor day.',
+    video: {
+      youtubeId: 'EJk9xfzvfLg',
+      title: "Mount Shuksan · Washington's Most Photographed Mountain · Picture Lake & Artist Point",
+      creator: 'Hiking Bisons',
+    },
   },
   {
     id: 'artist-point',
@@ -413,6 +439,11 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     verifiedAsOf: 'May 17, 2026',
     caveat:
       'WA-542 only — separate corridor from WA-20. Northwest Forest Pass required ($5/day or covered by America the Beautiful).',
+    video: {
+      youtubeId: '_UdFgQxL1S4',
+      title: 'Hiking Near Mount Baker & Mount Shuksan · Artist Point & Picture Lake',
+      creator: 'Cody & Jocelyn',
+    },
   },
   {
     id: 'newhalem-trestle-cedars',
@@ -453,6 +484,11 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/trail-of-the-cedars',
     sourceLabel: 'WTA · Trail of the Cedars',
     verifiedAsOf: 'May 17, 2026',
+    video: {
+      youtubeId: '0QHIVWWmF_Y',
+      title: 'Trail of the Cedars · North Cascades',
+      creator: 'PNW Trail Talk',
+    },
   },
   {
     id: 'goodell-creek-pyramid',

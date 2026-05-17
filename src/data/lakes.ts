@@ -98,6 +98,16 @@ export interface Lake {
   needsWa20Through?: boolean;
   /** 3-5 carousel photos — first slide is also the card thumbnail. */
   photos: CarouselPhoto[];
+  /**
+   * Optional YouTube preview clip (May 17, 2026 buildout — Allison brief:
+   * *"embed videos where helpful simple videos"*). Click-to-load embed via
+   * `renderVideoEmbed`. See `sections/video-embed.ts` for constraints.
+   */
+  video?: {
+    youtubeId: string;
+    title: string;
+    creator: string;
+  };
 }
 
 // ----------------------------------------------------------------------------
@@ -206,6 +216,11 @@ export const LAKES: Lake[] = [
     sourceLabel: 'NPS · Diablo Lake',
     activityAnchor: 'activities.html#diablo-kayak',
     verifiedAsOf: 'May 17, 2026',
+    video: {
+      youtubeId: 'w_WGUL8Scsw',
+      title: 'Hike & Paddle the North Cascades · Thunder Knob + Diablo Lake Kayaking',
+      creator: 'Adventure Begins Outdoors',
+    },
     photos: [
       {
         src: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Diablo_Lake_from_Overlook_03.jpg',
@@ -335,6 +350,11 @@ export const LAKES: Lake[] = [
     activityAnchor: 'activities.html#patterson-kayak',
     sleepAnchor: 'lodging.html#lodging-sun-mountain',
     verifiedAsOf: 'May 17, 2026',
+    video: {
+      youtubeId: 'jhzNSrPthL0',
+      title: 'Patterson Lake',
+      creator: 'Sun Mountain Lodge',
+    },
     photos: [
       {
         src: wm('PattersonLake_Winthrop.jpg'),

@@ -28,6 +28,7 @@ import {
 import { h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel } from './photo-carousel';
+import { renderVideoEmbed } from './video-embed';
 
 // ====================================================================
 // FILTER STATE
@@ -276,6 +277,14 @@ function renderLakeCard(lake: Lake): HTMLElement {
     ),
     renderDriveMatrix(lake),
     renderConcessions(lake),
+    lake.video
+      ? renderVideoEmbed({
+          videoId: lake.video.youtubeId,
+          title: lake.video.title,
+          creator: lake.video.creator,
+          className: 'video-embed--lake',
+        })
+      : null,
     h(
       'p',
       { class: 'card__source' },
