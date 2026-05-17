@@ -252,8 +252,8 @@ export const WEATHER_PLAN_C: WeatherPlanCData = {
         'The single best smoke-day refuge in the corridor. HVAC, interpretive exhibits, ranger ' +
         'talks, big windows + indoor seating. Free.',
       source: {
-        name: 'NPS · North Cascades Visitor Center',
-        url: 'https://www.nps.gov/noca/planyourvisit/north-cascades-visitor-center.htm',
+        name: 'NPS · Visitor Centers (incl. North Cascades VC)',
+        url: 'https://www.nps.gov/noca/planyourvisit/visitorcenters.htm',
       },
       researchNeeded: false,
     },

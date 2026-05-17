@@ -704,7 +704,7 @@ export const HIKES: Hike[] = [
     verifiedAsOf: 'May 17, 2026',
     description:
       'Optional add-on past the pass and up Sahale Arm to a glacier camp basin at 7,600 ft. Long day, significant climb — only if both feel strong on the morning of, and only with an early start.',
-    sourceUrl: 'https://www.wta.org/go-hiking/hikes/cascade-pass-sahale-arm',
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/sahale-arm',
     researchNotes:
       'WTA-verified May 17, 2026: 12.8 mi RT / +4,100 ft via Cascade Pass + Sahale Arm. Day-hike requires no permit; overnight at Sahale Glacier Camp needs backcountry permit (Recreation.gov lottery, opens ~Mar). Same Cascade River Rd dependency as Cascade Pass. Loose moraine near the camp — careful footing.',
     photos: [

@@ -394,7 +394,7 @@ function renderPathGrid(
       h(
         'h3',
         { class: 'how-to-grid__branch-title how-to-grid__branch-title--open' },
-        'If WA-20 opens by July 4'
+        'If WA-20 opens by June 25'
       ),
       h(
         'div',
@@ -408,7 +408,7 @@ function renderPathGrid(
       h(
         'h3',
         { class: 'how-to-grid__branch-title how-to-grid__branch-title--closed' },
-        'If WA-20 stays closed past July 4'
+        'If WA-20 stays closed past June 25'
       ),
       h(
         'div',

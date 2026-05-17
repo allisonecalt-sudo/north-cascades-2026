@@ -452,7 +452,7 @@ export function renderHiddenGems(): HTMLElement {
         { name: 'Washington Trails Association (WTA)', url: 'https://www.wta.org/' },
         { name: 'AllTrails · North Cascades NP', url: 'https://www.alltrails.com/parks/us/washington/north-cascades-national-park' },
         { name: 'USFS · Mt. Baker-Snoqualmie roads', url: 'https://www.fs.usda.gov/r6/mbs/roadcondrep' },
-        { name: 'NPS · scenic drives', url: 'https://www.nps.gov/noca/planyourvisit/scenicdrives.htm' },
+        { name: 'NPS · road conditions', url: 'https://www.nps.gov/noca/planyourvisit/road-conditions.htm' },
       ],
       asOf: 'May 17, 2026',
     }),

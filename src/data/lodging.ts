@@ -938,7 +938,7 @@ export const WEST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      'Riverfront private house — biggest, most-nature-immersed west-side option. Splurge tier ($350-500), listed if you want a step up from Terra Nova-tier. Verify exact bedroom layout at booking — 2BR and 3BR configurations exist. **Naming note:** the booking portal (Hospitable / RiverStone Rentals) lists this as "Cascade River Bungalow" (3BR, sleeps 12) — confirm at booking which unit you are reserving.',
+      'Riverfront private house — biggest, most-nature-immersed west-side option. Splurge tier ($350-500), listed if you want a step up from Terra Nova-tier. Verify exact bedroom layout at booking — 2BR and 3BR configurations exist. **Naming drift [verified 2026-05-17]:** cascaderiverhouse.com now lists only two units — "vacation home" and "luxury trailer" — dropping the earlier "Bungalow" / "House" branding. The Hospitable booking portal (riverstonerentals.hospitable.rentals) carries the live inventory; confirm at booking which physical unit + kitchen scope you are reserving (owner restructured product names).',
     bookingUrl: 'https://www.cascaderiverhouse.com/',
     tier: 'splurge',
     kitchen: 'full',
@@ -1414,6 +1414,13 @@ export const EAST_LODGING: Lodging[] = [
   },
 
   // ---- Splurge tier ----
+  /**
+   * [High-demand for Aug 16-20 — call to confirm availability before assuming bookable.]
+   * Sun Mountain's Patterson Lake Cabins are notoriously over-subscribed in
+   * mid-August; phone-verify before locking the path. (Note added 2026-05-17 per
+   * verification sweep — availability field intentionally left at
+   * 'verify-at-booking' rather than auto-marked sold-out.)
+   */
   {
     id: 'sun-mountain',
     name: 'Sun Mountain Lodge — Patterson Lake Cabins',

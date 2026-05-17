@@ -255,8 +255,8 @@ export const TOWNS: Town[] = [
     ],
     wikiUrl: 'https://en.wikipedia.org/wiki/Marblemount,_Washington',
     extraLink: {
-      label: 'NPS · Wilderness Information Center',
-      url: 'https://www.nps.gov/noca/planyourvisit/wilderness-information-center.htm',
+      label: 'NPS · Visitor Centers (incl. Wilderness Info Center)',
+      url: 'https://www.nps.gov/noca/planyourvisit/visitorcenters.htm',
     },
     verifiedOn: '2026-05-17',
     photo: PHOTO_WA20,

@@ -212,8 +212,8 @@ export const LAKES: Lake[] = [
       'Mid-morning for the brightest turquoise. Sunset bouncing off the walls if WA-20 stays open through the closure.',
     description:
       "The signature North Cascades photo. Glacier-flour suspended in the meltwater scatters blue+green light, hence the unreal turquoise. From the MP 132 overlook: 20-30 min stop, easy postcard hit. From Colonial Creek launch (MP 130): paddle out onto the lake with 7,000-ft walls on every side. No on-lake rentals — pre-2026 Ross Lake Resort had a Diablo tie-in but that's gone; North Cascade Kayaks in Rockport is the current path (rent there, self-haul to the launch). Water sits ~45 °F all summer — feet only. The lake is what makes a Path-A or Path-B day complete.",
-    sourceUrl: 'https://www.nps.gov/noca/learn/nature/diablo-lake.htm',
-    sourceLabel: 'NPS · Diablo Lake',
+    sourceUrl: 'https://www.nps.gov/noca/learn/nature/index.htm',
+    sourceLabel: 'NPS · North Cascades nature',
     activityAnchor: 'activities.html#diablo-kayak',
     verifiedAsOf: 'May 17, 2026',
     video: {
@@ -391,8 +391,8 @@ export const LAKES: Lake[] = [
       },
       {
         name: 'Stehekin Discovery Bikes + Buses',
-        url: 'https://www.stehekinvalley.com/red-bus.html',
-        notes: 'Red school bus to the Stehekin valley · bike rentals at the landing.',
+        url: 'https://stehekin.com/lodging/',
+        notes: 'Red school bus to the Stehekin valley · bike rentals at the landing. (Previous stehekinvalley.com domain went DNS-dead May 2026 — confirm operator + 2026 hours by phone before counting on it. Verified 2026-05-17.)',
       },
     ],
     fee: 'Ferry RT $60-70/adult · no day-use fee for the lake itself',
@@ -472,8 +472,8 @@ export const LAKES: Lake[] = [
       'Hot afternoon (PM 2-6) when the air hits 85 °F. River runs lower + warmer mid-August than June.',
     description:
       'The Methow runs warm by PNW standards (mid-60s °F August), and the gentle gradient through Winthrop makes for an easy float on a hot afternoon. Bring or rent a tube. Pack the picnic to the riverside parks on Riverside Ave. Wade at the gravel-bar edges, do not swim out into the current. Pairs naturally with a Winthrop boardwalk afternoon or an Old Schoolhouse Brewery dinner on the deck. Note: water levels drop through August — earlier in the month is fuller.',
-    sourceUrl: 'https://winthropwashington.com/things-to-do/water-activities/',
-    sourceLabel: 'Winthrop tourism · water',
+    sourceUrl: 'https://methowtrails.org/',
+    sourceLabel: 'Methow Trails · Methow Valley',
     activityAnchor: 'activities.html#methow-trail',
     verifiedAsOf: 'May 17, 2026',
     photos: [

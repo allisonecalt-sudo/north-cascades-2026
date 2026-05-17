@@ -84,6 +84,14 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
   // ============================================================
   // IN-PARK — Operated by NPS / on NPS land
   // ============================================================
+  /**
+   * [High-demand for Aug 16-20 — call to confirm availability before assuming bookable.]
+   * Ross Lake Resort runs on a lottery + cancellation list and mid-August is THE
+   * peak window — default assumption for Aug 16-20 is NOT available unless lottery
+   * hit or a cancellation surfaces. Phone (206) 386-4437 before counting on it.
+   * (Note added 2026-05-17 per verification sweep — bookingStatus 'lottery' kept;
+   * not auto-marked sold-out.)
+   */
   {
     id: 'ross-lake-resort',
     name: 'Ross Lake Resort — floating cabins',
@@ -113,6 +121,13 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     sourceName: 'rosslakeresort.com',
     meetsBedRule: true,
   },
+  /**
+   * [High-demand for Aug 16-20 — call to confirm availability before assuming bookable.]
+   * Stehekin lodging is boat-only with small total inventory; mid-August fills
+   * months ahead. Phone-verify (or check the online booking calendar) before
+   * counting on it. (Note added 2026-05-17 per verification sweep —
+   * bookingStatus kept; not auto-marked sold-out.)
+   */
   {
     id: 'stehekin-lodge',
     name: 'North Cascades Lodge at Stehekin',

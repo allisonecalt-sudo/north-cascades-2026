@@ -19,7 +19,7 @@ export const OPEN_DECISIONS: OpenDecision[] = [
     id: 'flight-routing',
     question: 'Flight routing',
     options: 'SEA roundtrip · BLI in / SEA out · SEA in / BLI out · BLI roundtrip',
-    targetBy: 'Decide by early July (after WSDOT July 4 status check)',
+    targetBy: 'Decide by late June (after WSDOT June 25 status check)',
   },
   {
     id: 'return-flight',

@@ -99,8 +99,8 @@ export const WA20_SOURCES: readonly Wa20Source[] = [
     id: 'wsdot-live',
     authority: 'WSDOT · North Cascades Highway live status',
     whatItSays:
-      'Closed MP 130-156. Target reopen: July 4, 2026 — "a goal, not a promise." Will not reopen for Memorial Day. Latest seasonal reopen since WSDOT started tracking in 1972.',
-    lastVerified: 'May 15, 2026 (via news + WSDOT advisory)',
+      'Closed MP 130-156. Target reopen: June 25, 2026 (pulled forward from prior July 4 target after second emergency contract started May 13, 2026) — "a goal, not a promise." Will not reopen for Memorial Day. Latest seasonal reopen since WSDOT started tracking in 1972.',
+    lastVerified: 'May 17, 2026 (via WSDOT advisory + news)',
     url: 'https://wsdot.com/travel/real-time/mountainpasses/north-cascades-highway',
     trust: 'high',
     trustNote:
@@ -110,7 +110,7 @@ export const WA20_SOURCES: readonly Wa20Source[] = [
     id: 'nps-road-conditions',
     authority: 'NPS · North Cascades road conditions',
     whatItSays:
-      '"Partially closed as of 3/18 ... Expected reopening: April or early May (weather-dependent)" — page last updated May 6, 2026. Contradicts WSDOT July 4 target.',
+      '"Partially closed as of 3/18 ... Expected reopening: April or early May (weather-dependent)" — page last updated May 6, 2026. Contradicts WSDOT June 25 target.',
     lastVerified: 'May 17, 2026',
     url: 'https://www.nps.gov/noca/planyourvisit/road-conditions.htm',
     trust: 'low',
@@ -456,9 +456,9 @@ export const WA20_TIMELINE: readonly TimelineEvent[] = [
   {
     date: 'May 17, 2026',
     iso: '2026-05-17',
-    headline: 'Status today — still closed; July 4 target holds',
+    headline: 'Status today — still closed; target pulled forward to June 25',
     body:
-      'No reopen date confirmed beyond WSDOT\'s working July 4 target ("a goal, not a promise"). Re-check WSDOT live page weekly through June. NPS road-conditions page still reads older April/May framing — it has not been re-updated since May 6.',
+      'WSDOT\'s working target moved from July 4 to June 25, 2026 following the May 13 second emergency contract start ("a goal, not a promise"). Re-check WSDOT live page weekly through June. NPS road-conditions page still reads older April/May framing — it has not been re-updated since May 6. Verified 2026-05-17.',
     tone: 'warn',
   },
 ];

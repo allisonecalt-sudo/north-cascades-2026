@@ -283,7 +283,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     ],
     sources: [
       { name: 'WTA · Trail of the Cedars', url: 'https://www.wta.org/go-hiking/hikes/trail-of-the-cedars' },
-      { name: 'NPS · Newhalem trails', url: 'https://www.nps.gov/noca/planyourvisit/newhalem.htm' },
+      { name: 'NPS · Things to Do (Newhalem area)', url: 'https://www.nps.gov/noca/planyourvisit/things2do.htm' },
     ],
     photos: [
       {
@@ -516,7 +516,6 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     sources: [
       { name: "WTA · Hart's Pass and Slate Peak", url: 'https://www.wta.org/go-hiking/hikes/harts-pass-and-slate-peak' },
       { name: 'Wikipedia · Slate Peak (lookout collapse 2025-26)', url: 'https://en.wikipedia.org/wiki/Slate_Peak' },
-      { name: 'NPS · scenic drives', url: 'https://www.nps.gov/noca/planyourvisit/scenicdrives.htm' },
     ],
     photos: [
       {
@@ -618,8 +617,8 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       { from: 'Winthrop', text: 'WA-20 closed → not feasible' },
     ],
     sources: [
-      { name: 'NPS · backcountry permits', url: 'https://www.nps.gov/noca/planyourvisit/backcountry-camping.htm' },
-      { name: 'WTA · Sahale Arm trip reports', url: 'https://www.wta.org/go-hiking/hikes/cascade-pass-sahale-arm' },
+      { name: 'NPS · wilderness permits', url: 'https://www.nps.gov/noca/planyourvisit/permits.htm' },
+      { name: 'WTA · Sahale Arm trip reports', url: 'https://www.wta.org/go-hiking/hikes/sahale-arm' },
     ],
     photos: [
       {

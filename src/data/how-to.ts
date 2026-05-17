@@ -9,8 +9,8 @@
  * interactive map.
  *
  * Top branch: WA-20 status
- *   - "If WA-20 opens by July 4" (default branch — existing Paths A/B/C)
- *   - "If WA-20 stays closed past July 4" (Plan B routings — Paths D/E/F)
+ *   - "If WA-20 opens by June 25" (default branch — existing Paths A/B/C)
+ *   - "If WA-20 stays closed past June 25" (Plan B routings — Paths D/E/F)
  *
  * Each PathOption carries:
  *   - shape ("4 nights west" / "2+2 split" / etc.) — the structural skeleton
@@ -579,7 +579,7 @@ export function matchesFilters(
 /** TLDR shown at top of the page. */
 export const HOW_TO_TLDR = {
   open:
-    'There are 3 realistic ways to do this if WA-20 opens by July 4. Path A anchors west (lowest risk), Path B splits both sides (most variety), Path C anchors east (most porch time).',
+    'There are 3 realistic ways to do this if WA-20 opens by June 25. Path A anchors west (lowest risk), Path B splits both sides (most variety), Path C anchors east (most porch time).',
   closed:
     'There are 2 realistic ways to do this if WA-20 stays closed. Path D anchors west (Cascade Pass + Mt. Baker). Path E anchors east via Stevens Pass (Maple Pass + Methow). Path F is the punt — last resort.',
 };

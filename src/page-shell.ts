@@ -581,8 +581,8 @@ function buildClosureBanner(): HTMLElement {
         { class: 'closure-banner__summary-text' },
         h('strong', {}, 'WA-20 currently CLOSED through the park.'),
         ' WSDOT target reopen: ',
-        h('strong', {}, 'July 4, 2026'),
-        '. The 3 paths assume worst case.'
+        h('strong', {}, 'June 25, 2026'),
+        ' (pulled forward from July 4 after the May 13 second emergency contract). The 3 paths assume worst case.'
       )
     ),
     h(
@@ -620,7 +620,7 @@ function buildClosureBanner(): HTMLElement {
             'font-size: 0.78rem; margin-top: 0.6rem; padding: 0.5rem 0.6rem; background: #fdecec; border: 1px solid #c4393a; color: #6d1a1b; border-radius: 6px;',
         },
         h('strong', {}, 'Conflict — verify before booking week: '),
-        'NPS road-conditions page (May 6, 2026 update) lists "Expected reopening: April or early May (weather-dependent)" while WSDOT target above says July 4. Both sources are stale in different directions. Confirm by phone — WSDOT 1-800-695-7623 — before locking the week. ',
+        'NPS road-conditions page (May 6, 2026 update) lists "Expected reopening: April or early May (weather-dependent)" while WSDOT target above says June 25. Both sources are stale in different directions. Confirm by phone — WSDOT 1-800-695-7623 — before locking the week. ',
         h('a', { href: 'wa20-status.html', class: 'closure-banner__link', style: 'font-weight: 600;' }, 'See sources + phone protocol →')
       ),
       h(
@@ -629,7 +629,7 @@ function buildClosureBanner(): HTMLElement {
           class: 'closure-banner__detail',
           style: 'font-size: 0.72rem; opacity: 0.82; margin-top: 0.6rem; font-style: italic;',
         },
-        'Source: WSDOT North Cascades Highway live status · verified May 15, 2026. Re-check before Aug 1.'
+        'Source: WSDOT North Cascades Highway live status · verified May 17, 2026. Re-check before Aug 1.'
       )
     )
   );

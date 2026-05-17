@@ -273,8 +273,8 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
         height: 1067,
       },
     ],
-    sourceUrl: 'https://www.nps.gov/noca/planyourvisit/diablo-lake-overlook.htm',
-    sourceLabel: 'NPS · Diablo Lake Overlook',
+    sourceUrl: 'https://www.nps.gov/noca/planyourvisit/things2do.htm',
+    sourceLabel: 'NPS · Things to Do (incl. Diablo Lake Overlook)',
     verifiedAsOf: 'May 17, 2026',
     caveat:
       'Requires WA-20 through the closure zone — re-check WSDOT before counting on it (see closure banner).',

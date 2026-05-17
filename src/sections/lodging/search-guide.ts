@@ -198,7 +198,7 @@ export function renderLodgingSearchGuide(): HTMLElement {
       'Now (May 2026) is the sweet spot for August. Peak inventory is roughly 30-50% sold but prices have not surged. ',
       'Marblemount/Newhalem has ~6 properties total, all west-side — books first. ',
       'Mazama/Winthrop has ~20 — more flex, but the marquee picks (Sun Mountain, Freestone, Inn at Mazama) book early for August. ',
-      'Sun-Wed mid-week (our trip) is easier than Fri-Sat. If WA-20 reopens July 4 there will be a booking surge — get in before then.'
+      'Sun-Wed mid-week (our trip) is easier than Fri-Sat. If WA-20 reopens June 25 there will be a booking surge — get in before then.'
     )
   );
 
@@ -209,7 +209,7 @@ export function renderLodgingSearchGuide(): HTMLElement {
     h(
       'p',
       {},
-      'WA-20 through the park is closed for storm-damage repair, target reopen July 4 (a goal, not a promise). ',
+      'WA-20 through the park is closed for storm-damage repair, target reopen June 25 (pulled forward from July 4 — a goal, not a promise). ',
       'If you book a west-side primary, hold an east-side backup with free cancellation — and vice versa. ',
       'Direct property cancellation policies tend to be more generous than aggregator policies for small lodges. ',
       'CFAR (Cancel For Any Reason) trip insurance is the only flavor worth considering for this specific risk; default aggregator insurance excludes road closures.'

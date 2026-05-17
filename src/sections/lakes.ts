@@ -564,7 +564,7 @@ export function renderLakes(): HTMLElement {
         { name: 'Sun Mountain Lodge marina', url: 'https://sunmountainlodge.com/adventure/water-activities/' },
         { name: 'North Cascade Kayaks', url: 'https://northcascadekayaks.com/' },
         { name: 'Lady of the Lake (Chelan ferry)', url: 'https://ladyofthelake.com/boat-schedules/' },
-        { name: 'NPS · Diablo Lake', url: 'https://www.nps.gov/noca/learn/nature/diablo-lake.htm' },
+        { name: 'NPS · North Cascades nature', url: 'https://www.nps.gov/noca/learn/nature/index.htm' },
       ],
       asOf: 'May 17, 2026',
     }),
