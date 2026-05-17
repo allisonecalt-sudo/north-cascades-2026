@@ -45,12 +45,14 @@ function buildPopup(): HTMLDivElement {
     <div class="welcome-popup">
       <button class="welcome-popup__close" type="button" aria-label="Close welcome">×</button>
       <div class="welcome-popup__eyebrow">Hey Erin —</div>
-      <h2 class="welcome-popup__title" id="welcome-popup-title">This is a draft of the trip. React however works for you.</h2>
+      <h2 class="welcome-popup__title" id="welcome-popup-title">Your Google Doc is still the plan. This is Allison's research dump on top of it.</h2>
       <p class="welcome-popup__body">
-        Quick context — this site was built by Claude (the AI Allison's been
-        using) at Allison's direction. The Google Doc you started is still the
-        working plan. This site just lays the options out visually — lodging,
-        hikes, drive times — so it's easier to react to.
+        Quick context — you've been leading this trip (proposed it, narrowed the
+        parks, pushed booking discipline). Allison did a deep research pass on
+        North Cascades and asked Claude (the AI she's been using) to lay it all
+        out visually so you'd have something concrete to react to. Lodging,
+        hikes, drive times, costs — pick what looks right, push back on what
+        doesn't.
       </p>
 
       <div class="welcome-popup__steps">
