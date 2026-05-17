@@ -1167,11 +1167,45 @@
 /* ============================================================
  * For Erin
  * ============================================================ */
+/* Priority groupings — added 2026-05-17 PM so "what's missing" reads
+   visually distinct. must = red-tinted; shape = amber; nice = neutral. */
+.for-erin__group {
+  margin: 0 0 var(--sp-6);
+  padding: var(--sp-4);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--c-line);
+  background: var(--c-warm-50, #fffdf7);
+}
+.for-erin__group--must {
+  border-left-color: var(--c-bad-border, #c4393a);
+  background: linear-gradient(180deg, #fdecec 0%, var(--c-warm-50, #fffdf7) 100%);
+}
+.for-erin__group--shape {
+  border-left-color: var(--c-warn-border, #c08a1a);
+  background: linear-gradient(180deg, #fdf6e0 0%, var(--c-warm-50, #fffdf7) 100%);
+}
+.for-erin__group--nice {
+  border-left-color: var(--c-line);
+}
+.for-erin__group-label {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-lg, 1.1rem);
+  color: var(--c-ink-900);
+}
+.for-erin__group-lede {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-soft, #514a3b);
+  font-style: italic;
+}
+
 .for-erin__list {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
+  padding: 0;
+  margin: 0;
 }
 
 .for-erin__item {
