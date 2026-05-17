@@ -27,7 +27,7 @@ function mount(): void {
     },
   });
 
-  main.append(renderMap({ tall: true }), renderPageCtas('map'));
+  main.append(renderMap({ tall: true, pageId: 'map' }), renderPageCtas('map'));
   attachNotesToAllSections(main);
 }
 

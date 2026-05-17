@@ -131,6 +131,30 @@
     0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
+/* Drawer backdrop — mobile-only tap-to-close. Sits behind the drawer,
+   in front of the map. Tap closes the drawer. Hidden ≥900px where the
+   drawer is a side-rail and the map area beside it is fully tap-able. */
+.map-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 30, 0.35);
+  z-index: 1499;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease-out;
+}
+
+.map-drawer-backdrop--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 900px) {
+  .map-drawer-backdrop {
+    display: none;
+  }
+}
+
 /* ----- Place drawer (bottom sheet mobile, right rail desktop) ----- */
 .map-drawer {
   position: fixed;

@@ -73,6 +73,32 @@ const TYPE_FRIENDLY: Record<LocationType, string> = {
 const CLOSURE_LAYER_LABEL = 'WA-20 closure';
 
 // ---------------------------------------------------------------------------
+// Co-located pin jitter — multiple categories share the same coord (e.g.
+// Diablo viewpoint + Diablo sunset both at 48.7117,-121.0911). Without offset
+// the upper marker covers the lower one entirely. We jitter MARKER placement
+// only — `loc.lat`/`loc.lng` are unchanged so drawer copy + drive math stay
+// truthful. Jitter is deterministic per (id+type) so layout is stable on
+// reload. Magnitude ≤0.0008° ≈ 80m at NC latitude, small enough to read as
+// the same place when zoomed out and far enough apart to click independently
+// at street zoom.
+// ---------------------------------------------------------------------------
+const JITTER_DEG = 0.0008;
+
+function hashString(s: string): number {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = (h * 33) ^ s.charCodeAt(i);
+  return h >>> 0;
+}
+
+function jitteredLatLng(loc: MapLocation): [number, number] {
+  const seed = hashString(loc.id);
+  // Two independent angles via hash bits.
+  const angle = ((seed & 0xffff) / 0xffff) * Math.PI * 2;
+  const mag = ((((seed >>> 16) & 0xffff) / 0xffff) * 0.5 + 0.5) * JITTER_DEG;
+  return [loc.lat + Math.sin(angle) * mag, loc.lng + Math.cos(angle) * mag];
+}
+
+// ---------------------------------------------------------------------------
 // Marker icon — emoji on a circular badge.
 // ---------------------------------------------------------------------------
 function makeIcon(type: LocationType, size = 32): L.DivIcon {
@@ -136,7 +162,9 @@ function similarNearby(loc: MapLocation, limit = 3): MapLocation[] {
   const sameType = MAP_LOCATIONS.filter((m) => m.id !== loc.id && m.type === loc.type);
   return sameType
     .map((m) => ({ m, d: distMiles(loc, m) }))
-    .filter((x) => x.d <= 25)
+    // Skip co-located entries (≤0.1 mi ~ 500ft) so we don't recommend a pin
+    // that sits literally on top of the current one.
+    .filter((x) => x.d > 0.1 && x.d <= 25)
     .sort((a, b) => a.d - b.d)
     .slice(0, limit)
     .map((x) => x.m);
@@ -149,10 +177,12 @@ interface DrawerRefs {
   root: HTMLElement;
   body: HTMLElement;
   closeBtn: HTMLButtonElement;
+  backdrop: HTMLElement;
 }
 
 let drawerRefs: DrawerRefs | null = null;
 let lastFocused: HTMLElement | null = null;
+let docEscHandler: ((e: KeyboardEvent) => void) | null = null;
 
 function buildDrawer(): DrawerRefs {
   if (drawerRefs) return drawerRefs;
@@ -185,46 +215,92 @@ function buildDrawer(): DrawerRefs {
     ),
     body
   );
+  // Backdrop for mobile tap-to-close — sits behind drawer but in front of map.
+  // CSS hides it on >=900px (where drawer is a side rail and tap-outside means
+  // tapping the map, which the layer-control + pin handlers own).
+  const backdrop = h('div', {
+    class: 'map-drawer-backdrop',
+    'aria-hidden': 'true',
+  });
+  document.body.appendChild(backdrop);
   document.body.appendChild(root);
 
   closeBtn.addEventListener('click', () => closeDrawer());
+  backdrop.addEventListener('click', () => closeDrawer());
 
-  root.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      closeDrawer();
-    }
-  });
-
-  drawerRefs = { root, body, closeBtn };
+  drawerRefs = { root, body, closeBtn, backdrop };
   return drawerRefs;
 }
 
 function openDrawer(
   loc: MapLocation,
   route: TripRoute | null,
-  pathId: PathId | null
+  pathId: PathId | null,
+  pageId: string | null
 ): void {
   const refs = buildDrawer();
   lastFocused = (document.activeElement as HTMLElement) ?? null;
   refs.root.setAttribute('aria-hidden', 'false');
+  refs.backdrop.setAttribute('aria-hidden', 'false');
+  refs.backdrop.classList.add('map-drawer-backdrop--open');
   const eyebrow = refs.root.querySelector<HTMLElement>('.map-drawer__eyebrow');
   if (eyebrow) eyebrow.textContent = TYPE_FRIENDLY[loc.type];
-  refs.body.innerHTML = drawerInnerHtml(loc, route, pathId);
+  refs.body.innerHTML = drawerInnerHtml(loc, route, pathId, pageId);
+  refs.body.scrollTop = 0;
   refs.closeBtn.focus();
+  // ESC closes drawer regardless of focus location — bound on document.
+  if (!docEscHandler) {
+    docEscHandler = (e: KeyboardEvent): void => {
+      if (e.key === 'Escape' && drawerRefs?.root.getAttribute('aria-hidden') === 'false') {
+        e.preventDefault();
+        e.stopPropagation();
+        closeDrawer();
+      }
+    };
+    document.addEventListener('keydown', docEscHandler, true);
+  }
 }
 
 function closeDrawer(): void {
   if (!drawerRefs) return;
   drawerRefs.root.setAttribute('aria-hidden', 'true');
+  drawerRefs.backdrop.setAttribute('aria-hidden', 'true');
+  drawerRefs.backdrop.classList.remove('map-drawer-backdrop--open');
   lastFocused?.focus();
   lastFocused = null;
+  if (docEscHandler) {
+    document.removeEventListener('keydown', docEscHandler, true);
+    docEscHandler = null;
+  }
+}
+
+/**
+ * Anchor remapper — when drawer is open on the dedicated map page, in-page
+ * anchors like `#lodging` don't resolve (no #lodging section on map.html).
+ * Rewrite to the cross-page equivalent (lodging.html). On the home page (or
+ * any other page that already has the section), keep the in-page anchor.
+ */
+const ANCHOR_TO_PAGE: Record<string, string> = {
+  '#lodging': 'lodging.html',
+  '#hikes': 'hikes.html',
+  '#viewpoints': 'viewpoints.html',
+  '#top-sunsets': 'top-sunsets.html',
+  '#activities': 'activities.html',
+  '#cool-sleeping': 'lodging.html#cool-sleeping',
+  '#flights': 'travel.html#flights',
+  '#seattle': 'seattle.html',
+};
+
+function resolveAnchor(anchor: string, pageId: string | null): string {
+  if (pageId !== 'map') return anchor;
+  return ANCHOR_TO_PAGE[anchor] ?? anchor;
 }
 
 function drawerInnerHtml(
   loc: MapLocation,
   route: TripRoute | null,
-  pathId: PathId | null
+  pathId: PathId | null,
+  pageId: string | null
 ): string {
   const safeName = escapeHtml(loc.name);
   const safeContext = escapeHtml(loc.context);
@@ -267,8 +343,10 @@ function drawerInnerHtml(
 
   const ctaList: string[] = [];
   if (loc.anchor) {
+    const href = resolveAnchor(loc.anchor, pageId);
+    const label = href === loc.anchor ? 'View on this page' : 'View on full page';
     ctaList.push(
-      `<a class="map-drawer__cta map-drawer__cta--secondary" href="${escapeHtml(loc.anchor)}">View on this page</a>`
+      `<a class="map-drawer__cta map-drawer__cta--secondary" href="${escapeHtml(href)}">${label}</a>`
     );
   }
   if (loc.externalAnchor) {
@@ -529,6 +607,13 @@ export interface RenderMapOptions {
   title?: string;
   /** Override the gist bullets. */
   gist?: string[];
+  /**
+   * Page identifier — used to rewrite in-page anchors in the drawer to
+   * cross-page links when the map is rendered on its dedicated page. e.g. on
+   * map.html, `#lodging` (in-page anchor) is rewritten to `lodging.html#…`.
+   * On the home page (default), in-page anchors stay as-is.
+   */
+  pageId?: string;
 }
 
 export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
@@ -559,6 +644,13 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
   );
 
   let pathLayerGroup: L.LayerGroup | null = null;
+
+  // Page-scoped data attribute so the singleton similar-button handler at the
+  // bottom of this module knows which page issued the drawer. Necessary because
+  // the drawer lives in <body> and outlives any single render.
+  if (opts.pageId) {
+    document.body.setAttribute('data-map-page-id', opts.pageId);
+  }
 
   requestAnimationFrame(() => {
     const map = L.map(mapEl, {
@@ -642,7 +734,8 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
     }
 
     const entries: MarkerEntry[] = MAP_LOCATIONS.filter((l) => !bad.includes(l)).map((loc) => {
-      const marker = L.marker([loc.lat, loc.lng], {
+      const pos = jitteredLatLng(loc);
+      const marker = L.marker(pos, {
         icon: makeIcon(loc.type),
         title: loc.name,
         riseOnHover: true,
@@ -650,7 +743,7 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
       marker.on('click', () => {
         const cur = getSelectedPath();
         const route = cur ? TRIP_ROUTES[cur] : null;
-        openDrawer(loc, route, cur);
+        openDrawer(loc, route, cur, opts.pageId ?? null);
       });
       marker.bindTooltip(loc.name, { direction: 'top', offset: [0, -10] });
       const group = layerByType.get(loc.type);
@@ -724,7 +817,7 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
             .filter((e) => e.loc.type === 'lodging-west' || e.loc.type === 'lodging-east')
             .map((e) => ({ e, d: distMiles(e.loc, target) }))
             .sort((a, b) => a.d - b.d)[0];
-          if (nearest) openDrawer(nearest.e.loc, route, path);
+          if (nearest) openDrawer(nearest.e.loc, route, path, opts.pageId ?? null);
         });
         layers.push(poly);
       });
@@ -747,6 +840,23 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
     applyPathFilter(entries, getSelectedPath());
     updatePathRoute(getSelectedPath());
 
+    // Cluster spiderfy detaches/reattaches child marker DOM — the path-fade
+    // classes set by applyPathFilter live on those elements and get lost when
+    // children re-render. Re-apply on every spiderfy/unspiderfy/animationend.
+    for (const group of layerByType.values()) {
+      // Only cluster groups emit `spiderfied` / `unspiderfied` / `animationend`.
+      // L.LayerGroup doesn't, but `on` ignores unknown events safely.
+      const g = group as L.LayerGroup & {
+        on?: (e: string, fn: () => void) => void;
+      };
+      if (typeof g.on === 'function') {
+        const refresh = (): void => applyPathFilter(entries, getSelectedPath());
+        g.on('spiderfied', refresh);
+        g.on('unspiderfied', refresh);
+        g.on('animationend', refresh);
+      }
+    }
+
     subscribeSelectedPath((next) => {
       applyPathFilter(entries, next);
       updatePathRoute(next);
@@ -766,7 +876,16 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
     window.addEventListener('resize', () => {
       map.invalidateSize();
     });
-    setTimeout(() => map.invalidateSize(), 200);
+    // After CSS settles, invalidate AND refit — the initial fitBounds runs
+    // inside requestAnimationFrame and can compute against a 0-width canvas
+    // when the parent flex layout hasn't finished.
+    setTimeout(() => {
+      map.invalidateSize();
+      const cur = getSelectedPath();
+      if (!cur) {
+        map.fitBounds(bounds, { padding: [30, 30] });
+      }
+    }, 200);
   });
 
   return wrap;
@@ -801,7 +920,8 @@ function applyPathFilter(entries: MarkerEntry[], path: PathId | null): void {
 }
 
 // Delegated handler — "Similar nearby" buttons in the drawer reopen the
-// drawer with the clicked location.
+// drawer with the clicked location. Reads page context from the body data
+// attribute so anchor rewriting is consistent with the originating render.
 document.addEventListener('click', (e) => {
   const target = e.target;
   if (!(target instanceof HTMLElement)) return;
@@ -813,5 +933,6 @@ document.addEventListener('click', (e) => {
   if (!loc) return;
   const cur = getSelectedPath();
   const route = cur ? TRIP_ROUTES[cur] : null;
-  openDrawer(loc, route, cur);
+  const pageId = document.body.getAttribute('data-map-page-id');
+  openDrawer(loc, route, cur, pageId);
 });
