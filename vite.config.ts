@@ -16,6 +16,7 @@ export default defineConfig(({ command }) => ({
         home: here('index.html'),
         lodging: here('lodging.html'),
         hikes: here('hikes.html'),
+        viewpoints: here('viewpoints.html'),
         activities: here('activities.html'),
         towns: here('towns.html'),
         travel: here('travel.html'),

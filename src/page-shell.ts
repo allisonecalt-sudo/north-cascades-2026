@@ -34,6 +34,7 @@ export type PageId =
   | 'home'
   | 'lodging'
   | 'hikes'
+  | 'viewpoints'
   | 'activities'
   | 'towns'
   | 'travel'
@@ -70,6 +71,7 @@ const NAV: readonly NavEntry[] = [
   { id: 'home', href: './', label: 'Home' },
   { id: 'lodging', href: 'lodging.html', label: 'Lodging' },
   { id: 'hikes', href: 'hikes.html', label: 'Hikes' },
+  { id: 'viewpoints', href: 'viewpoints.html', label: 'Viewpoints' },
   { id: 'activities', href: 'activities.html', label: 'Activities' },
   { id: 'towns', href: 'towns.html', label: 'Towns' },
   { id: 'travel', href: 'travel.html', label: 'Travel' },
