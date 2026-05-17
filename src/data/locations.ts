@@ -656,8 +656,9 @@ const COOL_SLEEPING: MapLocation[] = [
     anchor: '#cool-sleeping',
     externalAnchor: 'for-erin.html#cool-sleeping',
     photo: {
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=420&q=70',
-      alt: 'Floating cabins on a glacial alpine lake.',
+      // Canonical Ross Lake summer photo from data/lakes.ts ross-lake entry.
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/North_Cascades_-_Ross_Lake_-_2017_8_29.jpg?width=420',
+      alt: 'Ross Lake in late August — bright summer blue between forested Cascade ridges.',
     },
     meta: {
       coolSleeping: {
@@ -680,8 +681,9 @@ const COOL_SLEEPING: MapLocation[] = [
     anchor: '#cool-sleeping',
     externalAnchor: 'for-erin.html#cool-sleeping',
     photo: {
-      src: 'https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&w=420&q=70',
-      alt: 'Lodge by an isolated alpine lake.',
+      // Canonical Stehekin/Lake Chelan photo from data/lakes.ts lake-chelan entry.
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Stehekin_Chelan.JPG?width=420',
+      alt: 'Stehekin landing at the head of Lake Chelan in summer.',
     },
     meta: {
       coolSleeping: {
@@ -704,8 +706,9 @@ const COOL_SLEEPING: MapLocation[] = [
     anchor: '#cool-sleeping',
     externalAnchor: 'for-erin.html#cool-sleeping',
     photo: {
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=420&q=70',
-      alt: 'Eco-lodge on the shore of a turquoise lake.',
+      // Diablo Lake shore — the ELC is on the Diablo shoreline. Distinct angle from view-diablo.
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Diablo_Lake_with_Pinnacle_Peak.jpg?width=420',
+      alt: 'Diablo Lake with Pinnacle Peak rising above the basin — bright August blue.',
     },
     meta: {
       coolSleeping: {
@@ -728,8 +731,9 @@ const COOL_SLEEPING: MapLocation[] = [
     anchor: '#cool-sleeping',
     externalAnchor: 'for-erin.html#cool-sleeping',
     photo: {
-      src: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=420&q=70',
-      alt: 'Lakeside cabin under willows.',
+      // Canonical Pearrygin photo from data/lakes.ts pearrygin entry.
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pearrygin_Lake_State_Park.jpg?width=420',
+      alt: 'Pearrygin Lake State Park — calm green water and the Methow hills in summer.',
     },
     meta: {
       coolSleeping: {
@@ -827,8 +831,9 @@ const TRAILHEADS: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#hikes',
     photo: {
-      src: 'https://images.unsplash.com/photo-1454942901704-3c44c11b2ad1?auto=format&fit=crop&w=420&q=70',
-      alt: 'Alpine ridge loop with larches and mountain lake.',
+      // Canonical Maple Pass photo from data/hikes.ts maple-pass entry.
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Maple_Pass_at_North_Cascades_in_WA.jpg?width=420',
+      alt: 'Maple Pass loop ridgeline above an alpine lake in the North Cascades.',
     },
     meta: {
       trailhead: {
@@ -849,8 +854,9 @@ const TRAILHEADS: MapLocation[] = [
     pathAssoc: 'east',
     anchor: '#hikes',
     photo: {
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=420&q=70',
-      alt: 'Crystal alpine lake under sharp granite spires.',
+      // Canonical Blue Lake photo from data/hikes.ts blue-lake entry (Liberty Bell-group Blue Lake, MP 161).
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Blue_Lake_in_Okanogan_National_Forest.jpg?width=420',
+      alt: 'Blue Lake in the Okanogan National Forest under Liberty Bell — alpine summer.',
     },
     meta: {
       trailhead: {
@@ -877,8 +883,9 @@ const TRAILHEADS: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#hikes',
     photo: {
-      src: 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=420&q=70',
-      alt: 'Forested ridge above a turquoise alpine lake.',
+      // Pyramid + Pinnacle Peaks rise above Diablo Lake — visible from Thunder Knob.
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pyramid_and_Pinnacle_Peaks,_North_Cascades.jpg?width=420',
+      alt: 'Pyramid and Pinnacle Peaks rising above the WA-20 corridor — visible from Thunder Knob.',
     },
     meta: {
       trailhead: {
@@ -927,8 +934,9 @@ const VIEWPOINTS: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#viewpoints',
     photo: {
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=420&q=70',
-      alt: 'Turquoise alpine lake with ringing peaks.',
+      // Canonical Diablo Lake Overlook photo from data/viewpoints.ts diablo-lake-overlook entry.
+      src: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Diablo_Lake_from_Overlook_03.jpg',
+      alt: 'Turquoise Diablo Lake from the WA-20 overlook, surrounded by forested peaks.',
     },
     meta: {
       viewpoint: {
@@ -947,8 +955,9 @@ const VIEWPOINTS: MapLocation[] = [
     pathAssoc: 'east',
     anchor: '#viewpoints',
     photo: {
-      src: 'https://images.unsplash.com/photo-1454942901704-3c44c11b2ad1?auto=format&fit=crop&w=420&q=70',
-      alt: 'Granite spires lit by alpenglow at high alpine pass.',
+      // Canonical Washington Pass Overlook photo from data/top-sunsets.ts washington-pass entry.
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Washington_pass_overlook.jpg?width=420',
+      alt: 'Washington Pass Overlook on WA-20 with Liberty Bell Mountain behind.',
     },
     meta: {
       viewpoint: {
@@ -967,8 +976,9 @@ const VIEWPOINTS: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#viewpoints',
     photo: {
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=420&q=70',
-      alt: 'Long glacial lake stretching between forested ridges.',
+      // Place-specific Ross Lake morning photo (Wikimedia Commons).
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ross_Lake_morning.jpg?width=420',
+      alt: 'Ross Lake in morning light — long glacial lake between forested Cascade ridges.',
     },
     meta: {
       viewpoint: {
@@ -1036,8 +1046,9 @@ const SUNSET_SPOTS: MapLocation[] = [
     anchor: '#top-sunsets',
     externalAnchor: 'top-sunsets.html#sun-mountain',
     photo: {
-      src: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=420&q=70',
-      alt: 'Ridge-top lodge patio with sweeping sunset views.',
+      // Patterson Lake from below Sun Mountain Lodge — canonical from data/viewpoints.ts sun-mountain-viewpoint.
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/PattersonLake_Winthrop.jpg?width=420',
+      alt: 'Patterson Lake from below Sun Mountain Lodge — Cascades reflected in calm summer water.',
     },
     meta: {
       sunset: {
@@ -1082,8 +1093,9 @@ const SUNSET_SPOTS: MapLocation[] = [
     anchor: '#top-sunsets',
     externalAnchor: 'top-sunsets.html#diablo',
     photo: {
-      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=420&q=70',
-      alt: 'Turquoise alpine lake at golden hour.',
+      // Alternate Diablo Lake angle from data/lakes.ts diablo-lake entry (distinct from view-diablo).
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Diablo_Lake_(Washington_State).jpg?width=420',
+      alt: 'Diablo Lake turquoise water ringed by Cascade walls — late-day light.',
     },
     meta: {
       sunset: {
@@ -1126,8 +1138,9 @@ const SUNSET_SPOTS: MapLocation[] = [
     anchor: '#top-sunsets',
     externalAnchor: 'top-sunsets.html#pearrygin',
     photo: {
-      src: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=420&q=70',
-      alt: 'Sunset reflected on a state-park lake.',
+      // Place-specific Pearrygin Lake photo (Wikimedia Commons — alt angle from cool-pearrygin-cabins).
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pearrygin_Lake,_Washington_(9864223215).jpg?width=420',
+      alt: 'Pearrygin Lake from the shoreline — open western sky over the water.',
     },
     meta: {
       sunset: {
@@ -1198,8 +1211,9 @@ const WATER: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#activities',
     photo: {
-      src: 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=420&q=70',
-      alt: 'Kayak on glacial blue alpine water.',
+      // Pyramid Peak reflected in Diablo Lake — from the water's edge (canonical from data/hidden-gems.ts pyramid-lake).
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pyramid_Peak_reflected_in_Diablo_Lake.jpg?width=420',
+      alt: 'Pyramid Peak reflected in the turquoise water of Diablo Lake in summer.',
     },
     meta: {
       water: {
@@ -1220,8 +1234,9 @@ const WATER: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#activities',
     photo: {
-      src: 'https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&w=420&q=70',
-      alt: 'Glacial lake under steep ridges with small boat dock.',
+      // Canonical Ross Lake photo from data/lakes.ts ross-lake entry (USGS/NPS public-domain).
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/North_Cascades_Natnl_Pk_Washington_State_Ross_Lake_4311.jpg?width=420',
+      alt: 'Ross Lake stretching north between forested Cascade ridges in summer.',
     },
     meta: {
       water: {
@@ -1242,8 +1257,9 @@ const WATER: MapLocation[] = [
     pathAssoc: 'east',
     anchor: '#activities',
     photo: {
-      src: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=420&q=70',
-      alt: 'Sunny state-park swim lake.',
+      // Place-specific Pearrygin Lake shore photo (alt angle from cool-pearrygin-cabins + sunset-pearrygin).
+      src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pearrygin_Lake,_Washington_(9864253616).jpg?width=420',
+      alt: 'Pearrygin Lake shoreline on a sunny summer day — sandy state-park swim area.',
     },
     meta: {
       water: {
