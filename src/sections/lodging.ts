@@ -69,6 +69,13 @@ interface FilterState {
    * we don't show speculative inventory as flexible).
    */
   freeCancelOnly: boolean;
+  /**
+   * Show sold-out lodgings? Default FALSE per Allison May 17, 2026:
+   * "WE DONT NEED SOLD OUT DPMT SHOW." Entries with
+   * `availability === 'sold-out-or-unavailable'` are hidden by default.
+   * The banner above the cards shows "Hiding N sold-out — show all" when N > 0.
+   */
+  showSoldOut: boolean;
 }
 
 function emptyFilters(): FilterState {
@@ -80,6 +87,7 @@ function emptyFilters(): FilterState {
     nature: new Set(),
     sunsetOnly: false,
     freeCancelOnly: false,
+    showSoldOut: false,
   };
 }
 
@@ -170,7 +178,18 @@ function lodgingMatchesFilters(l: Lodging, base: 'west' | 'east'): boolean {
   // as a fail — we don't show speculative inventory as flexible when the
   // user explicitly asked for the booking-discipline guarantee.
   if (filters.freeCancelOnly && l.freeCancellation !== 'yes') return false;
+  // Sold-out is hidden by default. The show-all banner above the grid flips
+  // showSoldOut to true so a user can audit what was hidden.
+  if (!filters.showSoldOut && l.availability === 'sold-out-or-unavailable') return false;
   return true;
+}
+
+/** Live count of sold-out entries (across both bases), regardless of other filters. */
+function soldOutCount(): number {
+  return (
+    WEST_LODGING.filter((l) => l.availability === 'sold-out-or-unavailable').length +
+    EAST_LODGING.filter((l) => l.availability === 'sold-out-or-unavailable').length
+  );
 }
 
 function activeFilterCount(): number {
