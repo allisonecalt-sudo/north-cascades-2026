@@ -2052,3 +2052,352 @@ a.not-fit-list__name:focus {
   line-height: 1.5;
   color: var(--c-ink-700, #4a5260);
 }
+
+/* ============================================================================
+ * Weather Plan C — smoke + bad-air swap page (added 2026-05-17).
+ * Mobile-first. AQI trigger bands lifted from EPA AirNow palette (closest
+ * semantic match) so the color tells you the severity at a glance.
+ * ========================================================================== */
+.weather-plan-c__tldr {
+  background: var(--c-warm-50);
+  border-left: 4px solid var(--c-forest-500);
+  padding: var(--sp-4);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 0 0 var(--sp-5);
+  max-width: 64ch;
+}
+.weather-plan-c__tldr p {
+  margin: 0;
+  font-size: var(--fs-base);
+  line-height: 1.55;
+  color: var(--c-ink-900);
+}
+.weather-plan-c__h3 {
+  margin: var(--sp-6) 0 var(--sp-2);
+  font-size: var(--fs-xl);
+  color: var(--c-forest-700);
+}
+.weather-plan-c__h3-sub {
+  margin: 0 0 var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+  max-width: 64ch;
+  line-height: 1.55;
+}
+.weather-plan-c__baseline {
+  margin: 0 0 var(--sp-4);
+  padding-left: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.weather-plan-c__baseline li {
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--c-ink-900);
+}
+
+/* Trigger ladder */
+.weather-plan-c__triggers {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin: var(--sp-3) 0 var(--sp-5);
+}
+@media (min-width: 720px) {
+  .weather-plan-c__triggers {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.weather-plan-c__trigger {
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  border: 1px solid var(--c-line);
+  background: var(--c-warm-50);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.weather-plan-c__trigger--yellow {
+  border-left: 6px solid #f1c40f;
+  background: #fffbea;
+}
+.weather-plan-c__trigger--orange {
+  border-left: 6px solid #e67e22;
+  background: #fff3e6;
+}
+.weather-plan-c__trigger--red {
+  border-left: 6px solid #c0392b;
+  background: #fdecec;
+}
+.weather-plan-c__trigger--purple {
+  border-left: 6px solid #6c3483;
+  background: #f1e6f7;
+}
+.weather-plan-c__trigger-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.weather-plan-c__trigger-band {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-ink-700);
+}
+.weather-plan-c__trigger-label {
+  margin: 0;
+  font-size: var(--fs-lg);
+  color: var(--c-ink-900);
+}
+.weather-plan-c__trigger-feel,
+.weather-plan-c__trigger-action {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--c-ink-900);
+}
+
+/* Swaps grid */
+.weather-plan-c__swaps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin: var(--sp-3) 0 var(--sp-5);
+}
+@media (min-width: 720px) {
+  .weather-plan-c__swaps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.weather-plan-c__swap {
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+}
+.weather-plan-c__swap--town {
+  border-left: 4px solid var(--c-forest-500);
+}
+.weather-plan-c__swap-headline {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-lg);
+  color: var(--c-forest-700);
+}
+.weather-plan-c__swap-summary {
+  margin: 0 0 var(--sp-3);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--c-ink-900);
+}
+.weather-plan-c__swap-examples {
+  margin: 0 0 var(--sp-3);
+  padding-left: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.weather-plan-c__swap-examples li {
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--c-ink-900);
+}
+.weather-plan-c__swap-unaffected {
+  margin: 0;
+  padding: var(--sp-3);
+  background: var(--c-good-bg);
+  border-radius: var(--radius-sm);
+  color: var(--c-good-ink);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+/* Refuges */
+.weather-plan-c__refuges {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin: var(--sp-3) 0 var(--sp-5);
+}
+@media (min-width: 720px) {
+  .weather-plan-c__refuges {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.weather-plan-c__refuge {
+  border-radius: var(--radius-md);
+  padding: var(--sp-4);
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.weather-plan-c__refuge-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.weather-plan-c__refuge-name {
+  margin: 0;
+  font-size: var(--fs-lg);
+  color: var(--c-ink-900);
+}
+.weather-plan-c__refuge-where,
+.weather-plan-c__refuge-address,
+.weather-plan-c__refuge-hours,
+.weather-plan-c__refuge-why,
+.weather-plan-c__refuge-source {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--c-ink-900);
+}
+.weather-plan-c__refuge-address,
+.weather-plan-c__refuge-where {
+  color: var(--c-ink-500);
+}
+.weather-plan-c__refuge-source a {
+  color: var(--c-forest-700);
+}
+
+/* Watch sources */
+.weather-plan-c__watch {
+  margin: var(--sp-3) 0 var(--sp-5);
+}
+.weather-plan-c__watch-lede {
+  margin: 0 0 var(--sp-4);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--c-ink-700);
+  font-style: italic;
+}
+.weather-plan-c__watch-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.weather-plan-c__watch-item {
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-warm-50);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--c-glacier-500);
+}
+.weather-plan-c__watch-link {
+  display: inline-block;
+  font-weight: 600;
+  color: var(--c-glacier-600);
+  margin-bottom: var(--sp-1);
+}
+.weather-plan-c__watch-use,
+.weather-plan-c__watch-when {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--c-ink-900);
+}
+.weather-plan-c__watch-when {
+  color: var(--c-ink-500);
+}
+
+/* Pre-trip prep */
+.weather-plan-c__prep {
+  list-style: none;
+  margin: var(--sp-3) 0 var(--sp-5);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.weather-plan-c__prep-item {
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-warm-50);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--c-line);
+}
+.weather-plan-c__prep-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-1);
+}
+.weather-plan-c__prep-name {
+  font-size: var(--fs-base);
+  color: var(--c-forest-700);
+}
+.weather-plan-c__prep-count {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+}
+.weather-plan-c__prep-detail {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--c-ink-900);
+}
+
+/* History */
+.weather-plan-c__history {
+  margin: var(--sp-3) 0 var(--sp-5);
+}
+.weather-plan-c__history-lede {
+  margin: 0 0 var(--sp-4);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--c-ink-700);
+  font-style: italic;
+}
+.weather-plan-c__history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.weather-plan-c__history-row {
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-warm-50);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--c-forest-500);
+}
+.weather-plan-c__history-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-1);
+}
+.weather-plan-c__history-year {
+  font-size: var(--fs-lg);
+  color: var(--c-forest-700);
+}
+.weather-plan-c__history-summary {
+  margin: var(--sp-1) 0 0;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--c-ink-900);
+}
+.weather-plan-c__history-source {
+  margin: var(--sp-2) 0 0;
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+}
+.weather-plan-c__history-source a {
+  color: var(--c-forest-700);
+}
+
+/* Verified pill at the bottom */
+.weather-plan-c__verified {
+  margin: var(--sp-5) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
