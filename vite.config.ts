@@ -32,6 +32,7 @@ export default defineConfig(({ command }) => ({
         preTrip: here('pre-trip.html'),
         drivingCascades: here('driving-cascades.html'),
         hiddenGems: here('hidden-gems.html'),
+        map: here('map.html'),
       },
     },
   },

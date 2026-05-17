@@ -67,7 +67,8 @@ export type PageId =
   | 'top-sunsets'
   | 'pre-trip'
   | 'driving-cascades'
-  | 'hidden-gems';
+  | 'hidden-gems'
+  | 'map';
 
 interface NavEntry {
   id: PageId;
@@ -145,6 +146,7 @@ const NAV_BUCKETS: readonly NavBucket[] = [
     id: 'do',
     label: 'Do',
     entries: [
+      { id: 'map', href: 'map.html', label: 'Map', desc: 'Path-aware interactive map' },
       { id: 'hikes', href: 'hikes.html', label: 'Hikes', desc: 'Signatures + alternates' },
       { id: 'viewpoints', href: 'viewpoints.html', label: 'Viewpoints', desc: 'Drive-up postcards' },
       { id: 'lakes', href: 'lakes.html', label: 'Lakes', desc: 'Water swaps + rentals' },

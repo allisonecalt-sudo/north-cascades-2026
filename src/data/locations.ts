@@ -1345,6 +1345,235 @@ export const CLOSURE_LABEL = {
 };
 
 // ====================================================================
+// Drive-route polylines per path — road-aligned, NOT crow-flies.
+// ====================================================================
+//
+// Source: hand-curated waypoints traced from OSM/Google Maps along the actual
+// road centerlines. WA-20 east of Marblemount, Cascade River Rd, and the
+// I-5/I-90/US-97 connectors. The shapes are intentionally moderate-resolution
+// (8-30 points per segment) — enough to read as "follows the road," not enough
+// to ship megabytes. Re-trace if a road realigns.
+
+export type RouteSegmentKind =
+  | 'drive-day'
+  | 'lodging-anchor'
+  | 'hike-out-and-back'
+  | 'sightseeing';
+
+export interface RouteSegment {
+  points: Array<[number, number]>;
+  note: string;
+  day: number;
+  kind: RouteSegmentKind;
+}
+
+export interface NightStop {
+  lodgingIdCandidates: string[];
+  fallbackCoord: [number, number];
+  label: string;
+  townLabel: string;
+}
+
+export interface TripRoute {
+  color: string;
+  nights: NightStop[];
+  segments: RouteSegment[];
+}
+
+// ---------------- Shared road geometries -----------------------------
+const ROAD_SEA_TO_MARBLEMOUNT: Array<[number, number]> = [
+  [47.4502, -122.3088], // SEA
+  [47.6062, -122.3321], // Seattle (I-5 jog)
+  [47.8202, -122.2683], // Lynnwood I-5
+  [48.082, -122.2186], // Marysville I-5
+  [48.2098, -122.1855], // Stanwood exit area
+  [48.4204, -122.3346], // Mt. Vernon exit
+  [48.4521, -122.2856], // Burlington (start WA-20 east)
+  [48.4894, -122.0668], // Sedro-Woolley
+  [48.5246, -121.9415], // Hamilton
+  [48.5267, -121.78], // Concrete
+  [48.4882, -121.5803], // Rockport / Glacier Peak Resort
+  [48.5099, -121.3892], // Cascade River House / WA-20 jog
+  [48.5316, -121.4448], // Marblemount
+];
+
+const ROAD_MARBLEMOUNT_TO_CASCADE_PASS: Array<[number, number]> = [
+  [48.5316, -121.4448],
+  [48.5099, -121.3892],
+  [48.4814, -121.345],
+  [48.4691, -121.2806],
+  [48.4592, -121.2231],
+  [48.461, -121.1572],
+  [48.4727, -121.115],
+  [48.4747, -121.0758], // Cascade Pass TH
+];
+
+const ROAD_MARBLEMOUNT_TO_DIABLO: Array<[number, number]> = [
+  [48.5316, -121.4448],
+  [48.5658, -121.3777],
+  [48.6113, -121.3162],
+  [48.6493, -121.2723],
+  [48.6731, -121.2459], // Newhalem
+  [48.6928, -121.2089], // Gorge Creek
+  [48.6886, -121.0992], // Colonial Creek
+  [48.7117, -121.0911], // Diablo Lake Overlook
+];
+
+const ROAD_DIABLO_TO_ROSS: Array<[number, number]> = [
+  [48.7117, -121.0911],
+  [48.7163, -121.0795],
+  [48.7242, -121.0671],
+  [48.7261, -121.0608],
+];
+
+const ROAD_ROSS_TO_RAINY: Array<[number, number]> = [
+  [48.7261, -121.0608],
+  [48.7172, -121.0379],
+  [48.694, -121.0061],
+  [48.6754, -120.9696],
+  [48.659, -120.926],
+  [48.6293, -120.8809],
+  [48.5957, -120.8312],
+  [48.5618, -120.7855],
+  [48.5341, -120.7548],
+  [48.5167, -120.7339], // Rainy Pass
+];
+
+const ROAD_RAINY_TO_WINTHROP: Array<[number, number]> = [
+  [48.5167, -120.7339], // Rainy Pass
+  [48.5219, -120.6794], // Blue Lake TH
+  [48.523, -120.6531], // Washington Pass Overlook
+  [48.566, -120.5732],
+  [48.5919, -120.4053], // Mazama
+  [48.5485, -120.302],
+  [48.5113, -120.2386],
+  [48.476, -120.1859], // Winthrop
+];
+
+const ROAD_RAINY_TO_WINTHROP_DIRECT: Array<[number, number]> = [
+  [48.5167, -120.7339],
+  [48.523, -120.6531],
+  [48.566, -120.5732],
+  [48.5919, -120.4053],
+  [48.5485, -120.302],
+  [48.476, -120.1859],
+];
+
+const ROAD_WINTHROP_TO_SEA_I90: Array<[number, number]> = [
+  [48.476, -120.1859], // Winthrop
+  [48.3119, -120.1183], // Twisp
+  [48.0497, -119.8729], // Pateros
+  [47.8302, -119.9819], // Brewster area
+  [47.5953, -120.6604], // Wenatchee
+  [47.3927, -120.5634], // Cle Elum approach
+  [47.1953, -120.9404], // Cle Elum (I-90)
+  [47.4426, -121.4136], // Snoqualmie Pass
+  [47.5301, -121.8266], // North Bend
+  [47.5763, -122.1786], // Bellevue
+  [47.4502, -122.3088], // SEA
+];
+
+function reverseRoad(road: Array<[number, number]>): Array<[number, number]> {
+  return road.slice().reverse();
+}
+
+// ---------------- Per-path route configs -----------------------------
+export const TRIP_ROUTES: Record<'A' | 'B' | 'C', TripRoute> = {
+  A: {
+    color: '#16a34a',
+    nights: [
+      {
+        lodgingIdCandidates: [
+          'lodging-cascade-river-house',
+          'lodging-rhody-house',
+          'lodging-nc-hideaway',
+          'lodging-nc-riverside',
+          'lodging-ovenells',
+          'lodging-glacier-peak',
+        ],
+        fallbackCoord: [48.5316, -121.4448],
+        label: 'Nights 1-4',
+        townLabel: 'Marblemount (west base)',
+      },
+    ],
+    segments: [
+      { points: ROAD_SEA_TO_MARBLEMOUNT, note: 'Day 1 · SEA → Marblemount (~2 hrs)', day: 1, kind: 'drive-day' },
+      { points: ROAD_MARBLEMOUNT_TO_CASCADE_PASS, note: 'Day 2 · Cascade Pass out-and-back', day: 2, kind: 'hike-out-and-back' },
+      { points: ROAD_MARBLEMOUNT_TO_DIABLO, note: 'Day 3 · WA-20 viewpoints (Diablo)', day: 3, kind: 'sightseeing' },
+      { points: ROAD_DIABLO_TO_ROSS, note: 'Day 3 · Ross Lake spur', day: 3, kind: 'sightseeing' },
+      { points: reverseRoad(ROAD_SEA_TO_MARBLEMOUNT), note: 'Day 5 · Marblemount → SEA', day: 5, kind: 'drive-day' },
+    ],
+  },
+  B: {
+    color: '#7c3aed',
+    nights: [
+      {
+        lodgingIdCandidates: ['lodging-cascade-river-house', 'lodging-rhody-house', 'lodging-glacier-peak'],
+        fallbackCoord: [48.5316, -121.4448],
+        label: 'Nights 1-2',
+        townLabel: 'Marblemount (west base)',
+      },
+      {
+        lodgingIdCandidates: [
+          'lodging-methow-river',
+          'lodging-rivers-edge',
+          'lodging-freestone',
+          'lodging-inn-at-mazama',
+          'lodging-chewuch',
+          'lodging-spring-creek-ranch',
+        ],
+        fallbackCoord: [48.476, -120.1859],
+        label: 'Nights 3-4',
+        townLabel: 'Winthrop/Mazama (east base)',
+      },
+    ],
+    segments: [
+      { points: ROAD_SEA_TO_MARBLEMOUNT, note: 'Day 1 · SEA → Marblemount', day: 1, kind: 'drive-day' },
+      { points: ROAD_MARBLEMOUNT_TO_CASCADE_PASS, note: 'Day 2 · Cascade Pass out-and-back', day: 2, kind: 'hike-out-and-back' },
+      { points: ROAD_MARBLEMOUNT_TO_DIABLO, note: 'Day 3 · Marblemount → Diablo (transit east)', day: 3, kind: 'drive-day' },
+      { points: ROAD_DIABLO_TO_ROSS, note: 'Day 3 · Ross Lake spur', day: 3, kind: 'drive-day' },
+      { points: ROAD_ROSS_TO_RAINY, note: 'Day 3 · WA-20 closure zone (verify reopen)', day: 3, kind: 'drive-day' },
+      { points: ROAD_RAINY_TO_WINTHROP, note: 'Day 3 · Rainy Pass → Winthrop', day: 3, kind: 'drive-day' },
+      { points: reverseRoad(ROAD_RAINY_TO_WINTHROP_DIRECT), note: 'Day 4 · Winthrop ↔ Maple Pass loop', day: 4, kind: 'hike-out-and-back' },
+      { points: ROAD_WINTHROP_TO_SEA_I90, note: 'Day 5 · Winthrop → SEA via US-97 + I-90', day: 5, kind: 'drive-day' },
+    ],
+  },
+  C: {
+    color: '#f59e0b',
+    nights: [
+      {
+        lodgingIdCandidates: ['lodging-glacier-peak', 'lodging-rhody-house', 'lodging-cascade-river-house'],
+        fallbackCoord: [48.5316, -121.4448],
+        label: 'Night 1',
+        townLabel: 'Marblemount (overnight only)',
+      },
+      {
+        lodgingIdCandidates: [
+          'lodging-methow-river',
+          'lodging-rivers-edge',
+          'lodging-freestone',
+          'lodging-inn-at-mazama',
+          'lodging-chewuch',
+          'lodging-spring-creek-ranch',
+        ],
+        fallbackCoord: [48.476, -120.1859],
+        label: 'Nights 2-4',
+        townLabel: 'Winthrop/Mazama (east base · 3 nights)',
+      },
+    ],
+    segments: [
+      { points: ROAD_SEA_TO_MARBLEMOUNT, note: 'Day 1 · SEA → Marblemount', day: 1, kind: 'drive-day' },
+      { points: ROAD_MARBLEMOUNT_TO_DIABLO, note: 'Day 2 · Marblemount → Diablo (transit east)', day: 2, kind: 'drive-day' },
+      { points: ROAD_DIABLO_TO_ROSS, note: 'Day 2 · Ross Lake spur', day: 2, kind: 'drive-day' },
+      { points: ROAD_ROSS_TO_RAINY, note: 'Day 2 · WA-20 closure zone (verify reopen)', day: 2, kind: 'drive-day' },
+      { points: ROAD_RAINY_TO_WINTHROP, note: 'Day 2 · Rainy Pass → Winthrop', day: 2, kind: 'drive-day' },
+      { points: reverseRoad(ROAD_RAINY_TO_WINTHROP_DIRECT), note: 'Day 3 · Maple Pass day-trip', day: 3, kind: 'hike-out-and-back' },
+      { points: ROAD_WINTHROP_TO_SEA_I90, note: 'Day 5 · Winthrop → SEA via US-97 + I-90', day: 5, kind: 'drive-day' },
+    ],
+  },
+};
+
+// ====================================================================
 // Type label map for the legend / layer control
 // ====================================================================
 export const TYPE_LABELS: Record<LocationType, string> = {

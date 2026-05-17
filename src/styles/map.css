@@ -28,6 +28,470 @@
   }
 }
 
+/* Dedicated map page — taller canvas so the map breathes. */
+.map-canvas--tall {
+  height: 70vh;
+  min-height: 520px;
+}
+
+@media (min-width: 760px) {
+  .map-canvas--tall {
+    height: 78vh;
+    min-height: 640px;
+  }
+}
+
+/* ----- Path chips above the map ----- */
+.map-pathchips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 var(--sp-3);
+  padding: 0;
+}
+
+.map-pathchip {
+  --chip-color: #6b7280;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border: 1.5px solid var(--chip-color);
+  background: transparent;
+  color: var(--chip-color);
+  font-family: var(--font-stack);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    transform 100ms ease;
+  white-space: nowrap;
+}
+
+.map-pathchip:hover,
+.map-pathchip:focus-visible {
+  background: color-mix(in srgb, var(--chip-color) 12%, transparent);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.map-pathchip--active {
+  background: var(--chip-color);
+  color: #fff;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--chip-color) 40%, transparent);
+}
+
+/* Fail-loud banner above the map when coords are missing. */
+.map-fail-loud {
+  background: #fef3c7;
+  color: #78350f;
+  border: 1px solid #fbbf24;
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-sm);
+  margin: 0 0 var(--sp-2);
+}
+
+/* ----- Numbered "Nights" badge on lodging pin ----- */
+.map-night-badge__wrap {
+  background: transparent !important;
+  border: none !important;
+  pointer-events: none;
+}
+
+.map-night-badge {
+  --night-color: #16a34a;
+  display: inline-block;
+  background: var(--night-color);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: var(--font-stack);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.35),
+    0 0 0 2px #fff;
+  white-space: nowrap;
+}
+
+.map-night-badge__text {
+  display: inline-block;
+}
+
+/* Subtle "in your path" ring on recommended pins. */
+.map-marker__wrap--inpath .map-marker--badge {
+  --inpath-color: #16a34a;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--inpath-color) 55%, transparent),
+    0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* ----- Place drawer (bottom sheet mobile, right rail desktop) ----- */
+.map-drawer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1500;
+  background: #fff;
+  border-top: 1px solid var(--c-line);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.22);
+  height: 70vh;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(110%);
+  transition: transform 220ms ease-out;
+  overflow: hidden;
+  font-family: var(--font-stack);
+}
+
+.map-drawer[aria-hidden='false'] {
+  transform: translateY(0);
+}
+
+.map-drawer__grab {
+  width: 36px;
+  height: 4px;
+  border-radius: 4px;
+  background: #c4ccd2;
+  margin: 8px auto 4px;
+  flex: 0 0 auto;
+}
+
+.map-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.4rem 1rem 0.6rem;
+  border-bottom: 1px solid var(--c-line);
+  flex: 0 0 auto;
+}
+
+.map-drawer__eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--c-ink-500);
+}
+
+.map-drawer__close {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--c-line);
+  background: #fff;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--c-ink-800);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.map-drawer__close:hover,
+.map-drawer__close:focus-visible {
+  background: #f5f7f7;
+  border-color: var(--c-ink-500);
+  outline: none;
+}
+
+.map-drawer__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem 1rem 1.4rem;
+}
+
+@media (min-width: 900px) {
+  .map-drawer {
+    top: 0;
+    left: auto;
+    right: 0;
+    bottom: 0;
+    width: 380px;
+    max-width: 92vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-top: none;
+    border-left: 1px solid var(--c-line);
+    border-radius: 0;
+    box-shadow: -8px 0 28px rgba(0, 0, 0, 0.18);
+    transform: translateX(110%);
+    transition: transform 220ms ease-out;
+  }
+  .map-drawer[aria-hidden='false'] {
+    transform: translateX(0);
+  }
+  .map-drawer__grab {
+    display: none;
+  }
+}
+
+.map-drawer__photo {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  display: block;
+  margin: 0 0 0.85rem;
+  background: var(--c-glacier-100);
+}
+
+@media (min-width: 900px) {
+  .map-drawer__photo {
+    height: 180px;
+  }
+}
+
+.map-drawer__title {
+  margin: 0 0 0.3rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--c-forest-800);
+}
+
+.map-drawer__context {
+  margin: 0 0 0.7rem;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  line-height: 1.45;
+}
+
+.map-drawer__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 0.85rem;
+}
+
+.map-drawer__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  background: var(--c-glacier-50, #f4f9fb);
+  color: var(--c-ink-700);
+}
+
+.map-drawer__badge--off {
+  background: #fef3c7;
+  color: #78350f;
+}
+
+.map-drawer__meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  margin: 0 0 0.85rem;
+  padding: 0.7rem 0.8rem;
+  background: var(--c-glacier-50, #f4f9fb);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--c-line);
+}
+
+.map-drawer__meta-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0.6rem;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.map-drawer__meta-row dt {
+  color: var(--c-ink-500);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  margin: 0;
+  font-weight: 600;
+}
+
+.map-drawer__meta-row dd {
+  margin: 0;
+  color: var(--c-ink-800);
+}
+
+.map-drawer__drives {
+  margin: 0 0 0.85rem;
+  padding: 0.7rem 0.8rem;
+  background: rgba(37, 99, 235, 0.06);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+}
+
+.map-drawer__section-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-glacier-700, #1d4ed8);
+  margin: 0 0 0.4rem;
+  font-weight: 700;
+}
+
+.map-drawer__drive-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.map-drawer__drive-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: var(--fs-sm);
+}
+
+.map-drawer__drive-to {
+  color: var(--c-ink-700);
+}
+
+.map-drawer__drive-time {
+  color: var(--c-ink-800);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.map-drawer__drives-note {
+  margin: 0.5rem 0 0;
+  font-size: 11px;
+  color: var(--c-ink-500);
+  font-style: italic;
+}
+
+.map-drawer__section {
+  margin: 0 0 0.85rem;
+}
+
+.map-drawer__similar {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.map-drawer__similar-btn {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  align-items: baseline;
+  gap: 0.5rem 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--c-line);
+  background: #fff;
+  border-radius: var(--radius-sm);
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-stack);
+  font-size: var(--fs-sm);
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.map-drawer__similar-btn:hover,
+.map-drawer__similar-btn:focus-visible {
+  background: var(--c-glacier-50, #f4f9fb);
+  border-color: var(--c-glacier-600, #2563eb);
+  outline: none;
+}
+
+.map-drawer__similar-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  align-self: center;
+  margin-top: 4px;
+}
+
+.map-drawer__similar-name {
+  font-weight: 600;
+  color: var(--c-ink-800);
+  grid-column: 2;
+}
+
+.map-drawer__similar-context {
+  grid-column: 2;
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  line-height: 1.35;
+}
+
+.map-drawer__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0.85rem;
+}
+
+.map-drawer__cta {
+  display: inline-block;
+  padding: 9px 13px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  line-height: 1.2;
+  transition:
+    background 0.15s,
+    transform 0.1s;
+}
+
+.map-drawer__cta--primary {
+  background: var(--c-forest-700, #1f4a3a);
+  color: #fff;
+}
+
+.map-drawer__cta--primary:hover {
+  background: var(--c-forest-800, #14342a);
+  transform: translateY(-1px);
+}
+
+.map-drawer__cta--secondary {
+  background: transparent;
+  color: var(--c-glacier-700, #1d4ed8);
+  border: 1px solid var(--c-glacier-600, #2563eb);
+}
+
+.map-drawer__cta--secondary:hover {
+  background: rgba(37, 99, 235, 0.08);
+}
+
+/* Mobile drawer doesn't cover the path-chip bar (it sits above the chips
+   because the chips are above the map; drawer sits below ~30% of viewport
+   on mobile so the chips stay reachable when dismissed). */
+@media (max-width: 899px) {
+  .map-drawer {
+    height: 65vh;
+    max-height: 65vh;
+  }
+}
+
 /* --- Markers ------------------------------------------------------- */
 .leaflet-div-icon.map-marker__wrap,
 .map-marker__wrap {
