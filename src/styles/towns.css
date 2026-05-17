@@ -186,3 +186,150 @@
   font-style: italic;
   padding: 2rem 1rem;
 }
+
+/* =========================================================================
+ * Rich-card additions (May 17, 2026) — pills, drive matrix, shops, meta.
+ * Triggered by adding .town-card--rich to the article.
+ * ========================================================================= */
+
+.town-card--rich .town-card__carousel {
+  margin: 0;
+  border-radius: 0;
+}
+
+.town-card__pills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.town-card__pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.74rem;
+  padding: 0.18rem 0.55rem;
+  background: var(--c-warm-100);
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  color: var(--c-ink-700);
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.town-card__pill--west {
+  background: var(--c-glacier-100);
+  color: var(--c-info-ink);
+  border-color: var(--c-glacier-400);
+}
+
+.town-card__pill--east {
+  background: #fff4dd;
+  color: #6b4a10;
+  border-color: #e0c47a;
+}
+
+.town-card__pill--summer {
+  background: #fff7e0;
+  color: #6b4a10;
+  border-color: #ecd285;
+}
+
+.town-card__pill--good {
+  background: var(--c-good-bg);
+  color: var(--c-good-ink);
+  border-color: var(--c-good-border);
+}
+
+.town-card__pill--warn {
+  background: #fff1e6;
+  color: #8a4a16;
+  border-color: #f4c79c;
+}
+
+.town-card__why {
+  font-size: 0.95rem;
+  color: var(--c-ink-800);
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.town-card__drives,
+.town-card__shops {
+  background: #ffffff;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.8rem;
+}
+
+.town-card__drives-label,
+.town-card__shops-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--c-forest-700);
+}
+
+.town-card__drives-list,
+.town-card__shops-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.town-card__drive-row {
+  font-size: 0.86rem;
+  color: var(--c-ink-700);
+  line-height: 1.4;
+}
+
+.town-card__drive-text strong {
+  color: var(--c-forest-800);
+}
+
+.town-card__shops-item {
+  font-size: 0.86rem;
+  color: var(--c-ink-700);
+  line-height: 1.45;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.town-card__shops-item::before {
+  content: '•';
+  position: absolute;
+  left: 0.3rem;
+  top: 0;
+  color: var(--c-forest-500);
+  font-weight: 700;
+}
+
+.town-card__meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--c-warm-100);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--c-glacier-400);
+}
+
+.town-card__meta-item {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--c-ink-700);
+  line-height: 1.45;
+}
+
+.town-card__meta-item strong {
+  color: var(--c-forest-800);
+}
+
