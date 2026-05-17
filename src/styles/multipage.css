@@ -3,7 +3,13 @@
  * focused landing; this stylesheet gives them shared chrome.
  */
 
-/* ───────── Sticky top nav ───────── */
+/* ───────── Sticky top nav (4-bucket dropdown IA, 2026-05-17) ─────────
+ * Replaces the prior flat 18-link nav (which overflowed on Pixel 7 Pro XL
+ * even with the right-edge fade). Desktop: 4 button-triggered dropdown panels.
+ * Mobile (<720px): hamburger → right-side slide-over with <details> per
+ * bucket. Pattern cribbed from Austria 2026 (commits 22200fa + 22b5b8d) but
+ * scoped to the existing .site-nav__ namespace.
+ */
 .site-nav {
   position: sticky;
   top: 0;
@@ -17,7 +23,7 @@
 .site-nav__inner {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0.6rem var(--gutter);
+  padding: 0.55rem var(--gutter);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -47,104 +53,398 @@
   text-transform: uppercase;
 }
 
-.site-nav__list {
+/* ----- Desktop: bucket buttons inline (>=720px) ----- */
+.site-nav__buckets {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.15rem 0.2rem;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 0.1rem;
 }
 
-.site-nav__item {
+.site-nav__bucket {
+  position: relative;
   margin: 0;
 }
 
-.site-nav__link {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.35rem 0.65rem;
-  color: var(--c-ink-700);
-  background: transparent;
-  border-radius: 999px;
-  text-decoration: none;
+.site-nav__bucket-btn {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
   font-size: var(--fs-sm);
   font-weight: 500;
-  white-space: nowrap;
+  color: var(--c-ink-700);
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
   min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
   transition: background-color 120ms ease, color 120ms ease;
 }
 
-.site-nav__link:hover,
-.site-nav__link:focus-visible {
+.site-nav__bucket-btn:hover,
+.site-nav__bucket-btn:focus-visible,
+.site-nav__bucket-btn[aria-expanded='true'] {
   background: var(--c-warm-100);
   color: var(--c-forest-700);
 }
 
-.site-nav__link--active {
+.site-nav__bucket-btn--active {
   background: var(--c-forest-700);
   color: var(--c-warm-50);
   font-weight: 600;
 }
 
-.site-nav__link--active:hover,
-.site-nav__link--active:focus-visible {
+.site-nav__bucket-btn--active:hover,
+.site-nav__bucket-btn--active:focus-visible,
+.site-nav__bucket-btn--active[aria-expanded='true'] {
   background: var(--c-forest-800);
   color: var(--c-warm-50);
 }
 
-@media (max-width: 720px) {
-  .site-nav__inner {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0.5rem var(--gutter);
-    gap: 0.35rem;
-  }
-  /* Wrapper holds the scroller + the right-edge fade indicator that signals
-   * "more chips off-screen, swipe to see them." Lifted from the Austria nav
-   * pattern after observing weak discoverability of off-screen nav entries
-   * on mobile. */
-  .site-nav__list-wrap {
-    position: relative;
-    width: 100%;
-  }
-  .site-nav__list-wrap::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 32px;
-    pointer-events: none;
-    background: linear-gradient(to right, rgba(253, 250, 243, 0), rgba(253, 250, 243, 0.95));
-    border-radius: 0 999px 999px 0;
-  }
-  .site-nav__list-wrap--at-end::after {
-    opacity: 0;
-    transition: opacity 180ms ease;
-  }
-  .site-nav__list {
-    justify-content: flex-start;
-    width: 100%;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 0.2rem;
-    padding-right: 1.5rem;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
-  }
-  .site-nav__list::-webkit-scrollbar {
+.site-nav__bucket-caret {
+  font-size: 0.7em;
+  line-height: 1;
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+
+.site-nav__bucket-btn[aria-expanded='true'] .site-nav__bucket-caret {
+  transform: rotate(180deg);
+}
+
+/* ----- Desktop dropdown panel ----- */
+.site-nav__dropdown {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  min-width: 260px;
+  max-width: 340px;
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0.4rem;
+  z-index: 60;
+}
+
+.site-nav__dropdown[hidden] {
+  display: none;
+}
+
+/* When the bucket is the leftmost one in the bar, anchor the panel to the
+ * LEFT edge so it doesn't pull off-screen on smaller desktop widths. */
+.site-nav__bucket:first-child .site-nav__dropdown {
+  right: auto;
+  left: 0;
+}
+
+.site-nav__dropdown-link {
+  display: block;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--c-ink-900);
+  transition: background-color 120ms ease;
+}
+
+.site-nav__dropdown-link:hover,
+.site-nav__dropdown-link:focus-visible {
+  background: var(--c-warm-100);
+  outline: none;
+}
+
+.site-nav__dropdown-link--active {
+  background: var(--c-warm-100);
+  color: var(--c-forest-700);
+}
+
+.site-nav__dropdown-name {
+  display: block;
+  font-size: var(--fs-base);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.site-nav__dropdown-link--active .site-nav__dropdown-name {
+  color: var(--c-forest-700);
+}
+
+.site-nav__dropdown-desc {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  margin-top: 0.15rem;
+  line-height: 1.35;
+}
+
+/* ----- Hamburger (mobile only) ----- */
+.site-nav__hamburger {
+  display: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--c-forest-800);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+  min-height: 40px;
+  min-width: 44px;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.site-nav__hamburger:hover,
+.site-nav__hamburger:focus-visible {
+  background: var(--c-warm-100);
+}
+
+.site-nav__hamburger-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* ----- Responsive switch: hide bucket bar, show hamburger ----- */
+@media (max-width: 719px) {
+  .site-nav__buckets {
     display: none;
   }
-  .site-nav__item {
-    scroll-snap-align: start;
+  .site-nav__hamburger {
+    display: inline-flex;
   }
-  .site-nav__link {
-    padding: 0.35rem 0.55rem;
-    font-size: 0.8rem;
-  }
+}
+
+/* ----- Mobile slide-over panel ----- */
+.site-nav__mobile {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(15, 42, 34, 0);
+  transition: background-color 220ms ease;
+  pointer-events: none;
+}
+
+.site-nav__mobile[hidden] {
+  display: none !important;
+}
+
+.site-nav__mobile--open {
+  background: rgba(15, 42, 34, 0.45);
+  pointer-events: auto;
+}
+
+.site-nav__mobile-backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.site-nav__mobile-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(86vw, 360px);
+  background: var(--c-warm-50);
+  box-shadow: -12px 0 32px rgba(15, 42, 34, 0.25);
+  overflow-y: auto;
+  padding: 0.8rem 0 2rem;
+  transform: translateX(100%);
+  transition: transform 0.24s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-nav__mobile--open .site-nav__mobile-panel {
+  transform: translateX(0);
+}
+
+body.site-nav__mobile-open {
+  overflow: hidden;
+}
+
+.site-nav__mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 1.1rem 0.8rem;
+  border-bottom: 1px solid var(--c-line);
+  margin-bottom: 0.4rem;
+}
+
+.site-nav__mobile-title {
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  color: var(--c-forest-800);
+}
+
+.site-nav__mobile-close {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--c-ink-700);
+  font-size: 1.8rem;
+  line-height: 1;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-sm);
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.site-nav__mobile-close:hover,
+.site-nav__mobile-close:focus-visible {
+  background: var(--c-warm-100);
+}
+
+.site-nav__mobile-body {
+  padding: 0 0.6rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.site-nav__mobile-bucket {
+  border-radius: var(--radius-sm);
+  background: transparent;
+}
+
+.site-nav__mobile-bucket[open] {
+  background: rgba(253, 250, 243, 0.6);
+}
+
+.site-nav__mobile-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.7rem 0.8rem;
+  font-weight: 700;
+  color: var(--c-forest-800);
+  font-size: var(--fs-base);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--radius-sm);
+  user-select: none;
+}
+
+.site-nav__mobile-summary::-webkit-details-marker {
+  display: none;
+}
+
+.site-nav__mobile-summary:hover,
+.site-nav__mobile-summary:focus-visible {
+  background: var(--c-warm-100);
+  outline: none;
+}
+
+.site-nav__mobile-bucket-caret {
+  font-size: 0.85rem;
+  color: var(--c-ink-500);
+  transition: transform 0.18s ease;
+}
+
+.site-nav__mobile-bucket[open] .site-nav__mobile-bucket-caret {
+  transform: rotate(180deg);
+}
+
+.site-nav__mobile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.3rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.site-nav__mobile-item {
+  margin: 0;
+}
+
+.site-nav__mobile-link {
+  display: block;
+  padding: 0.65rem 0.7rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--c-ink-900);
+  font-size: var(--fs-base);
+}
+
+.site-nav__mobile-link:hover,
+.site-nav__mobile-link:focus-visible {
+  background: var(--c-warm-100);
+  outline: none;
+}
+
+.site-nav__mobile-link--active {
+  background: var(--c-forest-700);
+  color: var(--c-warm-50);
+}
+
+.site-nav__mobile-link--active:hover,
+.site-nav__mobile-link--active:focus-visible {
+  background: var(--c-forest-800);
+}
+
+.site-nav__mobile-name {
+  display: block;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.site-nav__mobile-desc {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  margin-top: 0.15rem;
+  line-height: 1.35;
+}
+
+.site-nav__mobile-link--active .site-nav__mobile-desc {
+  color: rgba(253, 250, 243, 0.82);
+}
+
+/* ───────── Breadcrumb ─────────
+ * Sits directly under the nav, above the page header. Suppressed on home
+ * (the hero already orients). Low-contrast single line.
+ */
+.breadcrumb {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0.55rem var(--gutter) 0;
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  line-height: 1.3;
+}
+
+.breadcrumb__link {
+  color: var(--c-ink-500);
+  text-decoration: none;
+}
+
+.breadcrumb__link:hover,
+.breadcrumb__link:focus-visible {
+  color: var(--c-forest-700);
+  text-decoration: underline;
+}
+
+.breadcrumb__bucket {
+  color: var(--c-ink-500);
+}
+
+.breadcrumb__sep {
+  opacity: 0.55;
+}
+
+.breadcrumb__current {
+  color: var(--c-ink-700);
+  font-weight: 600;
 }
 
 /* ───────── Page header (lighter than the old big hero) ───────── */

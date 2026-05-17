@@ -15,6 +15,13 @@
  *   - Closure banner only renders on the landing page (it's load-bearing on the
  *     decision surface, distraction elsewhere).
  *
+ * NAV — 4-bucket dropdown IA (2026-05-17, replacing flat 18-link nav).
+ *   Buckets: Plan · Explore · Logistics · Talk.
+ *   Desktop (>=720px): 4 button-triggered dropdown panels in the top bar.
+ *   Mobile (<720px): hamburger → slide-over from the right with <details>
+ *   per bucket. Active bucket auto-expands.
+ *   Breadcrumb under the nav: [Bucket] → [Page].
+ *
  * NEW MOUNTING PATTERN:
  *   const main = mountPageShell({ pageId: 'lodging', title: 'Where we sleep' });
  *   main.append(renderLodging());
@@ -55,41 +62,87 @@ interface NavEntry {
   id: PageId;
   href: string;
   label: string;
+  /** One-line description shown in dropdown panel + mobile slide-over. */
+  desc?: string;
 }
 
-// One nav, 14 pages. Order matches the canonical decision flow:
-// Home → Lodging → Hikes → Travel → Rental → Driving → Costs → Pre-trip
-// → Seattle → For Erin → Details → Groceries → Notes.
-// Sunsets demoted from main nav May 17, 2026 — Allison: *"not a big sunset trip…
-// sleeping where there is nature and amazing sunset could be really good idea
-// because erin doesnt stay out as late."* Sunset = lodging perk, not trip spine.
-// Page still builds (sunset-having lodging links there) but isn't a nav peer.
-// Food demoted + renamed to "Groceries" 2026-05-17 — Allison: *"AGAIN FOOD not
-// so importnat we easily buy and maek food not so hard."* Both kosher, both
-// cook, full-kitchen lodging = food is solved by grocery+cook. Page stays for
-// reference but moved near the end of nav. See [[feedback_food_not_central_to_trips]].
-const NAV: readonly NavEntry[] = [
-  { id: 'home', href: './', label: 'Home' },
-  { id: 'lodging', href: 'lodging.html', label: 'Lodging' },
-  { id: 'hikes', href: 'hikes.html', label: 'Hikes' },
-  { id: 'viewpoints', href: 'viewpoints.html', label: 'Viewpoints' },
-  { id: 'activities', href: 'activities.html', label: 'Activities' },
-  { id: 'lakes', href: 'lakes.html', label: 'Lakes' },
-  { id: 'towns', href: 'towns.html', label: 'Towns' },
-  { id: 'travel', href: 'travel.html', label: 'Travel' },
-  { id: 'rental', href: 'rental.html', label: 'Rental' },
-  { id: 'driving-cascades', href: 'driving-cascades.html', label: 'Driving' },
-  { id: 'costs', href: 'costs.html', label: 'Costs' },
-  { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip' },
-  { id: 'seattle', href: 'seattle.html', label: 'Seattle' },
-  { id: 'for-erin', href: 'for-erin.html', label: 'For Erin' },
-  { id: 'details', href: 'details.html', label: 'Details' },
-  // Hidden Gems lives near the bottom — exploratory tier, not the locked trip
-  // spine. Wave 3 #11 from `projects/north-cascades-2026/README.md`.
-  { id: 'hidden-gems', href: 'hidden-gems.html', label: 'Hidden gems' },
-  { id: 'food', href: 'food.html', label: 'Groceries' },
-  { id: 'notes', href: 'notes.html', label: 'Notes' },
+type BucketId = 'plan' | 'explore' | 'logistics' | 'talk';
+
+interface NavBucket {
+  id: BucketId;
+  label: string;
+  entries: readonly NavEntry[];
+}
+
+/**
+ * 4-bucket nav structure (added 2026-05-17).
+ *
+ * Replaces the prior flat 18-entry horizontal nav (overflowed at 412×892 even
+ * with the right-edge fade indicator). Groupings adjusted from improvement
+ * plan #6 to fit today's NC pages (Towns / Viewpoints / Lakes / Hidden Gems
+ * added by the destination wave at 02ecfc4).
+ *
+ * Sunsets stays in Explore (page still exists, demoted from main-nav but kept
+ * for sunset-having lodging cards that link there).
+ * Food stays in Logistics labeled "Groceries" — kosher buy+cook is the food
+ * strategy.
+ *
+ * Decision-y placement wins ties: Towns goes in Explore (not Plan) because
+ * it's vibe research, not the decision spine.
+ */
+const NAV_BUCKETS: readonly NavBucket[] = [
+  {
+    id: 'plan',
+    label: 'Plan',
+    entries: [
+      { id: 'home', href: './', label: 'Home', desc: 'Three paths + map at a glance' },
+      { id: 'lodging', href: 'lodging.html', label: 'Lodging', desc: 'Where to sleep, per path' },
+      { id: 'hikes', href: 'hikes.html', label: 'Hikes', desc: 'Signatures + alternates' },
+      { id: 'activities', href: 'activities.html', label: 'Activities', desc: 'Non-hiking ways to spend a day' },
+      { id: 'viewpoints', href: 'viewpoints.html', label: 'Viewpoints', desc: 'Drive-up postcards' },
+      { id: 'lakes', href: 'lakes.html', label: 'Lakes', desc: 'Water swaps + rentals' },
+      { id: 'hidden-gems', href: 'hidden-gems.html', label: 'Hidden gems', desc: '12 lesser-known spots' },
+      { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip', desc: 'Book-by dates + verifications' },
+    ],
+  },
+  {
+    id: 'explore',
+    label: 'Explore',
+    entries: [
+      { id: 'towns', href: 'towns.html', label: 'Towns', desc: 'Marblemount → Winthrop corridor' },
+      { id: 'seattle', href: 'seattle.html', label: 'Seattle', desc: 'Day 1 + Day 5 anchor' },
+      { id: 'driving-cascades', href: 'driving-cascades.html', label: 'Driving', desc: 'WA-20 + Cascade River Rd' },
+      { id: 'top-sunsets', href: 'top-sunsets.html', label: 'Top sunsets', desc: 'Sunset perks per lodging' },
+    ],
+  },
+  {
+    id: 'logistics',
+    label: 'Logistics',
+    entries: [
+      { id: 'travel', href: 'travel.html', label: 'Travel', desc: 'Flights + routings' },
+      { id: 'rental', href: 'rental.html', label: 'Rental', desc: 'Car: automatic, all-in price' },
+      { id: 'costs', href: 'costs.html', label: 'Costs', desc: 'Ranges, not point estimates' },
+      { id: 'food', href: 'food.html', label: 'Groceries', desc: 'Buy + cook the whole trip' },
+      { id: 'for-erin', href: 'for-erin.html', label: 'For Erin', desc: 'What you need to know' },
+      { id: 'details', href: 'details.html', label: 'Details', desc: 'Trip facts in one place' },
+    ],
+  },
+  {
+    id: 'talk',
+    label: 'Talk',
+    entries: [{ id: 'notes', href: 'notes.html', label: 'Notes', desc: 'Comments + decisions' }],
+  },
 ];
+
+/** Flat lookup — bucket ID for any page. */
+const PAGE_TO_BUCKET = new Map<PageId, BucketId>();
+const PAGE_TO_ENTRY = new Map<PageId, NavEntry>();
+for (const bucket of NAV_BUCKETS) {
+  for (const entry of bucket.entries) {
+    PAGE_TO_BUCKET.set(entry.id, bucket.id);
+    PAGE_TO_ENTRY.set(entry.id, entry);
+  }
+}
 
 interface ShellOptions {
   pageId: PageId;
@@ -119,6 +172,7 @@ interface ShellOptions {
 }
 
 function buildNav(activeId: PageId): HTMLElement {
+  const activeBucket = PAGE_TO_BUCKET.get(activeId);
   return h(
     'nav',
     { class: 'site-nav', 'aria-label': 'Site sections' },
@@ -127,34 +181,188 @@ function buildNav(activeId: PageId): HTMLElement {
       { class: 'site-nav__inner' },
       h(
         'a',
-        { class: 'site-nav__brand', href: NAV[0]?.href ?? './' },
+        { class: 'site-nav__brand', href: NAV_BUCKETS[0]?.entries[0]?.href ?? './' },
         h('span', { class: 'site-nav__brand-name' }, 'North Cascades'),
         h('span', { class: 'site-nav__brand-dates' }, 'Aug 16-20')
       ),
+      // Desktop: bucket buttons inline; mobile: hidden, hamburger shown instead.
       h(
-        'div',
-        { class: 'site-nav__list-wrap' },
-        h(
-          'ul',
-          { class: 'site-nav__list' },
-          ...NAV.map((entry) =>
-            h(
-              'li',
-              { class: 'site-nav__item' },
-              h(
-                'a',
-                {
-                  class: `site-nav__link${entry.id === activeId ? ' site-nav__link--active' : ''}`,
-                  href: entry.href,
-                  'aria-current': entry.id === activeId ? 'page' : undefined,
-                },
-                entry.label
-              )
-            )
-          )
-        )
+        'ul',
+        { class: 'site-nav__buckets', role: 'menubar', 'aria-label': 'Site navigation' },
+        ...NAV_BUCKETS.map((bucket) => buildBucketTrigger(bucket, activeId, activeBucket === bucket.id))
+      ),
+      buildHamburger()
+    )
+  );
+}
+
+/** Desktop dropdown trigger + panel for a single bucket. */
+function buildBucketTrigger(
+  bucket: NavBucket,
+  activeId: PageId,
+  isActive: boolean
+): HTMLElement {
+  const btnId = `site-nav-btn-${bucket.id}`;
+  const panelId = `site-nav-panel-${bucket.id}`;
+  const btn = h(
+    'button',
+    {
+      type: 'button',
+      class: `site-nav__bucket-btn${isActive ? ' site-nav__bucket-btn--active' : ''}`,
+      id: btnId,
+      'aria-haspopup': 'true',
+      'aria-expanded': 'false',
+      'aria-controls': panelId,
+      'data-bucket': bucket.id,
+    },
+    bucket.label,
+    h('span', { class: 'site-nav__bucket-caret', 'aria-hidden': 'true' }, '▾')
+  );
+  const panel = h(
+    'div',
+    {
+      class: 'site-nav__dropdown',
+      id: panelId,
+      role: 'menu',
+      'aria-labelledby': btnId,
+      hidden: true,
+    },
+    ...bucket.entries.map((entry) =>
+      h(
+        'a',
+        {
+          class: `site-nav__dropdown-link${entry.id === activeId ? ' site-nav__dropdown-link--active' : ''}`,
+          href: entry.href,
+          role: 'menuitem',
+          'aria-current': entry.id === activeId ? 'page' : undefined,
+        },
+        h('span', { class: 'site-nav__dropdown-name' }, entry.label),
+        entry.desc ? h('span', { class: 'site-nav__dropdown-desc' }, entry.desc) : null
       )
     )
+  );
+  return h(
+    'li',
+    { class: `site-nav__bucket${isActive ? ' site-nav__bucket--active' : ''}`, role: 'none' },
+    btn,
+    panel
+  );
+}
+
+function buildHamburger(): HTMLElement {
+  return h(
+    'button',
+    {
+      type: 'button',
+      class: 'site-nav__hamburger',
+      'aria-label': 'Open menu',
+      'aria-expanded': 'false',
+      'aria-controls': 'site-nav-mobile',
+      'data-action': 'open-mobile-nav',
+    },
+    h('span', { class: 'site-nav__hamburger-icon', 'aria-hidden': 'true' }, '☰')
+  );
+}
+
+/**
+ * Mobile slide-over panel — full-height drawer from the right with <details>
+ * per bucket. The bucket containing the active page is auto-expanded.
+ */
+function buildMobileNav(activeId: PageId): HTMLElement {
+  const activeBucket = PAGE_TO_BUCKET.get(activeId);
+  return h(
+    'div',
+    {
+      class: 'site-nav__mobile',
+      id: 'site-nav-mobile',
+      role: 'dialog',
+      'aria-modal': 'true',
+      'aria-label': 'Site navigation',
+      hidden: true,
+    },
+    h('div', { class: 'site-nav__mobile-backdrop', 'data-action': 'close-mobile-nav' }),
+    h(
+      'div',
+      { class: 'site-nav__mobile-panel' },
+      h(
+        'div',
+        { class: 'site-nav__mobile-header' },
+        h('span', { class: 'site-nav__mobile-title' }, 'Menu'),
+        h(
+          'button',
+          {
+            type: 'button',
+            class: 'site-nav__mobile-close',
+            'aria-label': 'Close menu',
+            'data-action': 'close-mobile-nav',
+          },
+          '×'
+        )
+      ),
+      h(
+        'div',
+        { class: 'site-nav__mobile-body' },
+        ...NAV_BUCKETS.map((bucket) => {
+          const open = bucket.id === activeBucket;
+          const detailsAttrs: Record<string, string | boolean | undefined> = {
+            class: 'site-nav__mobile-bucket',
+          };
+          if (open) detailsAttrs['open'] = true;
+          return h(
+            'details',
+            detailsAttrs,
+            h(
+              'summary',
+              { class: 'site-nav__mobile-summary' },
+              h('span', { class: 'site-nav__mobile-bucket-label' }, bucket.label),
+              h('span', { class: 'site-nav__mobile-bucket-caret', 'aria-hidden': 'true' }, '▾')
+            ),
+            h(
+              'ul',
+              { class: 'site-nav__mobile-list' },
+              ...bucket.entries.map((entry) =>
+                h(
+                  'li',
+                  { class: 'site-nav__mobile-item' },
+                  h(
+                    'a',
+                    {
+                      class: `site-nav__mobile-link${entry.id === activeId ? ' site-nav__mobile-link--active' : ''}`,
+                      href: entry.href,
+                      'aria-current': entry.id === activeId ? 'page' : undefined,
+                    },
+                    h('span', { class: 'site-nav__mobile-name' }, entry.label),
+                    entry.desc ? h('span', { class: 'site-nav__mobile-desc' }, entry.desc) : null
+                  )
+                )
+              )
+            )
+          );
+        })
+      )
+    )
+  );
+}
+
+/**
+ * Breadcrumb — single low-contrast line: [Bucket] → [Page].
+ * Suppressed on the home page (the hero already orients).
+ */
+function buildBreadcrumb(activeId: PageId): HTMLElement | null {
+  if (activeId === 'home') return null;
+  const bucketId = PAGE_TO_BUCKET.get(activeId);
+  const entry = PAGE_TO_ENTRY.get(activeId);
+  if (!bucketId || !entry) return null;
+  const bucket = NAV_BUCKETS.find((b) => b.id === bucketId);
+  if (!bucket) return null;
+  return h(
+    'nav',
+    { class: 'breadcrumb', 'aria-label': 'Breadcrumb' },
+    h('a', { class: 'breadcrumb__link', href: './' }, 'Home'),
+    h('span', { class: 'breadcrumb__sep', 'aria-hidden': 'true' }, '›'),
+    h('span', { class: 'breadcrumb__bucket' }, bucket.label),
+    h('span', { class: 'breadcrumb__sep', 'aria-hidden': 'true' }, '›'),
+    h('span', { class: 'breadcrumb__current', 'aria-current': 'page' }, entry.label)
   );
 }
 
@@ -198,7 +406,8 @@ function buildClosureBanner(): HTMLElement {
         'p',
         {
           class: 'closure-banner__detail',
-          style: 'font-size: 0.78rem; margin-top: 0.6rem; padding: 0.5rem 0.6rem; background: #fdecec; border: 1px solid #c4393a; color: #6d1a1b; border-radius: 6px;',
+          style:
+            'font-size: 0.78rem; margin-top: 0.6rem; padding: 0.5rem 0.6rem; background: #fdecec; border: 1px solid #c4393a; color: #6d1a1b; border-radius: 6px;',
         },
         h('strong', {}, 'Conflict — verify before booking week: '),
         'NPS road-conditions page (May 6, 2026 update) lists "Expected reopening: April or early May (weather-dependent)" while WSDOT target above says July 4. Both sources are stale in different directions. Confirm by phone — WSDOT 1-800-695-7623 — before locking the week.'
@@ -357,15 +566,24 @@ function buildFooter(): HTMLElement {
  * Mount the shell into <body>, return the <main> element to fill with the
  * page's actual content.
  *
- * Order: nav → page-header (or hero) → main → footer.
- * Also mounts the global notes modal + back-to-top button.
+ * Order: nav → breadcrumb → page-header (or hero) → main → footer.
+ * Also mounts the global notes modal + back-to-top button + the mobile
+ * slide-over nav panel (sits at the end of body, toggled by the hamburger).
  */
 export function mountPageShell(opts: ShellOptions): HTMLElement {
   const body = document.body;
   // Skip-link is in index.html already, leave it alone.
   const main = h('main', { class: 'page-main', id: 'page-main' });
   const header = buildPageHeader(opts);
-  const fragments: (HTMLElement | null)[] = [buildNav(opts.pageId), header, main, buildFooter()];
+  const breadcrumb = buildBreadcrumb(opts.pageId);
+  const fragments: (HTMLElement | null)[] = [
+    buildNav(opts.pageId),
+    breadcrumb,
+    header,
+    main,
+    buildFooter(),
+    buildMobileNav(opts.pageId),
+  ];
   for (const el of fragments) {
     if (el) body.appendChild(el);
   }
@@ -374,7 +592,7 @@ export function mountPageShell(opts: ShellOptions): HTMLElement {
   initGlobalFab();
   void refreshBadges();
   attachBackToTop();
-  attachNavFade(body);
+  attachNavBehavior(body);
   // First-visit explainer popup (Erin's intro to the 💬 mechanic).
   // Self-suppresses via localStorage after one show.
   showWelcomePopup();
@@ -383,23 +601,182 @@ export function mountPageShell(opts: ShellOptions): HTMLElement {
 }
 
 /**
- * Mobile nav fade — toggle the right-edge gradient off when the user has
- * scrolled to the end of the nav list. Lifted from Austria 2026 horizontal-
- * scroll patterns. Pure visual signal; doesn't affect functionality if it
- * fails (the nav already scrolls fine).
+ * Wire all nav interactions:
+ *   - Desktop bucket buttons: click toggles dropdown, hover opens, ESC closes,
+ *     click-outside closes, ArrowDown focuses first menu item, ArrowLeft/Right
+ *     cycle between bucket buttons.
+ *   - Mobile hamburger: opens slide-over; ESC + backdrop + close-button close;
+ *     focus is moved into the panel + trapped while open.
+ *   - Path-filter state survives untouched (NAV uses normal <a href> links).
  */
-function attachNavFade(body: HTMLElement): void {
-  const list = body.querySelector<HTMLElement>('.site-nav__list');
-  const wrap = body.querySelector<HTMLElement>('.site-nav__list-wrap');
-  if (!list || !wrap) return;
-  const update = (): void => {
-    const atEnd = list.scrollLeft + list.clientWidth >= list.scrollWidth - 4;
-    wrap.classList.toggle('site-nav__list-wrap--at-end', atEnd);
+function attachNavBehavior(body: HTMLElement): void {
+  const nav = body.querySelector<HTMLElement>('.site-nav');
+  const mobile = body.querySelector<HTMLElement>('.site-nav__mobile');
+  if (!nav || !mobile) return;
+
+  const bucketBtns = Array.from(nav.querySelectorAll<HTMLButtonElement>('.site-nav__bucket-btn'));
+  const hamburger = nav.querySelector<HTMLButtonElement>('.site-nav__hamburger');
+
+  const closeAllDropdowns = (exceptId?: string | null): void => {
+    bucketBtns.forEach((btn) => {
+      const id = btn.dataset['bucket'];
+      if (exceptId && id === exceptId) return;
+      btn.setAttribute('aria-expanded', 'false');
+      const panelId = btn.getAttribute('aria-controls');
+      if (panelId) {
+        const panel = document.getElementById(panelId);
+        if (panel) panel.hidden = true;
+      }
+    });
   };
-  list.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update);
-  // Run once on mount to catch the case where no overflow exists.
-  setTimeout(update, 0);
+
+  const openDropdown = (btn: HTMLButtonElement): void => {
+    const bucketId = btn.dataset['bucket'] ?? null;
+    closeAllDropdowns(bucketId);
+    btn.setAttribute('aria-expanded', 'true');
+    const panelId = btn.getAttribute('aria-controls');
+    if (panelId) {
+      const panel = document.getElementById(panelId);
+      if (panel) panel.hidden = false;
+    }
+  };
+
+  bucketBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      if (expanded) {
+        closeAllDropdowns();
+      } else {
+        openDropdown(btn);
+      }
+    });
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        openDropdown(btn);
+        const panelId = btn.getAttribute('aria-controls');
+        if (panelId) {
+          const panel = document.getElementById(panelId);
+          const first = panel?.querySelector<HTMLAnchorElement>('a');
+          first?.focus();
+        }
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        const next = bucketBtns[(idx + 1) % bucketBtns.length];
+        next?.focus();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prev = bucketBtns[(idx - 1 + bucketBtns.length) % bucketBtns.length];
+        prev?.focus();
+      } else if (e.key === 'Escape') {
+        closeAllDropdowns();
+      }
+    });
+  });
+
+  // Per-panel keyboard navigation (arrow keys cycle links, ESC closes).
+  bucketBtns.forEach((btn) => {
+    const panelId = btn.getAttribute('aria-controls');
+    if (!panelId) return;
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    panel.addEventListener('keydown', (e) => {
+      const links = Array.from(panel.querySelectorAll<HTMLAnchorElement>('a'));
+      const active = document.activeElement as HTMLElement | null;
+      const currentIdx = active ? links.indexOf(active as HTMLAnchorElement) : -1;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        links[(currentIdx + 1) % links.length]?.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        links[(currentIdx - 1 + links.length) % links.length]?.focus();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeAllDropdowns();
+        btn.focus();
+      } else if (e.key === 'Tab') {
+        // Let Tab close the dropdown naturally so focus moves on.
+        closeAllDropdowns();
+      }
+    });
+  });
+
+  // Click outside closes all dropdowns.
+  document.addEventListener('click', (e) => {
+    if (!(e.target instanceof Node)) return;
+    if (nav.contains(e.target)) return;
+    closeAllDropdowns();
+  });
+
+  // ESC anywhere closes both dropdowns and mobile panel.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    closeAllDropdowns();
+    if (!mobile.hidden) closeMobile();
+  });
+
+  // ─── Mobile slide-over ───
+  const openMobile = (): void => {
+    mobile.hidden = false;
+    // Trigger transition on next frame
+    requestAnimationFrame(() => {
+      mobile.classList.add('site-nav__mobile--open');
+    });
+    body.classList.add('site-nav__mobile-open');
+    hamburger?.setAttribute('aria-expanded', 'true');
+    const firstLink = mobile.querySelector<HTMLAnchorElement>(
+      '.site-nav__mobile-bucket[open] .site-nav__mobile-link'
+    );
+    (firstLink ?? mobile.querySelector<HTMLButtonElement>('.site-nav__mobile-close'))?.focus();
+  };
+
+  const closeMobile = (): void => {
+    mobile.classList.remove('site-nav__mobile--open');
+    body.classList.remove('site-nav__mobile-open');
+    hamburger?.setAttribute('aria-expanded', 'false');
+    // Hide after transition completes so it leaves the a11y tree.
+    setTimeout(() => {
+      if (!mobile.classList.contains('site-nav__mobile--open')) {
+        mobile.hidden = true;
+      }
+    }, 240);
+    hamburger?.focus();
+  };
+
+  hamburger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (mobile.hidden) openMobile();
+    else closeMobile();
+  });
+
+  mobile.addEventListener('click', (e) => {
+    if (!(e.target instanceof HTMLElement)) return;
+    const action = e.target.closest<HTMLElement>('[data-action]')?.dataset['action'];
+    if (action === 'close-mobile-nav') {
+      closeMobile();
+    }
+  });
+
+  // Focus trap for the mobile panel.
+  mobile.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || mobile.hidden) return;
+    const focusable = mobile.querySelectorAll<HTMLElement>(
+      'a, button, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!first || !last) return;
+    const active = document.activeElement as HTMLElement | null;
+    if (e.shiftKey && active === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && active === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
 }
 
 /**
