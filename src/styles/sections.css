@@ -1781,3 +1781,146 @@
     padding: 0.35rem 0.5rem;
   }
 }
+
+/* ====================================================================
+ * Lodging-search guide section — "How to search for lodging here".
+ * Bullet-heavy, scannable, mobile-first (Pixel 7 Pro XL 412×892).
+ * Added May 17, 2026 in response to Allison's live-site note.
+ * ==================================================================== */
+#lodging-search-guide {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+}
+
+.search-guide__intro {
+  font-size: var(--fs-base);
+  line-height: 1.55;
+  color: var(--c-ink-700);
+  margin: 0 0 var(--sp-5);
+  max-width: 64ch;
+}
+
+.search-guide__groups {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-5);
+}
+
+@media (min-width: 720px) {
+  .search-guide__groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.search-guide__group {
+  background: var(--c-warm-100);
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-forest-500);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-4);
+}
+
+.search-guide__group-title {
+  font-size: var(--fs-lg);
+  color: var(--c-forest-800);
+  margin: 0 0 var(--sp-2);
+  line-height: 1.3;
+}
+
+.search-guide__group-intro {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+  line-height: 1.5;
+  margin: 0 0 var(--sp-3);
+}
+
+.search-guide__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.search-guide__item {
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--c-ink-900);
+  position: relative;
+  padding-left: var(--sp-4);
+}
+
+.search-guide__item::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--c-forest-500);
+  font-weight: 700;
+}
+
+.search-guide__lead {
+  color: var(--c-forest-800);
+  font-weight: 600;
+}
+
+.search-guide__rest {
+  color: var(--c-ink-700);
+}
+
+.search-guide__notes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+
+@media (min-width: 720px) {
+  .search-guide__notes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.search-guide__note {
+  border-radius: var(--radius-sm);
+  padding: var(--sp-4);
+  border: 1px solid var(--c-line);
+}
+
+.search-guide__note--info {
+  background: var(--c-info-bg);
+  border-color: var(--c-info-border);
+  color: var(--c-info-ink);
+}
+
+.search-guide__note--warn {
+  background: var(--c-warn-bg);
+  border-color: var(--c-warn-border);
+  color: var(--c-warn-ink);
+}
+
+.search-guide__note-title {
+  font-size: var(--fs-base);
+  margin: 0 0 var(--sp-2);
+  line-height: 1.3;
+}
+
+.search-guide__note p {
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.search-guide__bridge {
+  font-size: var(--fs-base);
+  line-height: 1.55;
+  color: var(--c-ink-900);
+  background: var(--c-good-bg);
+  border-left: 3px solid var(--c-good-border);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: var(--sp-3) var(--sp-4);
+  margin: 0;
+}
