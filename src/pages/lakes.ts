@@ -22,6 +22,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'lakes',
     title: 'Lakes & water',
+    verifiedOn: '2026-05-17',
     lede: 'Pearrygin to swim, Diablo to look at, Ross by water taxi, Patterson by kayak. Six destinations with photos, rental phone numbers, and drive-times from every base.',
     imageHero: {
       // Pearrygin Lake — warm swim story, the August headline.

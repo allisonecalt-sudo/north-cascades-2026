@@ -20,6 +20,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'how-to',
     title: 'How to do this trip',
+    verifiedOn: '2026-05-17',
     lede: HOW_TO_PAGE_META.lede,
     imageHero: {
       // Diablo Lake from the WA-20 overlook — the spine viewpoint the trip is

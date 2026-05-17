@@ -15,6 +15,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'hikes',
     title: 'Hikes, viewpoints, and sky',
+    verifiedOn: '2026-05-17 (Wave 4 — destination research + WA-20 chip)',
     lede: 'Easy-to-moderate only — no scrambling, no big-mileage days. Trailhead facts, distance, elevation.',
     imageHero: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Maple_Pass_Loop%2C_North_Cascades.jpg/1920px-Maple_Pass_Loop%2C_North_Cascades.jpg',

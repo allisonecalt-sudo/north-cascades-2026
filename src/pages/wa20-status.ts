@@ -21,6 +21,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'wa20-status',
     title: 'WA-20 status — the deep dive',
+    verifiedOn: '2026-05-17 (target updated July 4 → June 25 per WSDOT)',
     lede: WA20_PAGE_META.lede,
     imageHero: {
       // Wikimedia: Washington Highway 20 winding through the North Cascades.

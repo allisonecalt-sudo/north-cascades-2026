@@ -20,6 +20,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'weather-plan-c',
     title: 'Weather Plan C — smoke + bad-air swaps',
+    verifiedOn: '2026-05-17',
     lede:
       'August NC is mostly dry. Smoke is the real Plan C trigger — here’s the ' +
       'ladder, the swaps, the refuges, and what to bookmark before you go.',

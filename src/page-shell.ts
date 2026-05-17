@@ -257,6 +257,17 @@ interface ShellOptions {
   /** Hide the page header entirely (e.g. the home page uses a full hero). */
   hidePageHeader?: boolean;
   /**
+   * Per-page verification date string (added 2026-05-17, plan item #8). Renders
+   * in the footer as "Researched {verifiedOn} · Re-verify before booking week."
+   *
+   * Falls back to TRIP.researchedOn when omitted. Pages whose CONTENT carries
+   * its own per-section verifiedOn (lodging, hikes, viewpoints, lakes,
+   * activities, hidden-gems, towns, wa20-status) pass a representative date
+   * here — a single global "researched on" line is a lie about which page's
+   * facts are how old. Per-page verification is the fail-loud signal.
+   */
+  verifiedOn?: string;
+  /**
    * If set, replaces the gradient page-header with an editorial image hero —
    * Wikimedia photo, dark overlay, eyebrow + title + lede + closure banner +
    * an inline CTA pill. Lifted from Austria's landing pattern. Used on home.
@@ -272,6 +283,48 @@ interface ShellOptions {
     ctaHref?: string;
   };
 }
+
+/**
+ * CROSS_PROMO — per-page "Related →" strip (added 2026-05-17, plan item #9).
+ *
+ * Each page maps to 3 sibling pages chosen for circulation: the bottom-of-page
+ * exit is wasted real estate on a multi-page site. Path-filter state survives
+ * navigation (NAV uses normal <a href> links), so cross-promo isn't dead-ending,
+ * it's continuing the same filtered view.
+ *
+ * Chosen by hand, not algorithmic — each trio answers "if a reader finished
+ * THIS page, what's the most useful next page?" Examples:
+ *   - lodging → hikes/costs/map (what's nearby, what does it cost, where is it)
+ *   - hikes → lodging/activities/viewpoints (where to sleep near them,
+ *     non-hiking peer days, drive-up alternatives)
+ *   - travel → rental/driving-cascades/costs (the transit chain)
+ */
+const CROSS_PROMO: Record<PageId, readonly PageId[]> = {
+  home: ['lodging', 'hikes', 'map'],
+  lodging: ['hikes', 'costs', 'map'],
+  hikes: ['lodging', 'activities', 'viewpoints'],
+  activities: ['hikes', 'lakes', 'viewpoints'],
+  viewpoints: ['hikes', 'map', 'top-sunsets'],
+  lakes: ['activities', 'viewpoints', 'hidden-gems'],
+  'hidden-gems': ['hikes', 'viewpoints', 'lakes'],
+  towns: ['lodging', 'seattle', 'driving-cascades'],
+  'top-sunsets': ['lodging', 'viewpoints', 'lakes'],
+  travel: ['rental', 'driving-cascades', 'costs'],
+  rental: ['travel', 'driving-cascades', 'costs'],
+  'driving-cascades': ['travel', 'rental', 'wa20-status'],
+  costs: ['lodging', 'rental', 'how-to'],
+  'pre-trip': ['costs', 'wa20-status', 'weather-plan-c'],
+  seattle: ['towns', 'food', 'lodging'],
+  'for-erin': ['home', 'how-to', 'notes'],
+  details: ['home', 'lodging', 'notes'],
+  food: ['lodging', 'seattle', 'pre-trip'],
+  notes: ['home', 'lodging', 'for-erin'],
+  'how-to': ['lodging', 'map', 'costs'],
+  'wa20-status': ['driving-cascades', 'how-to', 'pre-trip'],
+  'weather-plan-c': ['pre-trip', 'hikes', 'wa20-status'],
+  map: ['lodging', 'how-to', 'hikes'],
+  search: ['home', 'lodging', 'hikes'],
+};
 
 function buildNav(activeId: PageId): HTMLElement {
   const activeBucket = PAGE_TO_BUCKET.get(activeId);
@@ -756,22 +809,58 @@ function buildPathIndicator(): HTMLElement {
   return wrap;
 }
 
-function buildFooter(): HTMLElement {
+function buildFooter(pageId: PageId, verifiedOn: string | undefined): HTMLElement {
+  // Per-page verification date (plan item #8, 2026-05-17). Falls back to the
+  // site-wide TRIP.researchedOn when a page doesn't pass its own date.
+  const verifyDate = verifiedOn ?? TRIP.researchedOn;
   return h(
     'footer',
     { class: 'site-footer' },
     h(
       'div',
       { class: 'site-footer__inner' },
+      h('a', { href: './', class: 'site-footer__back' }, '← Back to home'),
+      buildCrossPromo(pageId),
       h(
         'p',
-        {},
-        `Researched ${TRIP.researchedOn}. Re-verify road status, prices, and trail conditions closer to booking.`
+        { class: 'site-footer__verified' },
+        h('em', {}, `Researched ${verifyDate} · Re-verify before booking week.`)
       ),
-      h('p', { class: 'site-footer__meta' }, 'v5 · multi-page digestibility pass · May 16, 2026'),
-      h('a', { href: './', class: 'site-footer__back' }, '← Back to home')
+      h('p', { class: 'site-footer__meta' }, 'v5 · multi-page digestibility pass · May 16, 2026')
     )
   );
+}
+
+/**
+ * buildCrossPromo — "Related → A · B · C" strip (plan item #9, 2026-05-17).
+ * Renders 3 sibling-page text links separated by middle dots. Returns null
+ * placeholder if the current page has no entry (defensive — every PageId is
+ * mapped in CROSS_PROMO above, but TypeScript can't prove a future page won't
+ * slip through).
+ */
+function buildCrossPromo(pageId: PageId): HTMLElement {
+  const related = CROSS_PROMO[pageId] ?? [];
+  if (related.length === 0) {
+    return h('p', { class: 'site-footer__cross-promo', hidden: true });
+  }
+  const children: Array<HTMLElement | Text> = [
+    h('span', { class: 'site-footer__cross-promo-label' }, 'Related → '),
+  ];
+  related.forEach((relId, idx) => {
+    const entry = PAGE_TO_ENTRY.get(relId);
+    if (!entry) return;
+    if (idx > 0) {
+      children.push(h('span', { class: 'site-footer__cross-promo-sep', 'aria-hidden': 'true' }, ' · '));
+    }
+    children.push(
+      h(
+        'a',
+        { class: 'site-footer__cross-promo-link', href: entry.href },
+        entry.label
+      )
+    );
+  });
+  return h('p', { class: 'site-footer__cross-promo' }, ...children);
 }
 
 /**
@@ -793,7 +882,7 @@ export function mountPageShell(opts: ShellOptions): HTMLElement {
     breadcrumb,
     header,
     main,
-    buildFooter(),
+    buildFooter(opts.pageId, opts.verifiedOn),
     buildMobileNav(opts.pageId),
   ];
   for (const el of fragments) {

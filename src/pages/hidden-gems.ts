@@ -16,6 +16,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'hidden-gems',
     title: 'Hidden gems — beyond the marquee',
+    verifiedOn: '2026-05-17 (research-verified — Slate Peak collapsed, Heliotrope closed, Hidden Lake road washed out)',
     lede:
       "Sauk Mountain, Hidden Lake Lookout, Park Butte, Goat Peak, Tiffany, Slate Peak, Pyramid Lake — lesser-known wow per drive-minute. Each card spells out why it's hidden vs the marquee picks, the catch (road / permit / status), and the drive from each base. Exploratory menu, not the locked plan.",
     imageHero: {

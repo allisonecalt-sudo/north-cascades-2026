@@ -25,6 +25,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'viewpoints',
     title: 'Viewpoints — drive-up postcards',
+    verifiedOn: '2026-05-17',
     lede: 'The places you can reach by car (or a sub-10-minute walk). Diablo Lake, Washington Pass, Picture Lake, Artist Point — the postcards.',
     imageHero: {
       // Diablo Lake — turquoise summer water, proven URL (already in use on

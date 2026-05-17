@@ -14,6 +14,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'costs',
     title: 'Budget — totals, splits, trims',
+    verifiedOn: '2026-05-17',
     lede: 'Five-second read. Big totals, per-person shares, what is locked vs flexible, and concrete trim moves. USD, all-in, 2 travelers.',
     imageHero: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Diablo_Lake_%28Washington_State%29.jpg/1920px-Diablo_Lake_%28Washington_State%29.jpg',

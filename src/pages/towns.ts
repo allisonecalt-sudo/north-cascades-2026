@@ -19,6 +19,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'towns',
     title: 'Towns along the corridor',
+    verifiedOn: '2026-05-17',
     lede:
       'Five WA-20 corridor stops — character, walkable streets, shops, NPS visitor centers. Not a restaurant page (kosher self-cater is the food plan). These are vibe stops between hikes.',
     imageHero: {

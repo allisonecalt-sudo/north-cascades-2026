@@ -19,6 +19,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'activities',
     title: 'Activities & water',
+    verifiedOn: '2026-05-17',
     lede: 'Paddle, swim, bike, town walks, wildlife windows — what to do beyond the hikes. Pick by energy on the day.',
     imageHero: {
       // Diablo Lake — turquoise summer water, no snow on the lake itself.

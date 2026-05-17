@@ -666,6 +666,48 @@ body.site-nav__mobile-open {
   color: var(--c-warm-50);
 }
 
+/* Verified-on line (italic, slightly muted) — plan item #8, 2026-05-17. */
+.site-footer__verified em {
+  font-style: italic;
+  opacity: 0.78;
+}
+
+/* Cross-promo "Related →" strip — plan item #9, 2026-05-17.
+   Low-contrast text links separated by middle dots. Wraps gracefully on
+   mobile (412px) via flex + center. */
+.site-footer__cross-promo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.15rem 0.1rem;
+  font-size: var(--fs-xs);
+  opacity: 0.82;
+  margin: 0;
+}
+
+.site-footer__cross-promo-label {
+  color: var(--c-ink-400);
+  margin-right: 0.15rem;
+}
+
+.site-footer__cross-promo-link {
+  color: var(--c-glacier-100);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.28);
+  padding-bottom: 1px;
+}
+
+.site-footer__cross-promo-link:hover,
+.site-footer__cross-promo-link:focus-visible {
+  color: var(--c-warm-50);
+  border-bottom-color: var(--c-warm-50);
+}
+
+.site-footer__cross-promo-sep {
+  color: var(--c-ink-400);
+}
+
 /* ───────── Bottom-of-page CTA strip ───────── */
 .page-ctas {
   display: grid;

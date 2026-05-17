@@ -15,6 +15,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'lodging',
     title: 'Where we sleep',
+    verifiedOn: '2026-05-17 (Wave 4 — Owner pass + free-cancel + sold-out hide)',
     // Hero lede rewritten 2026-05-17 (Lodging Owner pass): set context up
     // front. Dates + travelers + the kosher-cook-in HARD requirement that
     // drives why kitchen pills lead every card.
