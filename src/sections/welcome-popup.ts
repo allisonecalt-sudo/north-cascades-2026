@@ -44,9 +44,9 @@ function buildPopup(): HTMLDivElement {
     <div class="welcome-popup">
       <button class="welcome-popup__close" type="button" aria-label="Close welcome">×</button>
       <div class="welcome-popup__eyebrow">Hey Erin —</div>
-      <h2 class="welcome-popup__title" id="welcome-popup-title">This is a draft of our trip. React to it.</h2>
+      <h2 class="welcome-popup__title" id="welcome-popup-title">This is a draft of our trip. React however works for you.</h2>
       <p class="welcome-popup__body">
-        Your Google Doc is still the plan. This site is just so you can
+        Your Google Doc is still the working plan. This site is just so you can
         <em>see</em> the options laid out — lodging, hikes, drive times — and tell
         me what to change. Nothing here is locked.
       </p>
@@ -55,35 +55,34 @@ function buildPopup(): HTMLDivElement {
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">1</span>
           <div class="welcome-popup__step-body">
-            <strong>Tap the
-              <span class="welcome-popup__chip">💬&nbsp;Note</span> button</strong>
-            in the bottom-right of any page (it's there on every page).
-            Or tap a <span class="welcome-popup__chip">💬</span> next to a section
-            title to scope your note to that thing.
+            <strong>However you want to react is fine:</strong>
+            <ul style="margin: 0.4rem 0 0 1rem; padding: 0; list-style: disc;">
+              <li><strong>Text or email me</strong> — totally fine, I'll fold it in</li>
+              <li>Edit the <strong>Google Doc</strong> — I check it before each site update</li>
+              <li>Or tap <span class="welcome-popup__chip">💬&nbsp;Note</span> on any page (corner button or next to any section title) — that goes straight to my Claude session</li>
+            </ul>
           </div>
         </div>
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">2</span>
           <div class="welcome-popup__step-body">
-            <strong>Type it like you'd text me.</strong>
+            <strong>Type / text it like you'd text me.</strong>
             "Cascade River House looks great." "Swap Maple Pass for something easier."
-            "Too much driving on day 3." "I want to spend a night in Winthrop."
-            No filter.
+            "Too much driving on day 3." "I want a night in Winthrop." No filter.
           </div>
         </div>
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">3</span>
           <div class="welcome-popup__step-body">
-            <strong>I'm 10 hours ahead</strong> — leave a note before bed,
-            by the time you wake up the site will already reflect it.
-            Refresh and see.
+            <strong>I'm 10 hours ahead.</strong> Leave a note / text / doc edit before bed,
+            by the time you wake up the site will reflect it. Refresh and see.
           </div>
         </div>
       </div>
 
       <p class="welcome-popup__body welcome-popup__body--small">
-        Three paths up top (A / B / C) for how to spend the 4 nights — pick one to filter
-        the site, or leave it on "compare all" to see every option side-by-side.
+        Three paths up top (A / B / C) for how to spend the 4 nights — we haven't picked one yet.
+        Have an instinct? Tell me via whichever channel above.
       </p>
 
       <div class="welcome-popup__actions">

@@ -50,10 +50,10 @@ export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
       'US-2 / Stevens Pass scenic route is +30 min over I-90 but includes Leavenworth (Bavarian theme, walkable). Or take I-90 straight to SEA. Affects only Day 5.',
   },
   {
-    id: 'stars',
-    question: 'Care about stargazing? New moon falls Tue Aug 18 — best dark sky of the trip.',
+    id: 'site-channel',
+    question: 'How do you want to use this site — Google Doc, notes here, or both?',
     context:
-      'If yes, we plan one post-dinner detour to Washington Pass Overlook or Patterson Lake. If no, no change. See Sunrise + stars section for details.',
+      "Allison's been building this as a comparison-pitch you can react to. The 💬 buttons let you leave notes inline (Allison sees them next time she opens the site). But your Google Doc is also still the working plan — totally fine to keep editing there + just text/email Allison. Or both. Whichever's easier for you. Leave a note or text Allison the answer to this one.",
   },
   {
     id: 'rest-day',
