@@ -115,6 +115,22 @@ const NEXT: Record<PageId, Cta[]> = {
     { href: 'hikes.html', label: 'Hikes →' },
     { href: 'driving-cascades.html', label: 'Driving →' },
   ],
+  'weather-plan-c': [
+    { href: 'pre-trip.html', label: 'Pre-trip →' },
+    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'hikes.html', label: 'Hikes →' },
+  ],
+  // Placeholder for search-overlay (parallel agent owns its mapping).
+  search: [
+    { href: './', label: 'Home →' },
+    { href: 'lodging.html', label: 'Lodging →' },
+    { href: 'hikes.html', label: 'Hikes →' },
+  ],
+  'wa20-status': [
+    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'pre-trip.html', label: 'Pre-trip →' },
+    { href: './', label: 'Home →' },
+  ],
 };
 
 export function renderPageCtas(active: PageId): HTMLElement {

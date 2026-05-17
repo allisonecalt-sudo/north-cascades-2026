@@ -45,6 +45,7 @@ import { initNotesModal, attachNotesButton, refreshBadges } from './sections/not
 import { initGlobalFab } from './sections/global-fab';
 import { attachBackToTop } from './sections/back-to-top';
 import { showWelcomePopup } from './sections/welcome-popup';
+import { initSearchOverlay } from './sections/search-overlay';
 import { getSelectedPath, setSelectedPath, subscribeSelectedPath } from './state/path';
 import { TRIP_PATHS } from './data/paths';
 
@@ -68,7 +69,10 @@ export type PageId =
   | 'pre-trip'
   | 'driving-cascades'
   | 'hidden-gems'
-  | 'map';
+  | 'map'
+  | 'weather-plan-c'
+  | 'search'
+  | 'wa20-status';
 
 interface NavEntry {
   id: PageId;
@@ -187,6 +191,7 @@ const NAV_BUCKETS: readonly NavBucket[] = [
     entries: [
       { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip', desc: 'Book-by dates + verifications' },
       { id: 'food', href: 'food.html', label: 'Groceries', desc: 'Buy + cook the whole trip' },
+      { id: 'weather-plan-c', href: 'weather-plan-c.html', label: 'Weather Plan C', desc: 'Smoke + bad-air swaps' },
       { id: 'top-sunsets', href: 'top-sunsets.html', label: 'Top sunsets', desc: 'Sunset perks per lodging' },
       { id: 'details', href: 'details.html', label: 'Details', desc: 'Restaurants + bring list + decisions' },
       { id: 'notes', href: 'notes.html', label: 'Notes', desc: 'Comments + change log' },
@@ -569,14 +574,26 @@ function buildClosureBanner(): HTMLElement {
       h('p', { class: 'closure-banner__detail' }, CLOSURE_ALERT.detail),
       h('p', { class: 'closure-banner__target' }, CLOSURE_ALERT.target),
       h(
-        'a',
-        {
-          class: 'closure-banner__link',
-          href: CLOSURE_ALERT.liveStatusUrl,
-          target: '_blank',
-          rel: 'noopener noreferrer',
-        },
-        'Live WSDOT status →'
+        'p',
+        { class: 'closure-banner__links', style: 'margin: 0.4rem 0 0; display: flex; flex-wrap: wrap; gap: 0.6rem;' },
+        h(
+          'a',
+          {
+            class: 'closure-banner__link',
+            href: 'wa20-status.html',
+          },
+          'WA-20 deep dive →'
+        ),
+        h(
+          'a',
+          {
+            class: 'closure-banner__link',
+            href: CLOSURE_ALERT.liveStatusUrl,
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+          'Live WSDOT status ↗'
+        )
       ),
       h(
         'p',
@@ -586,7 +603,8 @@ function buildClosureBanner(): HTMLElement {
             'font-size: 0.78rem; margin-top: 0.6rem; padding: 0.5rem 0.6rem; background: #fdecec; border: 1px solid #c4393a; color: #6d1a1b; border-radius: 6px;',
         },
         h('strong', {}, 'Conflict — verify before booking week: '),
-        'NPS road-conditions page (May 6, 2026 update) lists "Expected reopening: April or early May (weather-dependent)" while WSDOT target above says July 4. Both sources are stale in different directions. Confirm by phone — WSDOT 1-800-695-7623 — before locking the week.'
+        'NPS road-conditions page (May 6, 2026 update) lists "Expected reopening: April or early May (weather-dependent)" while WSDOT target above says July 4. Both sources are stale in different directions. Confirm by phone — WSDOT 1-800-695-7623 — before locking the week. ',
+        h('a', { href: 'wa20-status.html', class: 'closure-banner__link', style: 'font-weight: 600;' }, 'See sources + phone protocol →')
       ),
       h(
         'p',
@@ -766,6 +784,9 @@ export function mountPageShell(opts: ShellOptions): HTMLElement {
 
   initNotesModal();
   initGlobalFab();
+  // Cmd/Ctrl + / search overlay — mounts on every page that does not opt out
+  // via `data-search-skip`. Cmd+K stays bound to the notes widget.
+  initSearchOverlay();
   void refreshBadges();
   attachBackToTop();
   attachNavBehavior(body);
