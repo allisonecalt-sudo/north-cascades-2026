@@ -484,7 +484,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
     ],
     sources: [
       'Turo live search SEA Aug 16-20 2026 — captured May 16 2026',
-      'https://help.turo.com/protection-plans (Turo protection plan terms)',
+      'https://turo.com/us/en/coverage (Turo protection plan terms)',
     ],
     pairsWith: 'SEA roundtrip flight.',
     tradeoff:

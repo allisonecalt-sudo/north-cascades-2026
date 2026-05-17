@@ -380,7 +380,7 @@ const LODGING_WEST: MapLocation[] = [
           { to: 'Cascade Pass', minutes: 50, miles: 23 },
           { to: 'Newhalem', minutes: 18, miles: 8 },
         ],
-        bookUrl: 'https://www.buffalorunwa.com/',
+        bookUrl: 'https://www.booking.com/searchresults.html?ss=Buffalo+Run+Inn+Marblemount',
       },
     },
   },
@@ -431,7 +431,7 @@ const LODGING_EAST: MapLocation[] = [
           { to: 'Maple Pass', minutes: 50, miles: 30 },
           { to: 'WA Pass', minutes: 40, miles: 26 },
         ],
-        bookUrl: 'https://www.methowriverlodge.com/',
+        bookUrl: 'https://methowriverlodge.com/',
       },
     },
   },
@@ -522,7 +522,7 @@ const LODGING_EAST: MapLocation[] = [
           { to: 'Maple Pass', minutes: 25, miles: 14 },
           { to: 'WA Pass', minutes: 18, miles: 11 },
         ],
-        bookUrl: 'https://www.innatmazama.com/',
+        bookUrl: 'https://www.innmazama.com/',
       },
     },
   },
@@ -545,7 +545,7 @@ const LODGING_EAST: MapLocation[] = [
           { to: 'Maple Pass', minutes: 50, miles: 30 },
           { to: 'Sun Mtn', minutes: 12, miles: 6 },
         ],
-        bookUrl: 'https://springcreekranchwa.com/',
+        bookUrl: 'https://springcreekwinthrop.com/',
       },
     },
   },
@@ -857,7 +857,13 @@ const TRAILHEADS: MapLocation[] = [
         mileage: '4.4 mi RT',
         elevation: '+1,050 ft',
         difficulty: 'Moderate',
-        wtaUrl: 'https://www.wta.org/go-hiking/hikes/blue-lake-1',
+        // WTA slug for the correct Blue Lake (Washington Pass / Liberty Bell,
+        // MP 161 WA-20) is unknown — `blue-lake-1` points to a DIFFERENT
+        // (currently closed) trail in the Mt. Baker Twin Lakes area. Linking
+        // to the WTA search until the verified slug is found.
+        // [verified WTA URL pending — search to find current]
+        wtaUrl:
+          'https://www.wta.org/go-outside/hikes/?b_start:int=0&SearchableText=blue+lake+washington+pass',
       },
     },
   },

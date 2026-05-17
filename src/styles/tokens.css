@@ -26,6 +26,9 @@
   --c-info-bg: #e3f1f8;
   --c-info-border: #2c7a9f;
   --c-info-ink: #163d54;
+  --c-bad-bg: #fdecec;
+  --c-bad-border: #c4393a;
+  --c-bad-ink: #6d1a1b;
 
   /* Typography */
   --font-stack:

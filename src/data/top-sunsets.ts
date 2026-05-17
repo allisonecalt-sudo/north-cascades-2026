@@ -134,8 +134,8 @@ export const TOP_SUNSETS: SunsetSpotRanked[] = [
     bestByPath: ['B', 'C'],
     notes: 'Discover Pass required ($10/day or $30/year). No facilities at the launch — pack water.',
     source: {
-      name: 'Methow Valley · Dark Sky Community',
-      url: 'https://darksky.org/places/methow-valley/',
+      name: 'DarkSky International · Places finder',
+      url: 'https://darksky.org/places/',
     },
   },
   {

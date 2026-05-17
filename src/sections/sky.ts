@@ -24,8 +24,8 @@ export function renderSky(): HTMLElement {
         },
         { name: 'NPS · noca.gov stargazing', url: 'https://www.nps.gov/noca/learn/nature/lightscape.htm' },
         {
-          name: 'Methow Valley · International Dark Sky Community',
-          url: 'https://darksky.org/places/methow-valley/',
+          name: 'DarkSky International · Places finder',
+          url: 'https://darksky.org/places/',
         },
       ],
       asOf: 'May 2026',

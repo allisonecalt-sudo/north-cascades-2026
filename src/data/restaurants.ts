@@ -70,8 +70,8 @@ export const RESTAURANTS: RestaurantTown[] = [
         phone: '(425) 228-4625',
         hechsher: 'Seattle Va\'ad (dairy)',
         note:
-          'Vegetarian + dairy Indian. ~15 min from SEA. Sit-down option if the Day-5 wait stretches.',
-        website: 'https://www.pablaindiancuisine.com/',
+          'Vegetarian + dairy Indian. ~15 min from SEA. Sit-down option if the Day-5 wait stretches. (Call to confirm hours — direct site has cert issue.)',
+        website: 'https://seattlevaad.org/kosher-portfolio',
       },
       {
         name: 'Teapot Vegetarian House',

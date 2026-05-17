@@ -47,6 +47,26 @@ function sideLabel(side: Hike['side']): string {
   return 'Either side';
 }
 
+function renderHikeStatusAlert(hike: Hike): HTMLElement | null {
+  if (!hike.status) return null;
+  const children: (HTMLElement | string)[] = [
+    h('strong', {}, hike.status.label),
+    hike.status.detail,
+  ];
+  if (hike.status.sourceUrl) {
+    children.push(
+      ' ',
+      h(
+        'a',
+        { href: hike.status.sourceUrl, rel: 'noopener', target: '_blank' },
+        'WTA alert →'
+      )
+    );
+  }
+  children.push(h('span', { style: 'opacity: 0.75;' }, ` (as of ${hike.status.asOf})`));
+  return h('p', { class: 'hike-card__alert' }, ...children);
+}
+
 function renderHikeCard(hike: Hike, inPath: boolean, pathSelected: boolean): HTMLElement {
   return h(
     'article',
@@ -64,10 +84,12 @@ function renderHikeCard(hike: Hike, inPath: boolean, pathSelected: boolean): HTM
         { class: 'card__badges' },
         inPath ? badge('In your path', 'good') : null,
         badge(sideLabel(hike.side), 'info'),
-        hike.hiddenGem ? badge('Hidden gem', 'warn') : null
+        hike.hiddenGem ? badge('Hidden gem', 'warn') : null,
+        hike.status ? badge(hike.status.label, 'bad') : null
       )
     ),
     h('p', { class: 'card__subtitle' }, hike.trailhead),
+    renderHikeStatusAlert(hike),
     h(
       'dl',
       { class: 'card__facts card__facts--inline' },

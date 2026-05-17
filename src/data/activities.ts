@@ -116,7 +116,7 @@ export const ACTIVITIES: Activity[] = [
     pathFit: 'All paths (Marblemount stop)',
     description:
       "Not a swim destination — the Skagit runs hard and glacially cold. But it's a beautiful river-walk + lunch spot a few minutes from the Marblemount lodging cluster. Wading at the gravel-bar edges is fine on a warm day. Don't swim out into the current.",
-    sourceUrl: 'https://www.nps.gov/noca/planyourvisit/paddling-and-rafting.htm',
+    sourceUrl: 'https://www.nps.gov/noca/planyourvisit/boating-and-fishing.htm',
     sourceLabel: 'NPS · Skagit paddling',
     category: 'water',
   },

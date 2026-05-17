@@ -106,7 +106,7 @@ export function renderTopSunsets(): HTMLElement {
       label: 'Sources',
       sources: [
         { name: 'timeanddate.com · Winthrop Aug 2026', url: 'https://www.timeanddate.com/sun/@5816336?month=8&year=2026' },
-        { name: 'Methow Valley · Dark Sky Community', url: 'https://darksky.org/places/methow-valley/' },
+        { name: 'DarkSky International · Places finder', url: 'https://darksky.org/places/' },
         { name: 'NPS · North Cascades viewpoints', url: 'https://www.nps.gov/noca/planyourvisit/things2do.htm' },
       ],
       asOf: 'May 17, 2026',

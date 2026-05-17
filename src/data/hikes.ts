@@ -37,6 +37,18 @@ export interface Hike {
   hiddenGem?: boolean;
   /** WTA / NPS source link for the trail. Optional — added for hidden gems. */
   sourceUrl?: string;
+  /**
+   * Trailhead/road-access status flag. When set, renders a red "Closed" badge
+   * + an inline alert line under the title. Keep the hike listed (don't hide)
+   * so the reader sees the option + the reason it's currently a no-go.
+   */
+  status?: {
+    kind: 'trailhead-closed' | 'seasonal-warning';
+    label: string;
+    detail: string;
+    sourceUrl?: string;
+    asOf: string;
+  };
 }
 
 export const HIKES: Hike[] = [
@@ -311,6 +323,14 @@ export const HIKES: Hike[] = [
       'Forest + meadows to a nose-to-nose Coleman Glacier overlook on Mt. Baker. Notable: a real creek crossing with slick rocks — go in the morning when flow is low. Mt. Baker corridor side trip — far from Marblemount, plan it as a Day-1 Bellingham detour or skip.',
     hiddenGem: true,
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/heliotrope-ridge',
+    status: {
+      kind: 'trailhead-closed',
+      label: 'Trailhead currently closed',
+      detail:
+        'Glacier Creek Road (FR 39) is closed at mile 1 due to washouts at miles 3.6 and 3.8 (WTA alert 3.20.26). Trail effectively inaccessible until road is repaired — may or may not reopen by Aug 16. Re-check WTA before counting on this one.',
+      sourceUrl: 'https://www.wta.org/go-hiking/hikes/heliotrope-ridge',
+      asOf: 'May 17, 2026',
+    },
   },
 
   // ---------- Ambitious (long days — optional add-ons, not the plan) ----------

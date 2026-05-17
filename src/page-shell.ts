@@ -24,6 +24,7 @@ import { TRIP } from './data/trip';
 import { CLOSURE_ALERT } from './data/closure';
 import { h } from './dom';
 import { initNotesModal, attachNotesButton, refreshBadges } from './sections/notes-button';
+import { initGlobalFab } from './sections/global-fab';
 import { attachBackToTop } from './sections/back-to-top';
 import { showWelcomePopup } from './sections/welcome-popup';
 import { getSelectedPath, setSelectedPath, subscribeSelectedPath } from './state/path';
@@ -52,12 +53,16 @@ interface NavEntry {
 }
 
 // One nav, 14 pages. Order matches the canonical decision flow:
-// Home → who/what/where → Lodging → Hikes → Travel → Rental → Driving
-// → Costs → Pre-trip → Food → Sunsets → Seattle → For Erin → Details → Notes.
+// Home → Lodging → Hikes → Travel → Rental → Driving → Costs → Pre-trip
+// → Seattle → For Erin → Details → Groceries → Notes.
 // Sunsets demoted from main nav May 17, 2026 — Allison: *"not a big sunset trip…
 // sleeping where there is nature and amazing sunset could be really good idea
 // because erin doesnt stay out as late."* Sunset = lodging perk, not trip spine.
 // Page still builds (sunset-having lodging links there) but isn't a nav peer.
+// Food demoted + renamed to "Groceries" 2026-05-17 — Allison: *"AGAIN FOOD not
+// so importnat we easily buy and maek food not so hard."* Both kosher, both
+// cook, full-kitchen lodging = food is solved by grocery+cook. Page stays for
+// reference but moved near the end of nav. See [[feedback_food_not_central_to_trips]].
 const NAV: readonly NavEntry[] = [
   { id: 'home', href: './', label: 'Home' },
   { id: 'lodging', href: 'lodging.html', label: 'Lodging' },
@@ -67,10 +72,10 @@ const NAV: readonly NavEntry[] = [
   { id: 'driving-cascades', href: 'driving-cascades.html', label: 'Driving' },
   { id: 'costs', href: 'costs.html', label: 'Costs' },
   { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip' },
-  { id: 'food', href: 'food.html', label: 'Food' },
   { id: 'seattle', href: 'seattle.html', label: 'Seattle' },
   { id: 'for-erin', href: 'for-erin.html', label: 'For Erin' },
   { id: 'details', href: 'details.html', label: 'Details' },
+  { id: 'food', href: 'food.html', label: 'Groceries' },
   { id: 'notes', href: 'notes.html', label: 'Notes' },
 ];
 
@@ -176,6 +181,15 @@ function buildClosureBanner(): HTMLElement {
           rel: 'noopener noreferrer',
         },
         'Live WSDOT status →'
+      ),
+      h(
+        'p',
+        {
+          class: 'closure-banner__detail',
+          style: 'font-size: 0.78rem; margin-top: 0.6rem; padding: 0.5rem 0.6rem; background: #fdecec; border: 1px solid #c4393a; color: #6d1a1b; border-radius: 6px;',
+        },
+        h('strong', {}, 'Conflict — verify before booking week: '),
+        'NPS road-conditions page (May 6, 2026 update) lists "Expected reopening: April or early May (weather-dependent)" while WSDOT target above says July 4. Both sources are stale in different directions. Confirm by phone — WSDOT 1-800-695-7623 — before locking the week.'
       ),
       h(
         'p',
@@ -345,6 +359,7 @@ export function mountPageShell(opts: ShellOptions): HTMLElement {
   }
 
   initNotesModal();
+  initGlobalFab();
   void refreshBadges();
   attachBackToTop();
   attachNavFade(body);

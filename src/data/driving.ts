@@ -87,8 +87,8 @@ export const DRIVING_TOPICS: DrivingTopic[] = [
       'Emergency: rangers monitor Newhalem and Marblemount visitor centers daily. No 911 cell coverage in the dead zone.',
     ],
     source: {
-      name: 'NPS · North Cascades Cell Coverage',
-      url: 'https://www.nps.gov/noca/planyourvisit/cell-phone-service.htm',
+      name: 'NPS · North Cascades — Things to Do',
+      url: 'https://www.nps.gov/noca/planyourvisit/things2do.htm',
     },
     severity: 'info',
   },

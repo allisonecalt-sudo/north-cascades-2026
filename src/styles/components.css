@@ -2,7 +2,10 @@
 .card-grid {
   display: grid;
   gap: var(--sp-4);
-  grid-template-columns: 1fr;
+  /* minmax(0, 1fr) prevents children with large min-content widths (carousel
+   * images, code blocks, long URLs) from blowing the grid cell out past the
+   * viewport — the mobile horizontal-scroll bug fixed May 17, 2026. */
+  grid-template-columns: minmax(0, 1fr);
 }
 
 @media (min-width: 720px) {
@@ -35,6 +38,15 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--sp-3);
+  flex-wrap: wrap;
+  /* min-width:0 on the flex container + children prevents long titles or
+   * verify-beds badges from pushing the card past viewport on mobile.
+   * Fix added May 17, 2026. */
+  min-width: 0;
+}
+
+.card__header > * {
+  min-width: 0;
 }
 
 .card__title {
@@ -233,7 +245,14 @@
   font-size: var(--fs-xs);
   color: var(--c-ink-800);
   line-height: 1.2;
-  white-space: nowrap;
+  /* nowrap by default so short pills stay tidy. max-width caps any long
+   * pill (e.g. multi-bed strings like "1 queen + 1 queen + sofa-sleeper")
+   * at the parent width, and word-break:break-word inside the pill lets
+   * the text wrap rather than push the row past the viewport on mobile.
+   * Fix added May 17, 2026 — root cause of mobile body horiz-scroll. */
+  white-space: normal;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 .card__pill--good {
@@ -248,6 +267,16 @@
   border-color: var(--c-warn-border);
   color: var(--c-warn-ink);
   font-style: italic;
+}
+
+/* Amenity pills — neutral tone, lighter weight than primary at-a-glance
+   facts. Visually distinct from the louder good/warn/verify variants so
+   the eye still lands on beds/kitchen first. */
+.card__pill--amenity {
+  background: var(--c-warm-50, #fffdf7);
+  border-color: var(--c-line);
+  color: var(--c-ink-700);
+  font-weight: 500;
 }
 
 /* Availability pill variants — May 17 booking-deep-verify pass.
@@ -785,6 +814,34 @@
   background: var(--c-warn-bg);
   color: var(--c-warn-ink);
   border: 1px solid var(--c-warn-border);
+}
+
+.badge--bad {
+  background: var(--c-bad-bg);
+  color: var(--c-bad-ink);
+  border: 1px solid var(--c-bad-border);
+}
+
+.hike-card__alert {
+  margin: 0.5rem 0 0;
+  padding: 0.55rem 0.75rem;
+  background: var(--c-bad-bg);
+  color: var(--c-bad-ink);
+  border: 1px solid var(--c-bad-border);
+  border-radius: 8px;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.hike-card__alert strong {
+  display: block;
+  font-size: var(--fs-sm);
+  margin-bottom: 0.15rem;
+}
+
+.hike-card__alert a {
+  color: var(--c-bad-ink);
+  text-decoration: underline;
 }
 
 .badge--default {
@@ -2717,4 +2774,76 @@
   color: var(--c-glacier-700, #1f5a76);
   text-decoration: none;
   border-bottom: 1px dotted currentColor;
+}
+
+/* ============================================================
+ * Global FAB — persistent "💬 Note" button, bottom-right on every page.
+ * Opens the notes modal scoped to the whole trip.
+ * z-index 998 sits above all page chrome (max existing = 60) but BELOW
+ * the notes modal backdrop (z-index 1000) — the JS auto-hides the FAB
+ * while the modal is open as a belt-and-suspenders move.
+ * Pinned to the LEFT of the back-to-top button so they never collide.
+ * ============================================================ */
+.global-fab {
+  position: fixed;
+  bottom: calc(var(--sp-4) + env(safe-area-inset-bottom, 0px));
+  /* Sit to the left of back-to-top. Back-to-top is ~74-84px wide + sp-4
+     right gutter; reserve ~100px for it. */
+  right: calc(var(--sp-4) + 100px);
+  z-index: 998;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 10px 16px;
+  background: var(--c-glacier-700, #1f5a76);
+  color: var(--c-warm-50, #fdfaf2);
+  border: 1px solid var(--c-glacier-800, #15445b);
+  border-radius: 999px;
+  font-family: var(--font-stack);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  opacity: 0.96;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
+}
+.global-fab:hover {
+  background: var(--c-glacier-800, #15445b);
+  opacity: 1;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+.global-fab:focus-visible {
+  outline: 3px solid var(--c-accent, #ffb84d);
+  outline-offset: 2px;
+}
+.global-fab__icon {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+.global-fab__label {
+  font-size: var(--fs-sm);
+}
+.global-fab--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+}
+/* On the smallest phones, drop the "Note" label and keep the bubble icon.
+ * Mirrors the back-to-top label collapse at <380px. */
+@media (max-width: 380px) {
+  .global-fab__label {
+    display: none;
+  }
+  .global-fab {
+    padding: 10px 12px;
+  }
+  .global-fab {
+    /* Tighter side-by-side gap on very narrow screens. */
+    right: calc(var(--sp-4) + 70px);
+  }
 }

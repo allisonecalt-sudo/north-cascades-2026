@@ -67,14 +67,20 @@ export interface DriveTime {
   miles: number;
 }
 
-/** Canonical drive destinations Erin + Allison care about. */
+/** Canonical drive destinations Erin + Allison care about.
+ *  Wave 3 (May 17, 2026) added ross-lake, mt-baker, winthrop-downtown per
+ *  Mini-Booking.com agent spec — these are marquee destinations Erin asked
+ *  the matrix to cover beyond the previous WA-20-corridor set. */
 export type DriveDestinationId =
   | 'cascade-pass'
   | 'maple-pass'
   | 'diablo-lake'
+  | 'ross-lake'
+  | 'mt-baker'
   | 'washington-pass'
   | 'newhalem'
   | 'sun-mountain'
+  | 'winthrop-downtown'
   | 'grocery'
   | 'gas';
 
@@ -88,9 +94,12 @@ export const DRIVE_DESTINATIONS: Record<DriveDestinationId, DriveDestination> = 
   'cascade-pass': { id: 'cascade-pass', label: 'Cascade Pass trailhead', short: 'Cascade Pass' },
   'maple-pass': { id: 'maple-pass', label: 'Rainy / Maple Pass trailhead', short: 'Maple Pass' },
   'diablo-lake': { id: 'diablo-lake', label: 'Diablo Lake Overlook', short: 'Diablo Lk' },
+  'ross-lake': { id: 'ross-lake', label: 'Ross Lake Overlook (MP 135)', short: 'Ross Lake' },
+  'mt-baker': { id: 'mt-baker', label: 'Mt. Baker Heather Meadows / Artist Pt', short: 'Mt. Baker' },
   'washington-pass': { id: 'washington-pass', label: 'Washington Pass Overlook', short: 'WA Pass' },
   newhalem: { id: 'newhalem', label: 'Newhalem Visitor Center', short: 'Newhalem' },
   'sun-mountain': { id: 'sun-mountain', label: 'Sun Mountain Lodge', short: 'Sun Mtn' },
+  'winthrop-downtown': { id: 'winthrop-downtown', label: 'Winthrop downtown (boardwalk)', short: 'Winthrop' },
   grocery: { id: 'grocery', label: 'Nearest grocery (QFC/Safeway-equivalent)', short: 'Grocery' },
   gas: { id: 'gas', label: 'Nearest gas station', short: 'Gas' },
 };
@@ -194,6 +203,13 @@ export interface Lodging {
   bookingUrl?: string;
   tier: LodgingTier;
   kitchen: KitchenLevel;
+  /**
+   * Kosher cook-in fit flag (May 17, 2026 verification). When `false`, the
+   * property's "kitchen" is actually mini-fridge / microwave / coffee only —
+   * not adequate for kosher meal prep across a 4-night stay. Surface this on
+   * the lodging card so the reader doesn't book against the brief.
+   */
+  kosherCookingFit?: boolean;
   /** Aug 16-20, 2026 availability signal — best-effort, May 17 pull. */
   availability: AvailabilityStatus;
   photo: LodgingPhoto;
@@ -204,9 +220,37 @@ export interface Lodging {
    *     is the first slide so existing rendering stays backward-compat.
    *   driveTimes — minutes + miles to each canonical destination, computed
    *     once based on lat/lng + Google Maps norms (May 17 spot-checks).
+   *   amenities — at-a-glance feature flags for the Booking-style pill row
+   *     (laundry / bath count / AC / parking / wifi). All optional — when
+   *     omitted the pill is skipped rather than rendered as "unknown" (we
+   *     don't want to fake confidence). Pulled May 17 from property pages;
+   *     verify-at-booking remains the rule.
    */
   photos?: LodgingPhoto[];
   driveTimes?: DriveTime[];
+  amenities?: LodgingAmenities;
+}
+
+/**
+ * Booking-style amenity flags. All optional — only render a pill when the
+ * data is known. `unknown` (string) lets us be explicit about "we checked,
+ * the listing didn't say" vs simply not having looked yet.
+ */
+export interface LodgingAmenities {
+  /** In-unit / on-site / shared / none / unknown. */
+  laundry?: 'in-unit' | 'on-site' | 'shared' | 'none' | 'unknown';
+  /** Number of full bathrooms (1, 1.5, 2, etc.) — string for "1.5". */
+  baths?: string;
+  /** AC presence — uncommon in PNW summer cabins, surface explicitly. */
+  ac?: 'yes' | 'no' | 'unknown';
+  /** Free / paid / street / unknown. */
+  parking?: 'free' | 'paid' | 'street' | 'unknown';
+  /** Wifi tier — strong = reliable for video, basic = email-only, none. */
+  wifi?: 'strong' | 'basic' | 'none' | 'unknown';
+  /** Pet-friendly flag — Erin asked indirectly in starter doc. */
+  pets?: 'yes' | 'no' | 'fee' | 'unknown';
+  /** Hot tub — strong tip-the-scale per Allison's brief. */
+  hotTub?: boolean;
 }
 
 export const KITCHEN_LABELS: Record<KitchenLevel, string> = {
@@ -628,11 +672,23 @@ export const WEST_LODGING: Lodging[] = [
       { destinationId: 'cascade-pass', minutes: 60, miles: 28 },
       { destinationId: 'maple-pass', minutes: 85, miles: 47 },
       { destinationId: 'diablo-lake', minutes: 35, miles: 21 },
+      { destinationId: 'ross-lake', minutes: 50, miles: 32 },
+      { destinationId: 'mt-baker', minutes: 105, miles: 60 },
       { destinationId: 'washington-pass', minutes: 80, miles: 43 },
       { destinationId: 'newhalem', minutes: 25, miles: 13 },
+      { destinationId: 'winthrop-downtown', minutes: 140, miles: 90 },
       { destinationId: 'grocery', minutes: 18, miles: 9 },
       { destinationId: 'gas', minutes: 12, miles: 5 },
     ],
+    amenities: {
+      laundry: 'on-site',
+      baths: '1',
+      ac: 'unknown',
+      parking: 'free',
+      wifi: 'basic',
+      pets: 'fee',
+      hotTub: false,
+    },
   },
 
   // ---- Splurge tier ----
@@ -658,7 +714,7 @@ export const WEST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      'Riverfront private house — biggest, most-nature-immersed west-side option. Splurge tier ($350-500), listed if you want a step up from Terra Nova-tier. Verify exact bedroom layout at booking — 2BR and 3BR configurations exist.',
+      'Riverfront private house — biggest, most-nature-immersed west-side option. Splurge tier ($350-500), listed if you want a step up from Terra Nova-tier. Verify exact bedroom layout at booking — 2BR and 3BR configurations exist. **Naming note:** the booking portal (Hospitable / RiverStone Rentals) lists this as "Cascade River Bungalow" (3BR, sleeps 12) — confirm at booking which unit you are reserving.',
     bookingUrl: 'https://www.cascaderiverhouse.com/',
     tier: 'splurge',
     kitchen: 'full',
@@ -669,11 +725,23 @@ export const WEST_LODGING: Lodging[] = [
       { destinationId: 'cascade-pass', minutes: 35, miles: 17 },
       { destinationId: 'maple-pass', minutes: 70, miles: 36 },
       { destinationId: 'diablo-lake', minutes: 22, miles: 12 },
+      { destinationId: 'ross-lake', minutes: 35, miles: 22 },
+      { destinationId: 'mt-baker', minutes: 130, miles: 75 },
       { destinationId: 'washington-pass', minutes: 65, miles: 32 },
       { destinationId: 'newhalem', minutes: 15, miles: 6 },
+      { destinationId: 'winthrop-downtown', minutes: 130, miles: 80 },
       { destinationId: 'grocery', minutes: 30, miles: 14 },
       { destinationId: 'gas', minutes: 10, miles: 4 },
     ],
+    amenities: {
+      laundry: 'in-unit',
+      baths: '2',
+      ac: 'no',
+      parking: 'free',
+      wifi: 'strong',
+      pets: 'unknown',
+      hotTub: false,
+    },
   },
 
   // ---- Not a fit (no 2nd bed) ----
@@ -745,6 +813,7 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.northcascadesinn.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
+    kosherCookingFit: false,
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
     photos: [PHOTOS.motelInn, PHOTOS.carouselInterior, PHOTOS.innClassic],
@@ -882,11 +951,23 @@ export const EAST_LODGING: Lodging[] = [
       { destinationId: 'cascade-pass', minutes: 145, miles: 92 },
       { destinationId: 'maple-pass', minutes: 45, miles: 24 },
       { destinationId: 'diablo-lake', minutes: 65, miles: 44 },
+      { destinationId: 'ross-lake', minutes: 75, miles: 50 },
+      { destinationId: 'mt-baker', minutes: 215, miles: 150 },
       { destinationId: 'washington-pass', minutes: 38, miles: 19 },
       { destinationId: 'sun-mountain', minutes: 12, miles: 5 },
+      { destinationId: 'winthrop-downtown', minutes: 6, miles: 2 },
       { destinationId: 'grocery', minutes: 8, miles: 3 },
       { destinationId: 'gas', minutes: 8, miles: 3 },
     ],
+    amenities: {
+      laundry: 'in-unit',
+      baths: '1.5',
+      ac: 'yes',
+      parking: 'free',
+      wifi: 'strong',
+      pets: 'yes',
+      hotTub: false,
+    },
   },
   {
     id: 'rivers-edge',
@@ -925,11 +1006,23 @@ export const EAST_LODGING: Lodging[] = [
       { destinationId: 'cascade-pass', minutes: 140, miles: 88 },
       { destinationId: 'maple-pass', minutes: 40, miles: 22 },
       { destinationId: 'diablo-lake', minutes: 60, miles: 40 },
+      { destinationId: 'ross-lake', minutes: 70, miles: 47 },
+      { destinationId: 'mt-baker', minutes: 210, miles: 148 },
       { destinationId: 'washington-pass', minutes: 32, miles: 17 },
       { destinationId: 'sun-mountain', minutes: 18, miles: 8 },
+      { destinationId: 'winthrop-downtown', minutes: 2, miles: 0 },
       { destinationId: 'grocery', minutes: 3, miles: 1 },
       { destinationId: 'gas', minutes: 3, miles: 1 },
     ],
+    amenities: {
+      laundry: 'on-site',
+      baths: '1',
+      ac: 'yes',
+      parking: 'free',
+      wifi: 'strong',
+      pets: 'fee',
+      hotTub: true,
+    },
   },
   {
     id: 'methow-river',
@@ -1011,11 +1104,23 @@ export const EAST_LODGING: Lodging[] = [
       { destinationId: 'cascade-pass', minutes: 130, miles: 80 },
       { destinationId: 'maple-pass', minutes: 30, miles: 17 },
       { destinationId: 'diablo-lake', minutes: 52, miles: 34 },
+      { destinationId: 'ross-lake', minutes: 62, miles: 41 },
+      { destinationId: 'mt-baker', minutes: 200, miles: 140 },
       { destinationId: 'washington-pass', minutes: 22, miles: 11 },
       { destinationId: 'sun-mountain', minutes: 32, miles: 20 },
+      { destinationId: 'winthrop-downtown', minutes: 18, miles: 13 },
       { destinationId: 'grocery', minutes: 15, miles: 9 },
       { destinationId: 'gas', minutes: 14, miles: 7 },
     ],
+    amenities: {
+      laundry: 'on-site',
+      baths: '1',
+      ac: 'no',
+      parking: 'free',
+      wifi: 'basic',
+      pets: 'no',
+      hotTub: true,
+    },
   },
   {
     id: 'chewuch',
@@ -1051,6 +1156,10 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://chewuchinn.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    // May 17 verification: cabin "kitchenettes" are actually mini-fridge +
+    // microwave + coffee maker only. Not a fit for kosher cook-in over a
+    // 4-night stay.
+    kosherCookingFit: false,
     availability: 'verify-at-booking',
     photo: PHOTOS.bnbCozy,
     photos: [PHOTOS.bnbCozy, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.cabinClassic],
@@ -1107,11 +1216,23 @@ export const EAST_LODGING: Lodging[] = [
       { destinationId: 'cascade-pass', minutes: 150, miles: 95 },
       { destinationId: 'maple-pass', minutes: 50, miles: 28 },
       { destinationId: 'diablo-lake', minutes: 70, miles: 48 },
+      { destinationId: 'ross-lake', minutes: 80, miles: 55 },
+      { destinationId: 'mt-baker', minutes: 220, miles: 155 },
       { destinationId: 'washington-pass', minutes: 42, miles: 22 },
       { destinationId: 'sun-mountain', minutes: 0, miles: 0 },
+      { destinationId: 'winthrop-downtown', minutes: 14, miles: 6 },
       { destinationId: 'grocery', minutes: 14, miles: 7 },
       { destinationId: 'gas', minutes: 14, miles: 7 },
     ],
+    amenities: {
+      laundry: 'on-site',
+      baths: '2',
+      ac: 'yes',
+      parking: 'free',
+      wifi: 'strong',
+      pets: 'fee',
+      hotTub: true,
+    },
   },
 
   // ---- Not a fit ----
@@ -1190,6 +1311,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://hotelriovista.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
+    kosherCookingFit: false,
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
     photos: [PHOTOS.motelInn, PHOTOS.carouselRiver, PHOTOS.carouselInterior],
@@ -1230,6 +1352,7 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://mtgardnerinn.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
+    kosherCookingFit: false,
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
     photos: [PHOTOS.motelInn, PHOTOS.carouselInterior, PHOTOS.innClassic],
