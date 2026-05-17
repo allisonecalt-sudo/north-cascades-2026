@@ -17,6 +17,7 @@ import { renderStatRow } from '../sections/stat-row';
 import { renderPeakMoment } from '../sections/peak-moment';
 import { renderTowns } from '../sections/towns';
 import { renderFeaturedStrip } from '../sections/featured-strip';
+import { renderStoryArc } from '../sections/story-arc';
 import { h } from '../dom';
 
 function mount(): void {
@@ -46,6 +47,9 @@ function mount(): void {
 
   main.append(
     statBand,
+    // Story-arc strip — narrative anchor for first-visit users. Sets the
+    // "plan in this order" mental model before they hit the path picker.
+    renderStoryArc(),
     renderPaths(),
     renderFeaturedStrip(),
     renderPeakMoment(),

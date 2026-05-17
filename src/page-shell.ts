@@ -15,12 +15,23 @@
  *   - Closure banner only renders on the landing page (it's load-bearing on the
  *     decision surface, distraction elsewhere).
  *
- * NAV — 4-bucket dropdown IA (2026-05-17, replacing flat 18-link nav).
- *   Buckets: Plan · Explore · Logistics · Talk.
- *   Desktop (>=720px): 4 button-triggered dropdown panels in the top bar.
- *   Mobile (<720px): hamburger → slide-over from the right with <details>
- *   per bucket. Active bucket auto-expands.
+ * NAV — hybrid 3-flat + 3-dropdown IA (2026-05-17 PM, replacing 4-bucket
+ *   all-dropdown shipped earlier the same day at f5a8b37).
+ *
+ *   Story-arc left-to-right reads the booking sequence:
+ *     Stay → Do → Get there → Costs → For Erin → More
+ *
+ *   3 flat anchors (Stay · Costs · For Erin) put the SPINE pages one tap from
+ *   anywhere. 3 dropdowns (Do · Get there · More) hold peer/reference content
+ *   that's acceptable behind a click.
+ *
+ *   Desktop (>=720px): flat anchors render as direct <a>; dropdowns as button
+ *     triggers with menu panels. Mobile (<720px): hamburger → slide-over from
+ *     the right; flat anchors render as plain links, dropdowns as <details>
+ *     with the active page's bucket auto-expanded.
  *   Breadcrumb under the nav: [Bucket] → [Page].
+ *
+ *   Strategy doc: projects/north-cascades-2026/NAV_STRATEGY_2026-05-17.md
  *
  * NEW MOUNTING PATTERN:
  *   const main = mountPageShell({ pageId: 'lodging', title: 'Where we sleep' });
@@ -66,83 +77,151 @@ interface NavEntry {
   desc?: string;
 }
 
-type BucketId = 'plan' | 'explore' | 'logistics' | 'talk';
-
-interface NavBucket {
-  id: BucketId;
-  label: string;
-  entries: readonly NavEntry[];
-}
+type BucketId = 'stay' | 'do' | 'get-there' | 'costs' | 'for-erin' | 'more';
 
 /**
- * 4-bucket nav structure (added 2026-05-17).
+ * NavBucket — either:
+ *   - kind: 'flat'     — renders as a single <a> top-level link
+ *                        (entries has exactly 1 entry; label === entry.label)
+ *   - kind: 'dropdown' — renders as a button + dropdown panel (desktop) /
+ *                        <details> (mobile). entries can have many.
  *
- * Replaces the prior flat 18-entry horizontal nav (overflowed at 412×892 even
- * with the right-edge fade indicator). Groupings adjusted from improvement
- * plan #6 to fit today's NC pages (Towns / Viewpoints / Lakes / Hidden Gems
- * added by the destination wave at 02ecfc4).
+ * The hybrid nav puts SPINE pages (Stay, Costs, For Erin) one tap from
+ * anywhere via 'flat' buckets; reference content lives in 'dropdown' buckets
+ * (Do, Get there, More).
+ */
+type NavBucket =
+  | {
+      kind: 'flat';
+      id: BucketId;
+      label: string;
+      /** The single page this flat link represents (used for active state). */
+      pageId: PageId;
+      href: string;
+    }
+  | {
+      kind: 'dropdown';
+      id: BucketId;
+      label: string;
+      entries: readonly NavEntry[];
+    };
+
+/**
+ * Hybrid 3-flat + 3-dropdown nav structure (added 2026-05-17 PM).
  *
- * Sunsets stays in Explore (page still exists, demoted from main-nav but kept
- * for sunset-having lodging cards that link there).
- * Food stays in Logistics labeled "Groceries" — kosher buy+cook is the food
- * strategy.
+ * Replaces the all-dropdown 4-bucket nav shipped earlier same day at f5a8b37
+ * (Plan / Explore / Logistics / Talk).
  *
- * Decision-y placement wins ties: Towns goes in Explore (not Plan) because
- * it's vibe research, not the decision spine.
+ * Story arc reads left-to-right as the booking sequence:
+ *   Stay → Do → Get there → Costs → For Erin → More
+ *
+ * Why hybrid (per NAV_STRATEGY_2026-05-17.md):
+ *   - Stay (lodging) is the highest-traffic decision. Flat = one tap.
+ *   - Costs is its own anchor — Allison touches repeatedly. Flat.
+ *   - For Erin is the WHOLE POINT of the site (she reacts). Flat = obvious.
+ *   - Do groups things-to-do-each-day (Hikes / Viewpoints / Lakes / Activities
+ *     / Hidden gems / Towns) — coherent "what fills the day" bucket.
+ *   - Get there groups transit chain (Travel / Rental / Driving / Seattle).
+ *   - More holds admin + reference (Pre-trip / Groceries / Top sunsets /
+ *     Details / Notes). Naming "More" instead of "Talk" so 1-item dropdowns
+ *     are no longer wasteful.
+ *
+ * Towns is in Do (not Get there) because Erin "happy to visit towns if
+ * interesting" — they fill the day, they're not pure transit context.
+ *
+ * Sunsets stays linkable from lodging cards (page kept), but demoted to More
+ * because Allison clarified "not a big sunset trip."
  */
 const NAV_BUCKETS: readonly NavBucket[] = [
   {
-    id: 'plan',
-    label: 'Plan',
+    kind: 'flat',
+    id: 'stay',
+    label: 'Stay',
+    pageId: 'lodging',
+    href: 'lodging.html',
+  },
+  {
+    kind: 'dropdown',
+    id: 'do',
+    label: 'Do',
     entries: [
-      { id: 'home', href: './', label: 'Home', desc: 'Three paths + map at a glance' },
-      { id: 'lodging', href: 'lodging.html', label: 'Lodging', desc: 'Where to sleep, per path' },
       { id: 'hikes', href: 'hikes.html', label: 'Hikes', desc: 'Signatures + alternates' },
-      { id: 'activities', href: 'activities.html', label: 'Activities', desc: 'Non-hiking ways to spend a day' },
       { id: 'viewpoints', href: 'viewpoints.html', label: 'Viewpoints', desc: 'Drive-up postcards' },
       { id: 'lakes', href: 'lakes.html', label: 'Lakes', desc: 'Water swaps + rentals' },
+      { id: 'activities', href: 'activities.html', label: 'Activities', desc: 'Non-hiking ways to spend a day' },
       { id: 'hidden-gems', href: 'hidden-gems.html', label: 'Hidden gems', desc: '12 lesser-known spots' },
-      { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip', desc: 'Book-by dates + verifications' },
-    ],
-  },
-  {
-    id: 'explore',
-    label: 'Explore',
-    entries: [
       { id: 'towns', href: 'towns.html', label: 'Towns', desc: 'Marblemount → Winthrop corridor' },
-      { id: 'seattle', href: 'seattle.html', label: 'Seattle', desc: 'Day 1 + Day 5 anchor' },
-      { id: 'driving-cascades', href: 'driving-cascades.html', label: 'Driving', desc: 'WA-20 + Cascade River Rd' },
-      { id: 'top-sunsets', href: 'top-sunsets.html', label: 'Top sunsets', desc: 'Sunset perks per lodging' },
     ],
   },
   {
-    id: 'logistics',
-    label: 'Logistics',
+    kind: 'dropdown',
+    id: 'get-there',
+    label: 'Get there',
     entries: [
       { id: 'travel', href: 'travel.html', label: 'Travel', desc: 'Flights + routings' },
       { id: 'rental', href: 'rental.html', label: 'Rental', desc: 'Car: automatic, all-in price' },
-      { id: 'costs', href: 'costs.html', label: 'Costs', desc: 'Ranges, not point estimates' },
-      { id: 'food', href: 'food.html', label: 'Groceries', desc: 'Buy + cook the whole trip' },
-      { id: 'for-erin', href: 'for-erin.html', label: 'For Erin', desc: 'What you need to know' },
-      { id: 'details', href: 'details.html', label: 'Details', desc: 'Trip facts in one place' },
+      { id: 'driving-cascades', href: 'driving-cascades.html', label: 'Driving', desc: 'WA-20 + Cascade River Rd' },
+      { id: 'seattle', href: 'seattle.html', label: 'Seattle', desc: 'Day 1 + Day 5 anchor' },
     ],
   },
   {
-    id: 'talk',
-    label: 'Talk',
-    entries: [{ id: 'notes', href: 'notes.html', label: 'Notes', desc: 'Comments + decisions' }],
+    kind: 'flat',
+    id: 'costs',
+    label: 'Costs',
+    pageId: 'costs',
+    href: 'costs.html',
+  },
+  {
+    kind: 'flat',
+    id: 'for-erin',
+    label: 'For Erin',
+    pageId: 'for-erin',
+    href: 'for-erin.html',
+  },
+  {
+    kind: 'dropdown',
+    id: 'more',
+    label: 'More',
+    entries: [
+      { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip', desc: 'Book-by dates + verifications' },
+      { id: 'food', href: 'food.html', label: 'Groceries', desc: 'Buy + cook the whole trip' },
+      { id: 'top-sunsets', href: 'top-sunsets.html', label: 'Top sunsets', desc: 'Sunset perks per lodging' },
+      { id: 'details', href: 'details.html', label: 'Details', desc: 'Restaurants + bring list + decisions' },
+      { id: 'notes', href: 'notes.html', label: 'Notes', desc: 'Comments + change log' },
+    ],
   },
 ];
 
-/** Flat lookup — bucket ID for any page. */
+/**
+ * Flat lookup — bucket ID for any page, plus an entry-or-synthetic-entry per
+ * page (flat buckets synthesise a 1-entry record so breadcrumb rendering can
+ * stay uniform across both kinds).
+ */
 const PAGE_TO_BUCKET = new Map<PageId, BucketId>();
 const PAGE_TO_ENTRY = new Map<PageId, NavEntry>();
 for (const bucket of NAV_BUCKETS) {
-  for (const entry of bucket.entries) {
-    PAGE_TO_BUCKET.set(entry.id, bucket.id);
-    PAGE_TO_ENTRY.set(entry.id, entry);
+  if (bucket.kind === 'flat') {
+    PAGE_TO_BUCKET.set(bucket.pageId, bucket.id);
+    PAGE_TO_ENTRY.set(bucket.pageId, {
+      id: bucket.pageId,
+      href: bucket.href,
+      label: bucket.label,
+    });
+  } else {
+    for (const entry of bucket.entries) {
+      PAGE_TO_BUCKET.set(entry.id, bucket.id);
+      PAGE_TO_ENTRY.set(entry.id, entry);
+    }
   }
 }
+/**
+ * Home is always reachable via the brand pill and isn't listed as its own nav
+ * item in the hybrid IA. Tag it with a synthetic 'home' bucket so the
+ * breadcrumb logic still has a record (the breadcrumb is suppressed on home
+ * anyway, but other code paths read PAGE_TO_BUCKET defensively).
+ */
+PAGE_TO_BUCKET.set('home', 'stay'); // placeholder — home doesn't show a breadcrumb
+PAGE_TO_ENTRY.set('home', { id: 'home', href: './', label: 'Home' });
 
 interface ShellOptions {
   pageId: PageId;
@@ -181,24 +260,53 @@ function buildNav(activeId: PageId): HTMLElement {
       { class: 'site-nav__inner' },
       h(
         'a',
-        { class: 'site-nav__brand', href: NAV_BUCKETS[0]?.entries[0]?.href ?? './' },
+        { class: 'site-nav__brand', href: './' },
         h('span', { class: 'site-nav__brand-name' }, 'North Cascades'),
         h('span', { class: 'site-nav__brand-dates' }, 'Aug 16-20')
       ),
-      // Desktop: bucket buttons inline; mobile: hidden, hamburger shown instead.
+      // Desktop: bucket buttons + flat links inline; mobile: hidden, hamburger
+      // shown instead.
       h(
         'ul',
         { class: 'site-nav__buckets', role: 'menubar', 'aria-label': 'Site navigation' },
-        ...NAV_BUCKETS.map((bucket) => buildBucketTrigger(bucket, activeId, activeBucket === bucket.id))
+        ...NAV_BUCKETS.map((bucket) => {
+          const isActive =
+            bucket.kind === 'flat' ? bucket.pageId === activeId : activeBucket === bucket.id;
+          return bucket.kind === 'flat'
+            ? buildFlatLink(bucket, isActive)
+            : buildBucketTrigger(bucket, activeId, isActive);
+        })
       ),
       buildHamburger()
     )
   );
 }
 
+/** Desktop top-level FLAT link (Stay, Costs, For Erin). One tap, no dropdown. */
+function buildFlatLink(
+  bucket: Extract<NavBucket, { kind: 'flat' }>,
+  isActive: boolean
+): HTMLElement {
+  return h(
+    'li',
+    { class: `site-nav__bucket${isActive ? ' site-nav__bucket--active' : ''}`, role: 'none' },
+    h(
+      'a',
+      {
+        class: `site-nav__flat-link${isActive ? ' site-nav__flat-link--active' : ''}`,
+        href: bucket.href,
+        role: 'menuitem',
+        'aria-current': isActive ? 'page' : undefined,
+        'data-bucket': bucket.id,
+      },
+      bucket.label
+    )
+  );
+}
+
 /** Desktop dropdown trigger + panel for a single bucket. */
 function buildBucketTrigger(
-  bucket: NavBucket,
+  bucket: Extract<NavBucket, { kind: 'dropdown' }>,
   activeId: PageId,
   isActive: boolean
 ): HTMLElement {
@@ -265,8 +373,13 @@ function buildHamburger(): HTMLElement {
 }
 
 /**
- * Mobile slide-over panel — full-height drawer from the right with <details>
- * per bucket. The bucket containing the active page is auto-expanded.
+ * Mobile slide-over panel — full-height drawer from the right. Flat buckets
+ * render as direct links at the top; dropdown buckets render as <details>
+ * below. The bucket containing the active page is auto-expanded.
+ *
+ * A "Home" link is pinned at the very top because the brand pill collapses
+ * inside the hamburger context and we don't want home to require closing the
+ * drawer first.
  */
 function buildMobileNav(activeId: PageId): HTMLElement {
   const activeBucket = PAGE_TO_BUCKET.get(activeId);
@@ -302,50 +415,102 @@ function buildMobileNav(activeId: PageId): HTMLElement {
       h(
         'div',
         { class: 'site-nav__mobile-body' },
-        ...NAV_BUCKETS.map((bucket) => {
-          const open = bucket.id === activeBucket;
-          const detailsAttrs: Record<string, string | boolean | undefined> = {
-            class: 'site-nav__mobile-bucket',
-          };
-          if (open) detailsAttrs['open'] = true;
-          return h(
-            'details',
-            detailsAttrs,
-            h(
-              'summary',
-              { class: 'site-nav__mobile-summary' },
-              h('span', { class: 'site-nav__mobile-bucket-label' }, bucket.label),
-              h('span', { class: 'site-nav__mobile-bucket-caret', 'aria-hidden': 'true' }, '▾')
-            ),
-            h(
-              'ul',
-              { class: 'site-nav__mobile-list' },
-              ...bucket.entries.map((entry) =>
-                h(
-                  'li',
-                  { class: 'site-nav__mobile-item' },
-                  h(
-                    'a',
-                    {
-                      class: `site-nav__mobile-link${entry.id === activeId ? ' site-nav__mobile-link--active' : ''}`,
-                      href: entry.href,
-                      'aria-current': entry.id === activeId ? 'page' : undefined,
-                    },
-                    h('span', { class: 'site-nav__mobile-name' }, entry.label),
-                    entry.desc ? h('span', { class: 'site-nav__mobile-desc' }, entry.desc) : null
-                  )
-                )
-              )
-            )
-          );
-        })
+        // Pinned Home link — keeps home reachable from inside the drawer.
+        h(
+          'a',
+          {
+            class: `site-nav__mobile-flat${activeId === 'home' ? ' site-nav__mobile-flat--active' : ''}`,
+            href: './',
+            'aria-current': activeId === 'home' ? 'page' : undefined,
+          },
+          h('span', { class: 'site-nav__mobile-name' }, 'Home'),
+          h(
+            'span',
+            { class: 'site-nav__mobile-desc' },
+            'Three paths + the trip at a glance'
+          )
+        ),
+        ...NAV_BUCKETS.map((bucket) => buildMobileBucket(bucket, activeId, activeBucket))
       )
     )
   );
 }
 
+/** Mobile bucket — flat = single link, dropdown = <details>. */
+function buildMobileBucket(
+  bucket: NavBucket,
+  activeId: PageId,
+  activeBucket: BucketId | undefined
+): HTMLElement {
+  if (bucket.kind === 'flat') {
+    const isActive = bucket.pageId === activeId;
+    return h(
+      'a',
+      {
+        class: `site-nav__mobile-flat${isActive ? ' site-nav__mobile-flat--active' : ''}`,
+        href: bucket.href,
+        'aria-current': isActive ? 'page' : undefined,
+      },
+      h('span', { class: 'site-nav__mobile-name' }, bucket.label),
+      h('span', { class: 'site-nav__mobile-desc' }, mobileFlatDesc(bucket.id))
+    );
+  }
+  const open = bucket.id === activeBucket;
+  const detailsAttrs: Record<string, string | boolean | undefined> = {
+    class: 'site-nav__mobile-bucket',
+  };
+  if (open) detailsAttrs['open'] = true;
+  return h(
+    'details',
+    detailsAttrs,
+    h(
+      'summary',
+      { class: 'site-nav__mobile-summary' },
+      h('span', { class: 'site-nav__mobile-bucket-label' }, bucket.label),
+      h('span', { class: 'site-nav__mobile-bucket-caret', 'aria-hidden': 'true' }, '▾')
+    ),
+    h(
+      'ul',
+      { class: 'site-nav__mobile-list' },
+      ...bucket.entries.map((entry) =>
+        h(
+          'li',
+          { class: 'site-nav__mobile-item' },
+          h(
+            'a',
+            {
+              class: `site-nav__mobile-link${entry.id === activeId ? ' site-nav__mobile-link--active' : ''}`,
+              href: entry.href,
+              'aria-current': entry.id === activeId ? 'page' : undefined,
+            },
+            h('span', { class: 'site-nav__mobile-name' }, entry.label),
+            entry.desc ? h('span', { class: 'site-nav__mobile-desc' }, entry.desc) : null
+          )
+        )
+      )
+    )
+  );
+}
+
+function mobileFlatDesc(id: BucketId): string {
+  switch (id) {
+    case 'stay':
+      return 'Where to sleep, per path';
+    case 'costs':
+      return 'Budget ranges + breakdown';
+    case 'for-erin':
+      return 'Open decisions to weigh in on';
+    default:
+      return '';
+  }
+}
+
 /**
- * Breadcrumb — single low-contrast line: [Bucket] → [Page].
+ * Breadcrumb — low-contrast line.
+ *
+ * For dropdown-bucket pages: [Home › Bucket › Page] (e.g. Home › Do › Hikes).
+ * For flat-bucket pages (Stay, Costs, For Erin): [Home › Page] — skipping
+ * the redundant bucket layer because the bucket IS the page.
  * Suppressed on the home page (the hero already orients).
  */
 function buildBreadcrumb(activeId: PageId): HTMLElement | null {
@@ -355,14 +520,23 @@ function buildBreadcrumb(activeId: PageId): HTMLElement | null {
   if (!bucketId || !entry) return null;
   const bucket = NAV_BUCKETS.find((b) => b.id === bucketId);
   if (!bucket) return null;
+  const children: Array<HTMLElement | null> = [
+    h('a', { class: 'breadcrumb__link', href: './' }, 'Home'),
+    h('span', { class: 'breadcrumb__sep', 'aria-hidden': 'true' }, '›'),
+  ];
+  if (bucket.kind === 'dropdown') {
+    children.push(
+      h('span', { class: 'breadcrumb__bucket' }, bucket.label),
+      h('span', { class: 'breadcrumb__sep', 'aria-hidden': 'true' }, '›')
+    );
+  }
+  children.push(
+    h('span', { class: 'breadcrumb__current', 'aria-current': 'page' }, entry.label)
+  );
   return h(
     'nav',
     { class: 'breadcrumb', 'aria-label': 'Breadcrumb' },
-    h('a', { class: 'breadcrumb__link', href: './' }, 'Home'),
-    h('span', { class: 'breadcrumb__sep', 'aria-hidden': 'true' }, '›'),
-    h('span', { class: 'breadcrumb__bucket' }, bucket.label),
-    h('span', { class: 'breadcrumb__sep', 'aria-hidden': 'true' }, '›'),
-    h('span', { class: 'breadcrumb__current', 'aria-current': 'page' }, entry.label)
+    ...children
   );
 }
 
