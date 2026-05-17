@@ -26,14 +26,24 @@ const NEXT: Record<PageId, Cta[]> = {
     { href: 'rental.html', label: 'Rental →' },
   ],
   hikes: [
+    { href: 'viewpoints.html', label: 'Viewpoints →' },
     { href: 'activities.html', label: 'Activities →' },
     { href: 'lodging.html', label: 'Lodging →' },
-    { href: 'travel.html', label: 'Travel →' },
+  ],
+  viewpoints: [
+    { href: 'hikes.html', label: 'Hikes →' },
+    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'activities.html', label: 'Activities →' },
   ],
   activities: [
+    { href: 'lakes.html', label: 'Lakes & water →' },
+    { href: 'viewpoints.html', label: 'Viewpoints →' },
+    { href: 'hikes.html', label: 'Hikes →' },
+  ],
+  lakes: [
+    { href: 'activities.html', label: 'Activities →' },
     { href: 'hikes.html', label: 'Hikes →' },
     { href: 'lodging.html', label: 'Lodging →' },
-    { href: 'travel.html', label: 'Travel →' },
   ],
   travel: [
     { href: 'rental.html', label: 'Rental →' },
@@ -93,6 +103,11 @@ const NEXT: Record<PageId, Cta[]> = {
   'hidden-gems': [
     { href: 'hikes.html', label: 'Hikes →' },
     { href: 'lodging.html', label: 'Lodging →' },
+    { href: 'driving-cascades.html', label: 'Driving →' },
+  ],
+  towns: [
+    { href: 'lodging.html', label: 'Lodging →' },
+    { href: 'activities.html', label: 'Activities →' },
     { href: 'driving-cascades.html', label: 'Driving →' },
   ],
 };
