@@ -394,10 +394,11 @@ const PHOTOS = {
   // has 3-5 photos like a Booking.com listing tile. All Unsplash, all
   // PNW/forest/lake/cabin-themed for palette fit.
   carouselDeck: {
-    src: 'https://images.unsplash.com/photo-1520637836862-4d197d17c93a?auto=format&fit=crop&w=800&q=70',
-    alt: 'Wooden deck with chairs overlooking pine forest at golden hour.',
-    credit: 'Photo: Eric Karim Cornelis / Unsplash',
-    creditUrl: 'https://unsplash.com/photos/qOJqMvO8aF8',
+    // Replaced 2026-05-17 — previous photo-1520637836862 was 404 on Unsplash (returned HTML error page).
+    src: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=70',
+    alt: 'Wooden deck and chairs overlooking pine forest at golden hour.',
+    credit: 'Photo: Unsplash',
+    creditUrl: 'https://unsplash.com/photos/e29da59ef1c2',
     width: 800,
     height: 533,
   },

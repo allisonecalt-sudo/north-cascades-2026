@@ -15,9 +15,10 @@ function mount(): void {
     title: 'Seattle bookends',
     lede: 'Optional — what to do with a few hours before or after the park.',
     imageHero: {
-      src: 'https://images.unsplash.com/photo-1502175353174-a7a1d3f2c1f5?auto=format&fit=crop&w=1920&q=70',
+      // Replaced 2026-05-17 — previous photo-1502175353174-a7a1d3f2c1f5 was 404 on Unsplash.
+      src: 'https://images.unsplash.com/photo-1503551723145-6c040742065b?auto=format&fit=crop&w=1920&q=70',
       alt: 'Seattle skyline with the Space Needle at dusk',
-      credit: 'Photo: Stephen Plopper / Unsplash',
+      credit: 'Photo: Unsplash',
       ctaLabel: 'See the stops',
       ctaHref: '#seattle',
     },

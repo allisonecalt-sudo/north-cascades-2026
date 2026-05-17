@@ -656,7 +656,7 @@ const COOL_SLEEPING: MapLocation[] = [
     anchor: '#cool-sleeping',
     externalAnchor: 'for-erin.html#cool-sleeping',
     photo: {
-      src: 'https://images.unsplash.com/photo-1499995915505-9ed91d50c0fc?auto=format&fit=crop&w=420&q=70',
+      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=420&q=70',
       alt: 'Floating cabins on a glacial alpine lake.',
     },
     meta: {
@@ -967,7 +967,7 @@ const VIEWPOINTS: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#viewpoints',
     photo: {
-      src: 'https://images.unsplash.com/photo-1499995915505-9ed91d50c0fc?auto=format&fit=crop&w=420&q=70',
+      src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=420&q=70',
       alt: 'Long glacial lake stretching between forested ridges.',
     },
     meta: {
@@ -1104,7 +1104,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     anchor: '#top-sunsets',
     externalAnchor: 'top-sunsets.html#patterson',
     photo: {
-      src: 'https://images.unsplash.com/photo-1444930694458-01babe71870e?auto=format&fit=crop&w=420&q=70',
+      src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=420&q=70',
       alt: 'Calm lake at sunset with reflected ridge.',
     },
     meta: {
@@ -1220,7 +1220,7 @@ const WATER: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#activities',
     photo: {
-      src: 'https://images.unsplash.com/photo-1437310038907-c84c0b6f4ec5?auto=format&fit=crop&w=420&q=70',
+      src: 'https://images.unsplash.com/photo-1502784444187-359ac186c5bb?auto=format&fit=crop&w=420&q=70',
       alt: 'Glacial lake under steep ridges with small boat dock.',
     },
     meta: {
@@ -1292,7 +1292,7 @@ const SEATTLE: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#seattle',
     photo: {
-      src: 'https://images.unsplash.com/photo-1502175353174-a7a44e84da21?auto=format&fit=crop&w=420&q=70',
+      src: 'https://images.unsplash.com/photo-1503551723145-6c040742065b?auto=format&fit=crop&w=420&q=70',
       alt: 'Seattle skyline with Mt. Rainier in the distance.',
     },
   },
