@@ -28,7 +28,7 @@ import {
 import { h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel } from './photo-carousel';
-import { renderVideoEmbed } from './video-embed';
+import { renderVideoPill } from './video-embed';
 
 // ====================================================================
 // FILTER STATE
@@ -173,6 +173,15 @@ function renderLakePills(lake: Lake): HTMLElement {
   }
 
   items.push(pill('card__pill card__pill--good', `✅ Verified ${lake.verifiedAsOf}`));
+  if (lake.video) {
+    items.push(
+      renderVideoPill({
+        videoId: lake.video.youtubeId,
+        title: lake.video.title,
+        creator: lake.video.creator,
+      })
+    );
+  }
 
   return h('ul', { class: 'card__pills', 'aria-label': 'At a glance' }, ...items);
 }
@@ -277,14 +286,6 @@ function renderLakeCard(lake: Lake): HTMLElement {
     ),
     renderDriveMatrix(lake),
     renderConcessions(lake),
-    lake.video
-      ? renderVideoEmbed({
-          videoId: lake.video.youtubeId,
-          title: lake.video.title,
-          creator: lake.video.creator,
-          className: 'video-embed--lake',
-        })
-      : null,
     h(
       'p',
       { class: 'card__source' },

@@ -25,7 +25,7 @@ import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { badge, h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
-import { renderVideoEmbed } from './video-embed';
+import { renderVideoPill } from './video-embed';
 
 // ====================================================================
 // FILTER CHIP STATE
@@ -202,6 +202,15 @@ function renderHikePills(hike: Hike): HTMLElement {
   if (hike.status) {
     items.push(pill('card__pill card__pill--bad', `⛔ ${hike.status.label}`));
   }
+  if (hike.video) {
+    items.push(
+      renderVideoPill({
+        videoId: hike.video.youtubeId,
+        title: hike.video.title,
+        creator: hike.video.creator,
+      })
+    );
+  }
 
   return h('ul', { class: 'card__pills', 'aria-label': 'At a glance' }, ...items);
 }
@@ -274,14 +283,6 @@ function renderHikeCard(hike: Hike, inPath: boolean, pathSelected: boolean): HTM
     renderHikePills(hike),
     renderHikeStatusAlert(hike),
     h('p', { class: 'card__note' }, hike.description),
-    hike.video
-      ? renderVideoEmbed({
-          videoId: hike.video.youtubeId,
-          title: hike.video.title,
-          creator: hike.video.creator,
-          className: 'video-embed--hike',
-        })
-      : null,
     hike.sourceUrl
       ? h(
           'p',

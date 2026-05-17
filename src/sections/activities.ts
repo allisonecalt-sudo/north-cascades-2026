@@ -23,7 +23,7 @@ import { ACTIVITIES, RULED_OUT, type Activity, type ActivityCategory, type Activ
 import { h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
-import { renderVideoEmbed } from './video-embed';
+import { renderVideoPill } from './video-embed';
 
 // ====================================================================
 // FILTER CHIP STATE
@@ -148,6 +148,15 @@ function renderActivityPills(act: Activity): HTMLElement {
   if (act.verifiedAsOf) {
     items.push(pill('card__pill card__pill--good', `✅ Verified ${act.verifiedAsOf}`));
   }
+  if (act.video) {
+    items.push(
+      renderVideoPill({
+        videoId: act.video.youtubeId,
+        title: act.video.title,
+        creator: act.video.creator,
+      })
+    );
+  }
 
   return h('ul', { class: 'card__pills', 'aria-label': 'At a glance' }, ...items);
 }
@@ -182,14 +191,6 @@ function renderActivityCard(act: Activity): HTMLElement {
     h('p', { class: 'card__subtitle' }, act.where),
     renderActivityPills(act),
     h('p', { class: 'card__note' }, act.description),
-    act.video
-      ? renderVideoEmbed({
-          videoId: act.video.youtubeId,
-          title: act.video.title,
-          creator: act.video.creator,
-          className: 'video-embed--activity',
-        })
-      : null,
     h(
       'p',
       { class: 'card__source activity-card__cost' },

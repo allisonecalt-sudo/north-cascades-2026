@@ -24,6 +24,7 @@
  * to keep the privacy story consistent.
  */
 import { h } from '../dom';
+import { openVideoLightbox } from './lightbox';
 
 export interface VideoEmbedOptions {
   /**
@@ -140,6 +141,42 @@ export function renderVideoEmbed(opts: VideoEmbedOptions): HTMLElement {
   return wrap;
 }
 
+/**
+ * Pattern D (Allison's pick, May 17, 2026):
+ *
+ * Small ▶ pill rendered inline in the at-a-glance pill row. Click opens
+ * the video in the existing lightbox shell (full-screen, ESC closes).
+ *
+ * Use renderVideoPill for hike/viewpoint/lake/activity cards where photos
+ * already fill the carousel and video is on-demand. Use renderVideoEmbed
+ * (the full 16:9 block above) for pages where the video IS the content,
+ * e.g. the WA-20 corridor drive-through on /wa20-status.html.
+ */
+export function renderVideoPill(opts: VideoEmbedOptions): HTMLElement {
+  ensureStyles();
+  const { videoId, title, creator } = opts;
+  const pill = h(
+    'li',
+    { class: 'card__pill card__pill--video' },
+    h(
+      'button',
+      {
+        type: 'button',
+        class: 'video-pill__btn',
+        'aria-label': `Play video: ${title}`,
+        title: `Play video: ${title}`,
+      },
+      h('span', { 'aria-hidden': 'true' }, '▶'),
+      h('span', { class: 'video-pill__label' }, 'Video')
+    )
+  ) as HTMLLIElement;
+  const btn = pill.querySelector<HTMLButtonElement>('.video-pill__btn');
+  btn?.addEventListener('click', () => {
+    openVideoLightbox({ videoId, title, creator });
+  });
+  return pill;
+}
+
 const VIDEO_EMBED_CSS = `
 .video-embed {
   margin: var(--sp-3, 12px) 0;
@@ -219,5 +256,66 @@ const VIDEO_EMBED_CSS = `
   color: var(--c-ink-soft, #514a3b);
   font-style: italic;
   line-height: 1.4;
+}
+
+/* Pattern D — inline pill in pill rows, opens lightbox on click. */
+.card__pill--video {
+  padding: 0;
+}
+.video-pill__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.55rem;
+  margin: 0;
+  border: 1px solid var(--c-glacier-500, #4a86a5);
+  background: var(--c-glacier-50, #eef5f9);
+  color: var(--c-glacier-700, #1f4a3a);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease, transform 120ms ease;
+}
+.video-pill__btn:hover,
+.video-pill__btn:focus-visible {
+  background: var(--c-glacier-100, #d9e9f1);
+  transform: translateY(-1px);
+}
+.video-pill__btn:focus-visible {
+  outline: 2px solid var(--c-glacier-500, #4a86a5);
+  outline-offset: 2px;
+}
+
+/* Video lightbox — extends the existing photo lightbox shell. */
+.lightbox-backdrop--video {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: max(env(safe-area-inset-top, 20px), 20px) 20px max(env(safe-area-inset-bottom, 20px), 20px);
+}
+.lightbox-video-frame {
+  position: relative;
+  width: min(100%, 1100px);
+  padding-top: min(56.25%, 70vh);
+  background: #000;
+  border-radius: var(--radius-md, 10px);
+  overflow: hidden;
+}
+.lightbox-video-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.lightbox-video-caption {
+  margin: 0.75rem 0 0;
+  color: #f5f5f5;
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: center;
+  max-width: 1100px;
 }
 `;

@@ -32,7 +32,7 @@ import {
 import { badge, h, section } from '../dom';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
 import { renderSectionSources } from './section-sources';
-import { renderVideoEmbed } from './video-embed';
+import { renderVideoPill } from './video-embed';
 
 function renderViewpointPhoto(v: Viewpoint): HTMLElement | null {
   if (!v.photo) return null;
@@ -185,6 +185,15 @@ function renderVpPills(v: ViewpointDestination): HTMLElement {
   if (v.ada) items.push(pill('card__pill', '♿ Paved / ADA'));
   if (v.milepost !== undefined) items.push(pill('card__pill', `📍 MP ${v.milepost}`));
   items.push(pill('card__pill card__pill--good', `✅ Verified ${v.verifiedAsOf}`));
+  if (v.video) {
+    items.push(
+      renderVideoPill({
+        videoId: v.video.youtubeId,
+        title: v.video.title,
+        creator: v.video.creator,
+      })
+    );
+  }
   return h('ul', { class: 'card__pills', 'aria-label': 'At a glance' }, ...items);
 }
 
@@ -239,14 +248,6 @@ function renderVpCard(v: ViewpointDestination): HTMLElement {
     renderVpPills(v),
     h('p', { class: 'card__note' }, v.lede),
     renderVpDriveBlock(v),
-    v.video
-      ? renderVideoEmbed({
-          videoId: v.video.youtubeId,
-          title: v.video.title,
-          creator: v.video.creator,
-          className: 'video-embed--viewpoint',
-        })
-      : null,
     v.caveat
       ? h(
           'p',
