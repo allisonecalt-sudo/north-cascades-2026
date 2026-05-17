@@ -72,7 +72,8 @@ export type PageId =
   | 'map'
   | 'weather-plan-c'
   | 'search'
-  | 'wa20-status';
+  | 'wa20-status'
+  | 'how-to';
 
 interface NavEntry {
   id: PageId;
@@ -82,7 +83,7 @@ interface NavEntry {
   desc?: string;
 }
 
-type BucketId = 'stay' | 'do' | 'get-there' | 'costs' | 'for-erin' | 'more';
+type BucketId = 'stay' | 'how-to' | 'do' | 'get-there' | 'costs' | 'for-erin' | 'more';
 
 /**
  * NavBucket — either:
@@ -144,6 +145,20 @@ const NAV_BUCKETS: readonly NavBucket[] = [
     label: 'Stay',
     pageId: 'lodging',
     href: 'lodging.html',
+  },
+  {
+    // "How to" is the master decision-tree surface (Allison 2026-05-17:
+    // *"this one should be giving possible paths — how to do the trip"*).
+    // Slotted flat between Stay and Do because it IS the spine — the
+    // LAY-IT-OUT page that walks through the realistic ways to do the
+    // trip. Stay → How to → Do reads as the planning sequence: "I know
+    // where I'll sleep, now show me the realistic ways to organize the
+    // 5 days, then I can browse what to do each day."
+    kind: 'flat',
+    id: 'how-to',
+    label: 'How to',
+    pageId: 'how-to',
+    href: 'how-to.html',
   },
   {
     kind: 'dropdown',
@@ -503,6 +518,8 @@ function mobileFlatDesc(id: BucketId): string {
   switch (id) {
     case 'stay':
       return 'Where to sleep, per path';
+    case 'how-to':
+      return 'The 6 realistic ways to do this trip';
     case 'costs':
       return 'Budget ranges + breakdown';
     case 'for-erin':
