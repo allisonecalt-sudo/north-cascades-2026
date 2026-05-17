@@ -1154,3 +1154,455 @@ body.site-nav__mobile-open {
   margin: 0;
   max-width: 60ch;
 }
+
+/* ───────── Next-action pill (home page) ─────────
+ * Single adaptive CTA between the image hero and the stat-band. Two variants:
+ * primary (warm/orange) for cold-start "do this now", secondary (glacier)
+ * for soft nudge states. Sized to be the obvious tap target on mobile —
+ * full-width pill, 48px minimum tap height, prominent contrast.
+ */
+.next-action-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto var(--sp-4);
+  padding: 0 var(--gutter);
+}
+
+.next-action {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.45rem;
+  padding: 0.75rem 0.95rem 0.9rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.next-action--primary {
+  background: linear-gradient(135deg, #fff4e2 0%, #ffe7c2 100%);
+  border: 1px solid #d49a4a;
+}
+
+.next-action--secondary {
+  background: linear-gradient(135deg, var(--c-glacier-100) 0%, #e9f1ec 100%);
+  border: 1px solid var(--c-glacier-400);
+}
+
+.next-action__eyebrow {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--c-ink-700);
+}
+
+.next-action--primary .next-action__eyebrow {
+  color: #7a4a10;
+}
+
+.next-action__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.65rem 1rem;
+  background: var(--c-forest-700);
+  color: var(--c-warm-50);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: var(--fs-base);
+  line-height: 1.2;
+  transition: background-color 140ms ease, transform 140ms ease;
+}
+
+.next-action--primary .next-action__cta {
+  background: #b85c12;
+}
+
+.next-action__cta:hover,
+.next-action__cta:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.next-action--primary .next-action__cta:hover,
+.next-action--primary .next-action__cta:focus-visible {
+  background: #9a4906;
+}
+
+.next-action--secondary .next-action__cta:hover,
+.next-action--secondary .next-action__cta:focus-visible {
+  background: var(--c-forest-800, #1f3f2a);
+}
+
+@media (min-width: 720px) {
+  .next-action {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 1.1rem;
+  }
+  .next-action__cta {
+    flex-shrink: 0;
+  }
+}
+
+/* ───────── Story-arc count badge ─────────
+ * Small "(19)" suffix next to the chip label so first-visitors get a sense
+ * of weight per chip without clicking.
+ */
+.story-arc__count {
+  font-weight: 600;
+  color: var(--c-ink-500);
+  font-size: var(--fs-xs);
+  margin-left: 0.15rem;
+}
+
+.story-arc__link:hover .story-arc__count,
+.story-arc__link:focus-visible .story-arc__count {
+  color: rgba(253, 250, 243, 0.85);
+}
+
+/* ───────── Featured-strip per-path scope line ─────────
+ * Beneath the path eyebrow on each card: "9 lodging · 5 hikes" + optional
+ * "✓ N shortlisted" pill. Concrete weight without forcing a click.
+ */
+.featured-strip__scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.7rem;
+  align-items: center;
+  margin: 0.2rem 0 0.4rem;
+  font-size: var(--fs-sm);
+}
+
+.featured-strip__scope-num {
+  color: var(--c-ink-500);
+  font-weight: 600;
+}
+
+.featured-strip__scope-picked {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.12rem 0.5rem;
+  background: var(--c-glacier-100);
+  color: var(--c-forest-800);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  border: 1px solid var(--c-glacier-400);
+}
+
+/* ───────── Trip-state strip (home page) ─────────
+ * Three-tile band: countdown / road status / next milestone. Tones map to
+ * trip health — neutral (countdown), red/amber/green (road), amber (next
+ * action). Linked tiles are tappable; the non-linked countdown is flat.
+ */
+.trip-state__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+}
+
+@media (min-width: 720px) {
+  .trip-state__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+  }
+}
+
+.trip-state__tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.85rem 0.9rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--c-line);
+  background: var(--c-warm-50);
+  box-shadow: var(--shadow-sm);
+  min-height: 100px;
+}
+
+.trip-state__tile--red {
+  background: #fdecec;
+  border-color: #c4393a;
+}
+
+.trip-state__tile--amber {
+  background: #fff7e2;
+  border-color: #d49a4a;
+}
+
+.trip-state__tile--green {
+  background: #e8f4ec;
+  border-color: var(--c-forest-500);
+}
+
+.trip-state__link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border-radius: var(--radius-md);
+  transition: transform 140ms ease;
+}
+
+.trip-state__link:hover,
+.trip-state__link:focus-visible {
+  transform: translateY(-1px);
+  outline: 2px solid var(--c-forest-500);
+  outline-offset: 2px;
+}
+
+.trip-state__link .trip-state__tile {
+  height: 100%;
+}
+
+.trip-state__eyebrow {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: var(--c-ink-500);
+  margin: 0;
+}
+
+.trip-state__headline {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--c-forest-800);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.trip-state__tile--red .trip-state__headline {
+  color: #6d1a1b;
+}
+
+.trip-state__tile--amber .trip-state__headline {
+  color: #7a4a10;
+}
+
+.trip-state__sub {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ───────── Fresh-notes feed (home page) ─────────
+ * Three most recent notes inline on home. Each note is a small card with
+ * author + timestamp + status pill + body excerpt + jump-to-section link.
+ */
+.fresh-notes__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.7rem;
+}
+
+@media (min-width: 760px) {
+  .fresh-notes__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+  }
+}
+
+.fresh-notes__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.75rem 0.85rem 0.85rem;
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-glacier-400);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.fresh-notes__card--pending {
+  border-left-color: #b85c12;
+  background: #fff7e2;
+}
+
+.fresh-notes__card--applied {
+  border-left-color: var(--c-forest-500);
+  opacity: 0.85;
+}
+
+.fresh-notes__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  font-size: var(--fs-xs);
+}
+
+.fresh-notes__author {
+  font-weight: 700;
+  color: var(--c-forest-800);
+}
+
+.fresh-notes__time {
+  color: var(--c-ink-500);
+}
+
+.fresh-notes__pill {
+  margin-left: auto;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fresh-notes__pill--pending {
+  background: #b85c12;
+  color: white;
+}
+
+.fresh-notes__pill--seen {
+  background: var(--c-glacier-100);
+  color: var(--c-forest-800);
+  border: 1px solid var(--c-glacier-400);
+}
+
+.fresh-notes__pill--applied {
+  background: var(--c-forest-500);
+  color: white;
+}
+
+.fresh-notes__body {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-900);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.fresh-notes__jump {
+  align-self: flex-start;
+  font-size: var(--fs-xs);
+  color: var(--c-forest-700);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.fresh-notes__jump:hover,
+.fresh-notes__jump:focus-visible {
+  text-decoration: underline;
+  outline: none;
+}
+
+.fresh-notes__loading {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+  font-style: italic;
+  margin: 0;
+}
+
+.fresh-notes__loading--error {
+  color: #6d1a1b;
+  font-style: normal;
+  background: #fdecec;
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #c4393a;
+}
+
+.fresh-notes__all-link {
+  margin: 0.6rem 0 0;
+  font-size: var(--fs-sm);
+}
+
+.fresh-notes__all-link a {
+  color: var(--c-forest-700);
+  font-weight: 600;
+}
+
+/* ───────── Home-reference disclosure ─────────
+ * Collapsed "See also" at the bottom of home. Lists admin / reference pages
+ * that aren't surfaced earlier in the home flow.
+ */
+.home-reference__disclosure {
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: 0;
+  margin: 0;
+}
+
+.home-reference__summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.7rem 0.9rem;
+  font-weight: 700;
+  color: var(--c-forest-800);
+  font-size: var(--fs-base);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-reference__summary::-webkit-details-marker {
+  display: none;
+}
+
+.home-reference__summary::after {
+  content: '＋';
+  color: var(--c-forest-500);
+  font-size: var(--fs-lg);
+  font-weight: 400;
+}
+
+.home-reference__disclosure[open] .home-reference__summary::after {
+  content: '−';
+}
+
+.home-reference__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.4rem 0.5rem;
+  display: grid;
+  gap: 0.3rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .home-reference__list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem 0.6rem;
+  }
+}
+
+.home-reference__item {
+  margin: 0;
+}
+
+.home-reference__link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.55rem 0.7rem;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background-color 140ms ease;
+  min-height: 48px;
+}
+
+.home-reference__link:hover,
+.home-reference__link:focus-visible {
+  background: var(--c-glacier-100);
+  outline: none;
+}
+
+.home-reference__label {
+  font-weight: 700;
+  color: var(--c-forest-700);
+  font-size: var(--fs-base);
+}
+
+.home-reference__desc {
+  color: var(--c-ink-500);
+  font-size: var(--fs-sm);
+  line-height: 1.35;
+}

@@ -13,8 +13,16 @@
  *
  * Brand-consistent with the rest of the site: glacial palette, no padding,
  * uses the same `.card-grid` minmax fix so mobile renders cleanly.
+ *
+ * 2026-05-17 home rebuild: each card now surfaces "what's in this path"
+ * — the data-file count of lodging + hike options scoped to that path. Helps
+ * the reader feel concrete weight ("Path B = 9 lodging options + 5 hikes")
+ * before clicking, and shows a "✓ N shortlisted" badge when this browser has
+ * picks for the path's lodging set.
  */
 import { h, section } from '../dom';
+import { TRIP_PATHS } from '../data/paths';
+import { SHORTLIST_KEY } from './lodging/shortlist';
 
 interface FeaturedCard {
   pathLetter: 'A' | 'B' | 'C';
@@ -60,7 +68,40 @@ const FEATURED: readonly FeaturedCard[] = [
   },
 ];
 
+function readLodgingPicks(): Set<string> {
+  try {
+    const raw = localStorage.getItem(SHORTLIST_KEY);
+    if (!raw) return new Set();
+    const parsed: unknown = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return new Set(parsed.filter((x): x is string => typeof x === 'string'));
+    }
+  } catch {
+    // ignore
+  }
+  return new Set();
+}
+
+interface PathScope {
+  lodgingCount: number;
+  hikeCount: number;
+  picked: number;
+}
+
+function scopeForPath(letter: 'A' | 'B' | 'C', picks: Set<string>): PathScope {
+  const path = TRIP_PATHS.find((p) => p.id === letter);
+  if (!path) return { lodgingCount: 0, hikeCount: 0, picked: 0 };
+  const picked = path.lodgingIds.filter((id) => picks.has(id)).length;
+  return {
+    lodgingCount: path.lodgingIds.length,
+    hikeCount: path.hikeIds.length,
+    picked,
+  };
+}
+
 function renderFeaturedCard(card: FeaturedCard): HTMLElement {
+  const picks = readLodgingPicks();
+  const scope = scopeForPath(card.pathLetter, picks);
   return h(
     'article',
     { class: `card featured-strip__card featured-strip__card--${card.pathLetter}` },
@@ -95,6 +136,22 @@ function renderFeaturedCard(card: FeaturedCard): HTMLElement {
           `Path ${card.pathLetter}`
         )
       )
+    ),
+    h(
+      'p',
+      { class: 'featured-strip__scope' },
+      h(
+        'span',
+        { class: 'featured-strip__scope-num' },
+        `${scope.lodgingCount} lodging · ${scope.hikeCount} hikes`
+      ),
+      scope.picked > 0
+        ? h(
+            'span',
+            { class: 'featured-strip__scope-picked' },
+            `✓ ${scope.picked} shortlisted`
+          )
+        : null
     ),
     h('p', { class: 'card__note' }, card.pitch),
     h(
