@@ -925,8 +925,10 @@ function buildChipDefs(): ChipDef[] {
     });
   }
 
-  // Nature
-  const natureChips: NatureTag[] = ['lakeside', 'riverside', 'woods', 'mountain-view', 'ranch-acreage', 'town-center'];
+  // Nature — trimmed 2026-05-17 (Allison's call): keep lakeside / riverside /
+  // woods only. Dropped mountain-view, ranch-acreage, town-center (less
+  // differentiating for her preference set). Drops 3 chips.
+  const natureChips: NatureTag[] = ['lakeside', 'riverside', 'woods'];
   for (const v of natureChips) {
     chips.push({
       key: `nature-${v}`,
@@ -941,24 +943,16 @@ function buildChipDefs(): ChipDef[] {
     });
   }
 
-  // Sunset
-  chips.push({
-    key: 'sunset-only',
-    label: '🌅 Sunset view',
-    group: 'sunset',
-    isActive: () => filters.sunsetOnly,
-    toggle: () => {
-      filters.sunsetOnly = !filters.sunsetOnly;
-      notifyFilters();
-    },
-  });
+  // Sunset chip removed 2026-05-17 (Allison's call): "drop sunset/path
+  // overlap". Sunset-having lodging is still surfaced via the per-card
+  // sunset row + sorted naturally — just not a filter anymore.
 
   return chips;
 }
 
 function renderChipBar(): HTMLElement {
   const chips = buildChipDefs();
-  const groupOrder: ChipDef['group'][] = ['base', 'tier', 'beds', 'kitchen', 'nature', 'sunset'];
+  const groupOrder: ChipDef['group'][] = ['base', 'tier', 'beds', 'kitchen', 'nature'];
   const groupLabels: Record<ChipDef['group'], string> = {
     base: 'Base',
     tier: 'Price tier',

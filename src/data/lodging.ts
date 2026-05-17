@@ -665,6 +665,9 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'likely-available',
     photo: PHOTOS.rentalAFrame,
+    // TODO Allison 2026-05-17: Airbnb blocks automated photo scraping —
+    // when you next open this listing, take 3-5 screenshots of the actual
+    // Airbnb gallery and replace photos[0..n] here.
     photos: [PHOTOS.rentalAFrame, PHOTOS.regMarblemount, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.carouselDeck],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 50, miles: 23 },
@@ -704,6 +707,7 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'likely-available',
     photo: PHOTOS.cabinHot,
+    // TODO Allison 2026-05-17: Airbnb screenshots — replace these slides.
     photos: [PHOTOS.cabinHot, PHOTOS.regConcrete, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselFirepit],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 85, miles: 42 },
@@ -744,6 +748,7 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'likely-available',
     photo: PHOTOS.rentalModern,
+    // TODO Allison 2026-05-17: Airbnb screenshots — replace these slides.
     photos: [PHOTOS.rentalModern, PHOTOS.regConcrete, PHOTOS.carouselForest, PHOTOS.carouselFirepit, PHOTOS.carouselInterior],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 85, miles: 42 },
