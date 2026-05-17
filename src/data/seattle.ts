@@ -27,7 +27,15 @@ export interface SeattleStop {
   why: string;
   timeNeeded: string;
   practical?: string;
+  /** Single photo (backward-compat — also slide 1 when photos[] is absent). */
   photo: SeattlePhoto;
+  /**
+   * Optional multi-photo carousel. Added Wave 4 photo-curation pass,
+   * May 17, 2026. 2-4 photos. Falls back to `photo` when undefined.
+   */
+  photos?: readonly SeattlePhoto[];
+  /** "Verified on" date for trust signal. */
+  verifiedAsOf?: string;
 }
 
 export interface SeattleItinerary {
@@ -59,6 +67,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     timeNeeded: '1-2 hours',
     practical:
       'Pike Place Market Garage (1531 Western Ave): ~$8/hr, $30 daily max.',
+    verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Pike_Place_Market_Seattle.jpg/960px-Pike_Place_Market_Seattle.jpg',
       alt: 'Pike Place Public Market entrance with the famous red neon sign and clock.',
@@ -67,6 +76,16 @@ export const SEATTLE_STOPS: SeattleStop[] = [
       width: 800,
       height: 551,
     },
+    photos: [
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Pike_Place_Market_Seattle.jpg/960px-Pike_Place_Market_Seattle.jpg',
+        alt: 'Pike Place Public Market entrance with the famous red neon sign and clock.',
+        credit: 'Photo: Daniel Schwen · CC BY-SA 4.0 (Wikimedia)',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Pike_Place_Market_Seattle.jpg',
+        width: 800,
+        height: 551,
+      },
+    ],
   },
   {
     id: 'kerry-park',
@@ -76,6 +95,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     why: 'Skyline view — Space Needle framed against Mt Rainier on a clear day. Best near sunset.',
     timeNeeded: '20-30 min',
     practical: 'Free street parking on W Highland Dr.',
+    verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seattle_skyline_from_Kerry_Park%2C_March_2019.jpg/960px-Seattle_skyline_from_Kerry_Park%2C_March_2019.jpg',
       alt: 'Seattle skyline panorama from Kerry Park with the Space Needle and Mount Rainier behind.',
@@ -85,6 +105,33 @@ export const SEATTLE_STOPS: SeattleStop[] = [
       width: 800,
       height: 228,
     },
+    photos: [
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seattle_skyline_from_Kerry_Park%2C_March_2019.jpg/960px-Seattle_skyline_from_Kerry_Park%2C_March_2019.jpg',
+        alt: 'Seattle skyline panorama from Kerry Park with the Space Needle and Mount Rainier behind.',
+        credit: 'Photo: SounderBruce · CC BY-SA 4.0 (Wikimedia)',
+        creditUrl:
+          'https://commons.wikimedia.org/wiki/File:Seattle_skyline_from_Kerry_Park,_March_2019.jpg',
+        width: 800,
+        height: 228,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Kerry_Park_%26_Seattle_skyline_01.jpg?width=1280',
+        alt: 'Kerry Park viewpoint with the Seattle skyline beyond, summer day.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Kerry_Park_%26_Seattle_skyline_01.jpg',
+        width: 1600,
+        height: 1067,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Seattle_-_tourists_at_Kerry_Park_01.jpg?width=1280',
+        alt: 'Tourists looking out from Kerry Park at the Seattle skyline.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Seattle_-_tourists_at_Kerry_Park_01.jpg',
+        width: 1600,
+        height: 1067,
+      },
+    ],
   },
   {
     id: 'pioneer-square',
@@ -94,6 +141,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     why: 'Seattle\'s oldest neighborhood — red-brick blocks, Smith Tower, Occidental Square, galleries, bookstores. Quieter than Pike Place.',
     timeNeeded: '45-60 min',
     practical: 'Diamond garage at 1st & James or street meters.',
+    verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Seattle_-_Pioneer_Square_Pergola_-_2020-04-24.jpg/960px-Seattle_-_Pioneer_Square_Pergola_-_2020-04-24.jpg',
       alt: 'Iron-and-glass Pioneer Square pergola in front of historic brick buildings.',
@@ -103,6 +151,33 @@ export const SEATTLE_STOPS: SeattleStop[] = [
       width: 800,
       height: 533,
     },
+    photos: [
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Seattle_-_Pioneer_Square_Pergola_-_2020-04-24.jpg/960px-Seattle_-_Pioneer_Square_Pergola_-_2020-04-24.jpg',
+        alt: 'Iron-and-glass Pioneer Square pergola in front of historic brick buildings.',
+        credit: 'Photo: Joe Mabel · CC BY-SA 4.0 (Wikimedia)',
+        creditUrl:
+          'https://commons.wikimedia.org/wiki/File:Seattle_-_Pioneer_Square_Pergola_-_2020-04-24.jpg',
+        width: 800,
+        height: 533,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Seattle,_WA_-_Pioneer_Square-Skid_Road_District_-_Pioneer_Place.jpg?width=1280',
+        alt: 'Pioneer Place in the Pioneer Square historic district.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Seattle,_WA_-_Pioneer_Square-Skid_Road_District_-_Pioneer_Place.jpg',
+        width: 1600,
+        height: 1067,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Seattle_-_Pioneer_Square_Park_04.jpg?width=1280',
+        alt: 'Pioneer Square Park with the historic buildings around it.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Seattle_-_Pioneer_Square_Park_04.jpg',
+        width: 1600,
+        height: 1067,
+      },
+    ],
   },
   {
     id: 'olympic-sculpture',
@@ -130,6 +205,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     why: '270-foot waterfall ~30 min east of SEA on I-90 — basically on the return route via I-90. Upper viewpoint is paved + 5-min walk from parking.',
     timeNeeded: '30-60 min',
     practical: 'Free parking at upper lot. Upper deck is accessible; 1.4-mi RT trail descends to the lower viewpoint.',
+    verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Snoqualmie_Falls_Washington.jpg/960px-Snoqualmie_Falls_Washington.jpg',
       alt: 'Snoqualmie Falls cascading down a forested cliff in a wide misty plunge.',
@@ -138,6 +214,24 @@ export const SEATTLE_STOPS: SeattleStop[] = [
       width: 800,
       height: 542,
     },
+    photos: [
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Snoqualmie_Falls_Washington.jpg/960px-Snoqualmie_Falls_Washington.jpg',
+        alt: 'Snoqualmie Falls cascading down a forested cliff in a wide misty plunge.',
+        credit: 'Photo: Kpsudeep · CC BY-SA 4.0 (Wikimedia)',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Snoqualmie_Falls_Washington.jpg',
+        width: 800,
+        height: 542,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Snoqualmie_Falls_in_summer_2.jpg?width=1280',
+        alt: 'Snoqualmie Falls in summer flow from the upper viewing deck.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Snoqualmie_Falls_in_summer_2.jpg',
+        width: 1600,
+        height: 1067,
+      },
+    ],
   },
   {
     id: 'discovery-park',
@@ -147,6 +241,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     why: 'Seattle\'s largest park — 534 acres of forest, meadow, sea bluffs. West Point Lighthouse trail (2.8 mi RT) drops to the beach.',
     timeNeeded: '1-2 hours',
     practical: 'Free parking. Open 4am-11:30pm. Gentle beach loop after a hiking trip.',
+    verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Seattle_Discovery_Park_Lighthouse_%2851521932685%29.jpg/960px-Seattle_Discovery_Park_Lighthouse_%2851521932685%29.jpg',
       alt: 'West Point Lighthouse at Discovery Park with Puget Sound and distant peaks.',
@@ -156,6 +251,33 @@ export const SEATTLE_STOPS: SeattleStop[] = [
       width: 800,
       height: 535,
     },
+    photos: [
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Seattle_Discovery_Park_Lighthouse_%2851521932685%29.jpg/960px-Seattle_Discovery_Park_Lighthouse_%2851521932685%29.jpg',
+        alt: 'West Point Lighthouse at Discovery Park with Puget Sound and distant peaks.',
+        credit: 'Photo: Seattle City Council · CC BY 2.0 (Wikimedia)',
+        creditUrl:
+          'https://commons.wikimedia.org/wiki/File:Seattle_Discovery_Park_Lighthouse_(51521932685).jpg',
+        width: 800,
+        height: 535,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Discovery_Park,_Seattle_pano_01.jpg?width=1280',
+        alt: 'Panorama of Discovery Park bluffs over Puget Sound.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Discovery_Park,_Seattle_pano_01.jpg',
+        width: 1600,
+        height: 800,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Seattle_-_Discovery_Park_04.jpg?width=1280',
+        alt: 'Trail and meadow inside Discovery Park.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Seattle_-_Discovery_Park_04.jpg',
+        width: 1600,
+        height: 1067,
+      },
+    ],
   },
   {
     id: 'bainbridge-ferry',
@@ -165,6 +287,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     why: '35-min ferry across Puget Sound — open-air deck, the skyline shrinking behind you, mountains all around. Walk on (no car) for ~$10 round trip.',
     timeNeeded: '2.5-3 hrs with a Bainbridge stop',
     practical: 'Pier 50 garage or Pioneer Square garages within a 5-min walk. Walk-on fares only charged westbound.',
+    verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Washington_State_Ferry_leaving_for_Bainbridge_Islandfor_Bain_%2852230622298%29.jpg/960px-Washington_State_Ferry_leaving_for_Bainbridge_Islandfor_Bain_%2852230622298%29.jpg',
       alt: 'Washington State Ferry pulling away from Colman Dock toward Bainbridge Island.',
@@ -174,6 +297,33 @@ export const SEATTLE_STOPS: SeattleStop[] = [
       width: 800,
       height: 533,
     },
+    photos: [
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Washington_State_Ferry_leaving_for_Bainbridge_Islandfor_Bain_%2852230622298%29.jpg/960px-Washington_State_Ferry_leaving_for_Bainbridge_Islandfor_Bain_%2852230622298%29.jpg',
+        alt: 'Washington State Ferry pulling away from Colman Dock toward Bainbridge Island.',
+        credit: 'Photo: Han Zheng · CC BY-SA 2.0 (Wikimedia)',
+        creditUrl:
+          'https://commons.wikimedia.org/wiki/File:Washington_State_Ferry_leaving_for_Bainbridge_Islandfor_Bain_(52230622298).jpg',
+        width: 800,
+        height: 533,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Bainbridge_Island,_WA.jpg?width=1280',
+        alt: 'Bainbridge Island ferry terminal and downtown waterfront.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Bainbridge_Island,_WA.jpg',
+        width: 1600,
+        height: 1067,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Aerial_view_of_Bainbridge_Island_and_Agate_Passage_in_Olympic_Peninsula.jpg?width=1280',
+        alt: 'Aerial view of Bainbridge Island and Agate Passage with the Olympic Peninsula beyond.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Aerial_view_of_Bainbridge_Island_and_Agate_Passage_in_Olympic_Peninsula.jpg',
+        width: 1600,
+        height: 1067,
+      },
+    ],
   },
   {
     id: 'arboretum',

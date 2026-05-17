@@ -14,15 +14,23 @@ import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import type { PathLetter } from '../data/costs';
 import { h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
+import { renderPhotoCarousel } from './photo-carousel';
 
 function renderSpot(spot: (typeof TOP_SUNSETS)[number], activePath: PathLetter | null): HTMLElement {
   const isInPath = activePath ? spot.bestByPath.includes(activePath) : false;
   const isOffPath = activePath && !isInPath;
+  const photos = spot.photos && spot.photos.length > 0 ? [...spot.photos] : null;
   return h(
     'article',
     {
       class: `sunset-card${isInPath ? ' sunset-card--in-path' : ''}${isOffPath ? ' sunset-card--off-path' : ''}`,
     },
+    photos
+      ? renderPhotoCarousel(photos, {
+          ariaLabel: `Sunset spot photos: ${spot.name}`,
+          className: 'sunset-card__figure',
+        })
+      : null,
     h(
       'header',
       { class: 'sunset-card__header' },
@@ -37,7 +45,10 @@ function renderSpot(spot: (typeof TOP_SUNSETS)[number], activePath: PathLetter |
             { class: `badge badge--${p === activePath ? 'good' : 'info'}` },
             `Path ${p}`
           )
-        )
+        ),
+        spot.verifiedAsOf
+          ? h('span', { class: 'badge badge--good' }, `✅ Verified ${spot.verifiedAsOf}`)
+          : null
       )
     ),
     h('p', { class: 'sunset-card__where' }, spot.where),

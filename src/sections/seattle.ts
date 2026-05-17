@@ -23,34 +23,11 @@ import {
 import { getPathById } from '../data/paths';
 import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { badge, h, section } from '../dom';
+import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
 
-function renderPhoto(stop: SeattleStop): HTMLElement {
-  const { photo } = stop;
-  const img = h('img', {
-    class: 'card__img',
-    src: photo.src,
-    alt: photo.alt,
-    width: photo.width,
-    height: photo.height,
-    loading: 'lazy',
-    decoding: 'async',
-  });
-  const figure = h('figure', { class: 'card__figure' }, img);
-  if (photo.credit) {
-    const credit = photo.creditUrl
-      ? h(
-          'figcaption',
-          { class: 'card__credit' },
-          h(
-            'a',
-            { href: photo.creditUrl, rel: 'noopener', target: '_blank' },
-            photo.credit
-          )
-        )
-      : h('figcaption', { class: 'card__credit' }, photo.credit);
-    figure.append(credit);
-  }
-  return figure;
+function stopPhotos(stop: SeattleStop): CarouselPhoto[] {
+  if (stop.photos && stop.photos.length > 0) return [...stop.photos];
+  return [stop.photo];
 }
 
 function renderStopCard(stop: SeattleStop): HTMLElement {
@@ -60,12 +37,21 @@ function renderStopCard(stop: SeattleStop): HTMLElement {
       class: 'card seattle-card',
       'data-category': stop.category,
     },
-    renderPhoto(stop),
+    renderPhotoCarousel(stopPhotos(stop), {
+      ariaLabel: `Photos of ${stop.name}`,
+    }),
     h(
       'header',
       { class: 'card__header' },
       h('h3', { class: 'card__title' }, stop.name),
-      badge(CATEGORY_LABELS[stop.category], 'info')
+      h(
+        'div',
+        { class: 'card__badges' },
+        badge(CATEGORY_LABELS[stop.category], 'info'),
+        stop.verifiedAsOf
+          ? h('span', { class: 'badge badge--good' }, `✅ Verified ${stop.verifiedAsOf}`)
+          : null
+      )
     ),
     h('p', { class: 'card__address' }, stop.address),
     h(

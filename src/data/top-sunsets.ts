@@ -20,6 +20,15 @@
 import { SKY_DAYS } from './sky';
 import type { PathLetter } from './costs';
 
+export interface SunsetPhoto {
+  src: string;
+  alt: string;
+  credit?: string;
+  creditUrl?: string;
+  width: number;
+  height: number;
+}
+
 export interface SunsetSpotRanked {
   rank: number;
   name: string;
@@ -46,6 +55,14 @@ export interface SunsetSpotRanked {
   fromLodging?: string;
   /** Source citation. */
   source: { name: string; url: string };
+  /**
+   * Optional photo carousel (2-4 photos). Added Wave 4 photo-curation pass,
+   * May 17, 2026. Falls back to a single representative-spot photo when fewer
+   * are available. Verified-summer / no-snow per the trip dates.
+   */
+  photos?: readonly SunsetPhoto[];
+  /** "Verified on" date so the freshness shows on each card. */
+  verifiedAsOf?: string;
 }
 
 export const TOP_SUNSETS: SunsetSpotRanked[] = [
@@ -66,6 +83,41 @@ export const TOP_SUNSETS: SunsetSpotRanked[] = [
       name: 'NPS · Washington Pass Overlook',
       url: 'https://www.nps.gov/noca/planyourvisit/things2do.htm',
     },
+    verifiedAsOf: 'May 17, 2026',
+    photos: [
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Washington_pass_overlook.jpg?width=1280',
+        alt: 'Washington Pass Overlook in summer with Liberty Bell and Early Winters Spires across the valley.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_pass_overlook.jpg',
+        width: 1600,
+        height: 1067,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Washington_Pass_and_Liberty_Bell_Mountain.JPG?width=1280',
+        alt: 'Washington Pass and Liberty Bell Mountain in clear summer light.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_Pass_and_Liberty_Bell_Mountain.JPG',
+        width: 1600,
+        height: 1067,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Liberty_Bell_Group,_North_Cascades_Highway.jpg?width=1280',
+        alt: 'Liberty Bell Group rising above the Washington Pass corridor.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Liberty_Bell_Group,_North_Cascades_Highway.jpg',
+        width: 1600,
+        height: 1067,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Washington_Pass_at_North_Cascades_in_Washington_05.jpg?width=1280',
+        alt: 'Washington Pass overlook view of the alpine ridge in summer.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_Pass_at_North_Cascades_in_Washington_05.jpg',
+        width: 1600,
+        height: 1067,
+      },
+    ],
   },
   {
     rank: 2,
@@ -120,6 +172,33 @@ export const TOP_SUNSETS: SunsetSpotRanked[] = [
       name: 'NPS · Diablo Lake Overlook',
       url: 'https://www.nps.gov/noca/planyourvisit/things2do.htm',
     },
+    verifiedAsOf: 'May 17, 2026',
+    photos: [
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Diablo_Lake_from_Overlook_03.jpg',
+        alt: 'Diablo Lake glowing turquoise from the WA-20 overlook in summer.',
+        credit: 'Photo: Joe Mabel · CC BY-SA 4.0 (Wikimedia)',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_from_Overlook_03.jpg',
+        width: 1200,
+        height: 800,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Diablo_Lake_(Washington_State).jpg?width=1280',
+        alt: 'Diablo Lake turquoise water with the North Cascades framing the basin.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_(Washington_State).jpg',
+        width: 1600,
+        height: 1067,
+      },
+      {
+        src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Diablo_Lake_with_Pinnacle_Peak.jpg?width=1280',
+        alt: 'Diablo Lake with Pinnacle Peak above the basin.',
+        credit: 'Photo: Wikimedia · CC',
+        creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_with_Pinnacle_Peak.jpg',
+        width: 1600,
+        height: 1067,
+      },
+    ],
   },
   {
     rank: 5,

@@ -15,6 +15,40 @@ import {
   type FlightOption,
 } from '../data/flights';
 import { h, section } from '../dom';
+import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
+
+/**
+ * Arrival-side context carousel (May 17, 2026 presentation pass).
+ * Sets the mental model for what the reader is flying INTO — SEA/BLI →
+ * North Cascades vistas. Avoids generic "airplane wing in the sky" imagery
+ * and instead sells the destination.
+ */
+const ARRIVAL_PHOTOS: readonly CarouselPhoto[] = [
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Diablo_Lake_(Washington_State).jpg?width=1280',
+    alt: 'Diablo Lake — the postcard view about 2 hours east of SEA on WA-20.',
+    credit: 'Photo: Wikimedia · CC',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_(Washington_State).jpg',
+    width: 1600,
+    height: 1067,
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Washington_pass_overlook.jpg?width=1280',
+    alt: 'Washington Pass Overlook on WA-20 — the east-side scenic high point reachable from SEA or BLI.',
+    credit: 'Photo: Wikimedia · CC',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_pass_overlook.jpg',
+    width: 1600,
+    height: 1067,
+  },
+  {
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cascade_Pass_in_WA.jpg?width=1280',
+    alt: 'Cascade Pass alpine basin reachable from the west side of the trip.',
+    credit: 'Photo: Wikimedia · CC',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Cascade_Pass_in_WA.jpg',
+    width: 1600,
+    height: 1067,
+  },
+];
 
 function renderLeadingFlightCard(option: FlightOption): HTMLElement {
   return h(
@@ -73,6 +107,19 @@ export function renderFlights(): HTMLElement {
       h('li', { class: 'gist__item' }, 'Target: fastest + good times (fewest stopovers + reasonable departure).'),
       h('li', { class: 'gist__item' }, 'SEA roundtrip nonstop on Alaska / Delta / JetBlue / United matches the brief most cleanly — leading option below.'),
       h('li', { class: 'gist__item' }, 'Open-jaw + other routings sit below as alternatives, mostly relevant if WA-20 status changes.')
+    ),
+    h(
+      'div',
+      { class: 'flights-arrival-figure' },
+      renderPhotoCarousel(ARRIVAL_PHOTOS, {
+        ariaLabel: 'What you are flying into — North Cascades viewpoints',
+        className: 'flights-arrival-carousel',
+      }),
+      h(
+        'p',
+        { class: 'flights-arrival-caption' },
+        'What you are flying into — Diablo Lake, Washington Pass, Cascade Pass. SEA → park gate is ~2 hr east on WA-20; BLI is ~1.5 hr.'
+      )
     ),
     renderLeadingFlightCard(leading),
     // Return timing.

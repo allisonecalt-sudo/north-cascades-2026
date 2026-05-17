@@ -2994,3 +2994,85 @@
     max-height: 260px;
   }
 }
+
+/* ============================================================
+ * Featured-strip on home (Wave 4 photo carousels, May 17, 2026)
+ * 3 path-pitch cards under the path picker. Same .card-grid
+ * minmax-0 1fr fix applies — works on mobile 412px width.
+ * ============================================================ */
+.card-grid--featured {
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 720px) {
+  .card-grid--featured {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.featured-strip__card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.featured-strip__card .card__header,
+.featured-strip__card .card__note,
+.featured-strip__card .card__cta {
+  padding-left: var(--sp-4);
+  padding-right: var(--sp-4);
+}
+.featured-strip__card .card__header {
+  padding-top: var(--sp-3);
+}
+.featured-strip__card .card__cta {
+  padding-bottom: var(--sp-4);
+}
+
+.featured-strip__figure {
+  margin: 0;
+  position: relative;
+}
+
+.featured-strip__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.featured-strip__eyebrow {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-forest-700);
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+/* ============================================================
+ * Driving-corridor + flights-arrival carousels — same visual
+ * treatment, slightly wider cap so the photos breathe on tablet+.
+ * ============================================================ */
+.driving-corridor-figure,
+.flights-arrival-figure {
+  margin: 0 0 var(--sp-4);
+  max-width: 900px;
+}
+
+.driving-corridor-caption,
+.flights-arrival-caption {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+  margin: var(--sp-2) 0 0;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+/* ============================================================
+ * Sunset-card carousel — slightly shorter aspect so the rank
+ * pill + facts stay above the fold on mobile.
+ * ============================================================ */
+.sunset-card__figure .lcarousel__img {
+  aspect-ratio: 16 / 10;
+}

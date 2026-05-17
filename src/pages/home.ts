@@ -16,6 +16,7 @@ import { renderPageCtas } from '../sections/page-ctas';
 import { renderStatRow } from '../sections/stat-row';
 import { renderPeakMoment } from '../sections/peak-moment';
 import { renderTowns } from '../sections/towns';
+import { renderFeaturedStrip } from '../sections/featured-strip';
 import { h } from '../dom';
 
 function mount(): void {
@@ -46,6 +47,7 @@ function mount(): void {
   main.append(
     statBand,
     renderPaths(),
+    renderFeaturedStrip(),
     renderPeakMoment(),
     renderMap(),
     renderOverview(),
