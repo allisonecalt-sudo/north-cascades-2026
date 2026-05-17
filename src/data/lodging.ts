@@ -991,36 +991,10 @@ export const WEST_LODGING: Lodging[] = [
     ],
   },
 
-  // ---- Status note ----
-  {
-    id: 'skagit-river-resort-note',
-    name: 'Skagit River Resort / Clark\'s Cabins — closed (status note)',
-    address: '58468 Clark Cabin Rd, Rockport, WA 98283',
-    phone: '(360) 708-3005 (current operator)',
-    type: 'No longer operating under this name',
-    vibe: 'cabin',
-    pricePerNight: 'See Glacier Peak Resort above',
-    distance: 'Same address, new operator',
-    beds: 'N/A',
-    bedrooms: 'N/A',
-    nature: 'See Glacier Peak Resort listing.',
-    natureTag: 'woods',
-    extras: 'Status note only — see Glacier Peak Resort listing.',
-    reviews: {
-      score: 'N/A',
-      count: 'N/A',
-      source: 'Old property — see Glacier Peak Resort for current reviews',
-      asOf: 'May 2026',
-    },
-    notes:
-      'Status note only — if you see this name in older guides, the property is now Glacier Peak Resort (above). Don\'t book under the old name or (360) 873-2250 number. [verified 2026-05-15]',
-    bookingHint: 'See Glacier Peak Resort listing.',
-    bookingUrl: 'https://glacierpeakresortandwinery.com/',
-    tier: 'note',
-    kitchen: 'kitchenette',
-    availability: 'verify-at-booking',
-    photo: PHOTOS.cabinClassic,
-  },
+  // Lodging Owner pass (2026-05-17): Skagit River Resort "status note" card
+  // REMOVED — same info is in the Glacier Peak Resort `notes` block above
+  // ("This is the property that operated as Skagit River Resort / Clark's
+  // Cabins until early 2026"). Don't duplicate.
 ];
 
 // ====================================================================

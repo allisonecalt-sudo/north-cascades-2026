@@ -225,7 +225,12 @@ function togglePick(id: string): void {
 // ====================================================================
 
 function renderCarousel(lodging: Lodging): HTMLElement {
-  const photos = lodging.photos && lodging.photos.length > 0 ? lodging.photos : [lodging.photo];
+  // Lodging Owner pass (2026-05-17): cap carousel at 3 slides. Was 5 — but
+  // slides 4-5 were almost always the same stock Unsplash forest/firepit/
+  // interior across 15+ cards. Cutting tail reduces stock-repetition without
+  // touching the data layer. Property-authentic slide 1 stays leading.
+  const allPhotos = lodging.photos && lodging.photos.length > 0 ? lodging.photos : [lodging.photo];
+  const photos = allPhotos.slice(0, 3);
   const figure = h('figure', { class: 'card__figure card__figure--carousel' });
   const track = h('div', {
     class: 'lcarousel__track',
@@ -426,10 +431,39 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
         ? 'warn'
         : 'info';
   const amenityPills = renderAmenityPills(lodging.amenities);
+  // Bed summary: extract the short headline from the verbose `beds` string.
+  // Pattern: split on first ' — ' / '·' / '(' to keep what's before the
+  // disambiguating parenthetical. Falls back to the original string.
+  const bedsShort = (() => {
+    const raw = lodging.beds;
+    // If it contains a parenthetical breakdown, drop it.
+    const noParen = raw.replace(/\s*\(.*?\)/g, '').trim();
+    // If it contains a · separator with details on the right, take the left.
+    const beforeMid = noParen.split('·')[0]?.trim() ?? noParen;
+    // If it contains ' — ' (em dash with explanation), take the left side.
+    const beforeDash = beforeMid.split(' — ')[0]?.trim() ?? beforeMid;
+    // Strip trailing colon-led detail like "Riverside cabin: 1 queen..."
+    const afterColon = beforeDash.includes(':') ? beforeDash.split(':').slice(1).join(':').trim() : beforeDash;
+    return afterColon.length > 0 && afterColon.length <= 40 ? afterColon : beforeDash;
+  })();
+  // Lodging Owner pass (2026-05-17): collapse pill density.
+  //   - Removed `✅ Verified May 2026` (appears on every card — moved to
+  //     page-level disclaimer).
+  //   - Removed `⚠️ Verify beds at booking` (87% of cards have it — moved
+  //     to page-level disclaimer).
+  //   - Removed `📅 Aug 16-20: verify` when value is 'verify-at-booking'
+  //     (default state — moved to page-level disclaimer). Still rendered
+  //     for 'confirmed-aug-16-20' (good signal) and 'sold-out-or-unavailable'
+  //     (warn signal).
+  //   - Bed pill summarized to a short headline. Full breakdown lives in
+  //     the `notes` and `beds` body text below the carousel.
+  const showAvailabilityPill =
+    lodging.availability === 'confirmed-aug-16-20' ||
+    lodging.availability === 'sold-out-or-unavailable';
   const pillRow = h(
     'ul',
     { class: 'card__pills', 'aria-label': 'At a glance' },
-    h('li', { class: 'card__pill' }, `🛏 ${lodging.beds}`),
+    h('li', { class: 'card__pill' }, `🛏 ${bedsShort}`),
     h('li', { class: 'card__pill' }, `🚪 ${lodging.bedrooms}`),
     h('li', { class: 'card__pill' }, `${kitchenEmoji} ${kitchenLabel}`),
     h(
@@ -445,21 +479,11 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
       h('span', { class: 'card__pill-count' }, reviewsPillCount)
     ),
     h('li', { class: 'card__pill' }, `${tierEmoji} ${lodging.pricePerNight}`),
-    h(
-      'li',
-      { class: 'card__pill card__pill--good' },
-      `✅ Verified ${lodging.reviews.asOf}`
-    ),
-    h(
-      'li',
-      { class: `card__pill card__pill--${availabilityPillKind}` },
-      `📅 ${AVAILABILITY_LABELS[lodging.availability]}`
-    ),
-    lodging.verifyBeds
+    showAvailabilityPill
       ? h(
           'li',
-          { class: 'card__pill card__pill--verify' },
-          '⚠️ Verify beds at booking'
+          { class: `card__pill card__pill--${availabilityPillKind}` },
+          `📅 ${AVAILABILITY_LABELS[lodging.availability]}`
         )
       : null,
     lodging.kosherCookingFit === false
@@ -702,6 +726,11 @@ function renderPanel(
         )
       : null;
 
+  // Lodging Owner pass (2026-05-17): not-a-fit properties used to render
+  // full cards (carousel + drive matrix + pills). Reader bandwidth wasted
+  // on transparency-only entries. Now collapsed into a single summary list
+  // — name + 1-line reason + booking link. If reader wants the full card,
+  // there's a "show full cards" toggle inside the disclosure.
   const notFitBlock =
     notFit.length > 0
       ? h(
@@ -710,17 +739,48 @@ function renderPanel(
           h(
             'summary',
             { class: 'disclosure__summary' },
-            `Not a fit — under 2 beds (${notFit.length})`
+            `Not a fit — under 2 beds or no kitchen (${notFit.length})`
           ),
           h(
             'p',
             { class: 'disclosure__lede' },
-            'Properties that don\'t meet the 2-beds rule. Listed for transparency so you know why they\'re not above.'
+            'These properties exist on this corridor but don\'t meet the 2-beds + kosher-cook-in brief. Listed by name so the shortlist above is transparent.'
           ),
           h(
-            'div',
-            { class: 'card-grid' },
-            ...notFit.map((l) => renderLodgingCard(l, false))
+            'ul',
+            { class: 'not-fit-list' },
+            ...notFit.map((l) =>
+              h(
+                'li',
+                { class: 'not-fit-list__item' },
+                h(
+                  'div',
+                  { class: 'not-fit-list__head' },
+                  l.bookingUrl
+                    ? h(
+                        'a',
+                        {
+                          class: 'not-fit-list__name',
+                          href: l.bookingUrl,
+                          rel: 'noopener',
+                          target: '_blank',
+                        },
+                        l.name
+                      )
+                    : h('span', { class: 'not-fit-list__name' }, l.name),
+                  h(
+                    'span',
+                    { class: 'not-fit-list__price' },
+                    `${l.pricePerNight} · ${l.beds}`
+                  )
+                ),
+                h(
+                  'p',
+                  { class: 'not-fit-list__reason' },
+                  l.notFitReason ?? 'Single-bed configuration only.'
+                )
+              )
+            )
           )
         )
       : null;
@@ -1479,11 +1539,14 @@ function renderSearchGuideGroup(group: SearchTipGroup): HTMLElement {
 }
 
 export function renderLodgingSearchGuide(): HTMLElement {
+  // Lodging Owner pass 2026-05-17: section moved BELOW the cards + collapsed
+  // by default. Reader who wants the playbook taps to expand; reader who just
+  // wants the shortlist sees cards immediately. Bridge sentence removed (no
+  // longer points "below" since cards are above).
   const intro = h(
     'p',
     { class: 'search-guide__intro' },
-    'Here is how we would approach lodging search for a North Cascades trip if you were not using this site as your shortlist. ',
-    'Same playbook we ran to build the cards below — surfaced so you can sanity-check us, or use it for the next trip.'
+    'Same playbook we used to build the shortlist above. Read it if you want to sanity-check our picks, or save it for the next trip.'
   );
 
   const bookingWindow = h(
@@ -1514,28 +1577,25 @@ export function renderLodgingSearchGuide(): HTMLElement {
     )
   );
 
-  const bridge = h(
-    'p',
-    { class: 'search-guide__bridge' },
-    h('strong', {}, 'Our shortlist below is the result of this search.'),
-    ' Filtered for 2 beds, full kitchen where possible, nature-immersed, ~$200-300/night. ',
-    'Tap ',
-    h('strong', {}, '✓ Pick'),
-    ' on any card to start your own.'
-  );
-
-  return section(
-    'lodging-search-guide',
-    'How to search for lodging here',
+  // Wrap the entire body in <details> so it collapses by default.
+  const body = h(
+    'details',
+    { class: 'search-guide-details' },
+    h(
+      'summary',
+      { class: 'search-guide-details__summary' },
+      'Open the search playbook (when, where, how — for next time too)'
+    ),
     intro,
     h(
       'div',
       { class: 'search-guide__groups' },
       ...SEARCH_GUIDE_GROUPS.map(renderSearchGuideGroup)
     ),
-    h('div', { class: 'search-guide__notes' }, bookingWindow, contingency),
-    bridge
+    h('div', { class: 'search-guide__notes' }, bookingWindow, contingency)
   );
+
+  return section('lodging-search-guide', 'How to search for lodging here', body);
 }
 
 export function renderLodging(): HTMLElement {
@@ -1578,15 +1638,22 @@ export function renderLodging(): HTMLElement {
     h('li', { class: 'source-pill' }, 'Airbnb · live'),
     h('li', { class: 'source-pill source-pill--warn' }, 'Photos partly representative')
   );
+  // Lodging Owner pass (2026-05-17): page-level disclaimer absorbs the
+  // pills that used to repeat on every card: ✅ Verified May 2026, ⚠️ Verify
+  // beds at booking, 📅 Aug 16-20: verify. Surfacing once instead of 19x.
   const sourceNote = h(
     'p',
     {
       style:
-        'font-size: 0.78rem; color: var(--c-ink-500); margin: 0 0 var(--sp-4); line-height: 1.45;',
+        'font-size: 0.78rem; color: var(--c-ink-500); margin: 0 0 var(--sp-4); line-height: 1.5;',
     },
-    'Review scores + prices searched live May 16, 2026 for Aug 16-20, 2026 dates. ',
-    'Some listing photos are representative (Unsplash) — see booking links for actual property photos. ',
-    'Re-verify before booking; supply fluctuates.'
+    h('strong', {}, '✅ Verified May 2026.'),
+    ' Review scores + prices searched live for Aug 16-20, 2026 dates. ',
+    h('strong', {}, '⚠️ Multi-unit properties: confirm bed configuration at booking'),
+    ' — cabin layouts vary by unit type, lodge rooms often differ from cabins. ',
+    h('strong', {}, '📅 Aug 16-20 availability:'),
+    ' verify on the booking site, supply fluctuates. ',
+    'Some non-primary carousel photos are stock or regional context — see booking links for actual property photos.'
   );
 
   const chipBar = renderChipBar();

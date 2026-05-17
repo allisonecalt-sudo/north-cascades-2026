@@ -15,7 +15,10 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'lodging',
     title: 'Where we sleep',
-    lede: 'Real cabin options for each base. 2 beds, 1-2 bedrooms, ~$200-300. Nature-immersed picks lead.',
+    // Hero lede rewritten 2026-05-17 (Lodging Owner pass): set context up
+    // front. Dates + travelers + the kosher-cook-in HARD requirement that
+    // drives why kitchen pills lead every card.
+    lede: '4 nights · Sun Aug 16 → Thu Aug 20, 2026 · Allison + Erin. Both kosher → full kitchen is required, not a nice-to-have. 2 beds always. Spacious-mid-tier (~$200-300/night), nature-near leads. Search playbook lives at the bottom of the page if you want it.',
     imageHero: {
       // Re-re-swapped May 17, 2026 (8:13 AM IDT) — prior URL loaded fine but
       // depicted a tropical beach resort, not PNW. Switching to the Diablo
@@ -29,10 +32,13 @@ function mount(): void {
     },
   });
 
+  // Lodging Owner pass (2026-05-17): re-ordered cards-first. The search-guide
+  // is a reference resource, not above-the-fold value. It loads collapsed by
+  // default now (see renderLodgingSearchGuide).
   main.append(
-    renderLodgingSearchGuide(),
     renderLodging(),
     renderCoolSleepingPlaces(),
+    renderLodgingSearchGuide(),
     renderPageCtas('lodging')
   );
   attachNotesToAllSections(main);
