@@ -29,6 +29,14 @@
   pointer-events: none;
 }
 
+/* CRITICAL: the [hidden] HTML attribute must win over display:flex above.
+   Without this !important, the overlay's backdrop (blur + dark tint) covers
+   every page even when JS sets root.hidden = true. Allison 2026-05-17:
+   "the search is like overriding whole website" — exactly this bug. */
+.search-overlay[hidden] {
+  display: none !important;
+}
+
 .search-overlay--open {
   pointer-events: auto;
 }
