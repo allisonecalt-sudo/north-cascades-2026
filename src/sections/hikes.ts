@@ -36,6 +36,8 @@ interface HikeFilterState {
   kidFriendly: boolean;
   dogsAllowed: boolean;
   permit: Set<'none' | 'nw-forest-pass' | 'discover-pass'>;
+  /** WA-20 dependency tri-state. Added 2026-05-17 by integration-audit. */
+  wa20: 'any' | 'needs' | 'no-wa20';
 }
 
 function emptyFilters(): HikeFilterState {
@@ -45,6 +47,7 @@ function emptyFilters(): HikeFilterState {
     kidFriendly: false,
     dogsAllowed: false,
     permit: new Set(),
+    wa20: 'any',
   };
 }
 
@@ -70,6 +73,8 @@ function hikeMatchesFilters(hike: Hike): boolean {
   if (filters.kidFriendly && !hike.kidFriendly) return false;
   if (filters.dogsAllowed && !hike.dogsAllowed) return false;
   if (filters.permit.size > 0 && !filters.permit.has(hike.permitNeeded ?? 'none')) return false;
+  if (filters.wa20 === 'needs' && hike.needsWa20Through !== true) return false;
+  if (filters.wa20 === 'no-wa20' && hike.needsWa20Through === true) return false;
   return true;
 }
 
@@ -79,7 +84,8 @@ function activeFilterCount(): number {
     filters.level.size +
     (filters.kidFriendly ? 1 : 0) +
     (filters.dogsAllowed ? 1 : 0) +
-    filters.permit.size
+    filters.permit.size +
+    (filters.wa20 === 'any' ? 0 : 1)
   );
 }
 
@@ -181,6 +187,13 @@ function renderHikePills(hike: Hike): HTMLElement {
   if (hike.kidFriendly) items.push(pill('card__pill', '👶 Kid-friendly'));
   if (hike.dogsAllowed === true) items.push(pill('card__pill', '🐕 Dogs OK'));
   if (hike.dogsAllowed === false) items.push(pill('card__pill', '🚫 No dogs'));
+
+  // WA-20 closure-dependency pill — matches viewpoints convention.
+  if (hike.needsWa20Through === true) {
+    items.push(pill('card__pill card__pill--bad', '↻ Needs WA-20 through'));
+  } else if (hike.needsWa20Through === false) {
+    items.push(pill('card__pill card__pill--good', '✓ Reachable w/o WA-20 through'));
+  }
 
   if (hike.verifiedAsOf) {
     items.push(pill('card__pill card__pill--good', `✅ Verified ${hike.verifiedAsOf}`));
@@ -308,7 +321,7 @@ function sortInPathFirst(hikes: Hike[], inPath: (id: string) => boolean): Hike[]
 interface ChipDef {
   key: string;
   label: string;
-  group: 'side' | 'level' | 'kid' | 'dogs' | 'permit';
+  group: 'side' | 'level' | 'kid' | 'dogs' | 'permit' | 'wa20';
   isActive: () => boolean;
   toggle: () => void;
 }
@@ -385,18 +398,33 @@ function buildChipDefs(): ChipDef[] {
     });
   }
 
+  const wa20Labels = { any: 'Any', needs: 'Needs WA-20', 'no-wa20': 'No WA-20 needed' } as const;
+  for (const v of ['any', 'needs', 'no-wa20'] as const) {
+    chips.push({
+      key: `wa20-${v}`,
+      label: wa20Labels[v],
+      group: 'wa20',
+      isActive: () => filters.wa20 === v,
+      toggle: () => {
+        filters.wa20 = v;
+        notifyFilters();
+      },
+    });
+  }
+
   return chips;
 }
 
 function renderChipBar(): HTMLElement {
   const chips = buildChipDefs();
-  const groupOrder: ChipDef['group'][] = ['side', 'level', 'kid', 'dogs', 'permit'];
+  const groupOrder: ChipDef['group'][] = ['side', 'level', 'wa20', 'kid', 'dogs', 'permit'];
   const groupLabels: Record<ChipDef['group'], string> = {
     side: 'Side',
     level: 'Effort',
     kid: 'Kid',
     dogs: 'Dogs',
     permit: 'Permit',
+    wa20: 'WA-20 dependency',
   };
 
   const groups = groupOrder.map((g) => {
@@ -464,6 +492,7 @@ function renderChipBar(): HTMLElement {
       filters.kidFriendly = false;
       filters.dogsAllowed = false;
       filters.permit.clear();
+      filters.wa20 = 'any';
       notifyFilters();
       return;
     }

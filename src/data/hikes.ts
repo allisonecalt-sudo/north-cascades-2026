@@ -52,6 +52,19 @@ export interface Hike {
   season?: 'year-round' | 'jul-oct' | 'jun-oct' | 'may-oct';
   /** "Verified on" date so reader sees freshness on the card. */
   verifiedAsOf?: string;
+  /**
+   * Does this hike's trailhead require WA-20 through-route (mid-pass closure
+   * MP 130-156) to be open to be reachable from a typical trip base?
+   *
+   *   - `true`  → trailhead is inside or beyond the closure zone — render
+   *     the `↻ Needs WA-20 through` red pill so Erin sees the dependency.
+   *   - `false` → reachable regardless of the closure (west-of-mid-pass via
+   *     Marblemount/Newhalem, or Mt. Baker corridor via WA-542).
+   *
+   * Same convention used by `data/viewpoints.ts`. Added 2026-05-17 by the
+   * integration-audit pass — viewpoints had this signal, hikes didn't.
+   */
+  needsWa20Through?: boolean;
   /** WTA / NPS source link for the trail. Optional — added for hidden gems. */
   sourceUrl?: string;
   /**
@@ -72,6 +85,7 @@ export const HIKES: Hike[] = [
   // ---------- Easy ----------
   {
     id: 'rainy-lake',
+    needsWa20Through: true,
     name: 'Rainy Lake',
     trailhead: 'Rainy Pass · MP 158 WA-20 (east)',
     mileage: '1.8 mi RT',
@@ -117,6 +131,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'ladder-creek',
+    needsWa20Through: false,
     name: 'Ladder Creek Falls',
     trailhead: 'MP 120 · behind Gorge Powerhouse, Newhalem (west)',
     mileage: '<0.5 mi paved loop',
@@ -147,6 +162,7 @@ export const HIKES: Hike[] = [
   // ---------- Easy hidden gems ----------
   {
     id: 'trail-of-cedars',
+    needsWa20Through: false,
     name: 'Trail of the Cedars',
     trailhead: 'End of Main St, Newhalem · MP 120 (west)',
     mileage: '0.3 mi loop',
@@ -167,6 +183,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'picture-lake',
+    needsWa20Through: false,
     name: 'Picture Lake Loop',
     trailhead: 'WA-542 past Heather Meadows · Mt. Baker Hwy (west)',
     mileage: '0.6 mi loop',
@@ -213,6 +230,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'bagley-lakes',
+    needsWa20Through: false,
     name: 'Bagley Lakes',
     trailhead: 'Heather Meadows, Mt. Baker Ski Area · WA-542 (west)',
     mileage: '2.0 mi loop',
@@ -235,6 +253,7 @@ export const HIKES: Hike[] = [
   // ---------- Moderate (the sweet spot — beautiful, doable) ----------
   {
     id: 'blue-lake',
+    needsWa20Through: true,
     name: 'Blue Lake',
     trailhead: 'MP 161 WA-20 (east)',
     mileage: '4.4 mi RT',
@@ -279,6 +298,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'thunder-knob',
+    needsWa20Through: true,
     name: 'Thunder Knob',
     trailhead: 'Colonial Creek South Campground · MP 130 (west)',
     mileage: '3.6 mi RT',
@@ -323,6 +343,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'maple-pass',
+    needsWa20Through: true,
     name: 'Maple Pass Loop',
     trailhead: 'Rainy Pass · MP 158 WA-20 (east)',
     mileage: '7.2 mi loop',
@@ -375,6 +396,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'cascade-pass',
+    needsWa20Through: false,
     name: 'Cascade Pass (pass-only)',
     trailhead: 'End of Cascade River Rd (west)',
     mileage: '7.0 mi RT (per WTA)',
@@ -428,6 +450,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'park-butte',
+    needsWa20Through: false,
     name: 'Park Butte Lookout',
     trailhead: 'FR 13 off Baker Lake Rd · ~1 hr 15 min from Marblemount (west)',
     mileage: '7-8 mi RT',
@@ -446,6 +469,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'chain-lakes',
+    needsWa20Through: false,
     name: 'Chain Lakes Loop / Artist Point',
     trailhead: 'WA-542 from Bellingham · ~1 hr east of BLI (west)',
     mileage: '6-7 mi loop',
@@ -484,6 +508,7 @@ export const HIKES: Hike[] = [
   // ---------- More hidden gems (moderate — extend the menu) ----------
   {
     id: 'patterson-lake',
+    needsWa20Through: false,
     name: 'Patterson Lake Trail',
     trailhead: 'Chickadee TH / Sun Mountain Lodge · 15 min south of Winthrop (east)',
     mileage: '~3.5 mi loop options',
@@ -504,6 +529,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'cedar-creek-falls',
+    needsWa20Through: true,
     name: 'Cedar Creek Falls',
     trailhead: 'FR 5310 off WA-20 · 8 min west of Mazama (east)',
     mileage: '3.5 mi RT',
@@ -524,6 +550,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'sauk-mountain',
+    needsWa20Through: false,
     name: 'Sauk Mountain',
     trailhead: 'FR 1030 off WA-20 · ~25 min west of Marblemount (west)',
     mileage: '4.2 mi RT',
@@ -544,6 +571,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'heliotrope-ridge',
+    needsWa20Through: false,
     name: 'Heliotrope Ridge',
     trailhead: 'FR 39 (Glacier Creek Rd) off WA-542 (west · Mt. Baker corridor)',
     mileage: '5.5 mi RT',
@@ -574,6 +602,7 @@ export const HIKES: Hike[] = [
   // ---------- Ambitious (long days — optional add-ons, not the plan) ----------
   {
     id: 'sahale-arm',
+    needsWa20Through: false,
     name: 'Cascade Pass + Sahale Arm extension',
     trailhead: 'End of Cascade River Rd (west)',
     mileage: '12.8 mi RT',
@@ -618,6 +647,7 @@ export const HIKES: Hike[] = [
   },
   {
     id: 'cutthroat-pass',
+    needsWa20Through: true,
     name: 'Cutthroat Pass via PCT',
     trailhead: 'MP 158 WA-20 (east)',
     mileage: '10 mi RT',

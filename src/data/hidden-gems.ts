@@ -78,6 +78,12 @@ export interface HiddenGem {
   status?: GemStatus;
   /** "Verified on" date so freshness shows on each card. */
   verifiedAsOf: string;
+  /**
+   * WA-20 through-route dependency — same convention as `data/viewpoints.ts`,
+   * `data/hikes.ts`, `data/lakes.ts`, `data/activities.ts`. Added 2026-05-17
+   * by the integration-audit pass.
+   */
+  needsWa20Through?: boolean;
 }
 
 export const HIDDEN_GEMS: HiddenGem[] = [
@@ -86,6 +92,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   // ====================================================================
   {
     id: 'sauk-mountain-summit',
+    needsWa20Through: false,
     name: 'Sauk Mountain summit',
     where: 'FR 1030 off WA-20, ~25 min west of Marblemount (West)',
     side: 'west',
@@ -122,6 +129,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   },
   {
     id: 'hidden-lake-lookout',
+    needsWa20Through: false,
     name: 'Hidden Lake Lookout',
     where: 'FR 1540 off Cascade River Rd, near Marblemount (West)',
     side: 'west',
@@ -166,6 +174,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   },
   {
     id: 'park-butte-fire-lookout',
+    needsWa20Through: false,
     name: 'Park Butte fire lookout',
     where: 'FR 13 off Baker Lake Rd, Mt. Baker SW flank (West / Mt. Baker)',
     side: 'mt-baker',
@@ -202,6 +211,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   },
   {
     id: 'pyramid-lake',
+    needsWa20Through: false,
     name: 'Pyramid Lake',
     where: 'MP 127 WA-20, west of Newhalem (West)',
     side: 'west',
@@ -237,6 +247,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   },
   {
     id: 'trail-of-cedars-newhalem',
+    needsWa20Through: false,
     name: 'Trail of the Cedars + Newhalem walks',
     where: 'End of Main St, Newhalem · MP 120 (West)',
     side: 'west',
@@ -277,6 +288,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   // ====================================================================
   {
     id: 'heliotrope-ridge',
+    needsWa20Through: false,
     name: 'Heliotrope Ridge',
     where: 'FR 39 (Glacier Creek Rd) off WA-542 · Mt. Baker corridor',
     side: 'mt-baker',
@@ -333,6 +345,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   // ====================================================================
   {
     id: 'cutthroat-lake',
+    needsWa20Through: true,
     name: 'Cutthroat Lake (lake-only)',
     where: 'MP 167 WA-20 · Cutthroat Creek TH (East)',
     side: 'east',
@@ -368,6 +381,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   },
   {
     id: 'goat-peak-lookout',
+    needsWa20Through: false,
     name: 'Goat Peak Lookout',
     where: 'FR 5225 off Mazama Rd · East / Mazama side',
     side: 'east',
@@ -411,6 +425,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   },
   {
     id: 'tiffany-mountain',
+    needsWa20Through: false,
     name: 'Tiffany Mountain summit',
     where: 'FR 39 off WA-20 east of Winthrop · Okanogan NF (East)',
     side: 'east',
@@ -454,6 +469,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   },
   {
     id: 'slate-peak',
+    needsWa20Through: false,
     name: 'Slate Peak (drive-up lookout)',
     where: "Hart's Pass FR 5400 from Mazama · ends at 7,440 ft (East)",
     side: 'east',
@@ -505,6 +521,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   },
   {
     id: 'maple-pass-frisco',
+    needsWa20Through: true,
     name: 'Maple Pass + Frisco Mountain extension',
     where: 'MP 158 WA-20 from Rainy Pass · off-trail ridge add-on (East)',
     side: 'east',
@@ -551,6 +568,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
   // ====================================================================
   {
     id: 'sahale-glacier-camp',
+    needsWa20Through: false,
     name: 'Sahale Glacier Camp (overnight)',
     where: 'End of Cascade River Rd · Sahale Arm to 7,600 ft (West)',
     side: 'west',

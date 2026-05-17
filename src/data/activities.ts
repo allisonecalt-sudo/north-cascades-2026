@@ -47,6 +47,12 @@ export interface Activity {
   rentalsOnSite?: boolean;
   /** When the listing was last spot-checked. */
   verifiedAsOf?: string;
+  /**
+   * WA-20 through-route dependency. Same convention as `data/viewpoints.ts` /
+   * `data/hikes.ts` / `data/lakes.ts`. `true` = render `↻ Needs WA-20 through`
+   * red pill. Added 2026-05-17 by the integration-audit pass.
+   */
+  needsWa20Through?: boolean;
   /** Carousel photos — first slide is also the card thumbnail. */
   photos?: CarouselPhoto[];
 }
@@ -68,6 +74,7 @@ export const ACTIVITIES: Activity[] = [
   // ============== Water + lakes ==============
   {
     id: 'patterson-kayak',
+    needsWa20Through: false,
     name: 'Kayak / SUP / rowboat Patterson Lake',
     where: 'Sun Mountain Lodge Marina · 604 Patterson Lake Rd · 15 min south of Winthrop',
     cost: '~$30-50 / hr kayak · SUP, rowboat, pedalboat also available',
@@ -98,6 +105,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'diablo-kayak',
+    needsWa20Through: true,
     name: 'Kayak Diablo Lake (self-launch)',
     where: 'Pick up rental at North Cascade Kayaks (Rockport, ~30 min west of Diablo) · launch at Colonial Creek South Campground · MP 130',
     cost: '~$100/day single · ~$150/day double (North Cascade Kayaks) · launch is free',
@@ -144,6 +152,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'ross-lake-watertaxi',
+    needsWa20Through: true,
     name: 'Ross Lake water taxi + kayak day',
     where: 'Ross Lake Resort · access via Diablo Dam trail or NPS shuttle',
     cost: 'Water-taxi shuttle $4 / person each way · Eddyline Nighthawk kayak $60/day · drop-off camping $30 RT',
@@ -182,6 +191,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'pearrygin-swim',
+    needsWa20Through: false,
     name: 'Swim at Pearrygin Lake State Park',
     where: '~5 min northeast of Winthrop · 561 Bear Creek Rd',
     cost: 'Discover Pass $10/day or $30/year',
@@ -212,6 +222,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'baker-lake-swim',
+    needsWa20Through: false,
     name: 'Baker Lake — swim + free launch',
     where: 'Horseshoe Cove Campground day-use · 27 mi south of Mt. Baker on Baker Lake Rd · ~1 hr from Marblemount',
     cost: '$5 day-use boat ramp · swim free',
@@ -250,6 +261,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'lake-chelan-stehekin',
+    needsWa20Through: false,
     name: 'Lake Chelan ferry to Stehekin (long detour)',
     where: 'Lady of the Lake terminal · Chelan, WA · ~3 hr drive from Winthrop',
     cost: 'Lady Liberty same-day RT ~$60-70/adult (verify on site) · Frequent-Traveler $351/10-rides',
@@ -288,6 +300,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'skagit-riverside',
+    needsWa20Through: false,
     name: 'Skagit River — riverside picnic + careful dip',
     where: 'Marblemount Boat Launch · MP 105 (west)',
     cost: 'Free',
@@ -320,6 +333,7 @@ export const ACTIVITIES: Activity[] = [
   // ============== Land + town ==============
   {
     id: 'methow-trail',
+    needsWa20Through: false,
     name: 'Methow Valley Trail bike rental',
     where: 'Winthrop town (multiple shops)',
     cost: '~$45-65 / day cruiser; e-bikes more',
@@ -358,6 +372,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'wildlife',
+    needsWa20Through: false,
     name: 'Wildlife viewing windows',
     where: 'Cascade Pass corridor + Washington Pass + Methow Valley',
     cost: 'Free',
@@ -388,6 +403,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'leavenworth',
+    needsWa20Through: false,
     name: 'Leavenworth side stop (Bavarian-themed town)',
     where: 'US-2 east of Stevens Pass · on the scenic Day-5 return',
     cost: 'Free to walk; food costs vary',
@@ -418,6 +434,7 @@ export const ACTIVITIES: Activity[] = [
   },
   {
     id: 'twisp',
+    needsWa20Through: false,
     name: 'Twisp side stop (art galleries)',
     where: '~12 min south of Winthrop on WA-20',
     cost: 'Free',

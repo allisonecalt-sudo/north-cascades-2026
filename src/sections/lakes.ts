@@ -39,6 +39,7 @@ interface LakeFilterState {
   rental: Set<LakeRental>;
   kidFriendly: boolean;
   boatRamp: boolean;
+  wa20: 'any' | 'needs' | 'no-wa20';
 }
 
 function emptyFilters(): LakeFilterState {
@@ -48,6 +49,7 @@ function emptyFilters(): LakeFilterState {
     rental: new Set(),
     kidFriendly: false,
     boatRamp: false,
+    wa20: 'any',
   };
 }
 
@@ -78,6 +80,8 @@ function lakeMatchesFilters(lake: Lake): boolean {
   if (filters.rental.size > 0 && !filters.rental.has(lake.rental)) return false;
   if (filters.kidFriendly && lake.kidFriendly !== true) return false;
   if (filters.boatRamp && lake.boatRamp !== true) return false;
+  if (filters.wa20 === 'needs' && lake.needsWa20Through !== true) return false;
+  if (filters.wa20 === 'no-wa20' && lake.needsWa20Through === true) return false;
   return true;
 }
 
@@ -87,7 +91,8 @@ function activeFilterCount(): number {
     filters.swim.size +
     filters.rental.size +
     (filters.kidFriendly ? 1 : 0) +
-    (filters.boatRamp ? 1 : 0)
+    (filters.boatRamp ? 1 : 0) +
+    (filters.wa20 === 'any' ? 0 : 1)
   );
 }
 
@@ -159,6 +164,13 @@ function renderLakePills(lake: Lake): HTMLElement {
   items.push(pill('card__pill', `🅿 ${lake.parking}`));
   if (lake.kidFriendly) items.push(pill('card__pill', '👶 Kid-friendly'));
   items.push(pill('card__pill', `${baseEmoji(lake.base)} ${baseLabel(lake.base)}`));
+
+  if (lake.needsWa20Through === true) {
+    items.push(pill('card__pill card__pill--bad', '↻ Needs WA-20 through'));
+  } else if (lake.needsWa20Through === false) {
+    items.push(pill('card__pill card__pill--good', '✓ Reachable w/o WA-20 through'));
+  }
+
   items.push(pill('card__pill card__pill--good', `✅ Verified ${lake.verifiedAsOf}`));
 
   return h('ul', { class: 'card__pills', 'aria-label': 'At a glance' }, ...items);
@@ -284,7 +296,7 @@ function renderLakeCard(lake: Lake): HTMLElement {
 interface ChipDef {
   key: string;
   label: string;
-  group: 'base' | 'swim' | 'rental' | 'kid' | 'ramp';
+  group: 'base' | 'swim' | 'rental' | 'kid' | 'ramp' | 'wa20';
   isActive: () => boolean;
   toggle: () => void;
 }
@@ -358,18 +370,33 @@ function buildChipDefs(): ChipDef[] {
     },
   });
 
+  const wa20Labels = { any: 'Any', needs: 'Needs WA-20', 'no-wa20': 'No WA-20 needed' } as const;
+  for (const v of ['any', 'needs', 'no-wa20'] as const) {
+    chips.push({
+      key: `wa20-${v}`,
+      label: wa20Labels[v],
+      group: 'wa20',
+      isActive: () => filters.wa20 === v,
+      toggle: () => {
+        filters.wa20 = v;
+        notifyFilters();
+      },
+    });
+  }
+
   return chips;
 }
 
 function renderChipBar(): HTMLElement {
   const chips = buildChipDefs();
-  const groupOrder: ChipDef['group'][] = ['base', 'swim', 'rental', 'kid', 'ramp'];
+  const groupOrder: ChipDef['group'][] = ['base', 'swim', 'wa20', 'rental', 'kid', 'ramp'];
   const groupLabels: Record<ChipDef['group'], string> = {
     base: 'Side',
     swim: 'Swim',
     rental: 'Rentals',
     kid: 'Kid',
     ramp: 'Ramp',
+    wa20: 'WA-20 dependency',
   };
 
   const groups = groupOrder.map((g) => {
@@ -437,6 +464,7 @@ function renderChipBar(): HTMLElement {
       filters.rental.clear();
       filters.kidFriendly = false;
       filters.boatRamp = false;
+      filters.wa20 = 'any';
       notifyFilters();
       return;
     }

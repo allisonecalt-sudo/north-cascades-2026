@@ -89,6 +89,13 @@ export interface Lake {
   sleepAnchor?: string;
   /** When the listing was last spot-checked. */
   verifiedAsOf: string;
+  /**
+   * WA-20 through-route dependency. Same convention as `data/viewpoints.ts` /
+   * `data/hikes.ts`. `true` = access road is inside or beyond the mid-pass
+   * closure zone; render `↻ Needs WA-20 through` red pill. `false` = reachable
+   * regardless. Added 2026-05-17 by the integration-audit pass.
+   */
+  needsWa20Through?: boolean;
   /** 3-5 carousel photos — first slide is also the card thumbnail. */
   photos: CarouselPhoto[];
 }
@@ -108,6 +115,7 @@ export const LAKES: Lake[] = [
   // ============================================================
   {
     id: 'pearrygin-lake',
+    needsWa20Through: false,
     name: 'Pearrygin Lake State Park',
     lede:
       'The easy-swim story for mid-August — warm sandy-beach water 5 minutes from Winthrop. The PNW lake that doesn\'t feel like a PNW lake.',
@@ -159,6 +167,7 @@ export const LAKES: Lake[] = [
   // ============================================================
   {
     id: 'diablo-lake',
+    needsWa20Through: true,
     name: 'Diablo Lake',
     lede:
       'The turquoise glacier-flour lake on the postcards. Stunning to look at and paddle on. NOT a swim lake — glacier-cold and dam-controlled.',
@@ -230,6 +239,7 @@ export const LAKES: Lake[] = [
   // ============================================================
   {
     id: 'ross-lake',
+    needsWa20Through: true,
     name: 'Ross Lake',
     lede:
       'The 23-mile-long wild reservoir north of Diablo. Only outfit with on-water rentals — Ross Lake Resort runs a water taxi + kayak fleet, but takes a hike-down + boat to reach.',
@@ -289,6 +299,7 @@ export const LAKES: Lake[] = [
   // ============================================================
   {
     id: 'patterson-lake',
+    needsWa20Through: false,
     name: 'Patterson Lake',
     lede:
       'The Sun Mountain Lodge lake — calm sub-alpine water, walk-up kayak/SUP/rowboat rentals at the marina. Warm enough to swim in August.',
@@ -341,6 +352,7 @@ export const LAKES: Lake[] = [
   // ============================================================
   {
     id: 'lake-chelan',
+    needsWa20Through: false,
     name: 'Lake Chelan + Stehekin ferry',
     lede:
       'The 50-mile fjord at the south edge of the park. Long day trip — drive Winthrop → Chelan (~3 hr) then ferry to Stehekin (4 hr each way). Worth flagging, almost certainly cut.',
@@ -405,6 +417,7 @@ export const LAKES: Lake[] = [
   // ============================================================
   {
     id: 'methow-river',
+    needsWa20Through: false,
     name: 'Methow River',
     lede:
       'The east-side river — not a lake, but the warmest moving water on the trip. Tube it on a hot August afternoon, picnic at the riverside parks, careful dip at gravel-bar edges.',

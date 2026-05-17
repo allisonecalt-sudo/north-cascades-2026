@@ -27,10 +27,11 @@ interface GemFilterState {
   side: Set<GemSide>;
   effort: Set<GemEffort>;
   hideClosed: boolean;
+  wa20: 'any' | 'needs' | 'no-wa20';
 }
 
 function emptyFilters(): GemFilterState {
-  return { side: new Set(), effort: new Set(), hideClosed: false };
+  return { side: new Set(), effort: new Set(), hideClosed: false, wa20: 'any' };
 }
 
 const filters: GemFilterState = emptyFilters();
@@ -47,11 +48,18 @@ function gemMatchesFilters(gem: HiddenGem): boolean {
   if (filters.side.size > 0 && !filters.side.has(gem.side)) return false;
   if (filters.effort.size > 0 && !filters.effort.has(gem.effort)) return false;
   if (filters.hideClosed && gem.status?.kind === 'closed') return false;
+  if (filters.wa20 === 'needs' && gem.needsWa20Through !== true) return false;
+  if (filters.wa20 === 'no-wa20' && gem.needsWa20Through === true) return false;
   return true;
 }
 
 function activeFilterCount(): number {
-  return filters.side.size + filters.effort.size + (filters.hideClosed ? 1 : 0);
+  return (
+    filters.side.size +
+    filters.effort.size +
+    (filters.hideClosed ? 1 : 0) +
+    (filters.wa20 === 'any' ? 0 : 1)
+  );
 }
 
 function currentShowingCount(): number {
@@ -93,8 +101,13 @@ function renderGemPills(gem: HiddenGem): HTMLElement {
     pill('card__pill', `${sideEmoji(gem.side)} ${SIDE_LABELS[gem.side]}`),
     pill('card__pill', `🛣 ${gem.roadAccessRequired}`),
     pill('card__pill', `🎟 ${permitLabel(gem.permit)}`),
-    pill('card__pill card__pill--good', `✅ Verified ${gem.verifiedAsOf}`),
   ];
+  if (gem.needsWa20Through === true) {
+    items.push(pill('card__pill card__pill--bad', '↻ Needs WA-20 through'));
+  } else if (gem.needsWa20Through === false) {
+    items.push(pill('card__pill card__pill--good', '✓ Reachable w/o WA-20 through'));
+  }
+  items.push(pill('card__pill card__pill--good', `✅ Verified ${gem.verifiedAsOf}`));
   if (gem.status) {
     items.push(pill('card__pill card__pill--bad', `⛔ ${gem.status.label}`));
   }
@@ -211,7 +224,7 @@ function renderGemCard(gem: HiddenGem): HTMLElement {
 interface ChipDef {
   key: string;
   label: string;
-  group: 'side' | 'effort' | 'status';
+  group: 'side' | 'effort' | 'status' | 'wa20';
   isActive: () => boolean;
   toggle: () => void;
 }
@@ -258,16 +271,31 @@ function buildChipDefs(): ChipDef[] {
     },
   });
 
+  const wa20Labels = { any: 'Any', needs: 'Needs WA-20', 'no-wa20': 'No WA-20 needed' } as const;
+  for (const v of ['any', 'needs', 'no-wa20'] as const) {
+    chips.push({
+      key: `wa20-${v}`,
+      label: wa20Labels[v],
+      group: 'wa20',
+      isActive: () => filters.wa20 === v,
+      toggle: () => {
+        filters.wa20 = v;
+        notifyFilters();
+      },
+    });
+  }
+
   return chips;
 }
 
 function renderChipBar(): HTMLElement {
   const chips = buildChipDefs();
-  const groupOrder: ChipDef['group'][] = ['side', 'effort', 'status'];
+  const groupOrder: ChipDef['group'][] = ['side', 'effort', 'wa20', 'status'];
   const groupLabels: Record<ChipDef['group'], string> = {
     side: 'Side',
     effort: 'Effort',
     status: 'Status',
+    wa20: 'WA-20 dependency',
   };
 
   const groups = groupOrder.map((g) => {
@@ -329,6 +357,7 @@ function renderChipBar(): HTMLElement {
       filters.side.clear();
       filters.effort.clear();
       filters.hideClosed = false;
+      filters.wa20 = 'any';
       notifyFilters();
       return;
     }
