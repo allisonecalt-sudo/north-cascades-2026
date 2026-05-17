@@ -1124,6 +1124,46 @@
   font-style: italic;
 }
 
+/* ----------------------------------------------------------------
+ * Activity cards — Airbnb-tier pass (2026-05-17).
+ * Promoted from buried sub-section list-items to full carousel cards.
+ * Cards inherit .card / .card__* + .card-grid base. Side accents per
+ * category, plus an empty-state for when chips kill all rows.
+ * ---------------------------------------------------------------- */
+.card-grid--activities {
+  /* Wider cards than hikes (fewer items + larger photos read better). */
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 720px) {
+  .card-grid--activities {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.activity-card {
+  /* Inherit .card base; add left accent per category. */
+  border-left: 3px solid var(--c-glacier-500);
+}
+.activity-card--water { border-left-color: var(--c-glacier-500); }
+.activity-card--town { border-left-color: var(--c-forest-500, #4a7d5a); }
+.activity-card--wildlife { border-left-color: #b08a3c; }
+.activity-card--general { border-left-color: var(--c-ink-400, #888); }
+
+.activity-card__cost {
+  margin-top: var(--sp-2);
+  color: var(--c-ink-700);
+}
+
+.activities__empty {
+  padding: var(--sp-4);
+  text-align: center;
+  background: var(--c-warm-50);
+  border: 1px dashed var(--c-line);
+  border-radius: var(--radius-md);
+  color: var(--c-ink-600);
+  font-size: var(--fs-sm);
+}
+
 /* ============================================================
  * For Erin
  * ============================================================ */

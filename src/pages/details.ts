@@ -1,13 +1,14 @@
 /**
  * details.ts — overflow page for everything else.
  *
- * Activities, restaurants, bring list, decisions log. Each is short on its
- * own; grouped here to keep the primary nav at 8 pages.
+ * Restaurants, bring list, decisions log. Each is short on its own; grouped
+ * here to keep the primary nav at 8 pages. Activities lifted out to their own
+ * top-level page on 2026-05-17 per Allison's live-site note ("Add activities
+ * and also a lot of missing photos") — readers couldn't find them buried here.
  */
 
 import '../styles/main.css';
 import { mountPageShell, attachNotesToAllSections } from '../page-shell';
-import { renderActivities } from '../sections/activities';
 import { renderRestaurants } from '../sections/restaurants';
 import { renderBring } from '../sections/bring';
 import { renderDecisions } from '../sections/decisions';
@@ -17,11 +18,10 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'details',
     title: 'Details',
-    lede: 'Activities, restaurants, bring list, decisions log — the long tail.',
+    lede: 'Restaurants, bring list, decisions log — the long tail. (Activities live on their own page now.)',
   });
 
   main.append(
-    renderActivities(),
     renderRestaurants(),
     renderBring(),
     renderDecisions(),
