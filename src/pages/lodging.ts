@@ -17,14 +17,13 @@ function mount(): void {
     title: 'Where we sleep',
     lede: 'Real cabin options for each base. 2 beds, 1-2 bedrooms, ~$200-300. Nature-immersed picks lead.',
     imageHero: {
-      // Re-swapped May 17, 2026 (7:40 AM IDT) — Allison reported "no hero
-      // image" on the live site. Prior URL returned 200 in curl but may have
-      // hit Unsplash CDN issues. Switching to one of the verified-bulletproof
-      // photo-fix-agent IDs (the carousel-deck replacement that's known good
-      // across every other lodging card).
-      src: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1920&q=70',
-      alt: 'Wooden cabin deck in summer light, forest behind',
-      credit: 'Photo: Unsplash',
+      // Re-re-swapped May 17, 2026 (8:13 AM IDT) — prior URL loaded fine but
+      // depicted a tropical beach resort, not PNW. Switching to the Diablo
+      // Lake Wikimedia image already used by the costs page (verified
+      // bulletproof + actually depicts North Cascades).
+      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Diablo_Lake_%28Washington_State%29.jpg/1920px-Diablo_Lake_%28Washington_State%29.jpg',
+      alt: 'Diablo Lake turquoise water with surrounding North Cascades peaks',
+      credit: 'Photo: Wikimedia · CC',
       ctaLabel: 'See the cabins',
       ctaHref: '#lodging',
     },

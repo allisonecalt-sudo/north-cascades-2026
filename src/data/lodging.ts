@@ -521,12 +521,15 @@ const PHOTOS = {
     height: 332,
   },
   propSunMountain: {
-    src: 'https://sunmountainlodge.com/wp-content/uploads/2023/11/home-hero.jpg',
-    alt: 'Sun Mountain Lodge — hand reaching toward sunlight through tall Methow Valley pines.',
-    credit: 'Photo: Sun Mountain Lodge (property site)',
+    // Swapped 2026-05-17 — property hot-link returns 200 to curl but is
+    // CORS/referer-blocked in browser. Wikimedia Patterson Lake (the lake
+    // Sun Mountain Lodge sits on) is a better stable depiction anyway.
+    src: 'https://commons.wikimedia.org/wiki/Special:FilePath/PattersonLake_Winthrop.jpg?width=900',
+    alt: 'Patterson Lake near Sun Mountain Lodge, Winthrop — representative.',
+    credit: 'Photo: Wikimedia · Representative — Patterson Lake (Sun Mountain Lodge area)',
     creditUrl: 'https://www.sunmountainlodge.com/',
     width: 900,
-    height: 506,
+    height: 600,
   },
   propSpringCreekRanch: {
     src: 'https://springcreekwinthrop.com/wp-content/uploads/2018/02/welcome_01-960x610.jpg',
@@ -537,9 +540,11 @@ const PHOTOS = {
     height: 610,
   },
   propSpringCreekInterior: {
-    src: 'https://springcreekwinthrop.com/wp-content/uploads/2022/01/scr_slide_4-960x610.jpg',
-    alt: 'Spring Creek Ranch — twin beds in a sunlit cabin bedroom with patchwork quilts.',
-    credit: 'Photo: Spring Creek Ranch (property site)',
+    // Swapped 2026-05-17 — interior hot-link CORS-blocked. Reusing the same
+    // verified Methow River Wikimedia URL the regMethowRiver entry uses.
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Methow_River.JPG/960px-Methow_River.JPG',
+    alt: 'Methow River near Spring Creek Ranch — representative (interior hot-link blocked).',
+    credit: 'Photo: Wikimedia · Representative — Methow River',
     creditUrl: 'https://springcreekwinthrop.com/',
     width: 960,
     height: 610,
