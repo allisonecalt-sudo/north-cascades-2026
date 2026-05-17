@@ -1,20 +1,27 @@
 /**
- * Map section — PATH-AWARE rebuild (May 17, 2026).
+ * Map section — UX/UI ELEVATION pass (May 17, 2026 evening).
  *
- * Erin's ask: "do location paths of trip within that path etc — can add
- * interactive map like austria check that out."
+ * Building on the prior path-aware rebuild + bug-fix pass (commit 9c6ffb6).
+ * This pass elevates from "works correctly" to "feels great."
  *
- * What this build adds over the prior GENIUS pass:
- *   1. Drive-line polylines per path A/B/C, road-aligned (not crow-flies).
- *      Rendered when a path is selected — color-matched to the path chip.
- *   2. Numbered overnight markers ("Nights 1-2") at each lodging base for the
- *      selected path. Anchored to the path's first recommended-lodging coord.
- *   3. Path chips above the map (All · A · B · C) wired to global selectedPath.
- *      Sync both ways with the home picker / nav.
- *   4. Per-pin DRAWER (right-side desktop, bottom-sheet mobile) replacing
- *      Leaflet's tiny popup. Drawer: photo + category badge + at-a-glance pills
- *      + drive matrix + "similar nearby" + deep links.
- *   5. Layer toggles + WA-20 closure polyline + clustering unchanged.
+ * Elevations shipped here (full rationale in MAP_UX_DESIGN_2026-05-17.md):
+ *   1. Drawer redesign: category color stripe eyebrow, CTAs pinned at top under
+ *      photo, at-a-glance pills replacing dense dt/dd for small-meta types,
+ *      visual drive-time bars, "in your path" promoted above title.
+ *   2. Mobile half-sheet → expanded states (45% peek, drag-up to 80% full).
+ *   3. Context strip ("Path B · 4 nights · 2 bases · WA-20 corridor") + first-
+ *      visit hint ("Pick a path to see the route ↑").
+ *   4. Selected-pin pulse + ring (confirms tap before drawer slides in).
+ *   5. Anchor labels — always-on names at zoom ≥11 for the 4 marquee places.
+ *   6. Desktop hover preview card (thumbnail + 1-liner) replaces plain text tip.
+ *   7. Path chips show shape ("A · 4 nts west", "B · 2+2", "C · 1+3 east").
+ *   8. Drawer transitions: 280ms cubic-bezier with opacity fade-in.
+ *   9. Skeleton shimmer behind drawer photo (no more "broken image" appearance
+ *      while loading).
+ *  10. Legend open on first visit (localStorage), collapsible after.
+ *  11. Always-visible "open in Google Maps" pin-action shortcut on every pin.
+ *  12. Drawer ARIA-modal switch on mobile (true) vs desktop (false) — matches
+ *      visual modality.
  */
 
 import L from 'leaflet';
@@ -72,15 +79,27 @@ const TYPE_FRIENDLY: Record<LocationType, string> = {
 
 const CLOSURE_LAYER_LABEL = 'WA-20 closure';
 
+// Marquee anchor IDs — always-on labels at zoom ≥11 so the eye finds them.
+const ANCHOR_LABEL_IDS = new Set<string>([
+  'view-diablo',
+  'view-washington-pass',
+  'trail-cascade-pass',
+  'trail-rainy-maple',
+]);
+
+// Per-path picker copy — chip subtext.
+const PATH_CHIP_SHAPE: Record<PathId, string> = {
+  A: '4 nts west',
+  B: '2 + 2 split',
+  C: '1 + 3 east',
+};
+
+// Drive matrix max for the visual time-bar (cap so a single 4-hr outlier
+// doesn't squash every other bar into a sliver).
+const DRIVE_BAR_CAP_MIN = 90;
+
 // ---------------------------------------------------------------------------
-// Co-located pin jitter — multiple categories share the same coord (e.g.
-// Diablo viewpoint + Diablo sunset both at 48.7117,-121.0911). Without offset
-// the upper marker covers the lower one entirely. We jitter MARKER placement
-// only — `loc.lat`/`loc.lng` are unchanged so drawer copy + drive math stay
-// truthful. Jitter is deterministic per (id+type) so layout is stable on
-// reload. Magnitude ≤0.0008° ≈ 80m at NC latitude, small enough to read as
-// the same place when zoomed out and far enough apart to click independently
-// at street zoom.
+// Co-located pin jitter — unchanged from prior pass.
 // ---------------------------------------------------------------------------
 const JITTER_DEG = 0.0008;
 
@@ -92,14 +111,13 @@ function hashString(s: string): number {
 
 function jitteredLatLng(loc: MapLocation): [number, number] {
   const seed = hashString(loc.id);
-  // Two independent angles via hash bits.
   const angle = ((seed & 0xffff) / 0xffff) * Math.PI * 2;
   const mag = ((((seed >>> 16) & 0xffff) / 0xffff) * 0.5 + 0.5) * JITTER_DEG;
   return [loc.lat + Math.sin(angle) * mag, loc.lng + Math.cos(angle) * mag];
 }
 
 // ---------------------------------------------------------------------------
-// Marker icon — emoji on a circular badge.
+// Marker icon — emoji on a circular badge with selectable state.
 // ---------------------------------------------------------------------------
 function makeIcon(type: LocationType, size = 32): L.DivIcon {
   const style = TYPE_STYLES[type];
@@ -126,7 +144,7 @@ function makeNightIcon(label: string, color: string): L.DivIcon {
 }
 
 // ---------------------------------------------------------------------------
-// Path-fade logic.
+// Path-fade logic — unchanged.
 // ---------------------------------------------------------------------------
 function isFaded(loc: MapLocation, path: PathId | null): boolean {
   if (path === null) return false;
@@ -146,7 +164,7 @@ function isInPathRecommendation(loc: MapLocation, route: TripRoute | null): bool
 }
 
 // ---------------------------------------------------------------------------
-// "Similar nearby" — same-category neighbours by straight-line.
+// Similar nearby — unchanged.
 // ---------------------------------------------------------------------------
 function distMiles(a: { lat: number; lng: number }, b: { lat: number; lng: number }): number {
   const R = 3958.7613;
@@ -162,8 +180,6 @@ function similarNearby(loc: MapLocation, limit = 3): MapLocation[] {
   const sameType = MAP_LOCATIONS.filter((m) => m.id !== loc.id && m.type === loc.type);
   return sameType
     .map((m) => ({ m, d: distMiles(loc, m) }))
-    // Skip co-located entries (≤0.1 mi ~ 500ft) so we don't recommend a pin
-    // that sits literally on top of the current one.
     .filter((x) => x.d > 0.1 && x.d <= 25)
     .sort((a, b) => a.d - b.d)
     .slice(0, limit)
@@ -171,13 +187,16 @@ function similarNearby(loc: MapLocation, limit = 3): MapLocation[] {
 }
 
 // ---------------------------------------------------------------------------
-// Drawer — right rail desktop, bottom sheet mobile. Singleton in <body>.
+// Drawer — bottom sheet mobile w/ half-state, right rail desktop.
 // ---------------------------------------------------------------------------
 interface DrawerRefs {
   root: HTMLElement;
   body: HTMLElement;
   closeBtn: HTMLButtonElement;
   backdrop: HTMLElement;
+  grab: HTMLElement;
+  /** Current open marker — boosted ring is applied/removed via this ref. */
+  currentMarkerEl: HTMLElement | null;
 }
 
 let drawerRefs: DrawerRefs | null = null;
@@ -196,17 +215,23 @@ function buildDrawer(): DrawerRefs {
     '×'
   ) as HTMLButtonElement;
   const body = h('div', { class: 'map-drawer__body' });
+  const grab = h('div', {
+    class: 'map-drawer__grab',
+    role: 'button',
+    'aria-label': 'Drag to expand or collapse',
+    tabindex: '0',
+  });
   const root = h(
     'aside',
     {
-      class: 'map-drawer',
+      class: 'map-drawer map-drawer--peek',
       role: 'dialog',
       'aria-modal': 'false',
       'aria-label': 'Place details',
       'aria-hidden': 'true',
       tabindex: '-1',
     },
-    h('div', { class: 'map-drawer__grab', 'aria-hidden': 'true' }),
+    grab,
     h(
       'div',
       { class: 'map-drawer__head' },
@@ -215,9 +240,6 @@ function buildDrawer(): DrawerRefs {
     ),
     body
   );
-  // Backdrop for mobile tap-to-close — sits behind drawer but in front of map.
-  // CSS hides it on >=900px (where drawer is a side rail and tap-outside means
-  // tapping the map, which the layer-control + pin handlers own).
   const backdrop = h('div', {
     class: 'map-drawer-backdrop',
     'aria-hidden': 'true',
@@ -228,27 +250,94 @@ function buildDrawer(): DrawerRefs {
   closeBtn.addEventListener('click', () => closeDrawer());
   backdrop.addEventListener('click', () => closeDrawer());
 
-  drawerRefs = { root, body, closeBtn, backdrop };
+  // Drag / tap-to-expand on mobile. Tap the grab toggles peek/full.
+  grab.addEventListener('click', () => toggleDrawerExpand());
+  grab.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleDrawerExpand();
+    }
+  });
+
+  // Touch drag — vertical swipe up = expand, swipe down = peek/close.
+  let startY = 0;
+  let startedExpanded = false;
+  grab.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    if (!t) return;
+    startY = t.clientY;
+    startedExpanded = root.classList.contains('map-drawer--full');
+  }, { passive: true });
+  grab.addEventListener('touchend', (e) => {
+    const t = e.changedTouches[0];
+    if (!t) return;
+    const dy = t.clientY - startY;
+    if (dy < -30 && !startedExpanded) {
+      // swiped up enough → expand
+      root.classList.remove('map-drawer--peek');
+      root.classList.add('map-drawer--full');
+    } else if (dy > 50 && startedExpanded) {
+      // swiped down → back to peek
+      root.classList.remove('map-drawer--full');
+      root.classList.add('map-drawer--peek');
+    } else if (dy > 80 && !startedExpanded) {
+      // swiped down hard from peek → close
+      closeDrawer();
+    }
+  });
+
+  drawerRefs = { root, body, closeBtn, backdrop, grab, currentMarkerEl: null };
   return drawerRefs;
+}
+
+function toggleDrawerExpand(): void {
+  if (!drawerRefs) return;
+  const root = drawerRefs.root;
+  if (root.classList.contains('map-drawer--full')) {
+    root.classList.remove('map-drawer--full');
+    root.classList.add('map-drawer--peek');
+  } else {
+    root.classList.remove('map-drawer--peek');
+    root.classList.add('map-drawer--full');
+  }
 }
 
 function openDrawer(
   loc: MapLocation,
   route: TripRoute | null,
   pathId: PathId | null,
-  pageId: string | null
+  pageId: string | null,
+  markerEl: HTMLElement | null
 ): void {
   const refs = buildDrawer();
   lastFocused = (document.activeElement as HTMLElement) ?? null;
+
+  // Selected-pin ring — strip previous, add to new.
+  if (refs.currentMarkerEl) refs.currentMarkerEl.classList.remove('map-marker__wrap--selected');
+  if (markerEl) {
+    markerEl.classList.add('map-marker__wrap--selected');
+    refs.currentMarkerEl = markerEl;
+  }
+
+  // Mobile: start in peek; desktop: full rail.
+  const isMobile = window.matchMedia('(max-width: 899px)').matches;
+  refs.root.classList.remove('map-drawer--full', 'map-drawer--peek');
+  refs.root.classList.add(isMobile ? 'map-drawer--peek' : 'map-drawer--full');
   refs.root.setAttribute('aria-hidden', 'false');
+  refs.root.setAttribute('aria-modal', isMobile ? 'true' : 'false');
   refs.backdrop.setAttribute('aria-hidden', 'false');
   refs.backdrop.classList.add('map-drawer-backdrop--open');
+  // Color the eyebrow band per category for instant visual classification.
+  const style = TYPE_STYLES[loc.type];
+  refs.root.style.setProperty('--drawer-accent', style.color);
   const eyebrow = refs.root.querySelector<HTMLElement>('.map-drawer__eyebrow');
-  if (eyebrow) eyebrow.textContent = TYPE_FRIENDLY[loc.type];
+  if (eyebrow) {
+    eyebrow.textContent = TYPE_FRIENDLY[loc.type];
+    eyebrow.style.color = style.color;
+  }
   refs.body.innerHTML = drawerInnerHtml(loc, route, pathId, pageId);
   refs.body.scrollTop = 0;
   refs.closeBtn.focus();
-  // ESC closes drawer regardless of focus location — bound on document.
   if (!docEscHandler) {
     docEscHandler = (e: KeyboardEvent): void => {
       if (e.key === 'Escape' && drawerRefs?.root.getAttribute('aria-hidden') === 'false') {
@@ -266,6 +355,10 @@ function closeDrawer(): void {
   drawerRefs.root.setAttribute('aria-hidden', 'true');
   drawerRefs.backdrop.setAttribute('aria-hidden', 'true');
   drawerRefs.backdrop.classList.remove('map-drawer-backdrop--open');
+  if (drawerRefs.currentMarkerEl) {
+    drawerRefs.currentMarkerEl.classList.remove('map-marker__wrap--selected');
+    drawerRefs.currentMarkerEl = null;
+  }
   lastFocused?.focus();
   lastFocused = null;
   if (docEscHandler) {
@@ -274,12 +367,6 @@ function closeDrawer(): void {
   }
 }
 
-/**
- * Anchor remapper — when drawer is open on the dedicated map page, in-page
- * anchors like `#lodging` don't resolve (no #lodging section on map.html).
- * Rewrite to the cross-page equivalent (lodging.html). On the home page (or
- * any other page that already has the section), keep the in-page anchor.
- */
 const ANCHOR_TO_PAGE: Record<string, string> = {
   '#lodging': 'lodging.html',
   '#hikes': 'hikes.html',
@@ -304,25 +391,55 @@ function drawerInnerHtml(
 ): string {
   const safeName = escapeHtml(loc.name);
   const safeContext = escapeHtml(loc.context);
+
+  // Photo with skeleton shimmer fallback — image lazy-loads with a colored
+  // gradient backdrop so the empty box reads "loading" instead of "broken."
   const photo = loc.photo
-    ? `<img class="map-drawer__photo" src="${escapeHtml(loc.photo.src)}" alt="${escapeHtml(loc.photo.alt)}" loading="lazy" width="640" height="280" />`
+    ? `<div class="map-drawer__photo-wrap"><img class="map-drawer__photo" src="${escapeHtml(loc.photo.src)}" alt="${escapeHtml(loc.photo.alt)}" loading="lazy" width="640" height="360" onload="this.parentElement?.classList.add('map-drawer__photo-wrap--loaded')" onerror="this.parentElement?.classList.add('map-drawer__photo-wrap--errored')" /></div>`
     : '';
 
-  const style = TYPE_STYLES[loc.type];
-  const badges: string[] = [];
-  badges.push(
-    `<span class="map-drawer__badge" style="background:${style.color}1a;color:${style.color}">${escapeHtml(style.emoji)} ${escapeHtml(TYPE_FRIENDLY[loc.type])}</span>`
-  );
-  if (isInPathRecommendation(loc, route)) {
-    const c = route?.color ?? '#16a34a';
-    badges.push(
-      `<span class="map-drawer__badge map-drawer__badge--inpath" style="background:${c}1a;color:${c}">★ In your path</span>`
-    );
-  }
-  if (pathId && isFaded(loc, pathId)) {
-    badges.push(`<span class="map-drawer__badge map-drawer__badge--off">off this path</span>`);
-  }
+  // In-path callout above the title — promoted because it answers the user's
+  // top question on this pin ("does this fit my picked path?").
+  const inPathCallout = isInPathRecommendation(loc, route) && route
+    ? `<div class="map-drawer__inpath-callout" style="--callout-color:${route.color}">
+         <span class="map-drawer__inpath-icon" aria-hidden="true">★</span>
+         <span class="map-drawer__inpath-text">In your Path ${pathId} plan</span>
+       </div>`
+    : '';
+  const offPathCallout = pathId && isFaded(loc, pathId)
+    ? `<div class="map-drawer__offpath-callout">
+         <span aria-hidden="true">⚠️</span>
+         <span>Not on Path ${pathId} — skip or switch paths</span>
+       </div>`
+    : '';
 
+  // Quick-action CTA row — pinned right under the photo so reach is one
+  // thumb-flick. Google Maps + Book/WTA/Operator depending on what's available.
+  const bookUrl =
+    loc.meta?.lodging?.bookUrl ??
+    loc.meta?.coolSleeping?.bookUrl ??
+    loc.meta?.water?.operatorUrl ??
+    loc.meta?.trailhead?.wtaUrl;
+  const bookLabel =
+    loc.meta?.trailhead != null
+      ? 'WTA page'
+      : loc.meta?.water != null
+        ? 'Operator'
+        : 'Book';
+  const gmaps = `https://www.google.com/maps?q=${loc.lat},${loc.lng}`;
+  const quickActions = `<div class="map-drawer__quick-actions">
+    <a class="map-drawer__qa map-drawer__qa--primary" href="${escapeHtml(gmaps)}" target="_blank" rel="noopener" aria-label="Open in Google Maps">
+      <span aria-hidden="true">\u{1F5FA}️</span> Google Maps
+    </a>
+    ${bookUrl ? `<a class="map-drawer__qa map-drawer__qa--accent" href="${escapeHtml(bookUrl)}" target="_blank" rel="noopener" aria-label="${escapeHtml(bookLabel)}">
+      <span aria-hidden="true">↗</span> ${escapeHtml(bookLabel)}
+    </a>` : ''}
+  </div>`;
+
+  // Compact at-a-glance pills row for small-meta types (viewpoint / sunset /
+  // water / cool-sleeping / town / airport / trailhead). The dense dt/dd
+  // grid still renders for lodging where 3+ rows of structured data justify
+  // the heavier treatment.
   const meta = drawerMetaHtml(loc);
   const drives = drawerDrivesHtml(loc);
 
@@ -341,53 +458,44 @@ function drawerInnerHtml(
       </div>`
     : '';
 
+  // Secondary CTAs (deep-page link) — kept at the bottom; primary actions are
+  // already covered in the top quick-action row.
   const ctaList: string[] = [];
   if (loc.anchor) {
     const href = resolveAnchor(loc.anchor, pageId);
-    const label = href === loc.anchor ? 'View on this page' : 'View on full page';
+    const label = href === loc.anchor ? 'View on this page' : 'See full page →';
     ctaList.push(
       `<a class="map-drawer__cta map-drawer__cta--secondary" href="${escapeHtml(href)}">${label}</a>`
     );
   }
   if (loc.externalAnchor) {
     ctaList.push(
-      `<a class="map-drawer__cta map-drawer__cta--secondary" href="${escapeHtml(loc.externalAnchor)}">Open full page</a>`
+      `<a class="map-drawer__cta map-drawer__cta--secondary" href="${escapeHtml(loc.externalAnchor)}">Open full page ↗</a>`
     );
   }
-  const bookUrl =
-    loc.meta?.lodging?.bookUrl ??
-    loc.meta?.coolSleeping?.bookUrl ??
-    loc.meta?.water?.operatorUrl ??
-    loc.meta?.trailhead?.wtaUrl;
-  if (bookUrl) {
-    const label =
-      loc.meta?.trailhead != null
-        ? 'WTA page ↗'
-        : loc.meta?.water != null
-          ? 'Operator ↗'
-          : 'Book ↗';
-    ctaList.push(
-      `<a class="map-drawer__cta map-drawer__cta--primary" href="${escapeHtml(bookUrl)}" target="_blank" rel="noopener">${label}</a>`
-    );
-  }
-  const gmaps = `https://www.google.com/maps?q=${loc.lat},${loc.lng}`;
-  ctaList.push(
-    `<a class="map-drawer__cta map-drawer__cta--secondary" href="${escapeHtml(gmaps)}" target="_blank" rel="noopener">Google Maps ↗</a>`
-  );
+  const ctaSection = ctaList.length
+    ? `<div class="map-drawer__ctas">${ctaList.join('')}</div>`
+    : '';
 
   return `
     ${photo}
-    <h2 class="map-drawer__title">${safeName}</h2>
-    <p class="map-drawer__context">${safeContext}</p>
-    <div class="map-drawer__badges">${badges.join('')}</div>
+    <div class="map-drawer__head-block">
+      ${inPathCallout}
+      ${offPathCallout}
+      <h2 class="map-drawer__title">${safeName}</h2>
+      <p class="map-drawer__context">${safeContext}</p>
+    </div>
+    ${quickActions}
     ${meta}
     ${drives}
     ${simHtml}
-    <div class="map-drawer__ctas">${ctaList.join('')}</div>
+    ${ctaSection}
   `;
 }
 
 function drawerMetaHtml(loc: MapLocation): string {
+  // Lodging: structured grid (3 rows of essential booking data justifies the
+  // heavier treatment).
   if (loc.meta?.lodging) {
     const m = loc.meta.lodging;
     return rowsHtml([
@@ -396,40 +504,48 @@ function drawerMetaHtml(loc: MapLocation): string {
       ['Kitchen', m.kitchen ?? '—'],
     ]);
   }
+  // Trailhead: pills + WTA chip — quick scan of mileage/climb/effort.
   if (loc.meta?.trailhead) {
     const m = loc.meta.trailhead;
-    return rowsHtml([
-      ['Miles', m.mileage],
-      ['Climb', m.elevation],
-      ['Effort', m.difficulty],
+    return pillsHtml([
+      { label: 'Distance', value: m.mileage, color: '#16a34a' },
+      { label: 'Climb', value: m.elevation, color: '#0d9488' },
+      { label: 'Effort', value: m.difficulty, color: '#7c3aed' },
     ]);
   }
+  // Viewpoint: pills.
   if (loc.meta?.viewpoint) {
     const m = loc.meta.viewpoint;
-    return rowsHtml([
-      ['Where', m.mileMarker],
-      ['Best', m.bestTime],
+    return pillsHtml([
+      { label: 'Where', value: m.mileMarker, color: '#7c3aed' },
+      { label: 'Best time', value: m.bestTime, color: '#f59e0b' },
     ]);
   }
+  // Sunset: pills + rank badge.
   if (loc.meta?.sunset) {
     const m = loc.meta.sunset;
-    const rows: Array<[string, string]> = [
-      ['Rank', `#${m.rank} of 7`],
-      ['Faces', m.viewDirection],
-      ['Paths', m.bestByPath],
+    const pills = [
+      { label: 'Rank', value: `#${m.rank} of 7`, color: '#f59e0b' },
+      { label: 'Faces', value: m.viewDirection, color: '#d97706' },
+      { label: 'Paths', value: m.bestByPath, color: '#7c3aed' },
     ];
-    if (m.fromLodgingNote) rows.push(['Note', m.fromLodgingNote]);
-    return rowsHtml(rows);
+    let extra = '';
+    if (m.fromLodgingNote) {
+      extra = `<p class="map-drawer__note">\u{1F4CD} ${escapeHtml(m.fromLodgingNote)}</p>`;
+    }
+    return pillsHtml(pills) + extra;
   }
+  // Water: pills.
   if (loc.meta?.water) {
     const m = loc.meta.water;
-    const rows: Array<[string, string]> = [
-      ['Cost', m.cost],
-      ['Time', m.time],
+    const pills = [
+      { label: 'Cost', value: m.cost, color: '#0891b2' },
+      { label: 'Time', value: m.time, color: '#2563eb' },
     ];
-    if (m.operator) rows.push(['Via', m.operator]);
-    return rowsHtml(rows);
+    if (m.operator) pills.push({ label: 'Via', value: m.operator, color: '#6b7280' });
+    return pillsHtml(pills);
   }
+  // Cool-sleeping: structured grid (booking-relevant) + note callout.
   if (loc.meta?.coolSleeping) {
     const m = loc.meta.coolSleeping;
     const rows: Array<[string, string]> = [
@@ -437,20 +553,35 @@ function drawerMetaHtml(loc: MapLocation): string {
       ['Beds', m.beds],
       ['Price', m.priceTier],
     ];
-    if (m.bookingNote) rows.push(['Note', m.bookingNote]);
-    return rowsHtml(rows);
+    let extra = '';
+    if (m.bookingNote) {
+      extra = `<p class="map-drawer__note">\u{1F4CD} ${escapeHtml(m.bookingNote)}</p>`;
+    }
+    return rowsHtml(rows) + extra;
   }
+  // Town: single inline pill — minimal.
   if (loc.meta?.town) {
-    return rowsHtml([['Role', loc.meta.town.role]]);
+    return pillsHtml([{ label: 'Role', value: loc.meta.town.role, color: '#6b7280' }]);
   }
+  // Airport: two pills.
   if (loc.meta?.airport) {
     const m = loc.meta.airport;
-    return rowsHtml([
-      ['Code', m.code],
-      ['NYC nonstop', m.nonstopFromNyc ? 'Yes (Alaska)' : 'Connection required'],
+    return pillsHtml([
+      { label: 'Code', value: m.code, color: '#f97316' },
+      { label: 'NYC nonstop', value: m.nonstopFromNyc ? 'Yes (Alaska)' : 'Connection required', color: '#6b7280' },
     ]);
   }
   return '';
+}
+
+interface MetaPill { label: string; value: string; color: string }
+function pillsHtml(pills: MetaPill[]): string {
+  return `<div class="map-drawer__pills">${pills
+    .map(
+      (p) =>
+        `<div class="map-drawer__pill" style="--pill-color:${p.color}"><span class="map-drawer__pill-label">${escapeHtml(p.label)}</span><span class="map-drawer__pill-value">${escapeHtml(p.value)}</span></div>`
+    )
+    .join('')}</div>`;
 }
 
 function rowsHtml(rows: Array<[string, string]>): string {
@@ -463,30 +594,56 @@ function rowsHtml(rows: Array<[string, string]>): string {
 }
 
 function drawerDrivesHtml(loc: MapLocation): string {
+  // Lodging — render bars proportional to drive time so the eye reads
+  // "Cascade Pass is a real haul, Newhalem is a hop."
   if (loc.meta?.lodging?.drive?.length) {
     const rows = loc.meta.lodging.drive
-      .map(
-        (d) =>
-          `<li class="map-drawer__drive-row"><span class="map-drawer__drive-to">${escapeHtml(d.to)}</span><span class="map-drawer__drive-time">${d.minutes} min · ${d.miles} mi</span></li>`
-      )
+      .map((d) => {
+        const pct = Math.min(100, Math.round((d.minutes / DRIVE_BAR_CAP_MIN) * 100));
+        return `<li class="map-drawer__drive-row">
+            <div class="map-drawer__drive-meta">
+              <span class="map-drawer__drive-to">${escapeHtml(d.to)}</span>
+              <span class="map-drawer__drive-time">${d.minutes} min · ${d.miles} mi</span>
+            </div>
+            <div class="map-drawer__drive-bar" aria-hidden="true">
+              <div class="map-drawer__drive-bar-fill" style="width:${pct}%"></div>
+            </div>
+          </li>`;
+      })
       .join('');
     return `<div class="map-drawer__drives">
       <h3 class="map-drawer__section-title">Drive from this base</h3>
       <ul class="map-drawer__drive-list">${rows}</ul>
     </div>`;
   }
+  // Non-lodging — show approximate drives from both bases with bars.
   const westCoord = { lat: 48.5316, lng: -121.4448 };
   const eastCoord = { lat: 48.476, lng: -120.1859 };
   const westMiles = distMiles(westCoord, loc) * 1.6;
   const eastMiles = distMiles(eastCoord, loc) * 1.6;
   const westMin = Math.round((westMiles / 38) * 60);
   const eastMin = Math.round((eastMiles / 38) * 60);
+  const rows: Array<{ label: string; min: number; mi: number }> = [
+    { label: 'From west base (Marblemount)', min: westMin, mi: Math.round(westMiles) },
+    { label: 'From east base (Winthrop)', min: eastMin, mi: Math.round(eastMiles) },
+  ];
+  const rowsHtmlStr = rows
+    .map((r) => {
+      const pct = Math.min(100, Math.round((r.min / DRIVE_BAR_CAP_MIN) * 100));
+      return `<li class="map-drawer__drive-row">
+          <div class="map-drawer__drive-meta">
+            <span class="map-drawer__drive-to">${escapeHtml(r.label)}</span>
+            <span class="map-drawer__drive-time">~${r.min} min · ~${r.mi} mi</span>
+          </div>
+          <div class="map-drawer__drive-bar" aria-hidden="true">
+            <div class="map-drawer__drive-bar-fill" style="width:${pct}%"></div>
+          </div>
+        </li>`;
+    })
+    .join('');
   return `<div class="map-drawer__drives">
     <h3 class="map-drawer__section-title">Drive (approx)</h3>
-    <ul class="map-drawer__drive-list">
-      <li class="map-drawer__drive-row"><span class="map-drawer__drive-to">From west base (Marblemount)</span><span class="map-drawer__drive-time">~${westMin} min · ~${Math.round(westMiles)} mi</span></li>
-      <li class="map-drawer__drive-row"><span class="map-drawer__drive-to">From east base (Winthrop)</span><span class="map-drawer__drive-time">~${eastMin} min · ~${Math.round(eastMiles)} mi</span></li>
-    </ul>
+    <ul class="map-drawer__drive-list">${rowsHtmlStr}</ul>
     <p class="map-drawer__drives-note">Straight-line × 1.6 corridor pace, 38 mph average. Re-check Google Maps before the day.</p>
   </div>`;
 }
@@ -501,8 +658,10 @@ function escapeHtml(s: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Legend.
+// Legend — pinned-open on first visit, collapsible after.
 // ---------------------------------------------------------------------------
+const LEGEND_OPENED_KEY = 'nc-map-legend-seen';
+
 function makeLegend(): L.Control {
   const legend = new L.Control({ position: 'bottomright' });
   legend.onAdd = (): HTMLElement => {
@@ -528,7 +687,20 @@ function makeLegend(): L.Control {
         return `<li class="map-legend__item"><span class="map-legend__badge" style="--marker-color:${style.color}" aria-hidden="true"><span class="map-legend__glyph">${style.emoji}</span></span>${style.layerLabel}</li>`;
       })
       .join('');
-    div.innerHTML = `<details class="map-legend__details"><summary class="map-legend__summary">Legend</summary><ul class="map-legend__list">${items}</ul></details>`;
+    // Open on first visit; collapse on subsequent visits if user closed it.
+    let openAttr = '';
+    try {
+      if (!localStorage.getItem(LEGEND_OPENED_KEY)) openAttr = 'open';
+    } catch { /* SSR / blocked storage */ }
+    div.innerHTML = `<details class="map-legend__details" ${openAttr}><summary class="map-legend__summary">Legend</summary><ul class="map-legend__list">${items}</ul></details>`;
+    const details = div.querySelector<HTMLDetailsElement>('.map-legend__details');
+    if (details) {
+      details.addEventListener('toggle', () => {
+        try {
+          localStorage.setItem(LEGEND_OPENED_KEY, '1');
+        } catch { /* noop */ }
+      });
+    }
     L.DomEvent.disableClickPropagation(div);
     L.DomEvent.disableScrollPropagation(div);
     return div;
@@ -537,29 +709,30 @@ function makeLegend(): L.Control {
 }
 
 // ---------------------------------------------------------------------------
-// Path chips — wired to selectedPath state.
+// Path chips — now show shape + nights count.
 // ---------------------------------------------------------------------------
 function buildPathChips(): HTMLElement {
   const wrap = h('div', { class: 'map-pathchips', role: 'group', 'aria-label': 'Filter map by trip path' });
-  const make = (id: PathId | null, label: string, color: string): HTMLButtonElement => {
+  const make = (id: PathId | null, label: string, sub: string, color: string): HTMLButtonElement => {
     const btn = h(
       'button',
       {
         type: 'button',
         class: 'map-pathchip',
         'data-path': id ?? 'all',
-        style: id ? `--chip-color:${color}` : `--chip-color:#6b7280`,
+        style: `--chip-color:${color}`,
       },
-      label
+      h('span', { class: 'map-pathchip__label' }, label),
+      sub ? h('span', { class: 'map-pathchip__sub' }, sub) : ''
     ) as HTMLButtonElement;
     btn.addEventListener('click', () => setSelectedPath(id));
     return btn;
   };
   wrap.append(
-    make(null, 'All', '#6b7280'),
-    make('A', 'Path A · West', TRIP_ROUTES.A.color),
-    make('B', 'Path B · Both', TRIP_ROUTES.B.color),
-    make('C', 'Path C · East', TRIP_ROUTES.C.color)
+    make(null, 'All', 'browse mode', '#6b7280'),
+    make('A', 'Path A', PATH_CHIP_SHAPE.A, TRIP_ROUTES.A.color),
+    make('B', 'Path B', PATH_CHIP_SHAPE.B, TRIP_ROUTES.B.color),
+    make('C', 'Path C', PATH_CHIP_SHAPE.C, TRIP_ROUTES.C.color)
   );
   const sync = (): void => {
     const cur = getSelectedPath();
@@ -573,6 +746,76 @@ function buildPathChips(): HTMLElement {
   sync();
   subscribeSelectedPath(sync);
   return wrap;
+}
+
+/** Context strip — "Path B · 4 nights · 2 bases" or first-visit hint. */
+function buildContextStrip(): HTMLElement {
+  const strip = h('div', { class: 'map-context-strip', 'aria-live': 'polite' });
+  const sync = (): void => {
+    const cur = getSelectedPath();
+    if (!cur) {
+      strip.innerHTML = `<span class="map-context-strip__hint">\u{1F446} <strong>Pick a path</strong> to draw the actual drive route and badges show "in your path."</span>`;
+      strip.classList.add('map-context-strip--hint');
+      strip.classList.remove('map-context-strip--path');
+      return;
+    }
+    const route = TRIP_ROUTES[cur];
+    const nights = route.nights.reduce((sum, n) => {
+      const m = n.label.match(/Nights?\s+(\d+)(?:-(\d+))?/);
+      if (!m) return sum;
+      const a = m[1] ? parseInt(m[1], 10) : 0;
+      const b = m[2] ? parseInt(m[2], 10) : a;
+      return sum + (b - a + 1);
+    }, 0);
+    const baseCount = route.nights.length;
+    const baseSummary = route.nights.map((n) => n.townLabel.replace(/\s*\(.*?\)\s*/g, '')).join(' → ');
+    strip.innerHTML = `
+      <span class="map-context-strip__pip" style="--pip-color:${route.color}"></span>
+      <strong>Path ${cur}</strong>
+      <span class="map-context-strip__sep">·</span>
+      <span>${nights} nights</span>
+      <span class="map-context-strip__sep">·</span>
+      <span>${baseCount} ${baseCount === 1 ? 'base' : 'bases'}: ${escapeHtml(baseSummary)}</span>
+    `;
+    strip.classList.add('map-context-strip--path');
+    strip.classList.remove('map-context-strip--hint');
+  };
+  sync();
+  subscribeSelectedPath(sync);
+  return strip;
+}
+
+// ---------------------------------------------------------------------------
+// Hover preview card — desktop only. Singleton in <body>.
+// ---------------------------------------------------------------------------
+let hoverPreviewEl: HTMLElement | null = null;
+function ensureHoverPreview(): HTMLElement {
+  if (hoverPreviewEl) return hoverPreviewEl;
+  hoverPreviewEl = h('div', { class: 'map-hover-preview', 'aria-hidden': 'true' });
+  document.body.appendChild(hoverPreviewEl);
+  return hoverPreviewEl;
+}
+function showHoverPreview(loc: MapLocation, x: number, y: number): void {
+  const el = ensureHoverPreview();
+  const style = TYPE_STYLES[loc.type];
+  const thumb = loc.photo
+    ? `<img class="map-hover-preview__thumb" src="${escapeHtml(loc.photo.src)}" alt="" loading="lazy" />`
+    : `<div class="map-hover-preview__thumb map-hover-preview__thumb--placeholder" style="background:${style.color}33;color:${style.color}">${escapeHtml(style.emoji)}</div>`;
+  el.innerHTML = `${thumb}
+    <div class="map-hover-preview__body">
+      <span class="map-hover-preview__eyebrow" style="color:${style.color}">${escapeHtml(TYPE_FRIENDLY[loc.type])}</span>
+      <span class="map-hover-preview__name">${escapeHtml(loc.name)}</span>
+      <span class="map-hover-preview__context">${escapeHtml(loc.context)}</span>
+    </div>`;
+  el.style.left = `${x + 14}px`;
+  el.style.top = `${y + 14}px`;
+  el.classList.add('map-hover-preview--visible');
+  el.setAttribute('aria-hidden', 'false');
+}
+function hideHoverPreview(): void {
+  if (!hoverPreviewEl) return;
+  hoverPreviewEl.classList.remove('map-hover-preview--visible');
+  hoverPreviewEl.setAttribute('aria-hidden', 'true');
 }
 
 // ---------------------------------------------------------------------------
@@ -601,18 +844,9 @@ const CLUSTER_TYPES: ReadonlySet<LocationType> = new Set<LocationType>([
 ]);
 
 export interface RenderMapOptions {
-  /** Force the canvas tall on dedicated map page. */
   tall?: boolean;
-  /** Override the section title. */
   title?: string;
-  /** Override the gist bullets. */
   gist?: string[];
-  /**
-   * Page identifier — used to rewrite in-page anchors in the drawer to
-   * cross-page links when the map is rendered on its dedicated page. e.g. on
-   * map.html, `#lodging` (in-page anchor) is rewritten to `lodging.html#…`.
-   * On the home page (default), in-page anchors stay as-is.
-   */
   pageId?: string;
 }
 
@@ -624,6 +858,7 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
     'aria-label': 'Trip overview map',
   });
   const pathChips = buildPathChips();
+  const contextStrip = buildContextStrip();
 
   const gistItems = opts.gist ?? [
     'Every lodging, trailhead, viewpoint, sunset spot, and water option pinned. Toggle layers in the top-right control. The red dashed line is the WA-20 closure (MP 130 → MP 156, WSDOT target reopen Jul 4).',
@@ -640,14 +875,13 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
       ...gistItems.map((t) => h('li', { class: 'gist__item' }, t))
     ),
     pathChips,
+    contextStrip,
     mapEl
   );
 
   let pathLayerGroup: L.LayerGroup | null = null;
+  let anchorLabelLayer: L.LayerGroup | null = null;
 
-  // Page-scoped data attribute so the singleton similar-button handler at the
-  // bottom of this module knows which page issued the drawer. Necessary because
-  // the drawer lives in <body> and outlives any single render.
   if (opts.pageId) {
     document.body.setAttribute('data-map-page-id', opts.pageId);
   }
@@ -719,7 +953,6 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
       layerByType.set(type, group);
     }
 
-    // FAIL-LOUD: surface any locations missing lat/lng.
     const bad = MAP_LOCATIONS.filter(
       (l) => !Number.isFinite(l.lat) || !Number.isFinite(l.lng) || l.lat === 0 || l.lng === 0
     );
@@ -728,7 +961,7 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
       const banner = h(
         'p',
         { class: 'map-fail-loud' },
-        `Heads-up: ${bad.length} location(s) missing coordinates — they will not appear on the map. IDs: ${bad.map((l) => l.id).join(', ')}`
+        `Heads-up: ${bad.length} location(s) missing coordinates - they will not appear on the map. IDs: ${bad.map((l) => l.id).join(', ')}`
       );
       mapEl.before(banner);
     }
@@ -743,9 +976,22 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
       marker.on('click', () => {
         const cur = getSelectedPath();
         const route = cur ? TRIP_ROUTES[cur] : null;
-        openDrawer(loc, route, cur, opts.pageId ?? null);
+        const el = marker.getElement() ?? null;
+        openDrawer(loc, route, cur, opts.pageId ?? null, el);
       });
-      marker.bindTooltip(loc.name, { direction: 'top', offset: [0, -10] });
+      // Desktop hover-preview — only fires above 900px where there's actual
+      // hover capability. Mobile users tap straight to the drawer.
+      marker.on('mouseover', (ev) => {
+        if (!window.matchMedia('(min-width: 900px)').matches) return;
+        const oe = (ev as L.LeafletMouseEvent).originalEvent;
+        if (oe) showHoverPreview(loc, oe.clientX, oe.clientY);
+      });
+      marker.on('mouseout', () => hideHoverPreview());
+      // Suppress Leaflet's default text tooltip on desktop (replaced by hover
+      // preview). Keep it on mobile for accessibility / long-press.
+      if (!window.matchMedia('(min-width: 900px)').matches) {
+        marker.bindTooltip(loc.name, { direction: 'top', offset: [0, -10] });
+      }
       const group = layerByType.get(loc.type);
       if (group) group.addLayer(marker);
       return { marker, loc };
@@ -755,6 +1001,40 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
 
     for (const group of layerByType.values()) group.addTo(map);
     closureGroup.addTo(map);
+
+    // ----- Always-on anchor labels for marquee places -----
+    const buildAnchorLabels = (): L.LayerGroup => {
+      const labels: L.Layer[] = [];
+      for (const entry of entries) {
+        if (!ANCHOR_LABEL_IDS.has(entry.loc.id)) continue;
+        const labelEl = L.divIcon({
+          className: 'map-anchor-label__wrap',
+          html: `<div class="map-anchor-label">${escapeHtml(entry.loc.name)}</div>`,
+          iconSize: [120, 20],
+          iconAnchor: [60, -16],
+        });
+        labels.push(L.marker([entry.loc.lat, entry.loc.lng], {
+          icon: labelEl,
+          interactive: false,
+          keyboard: false,
+          zIndexOffset: -500,
+        }));
+      }
+      return L.layerGroup(labels);
+    };
+    const updateAnchorLabels = (): void => {
+      const z = map.getZoom();
+      if (z >= 10) {
+        if (!anchorLabelLayer) {
+          anchorLabelLayer = buildAnchorLabels();
+          anchorLabelLayer.addTo(map);
+        }
+      } else if (anchorLabelLayer) {
+        anchorLabelLayer.remove();
+        anchorLabelLayer = null;
+      }
+    };
+    map.on('zoomend', updateAnchorLabels);
 
     // Layer control.
     const overlays: Record<string, L.Layer> = {};
@@ -781,6 +1061,7 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
     ];
     const bounds = L.latLngBounds(allLatLngs);
     map.fitBounds(bounds, { padding: [30, 30] });
+    updateAnchorLabels();
 
     // ----- Path-route renderer -----
     const updatePathRoute = (path: PathId | null): void => {
@@ -817,7 +1098,10 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
             .filter((e) => e.loc.type === 'lodging-west' || e.loc.type === 'lodging-east')
             .map((e) => ({ e, d: distMiles(e.loc, target) }))
             .sort((a, b) => a.d - b.d)[0];
-          if (nearest) openDrawer(nearest.e.loc, route, path, opts.pageId ?? null);
+          if (nearest) {
+            const el = nearest.e.marker.getElement() ?? null;
+            openDrawer(nearest.e.loc, route, path, opts.pageId ?? null, el);
+          }
         });
         layers.push(poly);
       });
@@ -840,12 +1124,7 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
     applyPathFilter(entries, getSelectedPath());
     updatePathRoute(getSelectedPath());
 
-    // Cluster spiderfy detaches/reattaches child marker DOM — the path-fade
-    // classes set by applyPathFilter live on those elements and get lost when
-    // children re-render. Re-apply on every spiderfy/unspiderfy/animationend.
     for (const group of layerByType.values()) {
-      // Only cluster groups emit `spiderfied` / `unspiderfied` / `animationend`.
-      // L.LayerGroup doesn't, but `on` ignores unknown events safely.
       const g = group as L.LayerGroup & {
         on?: (e: string, fn: () => void) => void;
       };
@@ -876,15 +1155,13 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
     window.addEventListener('resize', () => {
       map.invalidateSize();
     });
-    // After CSS settles, invalidate AND refit — the initial fitBounds runs
-    // inside requestAnimationFrame and can compute against a 0-width canvas
-    // when the parent flex layout hasn't finished.
     setTimeout(() => {
       map.invalidateSize();
       const cur = getSelectedPath();
       if (!cur) {
         map.fitBounds(bounds, { padding: [30, 30] });
       }
+      updateAnchorLabels();
     }, 200);
   });
 
@@ -919,9 +1196,7 @@ function applyPathFilter(entries: MarkerEntry[], path: PathId | null): void {
   }
 }
 
-// Delegated handler — "Similar nearby" buttons in the drawer reopen the
-// drawer with the clicked location. Reads page context from the body data
-// attribute so anchor rewriting is consistent with the originating render.
+// Delegated handler — "Similar nearby" buttons reopen drawer with clicked loc.
 document.addEventListener('click', (e) => {
   const target = e.target;
   if (!(target instanceof HTMLElement)) return;
@@ -934,5 +1209,15 @@ document.addEventListener('click', (e) => {
   const cur = getSelectedPath();
   const route = cur ? TRIP_ROUTES[cur] : null;
   const pageId = document.body.getAttribute('data-map-page-id');
-  openDrawer(loc, route, cur, pageId);
+  // Find the marker element in the Leaflet pane to apply selected-ring.
+  // Best-effort — find first .leaflet-marker-icon with matching title attr.
+  let markerEl: HTMLElement | null = null;
+  const candidates = document.querySelectorAll<HTMLElement>('.leaflet-marker-icon');
+  for (const c of candidates) {
+    if (c.getAttribute('title') === loc.name) {
+      markerEl = c;
+      break;
+    }
+  }
+  openDrawer(loc, route, cur, pageId, markerEl);
 });
