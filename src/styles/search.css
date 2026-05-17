@@ -1,0 +1,409 @@
+/*
+ * search.css — global Cmd/Ctrl + / search overlay styles.
+ *
+ * Mobile-first (Pixel 7 Pro XL 412×892). Full-screen panel on phones,
+ * floating modal on desktop ≥720px. Inline variant for /search.html mounts
+ * the same panel as a static block inside the main column.
+ *
+ * Cmd+K stays bound to the notes widget — the search shortcut is Cmd/Ctrl + /.
+ *
+ * z-index plan (avoid clobbering existing chrome):
+ *   - notes-modal-backdrop:      1000  (notes-button.ts)
+ *   - search-overlay (floating):  990  (just under notes modal so a note
+ *                                       can still pop above a search result)
+ *   - global-fab:                 998  (existing FAB)
+ *   - search-overlay--inline:    auto  (rendered in normal flow)
+ */
+
+/* ──────────────────────────────────────────────────────────────
+ * Floating dialog mode — Cmd/Ctrl + / overlay.
+ * ────────────────────────────────────────────────────────────── */
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 990;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.search-overlay--open {
+  pointer-events: auto;
+}
+
+.search-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 42, 34, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.search-overlay__panel {
+  position: relative;
+  z-index: 1;
+  background: var(--c-warm-50);
+  width: 100%;
+  max-width: 720px;
+  margin-top: 0;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0;
+  box-shadow: var(--shadow-lg);
+  font-family: var(--font-stack);
+  color: var(--c-ink-900);
+}
+
+@media (min-width: 720px) {
+  .search-overlay {
+    align-items: flex-start;
+    padding-top: 6vh;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .search-overlay__panel {
+    border-radius: var(--radius-lg);
+    max-height: calc(100dvh - 12vh);
+  }
+}
+
+/* When the body has search-overlay-open, freeze background scroll. */
+body.search-overlay-open {
+  overflow: hidden;
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Inline mode — /search.html dedicated page.
+ * ────────────────────────────────────────────────────────────── */
+
+.search-overlay--inline {
+  position: static;
+  pointer-events: auto;
+  display: block;
+}
+
+.search-overlay--inline .search-overlay__backdrop {
+  display: none;
+}
+
+.search-overlay--inline .search-overlay__panel {
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  max-height: none;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--c-line);
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Header / input.
+ * ────────────────────────────────────────────────────────────── */
+
+.search-overlay__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--c-line);
+  background: var(--c-warm-50);
+}
+
+.search-overlay__input-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.85rem;
+  background: var(--c-warm-100);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search-overlay__input-wrap:focus-within {
+  border-color: var(--c-forest-500);
+  box-shadow: 0 0 0 3px rgba(45, 132, 102, 0.18);
+}
+
+.search-overlay__icon {
+  font-size: 1rem;
+  color: var(--c-ink-500);
+  flex-shrink: 0;
+}
+
+.search-overlay__input {
+  flex: 1;
+  font: inherit;
+  font-size: 1.05rem;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--c-ink-900);
+  min-width: 0;
+}
+
+.search-overlay__input::placeholder {
+  color: var(--c-ink-400);
+}
+
+/* Hide the native search clear-X on Chrome/Safari since we have our own. */
+.search-overlay__input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-overlay__close {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--c-line);
+  border-radius: 999px;
+  font-size: 1rem;
+  color: var(--c-ink-500);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.search-overlay__close:hover {
+  background: var(--c-warm-100);
+  color: var(--c-ink-900);
+}
+
+.search-overlay__close:focus-visible {
+  outline: 2px solid var(--c-forest-600);
+  outline-offset: 2px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Count line + results scroll area.
+ * ────────────────────────────────────────────────────────────── */
+
+.search-overlay__count {
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+  border-bottom: 1px solid var(--c-line);
+  background: var(--c-warm-50);
+}
+
+.search-overlay__results {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+  background: var(--c-warm-50);
+}
+
+.search-overlay--inline .search-overlay__results {
+  max-height: 70dvh;
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Group + row.
+ * ────────────────────────────────────────────────────────────── */
+
+.search-group {
+  padding: 0.4rem 0 0.6rem;
+}
+
+.search-group__title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.4rem 1rem 0.25rem;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-forest-600);
+}
+
+.search-group__count {
+  margin-left: auto;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--c-ink-500);
+  background: var(--c-warm-100);
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+}
+
+.search-group__rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  text-decoration: none;
+  color: inherit;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  min-height: 64px;
+}
+
+.search-row:hover,
+.search-row--active {
+  background: var(--c-good-bg);
+  border-top-color: var(--c-good-border);
+  border-bottom-color: var(--c-good-border);
+}
+
+.search-row:focus-visible {
+  outline: 2px solid var(--c-forest-600);
+  outline-offset: -2px;
+}
+
+.search-row__icon {
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  width: 1.8rem;
+  text-align: center;
+}
+
+.search-row__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.search-row__top {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.search-row__name {
+  font-weight: 600;
+  font-size: var(--fs-base);
+  color: var(--c-ink-900);
+  word-break: break-word;
+}
+
+.search-row__region {
+  font-size: 0.78rem;
+  color: var(--c-ink-500);
+  font-weight: 500;
+}
+
+.search-row__desc {
+  font-size: 0.85rem;
+  color: var(--c-ink-700);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.search-row__open {
+  flex-shrink: 0;
+  color: var(--c-ink-400);
+  font-size: 1.1rem;
+  align-self: center;
+}
+
+.search-row:hover .search-row__open,
+.search-row--active .search-row__open {
+  color: var(--c-forest-700);
+}
+
+.search-empty {
+  padding: 1.5rem 1rem;
+  color: var(--c-ink-500);
+  text-align: center;
+  font-size: var(--fs-sm);
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Footer (keyboard hint strip).
+ * ────────────────────────────────────────────────────────────── */
+
+.search-overlay__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0.55rem 1rem;
+  border-top: 1px solid var(--c-line);
+  background: var(--c-warm-100);
+  font-size: 0.75rem;
+  color: var(--c-ink-500);
+}
+
+.search-overlay__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.search-overlay__footer kbd {
+  font-family: inherit;
+  font-size: 0.7rem;
+  padding: 0.05rem 0.4rem;
+  background: var(--c-warm-50);
+  border: 1px solid var(--c-line);
+  border-radius: 4px;
+  color: var(--c-ink-700);
+  margin-right: 0.15rem;
+}
+
+.search-overlay__footer-spacer {
+  flex: 1;
+}
+
+.search-overlay__shortcut {
+  font-weight: 600;
+  color: var(--c-forest-600);
+}
+
+/* Hide footer keyboard hints on mobile — they're not useful with a
+ * touch keyboard. Keep the Cmd+/ shortcut hint visible. */
+@media (max-width: 540px) {
+  .search-overlay__hint {
+    display: none;
+  }
+}
+
+/* Search intro on /search.html standalone page. */
+.search-intro__lede {
+  font-size: var(--fs-base);
+  color: var(--c-ink-700);
+  margin: 0 0 0.6rem;
+  line-height: 1.55;
+}
+
+.search-intro__lede kbd {
+  font-family: inherit;
+  font-size: 0.78rem;
+  padding: 0.05rem 0.35rem;
+  background: var(--c-warm-100);
+  border: 1px solid var(--c-line);
+  border-radius: 4px;
+  color: var(--c-ink-700);
+  margin: 0 0.1rem;
+}
+
+.search-intro__meta {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-500);
+  margin: 0 0 0.4rem;
+}
