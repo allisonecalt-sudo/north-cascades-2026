@@ -2514,3 +2514,269 @@ a.not-fit-list__name:focus {
   align-items: center;
   gap: var(--sp-2);
 }
+
+/* ────────────────────────────────────────────────────────────
+   Pre-trip — milestone cards (rebuilt 2026-05-17 PM)
+   Mobile-first (412px target). Stacks single-column on phones,
+   2-up on >=720px. Existing .pre-trip__countdown / .pre-trip__progress
+   styles still live in components.css and feed the sticky top bar.
+   ──────────────────────────────────────────────────────────── */
+
+.pre-trip__progress-percent {
+  flex: 0 0 auto;
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+  margin-left: 0.3rem;
+}
+
+.pre-trip__phase {
+  margin: var(--sp-5) 0;
+}
+
+.pre-trip__phase-head {
+  padding: 0 0 var(--sp-2);
+  border-bottom: 1px solid var(--c-line);
+  margin-bottom: var(--sp-3);
+}
+
+.pre-trip__phase-title {
+  margin: 0;
+  font-size: var(--fs-lg, 1.05rem);
+  color: var(--c-forest-800, #1f3b2a);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+.pre-trip__phase-blurb {
+  margin: 0.35rem 0 0;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-600, #4a5560);
+  line-height: 1.5;
+}
+
+.pre-trip__phase-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-3);
+}
+
+@media (min-width: 720px) {
+  .pre-trip__phase-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.pre-trip__milestone {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-left: 4px solid var(--c-ink-400);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  transition: opacity 160ms ease, border-color 160ms ease;
+}
+
+/* Urgency tones — match the home trip-state palette */
+.pre-trip__milestone--now {
+  border-left-color: #c4393a;
+  background: linear-gradient(180deg, #fdecec 0%, white 70%);
+}
+.pre-trip__milestone--soon {
+  border-left-color: #e08e3a;
+}
+.pre-trip__milestone--future {
+  border-left-color: var(--c-ink-400);
+}
+.pre-trip__milestone--past {
+  border-left-color: var(--c-warn-border, #c4393a);
+  background: var(--c-warn-bg, #fdecec);
+}
+.pre-trip__milestone--done {
+  border-left-color: var(--c-forest-500, #4a8a5e);
+}
+.pre-trip__milestone--all-done {
+  opacity: 0.62;
+  border-left-color: var(--c-forest-500, #4a8a5e);
+  background: #f0f6f1;
+}
+
+.pre-trip__milestone-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--sp-2);
+}
+
+.pre-trip__milestone-headline {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.pre-trip__milestone-date {
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500, #6a7480);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.pre-trip__milestone-title {
+  margin: 0.2rem 0 0;
+  font-size: var(--fs-base, 1rem);
+  font-weight: 700;
+  color: var(--c-ink-900, #1a1f24);
+  line-height: 1.25;
+}
+
+.pre-trip__milestone-countdown {
+  flex: 0 0 auto;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: var(--c-ink-100, #eef0f3);
+  color: var(--c-ink-700, #2a333d);
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.pre-trip__milestone-countdown--now {
+  background: #c4393a;
+  color: white;
+}
+.pre-trip__milestone-countdown--soon {
+  background: #e08e3a;
+  color: white;
+}
+.pre-trip__milestone-countdown--future {
+  background: var(--c-ink-100, #eef0f3);
+  color: var(--c-ink-700, #2a333d);
+}
+.pre-trip__milestone-countdown--past {
+  background: var(--c-warn-border, #c4393a);
+  color: white;
+}
+.pre-trip__milestone-countdown--done {
+  background: var(--c-forest-500, #4a8a5e);
+  color: white;
+}
+
+.pre-trip__milestone-action {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700, #2a333d);
+  line-height: 1.5;
+}
+
+.pre-trip__sub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pre-trip__sub {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.45rem 0.55rem;
+  background: var(--c-warm-50, #faf8f4);
+  border-radius: var(--radius-sm, 6px);
+  border-left: 2px solid transparent;
+  transition: opacity 150ms ease, background 150ms ease;
+}
+
+.pre-trip__sub--done {
+  opacity: 0.55;
+  background: #f0f3f1;
+  border-left-color: var(--c-forest-500, #4a8a5e);
+}
+
+.pre-trip__sub--done .pre-trip__sub-label {
+  text-decoration: line-through;
+  color: var(--c-ink-500, #6a7480);
+}
+
+.pre-trip__sub-checkbox {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: var(--c-forest-700, #2a5d3c);
+}
+
+.pre-trip__sub-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.pre-trip__sub-label {
+  font-size: var(--fs-sm, 0.92rem);
+  color: var(--c-ink-800, #1f262d);
+  line-height: 1.4;
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.pre-trip__sub-hint {
+  margin: 0;
+  font-size: var(--fs-xs, 0.78rem);
+  color: var(--c-ink-500, #6a7480);
+  line-height: 1.45;
+  font-style: italic;
+  word-break: break-word;
+}
+
+.pre-trip__milestone-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-2);
+  padding-top: 0.3rem;
+  border-top: 1px dashed var(--c-line);
+  margin-top: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.pre-trip__milestone-progress {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-500, #6a7480);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.pre-trip__milestone-links {
+  display: inline-flex;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pre-trip__milestone-link {
+  font-size: var(--fs-xs, 0.82rem);
+  color: var(--c-glacier-700, #1f5a76);
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+  font-weight: 600;
+}
+
+.pre-trip__milestone-link--secondary {
+  color: var(--c-ink-600, #4a5560);
+}
+
+.pre-trip__milestone-link:hover,
+.pre-trip__milestone-link:focus-visible {
+  color: var(--c-forest-800, #1f3b2a);
+  outline: none;
+}

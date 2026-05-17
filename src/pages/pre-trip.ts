@@ -1,8 +1,11 @@
 /**
- * pre-trip.ts — countdown checklist page entrypoint.
+ * pre-trip.ts — pre-trip milestone-checklist page entrypoint.
  *
- * localStorage-backed checkbox state. 7 groups, ~27 tasks. Banner countdown
- * to Aug 16, 2026 + windows-open-now / overdue / future tagging per task.
+ * Rebuilt 2026-05-17 PM: this is now the booking-week / pre-departure trigger
+ * page Allison opens. 10 date-anchored milestones (lodging Jun 15, WSDOT
+ * Jun 25, flights Jul 10, rental Jul 15, kosher Aug 2, kitchen Aug 2, final
+ * WSDOT Aug 14, pack Aug 14-15, day-of Aug 16) grouped into 5 phases, each
+ * with concrete subtasks and per-subtask localStorage state.
  */
 
 import '../styles/main.css';
@@ -14,12 +17,12 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'pre-trip',
     title: 'Pre-trip checklist',
-    lede: 'Countdown + checkbox state saved to your device. Re-open any time; what you checked stays checked.',
+    lede: '10 milestones, 5 phases — from lodging book-by (Jun 15) through day-of departure (Aug 16). Tick subtasks off as you go; state is saved to your device.',
     imageHero: {
       src: 'https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?auto=format&fit=crop&w=1920&q=70',
       alt: 'Hiking gear, boots, and a packed backpack laid out on a wooden floor',
       credit: 'Photo: Holly Mandarich / Unsplash',
-      ctaLabel: 'Start the checklist',
+      ctaLabel: 'Jump to milestones',
       ctaHref: '#pre-trip',
     },
   });

@@ -1,267 +1,464 @@
 /**
- * pre-trip.ts — countdown checklist with localStorage state.
+ * pre-trip.ts — date-anchored MILESTONE checklist for the booking-week and
+ * pre-departure run-up.
  *
- * Per TRAVEL.md section 1: pre-trip prep tasks per category (book flights /
- * lodging / rental, kosher pantry, pack, verify scope, US trip carve-outs).
+ * Rewritten 2026-05-17 PM: replaced the days-out "window" schema with a
+ * milestone+subitem schema mirroring the home-page trip-state widget. Each
+ * milestone has a hard calendar date (anchored to the trip-state.ts dates so
+ * they don't drift), a phase, an action summary, an optional linked-page CTA,
+ * and 2-6 concrete subitems Allison can tick off.
  *
- * The view persists checkbox state per task-id under localStorage key
- * `nc2026.preTripChecks` so revisiting the page shows what's already done.
+ * localStorage state lives under `ncades2026.pretrip.{milestone-id}.{subitem-id}`
+ * — one key per subitem so partial progress survives reloads and a future
+ * cross-device sync (or a Supabase mirror) can iterate item-by-item.
  *
- * Trip is Sun Aug 16, 2026. Today (May 17, 2026) = ~91 days out. Each task has
- * a `daysOut` band that the page can highlight when the window opens.
+ * Source of truth for the milestone DATES is `sections/trip-state.ts`. If the
+ * Jun 25 WSDOT target slips again, fix it there + here.
  */
 
-export interface PreTripTask {
-  /** Stable id for localStorage key. NEVER change once shipped. */
+/** Milestone phase grouping. Cards stack into these buckets in render order. */
+export type Phase =
+  | 'booking-week-1' // Lodging + path lock-in (Jun 15)
+  | 'booking-week-2' // WSDOT confirm + re-check + flights + rental (Jun 25 – Jul 15)
+  | 'two-weeks-out' // Kosher sweep + kitchen confirm (Aug 2)
+  | 'final-week' // Last WSDOT call + pack (Aug 14-15)
+  | 'day-of'; // Departure (Aug 16)
+
+export const PHASE_TITLE: Record<Phase, string> = {
+  'booking-week-1': 'Booking week — lodging lock',
+  'booking-week-2': 'Booking week 2 — road, flights, car',
+  'two-weeks-out': 'Two weeks out — verify the booked-thing-is-the-real-thing',
+  'final-week': 'Final week — last calls + pack',
+  'day-of': 'Day-of — departure',
+};
+
+export const PHASE_BLURB: Record<Phase, string> = {
+  'booking-week-1':
+    'Lodging holds the trip together. Lock it first — even before WSDOT confirms, free-cancellation properties stay flexible.',
+  'booking-week-2':
+    'Once WSDOT confirms WA-20 reopen, you have ~2-3 weeks to walk the rest: re-check stale dates, lock flights, lock the rental.',
+  'two-weeks-out':
+    'Two weeks before the trip is when assumptions need a phone call. Kosher hours, kitchen scope, anything you treated as static.',
+  'final-week':
+    'Final WSDOT call + a real pack. Screenshot anything that needs to work offline (road status, day-1 itinerary).',
+  'day-of': 'Last morning before you leave for the airport.',
+};
+
+export interface Subitem {
+  /** Stable id under the milestone. NEVER change once shipped. */
   id: string;
+  /** Visible label. Imperative voice — concrete physical action. */
   label: string;
-  /** Why this matters — surfaces in the row body. */
-  why: string;
-  /** Earliest sensible date — for the "this opens N days out" highlight. */
-  earliestDaysOut: number;
-  /** Latest reasonable date — for "this should be done by N days out" stress. */
-  latestDaysOut: number;
-  /** Optional link (booking site, doc page). */
-  link?: { label: string; url: string };
+  /** Optional one-line hint (script, contact, address, etc.). */
+  hint?: string;
 }
 
-export interface PreTripGroup {
-  group: string;
-  /** Short description of the group's purpose. */
-  blurb: string;
-  tasks: PreTripTask[];
+export interface MilestoneLink {
+  label: string;
+  /** Absolute URL or relative .html slug within the site. */
+  url: string;
 }
 
-export const PRE_TRIP_GROUPS: PreTripGroup[] = [
+export interface Milestone {
+  /** Stable id — used as localStorage key prefix. NEVER change once shipped. */
+  id: string;
+  /** Phase bucket — controls render grouping. */
+  phase: Phase;
+  /** Short headline. ~5-8 words. */
+  title: string;
+  /** ISO calendar date (Pacific-time interpretation handled in render). */
+  date: string;
+  /** Display date — formatted for human eyes. */
+  dateLabel: string;
+  /** One-sentence action summary surfaced under the title. */
+  action: string;
+  /** Concrete physical subitems Allison ticks off. 2-6 each. */
+  subitems: Subitem[];
+  /** Optional linked CTA — sibling site page or external URL. */
+  link?: MilestoneLink;
+  /** Optional second link (e.g. phone-script + page). */
+  secondaryLink?: MilestoneLink;
+}
+
+/**
+ * 10 milestones. Dates anchored to sections/trip-state.ts. If you change a
+ * date here, also update it there (the home widget reads from trip-state.ts).
+ */
+export const MILESTONES: Milestone[] = [
+  // ── Phase 1: booking week (lodging) ──
   {
-    group: 'Bookings (lock these first)',
-    blurb: 'Aug peak — flights + lodging + rental all spike if booked late.',
-    tasks: [
+    id: 'lodging-book',
+    phase: 'booking-week-1',
+    title: 'Lodging book-by',
+    date: '2026-06-15',
+    dateLabel: 'Mon Jun 15, 2026',
+    action:
+      'Book the 2 chosen lodgings per the picked path (A = 1 base / B = 2 bases / C = 2 split).',
+    subitems: [
+      {
+        id: 'confirm-path',
+        label: 'Confirm the path with Erin (A / B / C / D / E) before booking',
+        hint: 'See /how-to.html — Path D = west-only Plan B if WA-20 stays closed.',
+      },
+      {
+        id: 'verify-free-cancel',
+        label: 'Verify each property is free-cancellation through Jul 15',
+        hint: 'If not free-cancel, hold off until WSDOT call on Jun 25.',
+      },
+      {
+        id: 'book-property-1',
+        label: 'Book property #1 + save confirmation number',
+        hint: 'Paste the confirmation into the booked-row notes below.',
+      },
+      {
+        id: 'book-property-2',
+        label: 'Book property #2 (if Path B or C) + save confirmation number',
+      },
+      {
+        id: 'photograph-confirmations',
+        label: 'Screenshot each booking confirmation (offline backup)',
+      },
+      {
+        id: 'save-kitchen-claim',
+        label: 'Save the listing\'s "full kitchen" claim text per property',
+        hint: 'For the Aug 2 phone confirmation script.',
+      },
+    ],
+    link: { label: 'Lodging shortlist', url: 'lodging.html' },
+  },
+
+  // ── Phase 2: booking week 2 ──
+  {
+    id: 'wsdot-call',
+    phase: 'booking-week-2',
+    title: 'WSDOT confirmation call',
+    date: '2026-06-25',
+    dateLabel: 'Thu Jun 25, 2026',
+    action:
+      'Call WSDOT 1-800-695-7623 to confirm WA-20 is open through the park (mid-corridor MP 130-156).',
+    subitems: [
+      {
+        id: 'call-wsdot',
+        label: 'Call 1-800-695-7623 — ask: "Is WA-20 open between MP 130 and MP 156?"',
+      },
+      {
+        id: 'log-answer',
+        label: 'Log the answer (open / partial / closed) + the date confirmed',
+      },
+      {
+        id: 'check-live-page',
+        label: 'Cross-check the live WSDOT pass page after the call',
+        hint: 'https://wsdot.com/travel/real-time/mountainpasses/north-cascades-highway',
+      },
+      {
+        id: 'switch-plan-if-closed',
+        label: 'If STILL closed → switch to Plan B (Path D west-only or Path E east-only via Stevens)',
+        hint: 'Walk through /how-to.html — picks the swap that keeps both lodgings usable.',
+      },
+    ],
+    link: { label: 'WA-20 deep dive', url: 'wa20-status.html' },
+    secondaryLink: { label: 'How-to (Plan B paths)', url: 'how-to.html' },
+  },
+  {
+    id: 'recheck-site',
+    phase: 'booking-week-2',
+    title: 'Re-check verification dates',
+    date: '2026-06-28',
+    dateLabel: 'Sun Jun 28, 2026',
+    action:
+      '3 days post-WSDOT — open the live site, hard-refresh, walk every page that has a "verified-on" date. Flag anything stale.',
+    subitems: [
+      {
+        id: 'recheck-lodging',
+        label: 'Lodging: dates, room type, kitchen scope per booked property',
+      },
+      {
+        id: 'recheck-hikes',
+        label: 'Hikes: status (open / snow-blocked) for each marquee pick',
+      },
+      {
+        id: 'recheck-restaurants',
+        label: 'Restaurants: Va\'ad currency for Pabla, Teapot, QFC U-Village, Einstein UVillage',
+      },
+      {
+        id: 'recheck-road',
+        label: 'Road status: WA-20 final answer (matches Jun 25 call?)',
+      },
+      {
+        id: 'recheck-fire',
+        label: 'Fire / smoke: AirNow check for Methow Valley',
+        hint: 'https://www.airnow.gov/',
+      },
+    ],
+    link: { label: 'WA-20 deep dive', url: 'wa20-status.html' },
+  },
+  {
+    id: 'flights-book',
+    phase: 'booking-week-2',
+    title: 'Flight book-by',
+    date: '2026-07-10',
+    dateLabel: 'Fri Jul 10, 2026',
+    action:
+      'Book SEA roundtrip on Alaska (primary rec). 8-12 weeks ahead window — past Jul 10 fares typically jump.',
+    subitems: [
+      {
+        id: 'morning-vs-midday',
+        label: 'Confirm morning vs midday departure with Erin',
+        hint: 'Morning = full Day 1 in Seattle / grocery + drive in. Midday = late arrival, hotel near SEA.',
+      },
       {
         id: 'book-flights',
-        label: 'Book NYC↔SEA flights for both travelers',
-        why: 'Peak-Aug nonstops on Alaska/Delta/JetBlue/United — book 8-12 weeks ahead for best fare.',
-        earliestDaysOut: 180,
-        latestDaysOut: 56,
-        link: { label: 'Google Flights NYC→SEA', url: 'https://www.google.com/travel/flights' },
+        label: 'Book both seats + save confirmation numbers',
       },
       {
-        id: 'lock-path',
-        label: 'Decide path A / B / C with Erin',
-        why: 'Lodging strategy + rental class hinge on this. WA-20 reopen target Jul 4 is the swing factor.',
-        earliestDaysOut: 90,
-        latestDaysOut: 60,
+        id: 'seat-select',
+        label: 'Pick seats — same row if available',
       },
       {
-        id: 'book-lodging',
-        label: 'Book cabins per chosen path',
-        why: 'Terra Nova-tier 2-bed cabins in Marblemount/Winthrop sell out for Aug weekends 8-12 weeks ahead.',
-        earliestDaysOut: 120,
-        latestDaysOut: 49,
-        link: { label: 'Lodging page →', url: 'lodging.html' },
+        id: 'tsa-precheck',
+        label: 'Confirm TSA PreCheck added to both bookings (KTN)',
+      },
+      {
+        id: 'photograph-confirmations',
+        label: 'Screenshot flight confirmations (offline backup)',
+      },
+    ],
+    link: { label: 'Travel — flights', url: 'travel.html' },
+  },
+  {
+    id: 'rental-book',
+    phase: 'booking-week-2',
+    title: 'Rental car book-by',
+    date: '2026-07-15',
+    dateLabel: 'Wed Jul 15, 2026',
+    action:
+      'Book Costco Travel SEA pickup, Compact SUV class. Costco bundles taxes + adds 1 free 2nd driver.',
+    subitems: [
+      {
+        id: 'costco-quote-refresh',
+        label: 'Re-pull Costco quote (sessions expire — fresh URL each time)',
       },
       {
         id: 'book-rental',
-        label: 'Book rental car (Costco / Turo / Brand-direct)',
-        why: 'Quote captured May 16 — re-verify before booking. Costco lock at 70 days = lowest typical rate.',
-        earliestDaysOut: 120,
-        latestDaysOut: 30,
-        link: {
-          label: 'Costco Travel · SEA',
-          url: 'https://www.costcotravel.com/Rental-Cars',
-        },
+        label: 'Book Compact SUV + save confirmation number',
+        hint: 'Costco fulfills via Alamo / Enterprise / Avis / Budget.',
+      },
+      {
+        id: 'second-driver',
+        label: 'Add Erin as second driver (Costco = free; record her license #)',
+      },
+      {
+        id: 'cdw-cc',
+        label: 'Decide CDW: counter bundle vs credit-card primary (Chase Sapphire / Amex Plat)',
+      },
+      {
+        id: 'pickup-time',
+        label: 'Note pickup time aligned to landing + 60 min buffer',
       },
     ],
+    link: { label: 'Rental details', url: 'rental.html' },
   },
+
+  // ── Phase 3: two weeks out ──
   {
-    group: 'Verify scope (~6 weeks out)',
-    blurb: "Confirm what you've already booked is what you think it is.",
-    tasks: [
+    id: 'kosher-sweep',
+    phase: 'two-weeks-out',
+    title: 'Kosher phone-sweep',
+    date: '2026-08-02',
+    dateLabel: 'Sun Aug 2, 2026',
+    action:
+      'Call each Va\'ad-listed restaurant + grocery to confirm hours + cert currency. Mark verified-DATE per item.',
+    subitems: [
       {
-        id: 'verify-lodging-kitchen',
-        label: 'Verify each cabin has full kitchen + 2 actual beds',
-        why: 'Multi-unit properties (Glacier Peak, Sun Mountain, Freestone) vary by cabin number. Confirm at booking, not at arrival.',
-        earliestDaysOut: 60,
-        latestDaysOut: 21,
+        id: 'pabla',
+        label: 'Pabla — confirm Va\'ad cert + Aug hours',
       },
       {
-        id: 'verify-wa20',
-        label: 'Re-check WSDOT WA-20 status (target reopen Jul 4)',
-        why: 'If still closed Jul 15 → switch to west-only Plan B. Check Jul 8 (4 days post-target) and Jul 15.',
-        earliestDaysOut: 42,
-        latestDaysOut: 28,
-        link: {
-          label: 'WSDOT live status',
-          url: 'https://wsdot.com/travel/real-time/mountainpasses/north-cascades-highway',
-        },
+        id: 'teapot',
+        label: 'Teapot Vegetarian — confirm Va\'ad cert + Aug hours',
       },
       {
-        id: 'verify-firesmoke',
-        label: 'Check fire/smoke forecast for Methow Valley window',
-        why: 'August wildfire risk is real (Sourdough Fire 2023 precedent). Air-quality fallback = west-side only.',
-        earliestDaysOut: 21,
-        latestDaysOut: 7,
-        link: { label: 'AirNow.gov', url: 'https://www.airnow.gov/' },
+        id: 'qfc-uvillage',
+        label: 'QFC University Village — confirm kosher section + meat case currency',
+      },
+      {
+        id: 'einstein-uvillage',
+        label: 'Einstein Bros UVillage — (206) 522-1998 — confirm Va\'ad cert current',
+      },
+      {
+        id: 'chabad-whatcom',
+        label: 'Chabad of Whatcom County (Bellingham) — confirm contact + any takeout',
+      },
+      {
+        id: 'chabad-seward',
+        label: 'Chabad Seward Park (Seattle) — confirm contact + Shabbat hospitality if Fri overlap',
       },
     ],
+    link: { label: 'Groceries + restaurants', url: 'food.html' },
   },
   {
-    group: 'Kosher pantry + grocery plan',
-    blurb: 'Cabins have full kitchens — the trip food strategy is cook-from-cabin with one supermarket run on the drive in.',
-    tasks: [
+    id: 'kitchen-confirm',
+    phase: 'two-weeks-out',
+    title: 'Lodging kitchen-scope confirmation',
+    date: '2026-08-02',
+    dateLabel: 'Sun Aug 2, 2026',
+    action:
+      'Call each booked property to confirm full-kitchen scope (cookware / oven / fridge / utensils). Multi-unit properties vary by cabin number.',
+    subitems: [
       {
-        id: 'pantry-plan',
-        label: 'Build packaged kosher pantry list for the cabin',
-        why: 'No kosher restaurants in the corridor. Stock from Seattle Kosher OR Trader Joe\'s/QFC/Whole Foods on the way out of Seattle.',
-        earliestDaysOut: 14,
-        latestDaysOut: 3,
+        id: 'call-property-1',
+        label: 'Call property #1 — run the kitchen script',
+        hint: 'Script: "We\'re cooking all meals — what\'s ACTUALLY in the kitchen? Oven? Full fridge? Pots, pans, knives, plates for 2?"',
       },
       {
-        id: 'pantry-cooler',
-        label: 'Pack insulated cooler bag for the drive in',
-        why: 'Keeps cold groceries cold during the 2-3 hr SEA → Marblemount drive.',
-        earliestDaysOut: 7,
-        latestDaysOut: 1,
+        id: 'call-property-2',
+        label: 'Call property #2 (if Path B or C) — run the kitchen script',
       },
       {
-        id: 'pantry-stop',
-        label: 'Plan grocery stop on Day 1 drive route',
-        why: 'Easiest: Trader Joe\'s University Village (off I-5 north of SEA) OR QFC Smokey Point. Plan ~30-45 min stop.',
-        earliestDaysOut: 14,
-        latestDaysOut: 1,
+        id: 'log-gaps',
+        label: 'Log any gaps (no oven, no real fridge, missing cookware)',
+      },
+      {
+        id: 'pack-fill-gaps',
+        label: 'Add any gap-fillers to the pack list (foil pan, sharp knife, etc.)',
       },
     ],
+    link: { label: 'Lodging shortlist', url: 'lodging.html' },
   },
+
+  // ── Phase 4: final week ──
   {
-    group: 'Pack + gear',
-    blurb: 'PNW August at altitude — layers, rain shell, smoke mask, headlamp.',
-    tasks: [
+    id: 'wsdot-final',
+    phase: 'final-week',
+    title: 'WSDOT final re-check',
+    date: '2026-08-14',
+    dateLabel: 'Fri Aug 14, 2026',
+    action:
+      'Final WSDOT call + NPS road conditions. Print or screenshot for offline access (no cell between Newhalem and Mazama).',
+    subitems: [
       {
-        id: 'pack-layers',
-        label: 'Pack rain shell + warm mid-layer + hat + SPF 30+',
-        why: 'Pass-level mornings can hit 45-50°F. East-side runs 80-85°F. Pack for both.',
-        earliestDaysOut: 7,
-        latestDaysOut: 1,
-        link: { label: 'Bring list →', url: 'details.html#bring' },
+        id: 'call-wsdot-final',
+        label: 'Final call to 1-800-695-7623',
       },
       {
-        id: 'pack-hiking-shoes',
-        label: 'Pack broken-in hiking shoes',
-        why: 'Cascade Pass + Maple Pass both ~2,000 ft on rocky/rooty trail. Sneakers struggle.',
-        earliestDaysOut: 7,
-        latestDaysOut: 1,
+        id: 'check-nps',
+        label: 'Check NPS road conditions page (current alerts)',
+        hint: 'https://www.nps.gov/noca/planyourvisit/conditions.htm',
       },
       {
-        id: 'pack-headlamp',
-        label: 'Pack headlamp + spare batteries',
-        why: 'Long hikes finish in twilight (sunset ~8:25 PM). Phone flashlight not enough.',
-        earliestDaysOut: 7,
-        latestDaysOut: 1,
+        id: 'screenshot-road',
+        label: 'Screenshot the road-status page (offline reference)',
       },
       {
-        id: 'pack-n95',
-        label: 'Pack 2-3 N95/KN95 masks per person',
-        why: 'August wildfire-smoke contingency. Hope to leave them packed.',
-        earliestDaysOut: 7,
-        latestDaysOut: 1,
+        id: 'fire-smoke-final',
+        label: 'Final AirNow check for Methow Valley + Mt. Baker area',
       },
     ],
+    link: { label: 'WA-20 deep dive', url: 'wa20-status.html' },
   },
   {
-    group: 'Connectivity + navigation',
-    blurb: 'No cell from Newhalem to Mazama (~60 mi).',
-    tasks: [
+    id: 'pack',
+    phase: 'final-week',
+    title: 'Pack',
+    date: '2026-08-14',
+    dateLabel: 'Fri Aug 14 – Sat Aug 15, 2026',
+    action:
+      'Both cooking all meals — kitchen-side packing matters. Plus layered hike gear for 45-50°F pass mornings + 80°F east side.',
+    subitems: [
+      {
+        id: 'cook-supplies',
+        label: 'Cook supplies: sharp knife, foil pans, dish soap, dish towel, ziplocs',
+        hint: 'Hedge against incomplete cabin kitchens — easier than mid-trip Walmart run.',
+      },
+      {
+        id: 'hike-gear',
+        label: 'Hike gear: broken-in shoes, daypack, trekking poles (optional), 2L water',
+      },
+      {
+        id: 'layers',
+        label: 'Layers: rain shell, warm mid-layer, hat, gloves, SPF 30+',
+      },
+      {
+        id: 'mosquito-kit',
+        label: 'Mosquito kit: DEET or picaridin (Methow + Cascade Pass)',
+      },
+      {
+        id: 'headlamp',
+        label: 'Headlamp + spare batteries (sunset ~8:25 PM)',
+      },
+      {
+        id: 'dry-bags',
+        label: 'Dry bags (river / lake stops, sudden PNW rain)',
+      },
+      {
+        id: 'n95',
+        label: '2-3 N95 / KN95 masks per person (wildfire smoke contingency)',
+      },
+      {
+        id: 'kosher-pantry',
+        label: 'Packaged kosher pantry items to bring through US security',
+      },
+    ],
+    link: { label: 'Bring list (details)', url: 'details.html#bring' },
+  },
+
+  // ── Phase 5: day-of ──
+  {
+    id: 'day-of',
+    phase: 'day-of',
+    title: 'Day-of departure',
+    date: '2026-08-16',
+    dateLabel: 'Sun Aug 16, 2026',
+    action:
+      'Last-morning checks before the airport ride.',
+    subitems: [
+      {
+        id: 'confirm-flight',
+        label: 'Confirm flight on time + gate (Alaska app)',
+      },
+      {
+        id: 'kosher-snacks',
+        label: 'Kosher snacks for the plane + transit',
+      },
+      {
+        id: 'charge-phones',
+        label: 'Phones + power banks + headlamp fully charged',
+      },
       {
         id: 'offline-maps',
-        label: 'Download offline Google Maps for WA-20 corridor + Marblemount + Winthrop',
-        why: 'No cell service between Newhalem and Mazama. Download before leaving Bellingham or Seattle.',
-        earliestDaysOut: 3,
-        latestDaysOut: 0,
+        label: 'Google Maps offline area downloaded (WA-20 corridor + Marblemount + Winthrop)',
       },
       {
         id: 'alltrails-gpx',
-        label: 'Download AllTrails GPX for every planned hike',
-        why: 'Trail signage is good but no cell means no live re-routing.',
-        earliestDaysOut: 3,
-        latestDaysOut: 0,
+        label: 'AllTrails GPX downloaded for each planned hike',
       },
       {
-        id: 'us-cell-plan',
-        label: 'Verify cell plan covers US (Allison: TLV plan check)',
-        why: 'Israeli plans need international add-on or a US eSIM for the trip. T-Mobile/Mint eSIMs work in WA.',
-        earliestDaysOut: 14,
-        latestDaysOut: 3,
+        id: 'screenshot-day1',
+        label: 'Screenshot Day-1 itinerary + grocery stop address',
       },
     ],
-  },
-  {
-    group: 'US trip specifics (no IDP needed)',
-    blurb: 'US carve-outs vs Europe trips.',
-    tasks: [
-      {
-        id: 'no-idp-us',
-        label: 'Confirm: NO IDP needed for US (Israeli license fine)',
-        why: 'Unlike European rentals — for the US, Israeli driver license + passport are sufficient. NO MEMSI run needed.',
-        earliestDaysOut: 90,
-        latestDaysOut: 1,
-      },
-      {
-        id: 'passport-validity',
-        label: 'Confirm both passports valid through Feb 2027 (6 mo past return)',
-        why: 'US entry rule. Renew now if either is close to the edge.',
-        earliestDaysOut: 180,
-        latestDaysOut: 90,
-      },
-      {
-        id: 'esta-check',
-        label: 'ESTA / visa status verified for both travelers',
-        why: 'Both US-based already, but confirm Erin\'s green card / Allison\'s ESTA are current.',
-        earliestDaysOut: 60,
-        latestDaysOut: 14,
-      },
-      {
-        id: 'credit-card-cdw',
-        label: 'Confirm credit-card primary CDW coverage (Chase Sapphire Reserve / Amex Plat)',
-        why: 'Lets you decline counter CDW + saves $150-200. Verify your specific card covers Cascade River Rd gravel.',
-        earliestDaysOut: 30,
-        latestDaysOut: 7,
-      },
-    ],
-  },
-  {
-    group: 'Day-before + day-of',
-    blurb: 'Last 24 hours.',
-    tasks: [
-      {
-        id: 'day-before-pack-final',
-        label: 'Final pack + bag-weigh',
-        why: 'Avoid airport surprise. Each carry-on ≤ 22 lbs on Alaska / 35 lbs on most majors for checked.',
-        earliestDaysOut: 1,
-        latestDaysOut: 0,
-      },
-      {
-        id: 'day-before-charge',
-        label: 'Charge phones + headlamp + power bank',
-        why: 'Cold + photo + offline-maps drain fast.',
-        earliestDaysOut: 1,
-        latestDaysOut: 0,
-      },
-      {
-        id: 'day-before-itinerary',
-        label: 'Screenshot Day-1 itinerary (offline access)',
-        why: 'WA-20 corridor goes dead; printed/screen-shotted backup matters.',
-        earliestDaysOut: 1,
-        latestDaysOut: 0,
-      },
-    ],
+    link: { label: 'Day-by-day itinerary', url: 'how-to.html' },
   },
 ];
 
+/** Trip start — kept here for backwards compat with anything importing it. */
 export const TRIP_START_DATE = '2026-08-16';
 
-/** Returns days between today and trip start. Negative if past. */
+/** Days between now and trip start. Negative when in-trip or past. */
 export function daysUntilTrip(now: Date = new Date()): number {
   const start = new Date(TRIP_START_DATE + 'T00:00:00');
   const diffMs = start.getTime() - now.getTime();
   return Math.floor(diffMs / (1000 * 60 * 60 * 24));
+}
+
+/** Days from now to a milestone date. Pacific-time anchor matches trip-state.ts. */
+export function daysUntilDate(isoDate: string, now: Date = new Date()): number {
+  const target = new Date(`${isoDate}T00:00:00-07:00`);
+  const diffMs = target.getTime() - now.getTime();
+  return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+}
+
+/** Total subitem count across all milestones (denominator for progress bar). */
+export function totalSubitemCount(): number {
+  return MILESTONES.reduce((sum, m) => sum + m.subitems.length, 0);
 }
