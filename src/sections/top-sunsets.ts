@@ -15,11 +15,46 @@ import type { PathLetter } from '../data/costs';
 import { h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel } from './photo-carousel';
+import { createShortlist } from './shortlist-shared';
+import { registerPicksShortlist } from './picks-fab';
+
+// ====================================================================
+// SHORTLIST — top sunsets (registered with the unified ✓ Picks FAB)
+//
+// Sunset spots don't have a dedicated `id` field — derive one from rank +
+// a kebab-slug of the name. Stable across re-renders as long as TOP_SUNSETS
+// ordering / naming doesn't change (it's a hand-curated 7-entry list, so
+// the risk of drift is low).
+// ====================================================================
+
+function sunsetId(spot: (typeof TOP_SUNSETS)[number]): string {
+  const slug = spot.name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return `sunset-${spot.rank}-${slug}`;
+}
+
+const sunsetShortlist = createShortlist({
+  storageKey: 'ncades2026.sunsetPicks',
+  entityKind: 'Sunset',
+  entityKindPlural: 'Sunsets',
+  all: () => TOP_SUNSETS,
+  getId: sunsetId,
+  getName: (s) => s.name,
+  getThumb: (s) => {
+    const first = s.photos?.[0];
+    return first ? { src: first.src, alt: first.alt } : null;
+  },
+  getDetail: (s) => `#${s.rank} · ${s.viewDirection.split('—')[0]?.trim() ?? s.viewDirection}`,
+});
+registerPicksShortlist(sunsetShortlist);
 
 function renderSpot(spot: (typeof TOP_SUNSETS)[number], activePath: PathLetter | null): HTMLElement {
   const isInPath = activePath ? spot.bestByPath.includes(activePath) : false;
   const isOffPath = activePath && !isInPath;
   const photos = spot.photos && spot.photos.length > 0 ? [...spot.photos] : null;
+  const pickBtn = sunsetShortlist.renderPickButton(sunsetId(spot), spot.name);
   return h(
     'article',
     {
@@ -48,7 +83,8 @@ function renderSpot(spot: (typeof TOP_SUNSETS)[number], activePath: PathLetter |
         ),
         spot.verifiedAsOf
           ? h('span', { class: 'badge badge--good' }, `✅ Verified ${spot.verifiedAsOf}`)
-          : null
+          : null,
+        pickBtn
       )
     ),
     h('p', { class: 'sunset-card__where' }, spot.where),

@@ -29,6 +29,28 @@ import { h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel } from './photo-carousel';
 import { renderVideoPill } from './video-embed';
+import { createShortlist } from './shortlist-shared';
+import { registerPicksShortlist } from './picks-fab';
+
+// ====================================================================
+// SHORTLIST — lakes (registered with the unified ✓ Picks FAB)
+// ====================================================================
+
+const lakeShortlist = createShortlist({
+  storageKey: 'ncades2026.lakePicks',
+  entityKind: 'Lake',
+  entityKindPlural: 'Lakes',
+  all: () => LAKES,
+  getId: (l) => l.id,
+  getName: (l) => l.name,
+  getThumb: (l) => {
+    const first = l.photos[0];
+    return first ? { src: first.src, alt: first.alt } : null;
+  },
+  getDetail: (l) =>
+    `${l.swim === 'yes' ? 'Swim-friendly' : l.swim === 'cold-dip-only' ? 'Cold dip' : 'No swim'} · ${l.rental === 'on-water' ? 'Rentals on-water' : l.rental === 'self-haul' ? 'Self-haul rental' : 'BYO gear'}`,
+});
+registerPicksShortlist(lakeShortlist);
 
 // ====================================================================
 // FILTER STATE
@@ -264,6 +286,7 @@ function renderCrossLinks(lake: Lake): HTMLElement | null {
 }
 
 function renderLakeCard(lake: Lake): HTMLElement {
+  const pickBtn = lakeShortlist.renderPickButton(lake.id, lake.name);
   return h(
     'article',
     { class: `card lake-card lake-card--${lake.base}`, 'data-lake-id': lake.id },
@@ -272,7 +295,8 @@ function renderLakeCard(lake: Lake): HTMLElement {
       'header',
       { class: 'card__header' },
       h('h3', { class: 'card__title' }, lake.name),
-      h('span', { class: 'lake-card__where' }, lake.where)
+      h('span', { class: 'lake-card__where' }, lake.where),
+      pickBtn
     ),
     h('p', { class: 'card__subtitle lake-card__lede' }, lake.lede),
     renderLakePills(lake),

@@ -43,6 +43,7 @@ import { CLOSURE_ALERT } from './data/closure';
 import { h } from './dom';
 import { initNotesModal, attachNotesButton, refreshBadges } from './sections/notes-button';
 import { initGlobalFab } from './sections/global-fab';
+import { initPicksFab } from './sections/picks-fab';
 import { attachBackToTop } from './sections/back-to-top';
 import { showWelcomePopup } from './sections/welcome-popup';
 import { initSearchOverlay } from './sections/search-overlay';
@@ -801,6 +802,10 @@ export function mountPageShell(opts: ShellOptions): HTMLElement {
 
   initNotesModal();
   initGlobalFab();
+  // Unified ✓ Picks FAB — viewpoints / lakes / towns / hidden gems / sunsets.
+  // Mounted on every page; stays hidden until at least one shortlist
+  // registered on this page has at least one pick.
+  initPicksFab();
   // Cmd/Ctrl + / search overlay — mounts on every page that does not opt out
   // via `data-search-skip`. Cmd+K stays bound to the notes widget.
   initSearchOverlay();

@@ -33,6 +33,31 @@ import { badge, h, section } from '../dom';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
 import { renderSectionSources } from './section-sources';
 import { renderVideoPill } from './video-embed';
+import { createShortlist } from './shortlist-shared';
+import { registerPicksShortlist } from './picks-fab';
+
+// ====================================================================
+// SHORTLIST — viewpoints (registered with the unified ✓ Picks FAB)
+// ====================================================================
+
+const viewpointShortlist = createShortlist({
+  storageKey: 'ncades2026.viewpointPicks',
+  entityKind: 'Viewpoint',
+  entityKindPlural: 'Viewpoints',
+  all: () => VIEWPOINT_DESTINATIONS,
+  getId: (v) => v.id,
+  getName: (v) => v.name,
+  getThumb: (v) => {
+    const first = v.photos[0];
+    return first ? { src: first.src, alt: first.alt } : null;
+  },
+  getDetail: (v) => {
+    const corridor = VIEWPOINT_CORRIDOR_LABEL[v.corridor];
+    const mp = v.milepost !== undefined ? `MP ${v.milepost} · ` : '';
+    return `${mp}${corridor}`;
+  },
+});
+registerPicksShortlist(viewpointShortlist);
 
 function renderViewpointPhoto(v: Viewpoint): HTMLElement | null {
   if (!v.photo) return null;
@@ -223,6 +248,7 @@ function renderVpCard(v: ViewpointDestination): HTMLElement {
   const photos = vpCarouselPhotos(v);
   const corridor = VIEWPOINT_CORRIDOR_LABEL[v.corridor];
 
+  const pickBtn = viewpointShortlist.renderPickButton(v.id, v.name);
   return h(
     'article',
     {
@@ -241,7 +267,8 @@ function renderVpCard(v: ViewpointDestination): HTMLElement {
         'div',
         { class: 'card__badges' },
         badge(corridor, 'info'),
-        v.effort === 'drive-up' ? badge('Drive-up', 'good') : null
+        v.effort === 'drive-up' ? badge('Drive-up', 'good') : null,
+        pickBtn
       )
     ),
     h('p', { class: 'card__subtitle' }, v.where),

@@ -19,6 +19,27 @@ import { TOWNS, townsForPath, type Town, type Walkability } from '../data/towns'
 import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { h, section } from '../dom';
 import { renderPhotoCarousel } from './photo-carousel';
+import { createShortlist } from './shortlist-shared';
+import { registerPicksShortlist } from './picks-fab';
+
+// ====================================================================
+// SHORTLIST — towns (registered with the unified ✓ Picks FAB)
+// ====================================================================
+
+const townShortlist = createShortlist({
+  storageKey: 'ncades2026.townPicks',
+  entityKind: 'Town',
+  entityKindPlural: 'Towns',
+  all: () => TOWNS,
+  getId: (t) => t.id,
+  getName: (t) => t.name,
+  getThumb: (t) => {
+    const first = t.photos[0];
+    return first ? { src: first.src, alt: first.alt } : null;
+  },
+  getDetail: (t) => `${t.side === 'west' ? 'West' : 'East'} side · ${t.tagline}`,
+});
+registerPicksShortlist(townShortlist);
 
 // =============================================================================
 // Pill + helper renderers
@@ -140,6 +161,7 @@ function renderParkingSeason(town: Town): HTMLElement {
 // =============================================================================
 
 function renderTownCard(town: Town): HTMLElement {
+  const pickBtn = townShortlist.renderPickButton(town.id, town.name);
   return h(
     'article',
     { class: `town-card town-card--${town.side} town-card--rich`, 'data-town-id': town.id },
@@ -159,7 +181,8 @@ function renderTownCard(town: Town): HTMLElement {
           town.side === 'west' ? 'West side' : 'East side'
         ),
         h('h3', { class: 'town-card__name' }, town.name),
-        h('p', { class: 'town-card__tagline' }, town.tagline)
+        h('p', { class: 'town-card__tagline' }, town.tagline),
+        h('div', { class: 'town-card__pick' }, pickBtn)
       ),
       renderTownPills(town),
       h('p', { class: 'town-card__why' }, town.whyStop),

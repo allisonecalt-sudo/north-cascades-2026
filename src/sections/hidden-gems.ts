@@ -18,6 +18,27 @@ import { HIDDEN_GEMS, EFFORT_LABELS, SIDE_LABELS, type HiddenGem, type GemEffort
 import { badge, h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
+import { createShortlist } from './shortlist-shared';
+import { registerPicksShortlist } from './picks-fab';
+
+// ====================================================================
+// SHORTLIST — hidden gems (registered with the unified ✓ Picks FAB)
+// ====================================================================
+
+const gemShortlist = createShortlist({
+  storageKey: 'ncades2026.gemPicks',
+  entityKind: 'Gem',
+  entityKindPlural: 'Gems',
+  all: () => HIDDEN_GEMS,
+  getId: (g) => g.id,
+  getName: (g) => g.name,
+  getThumb: (g) => {
+    const first = g.photos[0];
+    return first ? { src: first.src, alt: first.alt } : null;
+  },
+  getDetail: (g) => `${SIDE_LABELS[g.side]} · ${EFFORT_LABELS[g.effort]} · ${g.length}`,
+});
+registerPicksShortlist(gemShortlist);
 
 // ====================================================================
 // FILTER STATE
@@ -179,6 +200,7 @@ function gemPhotos(gem: HiddenGem): CarouselPhoto[] {
 
 function renderGemCard(gem: HiddenGem): HTMLElement {
   const photos = gemPhotos(gem);
+  const pickBtn = gemShortlist.renderPickButton(gem.id, gem.name);
   return h(
     'article',
     { class: `card hike-card gem-card gem-card--${gem.effort}`, 'data-gem-id': gem.id },
@@ -193,7 +215,8 @@ function renderGemCard(gem: HiddenGem): HTMLElement {
         'div',
         { class: 'card__badges' },
         badge('Hidden gem', 'warn'),
-        gem.status ? badge(gem.status.label, 'bad') : null
+        gem.status ? badge(gem.status.label, 'bad') : null,
+        pickBtn
       )
     ),
     h('p', { class: 'card__subtitle' }, gem.where),
