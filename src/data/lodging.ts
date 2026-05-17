@@ -107,6 +107,34 @@ export const DRIVE_DESTINATIONS: Record<DriveDestinationId, DriveDestination> = 
 export type KitchenLevel = 'full' | 'kitchenette' | 'none';
 
 /**
+ * Free-cancellation signal per property (Allison May 17, 2026).
+ *
+ *   - 'yes':     the property's own site or its booking portal explicitly
+ *                offers free cancellation (e.g. "Free cancellation up to
+ *                7 days before arrival"). REQUIRES a citation in a JSDoc
+ *                comment on the entry — do not set without one.
+ *   - 'no':      the property's own site explicitly states a non-refundable
+ *                or restrictive cancellation policy. REQUIRES a citation.
+ *   - 'unknown': we have not verified the policy directly OR the inventory
+ *                is aggregator-listed (Airbnb / Booking listing host policy
+ *                is per-listing, not site-wide). DEFAULT for every entry
+ *                until a research pass fills it in. Renders NO pill —
+ *                avoids fake-confidence visual noise.
+ *
+ * Why this exists: flights + lodging not booked, WA-20 closure unresolved.
+ * Allison cannot commit to non-refundable inventory while booking discipline
+ * still demands flex. The filter chip lets the reader hard-narrow to known-
+ * flexible inventory; cards with `'no'` get a loud red warning pill.
+ */
+export type FreeCancellation = 'yes' | 'no' | 'unknown';
+
+export const FREE_CANCELLATION_LABELS: Record<FreeCancellation, string> = {
+  yes: '✓ Free cancellation',
+  no: '🚫 No free cancellation',
+  unknown: 'Free cancellation: unknown',
+};
+
+/**
  * Aug 16-20, 2026 availability signal — best-effort.
  *
  *   - 'confirmed-aug-16-20': URL + date pre-fill returned a bookable result;
@@ -210,6 +238,13 @@ export interface Lodging {
    * the lodging card so the reader doesn't book against the brief.
    */
   kosherCookingFit?: boolean;
+  /**
+   * Free-cancellation signal (May 17, 2026 — Allison's booking-discipline ask).
+   * DEFAULT 'unknown' for every entry until a research pass fills it in.
+   * Filter chip narrows to `'yes'` only; cards with `'no'` render a red pill.
+   * See `FreeCancellation` type above for setting rules.
+   */
+  freeCancellation?: FreeCancellation;
   /** Aug 16-20, 2026 availability signal — best-effort, May 17 pull. */
   availability: AvailabilityStatus;
   photo: LodgingPhoto;
@@ -663,6 +698,9 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.airbnb.com/marblemount-wa/stays',
     tier: 'fits-brief',
     kitchen: 'full',
+    // Airbnb listing — cancellation policy is per-host, not platform-wide.
+    // Per spec: aggregator inventory left 'unknown' until a per-listing check.
+    freeCancellation: 'unknown',
     availability: 'likely-available',
     photo: PHOTOS.rentalAFrame,
     // TODO Allison 2026-05-17: Airbnb blocks automated photo scraping —
@@ -705,6 +743,9 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.airbnb.com/rooms/1159630003390456641?check_in=2026-08-16&check_out=2026-08-20&adults=2',
     tier: 'fits-brief',
     kitchen: 'full',
+    // Airbnb listing — per-host cancellation policy. Left 'unknown' until
+    // per-listing check (Airbnb blocks WebFetch).
+    freeCancellation: 'unknown',
     availability: 'likely-available',
     photo: PHOTOS.cabinHot,
     // TODO Allison 2026-05-17: Airbnb screenshots — replace these slides.
@@ -746,6 +787,9 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.airbnb.com/rooms/724602112999024219?check_in=2026-08-16&check_out=2026-08-20&adults=2',
     tier: 'fits-brief',
     kitchen: 'full',
+    // Airbnb listing — per-host cancellation policy. Left 'unknown' until
+    // per-listing check (Airbnb blocks WebFetch).
+    freeCancellation: 'unknown',
     availability: 'likely-available',
     photo: PHOTOS.rentalModern,
     // TODO Allison 2026-05-17: Airbnb screenshots — replace these slides.
@@ -794,6 +838,13 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.ovenells-inn.com/',
     tier: 'fits-brief',
     kitchen: 'full',
+    // ovenells-inn.com (verified May 17, 2026): "If your travel plans change
+    // and you must cancel your reservation, please call us at least (3) days
+    // prior to your arrival date to cancel your reservation to receive a
+    // refund of your deposit, less a 2% card processing fee." Cancellations
+    // within 24 hours forfeit the full reservation. Not strictly free
+    // (2% fee always retained; 24-hr window is fully non-refundable).
+    freeCancellation: 'no',
     availability: 'verify-at-booking',
     photo: PHOTOS.propOvenellsCabin,
     photos: [PHOTOS.propOvenellsCabin, PHOTOS.propOvenellsRoad, PHOTOS.ranchProperty, PHOTOS.carouselSunset, PHOTOS.carouselRanch],
@@ -834,6 +885,10 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://glacierpeakresortandwinery.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    // glacierpeakresortandwinery.com (verified May 17, 2026): "The first day
+    // of every unit must be paid to book a reservation & is non refundable."
+    // First-night non-refundable means it is NOT free-cancellation.
+    freeCancellation: 'no',
     availability: 'verify-at-booking',
     photo: PHOTOS.propGlacierPeak,
     photos: [PHOTOS.propGlacierPeak, PHOTOS.cabinWoods, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.cabinClassic],
@@ -887,6 +942,11 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.cascaderiverhouse.com/',
     tier: 'splurge',
     kitchen: 'full',
+    // cascaderiverhouse.com (checked May 17, 2026): no cancellation policy
+    // is published on the marketing site. Bookings flow through Hospitable
+    // (riverstonerentals.hospitable.rentals) which sets per-listing terms.
+    // Left 'unknown' until verified at booking.
+    freeCancellation: 'unknown',
     availability: 'verify-at-booking',
     photo: PHOTOS.cabinRiver,
     photos: [PHOTOS.cabinRiver, PHOTOS.regMarblemount, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
@@ -942,6 +1002,8 @@ export const WEST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.buffalorunrestaurant.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
+    // No published cancellation policy; not researched (not-a-fit anyway).
+    freeCancellation: 'unknown',
     availability: 'verify-at-booking',
     photo: PHOTOS.propBuffaloRun,
     photos: [PHOTOS.propBuffaloRun, PHOTOS.regMarblemount, PHOTOS.innClassic, PHOTOS.carouselInterior, PHOTOS.carouselForest],
@@ -983,6 +1045,7 @@ export const WEST_LODGING: Lodging[] = [
     tier: 'not-a-fit',
     kitchen: 'none',
     kosherCookingFit: false,
+    freeCancellation: 'unknown',
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
     photos: [PHOTOS.motelInn, PHOTOS.regMarblemount, PHOTOS.innClassic, PHOTOS.carouselInterior, PHOTOS.carouselForest],
@@ -1041,6 +1104,12 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.freestoneinn.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    // freestoneinn.com/policies (verified May 17, 2026): "To cancel a
+    // reservation with no fees, it must be done so 31 days prior to check
+    // in date. If a reservation is cancelled within the 30-day window, the
+    // card on file will be charged for the entire reservation." 30-day
+    // cliff with no partial-refund window = not free-cancellation flex.
+    freeCancellation: 'no',
     availability: 'verify-at-booking',
     photo: PHOTOS.propFreestone,
     photos: [PHOTOS.propFreestone, PHOTOS.regMazama, PHOTOS.lodgeMountain, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
@@ -1087,6 +1156,12 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://springcreekwinthrop.com/lodging/',
     tier: 'fits-brief',
     kitchen: 'full',
+    // springcreekwinthrop.com/reservation-policy (verified May 17, 2026):
+    // "Cancellations made more than 30 days before the first day of the
+    // reservation will be refunded in full minus a $25 processing fee."
+    // Within 30 days = no refund. $25 fee always retained on early cancel.
+    // Not free-cancellation by any reading.
+    freeCancellation: 'no',
     availability: 'verify-at-booking',
     photo: PHOTOS.propSpringCreekRanch,
     photos: [PHOTOS.propSpringCreekRanch, PHOTOS.propSpringCreekInterior, PHOTOS.regMethowRiver, PHOTOS.regMethowSunset, PHOTOS.cabinClassic],
@@ -1142,6 +1217,14 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://riversedgewinthrop.com/',
     tier: 'fits-brief',
     kitchen: 'full',
+    // riversedgewinthrop.com/policies (verified May 17, 2026): "penalty-free
+    // up to seven (7) days prior to arrival" for short stays 1-7 nights;
+    // 30 days for weekends / extended / multi-cabin / holidays. Aug 16-20
+    // Sun-Thu = 4 nights short stay = 7-day window. But advance deposits
+    // are non-refundable. Mixed — conservative read = 'no' since the user
+    // may need to cancel inside the 7-day window for WA-20 reasons and
+    // deposits aren't recovered.
+    freeCancellation: 'no',
     availability: 'verify-at-booking',
     photo: PHOTOS.propRiversEdge,
     photos: [PHOTOS.propRiversEdge, PHOTOS.regMethowRiver, PHOTOS.cabinHot, PHOTOS.carouselHotTub, PHOTOS.carouselInterior],
@@ -1197,6 +1280,11 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://methowriverlodge.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    // methowriverlodge.com (checked May 17, 2026): no published cancellation
+    // policy on the marketing site; /policies returns 404. Bookings flow
+    // through Frank Hotels' external reservation system which sets per-stay
+    // terms. Left 'unknown' until verified at booking or phone-called.
+    freeCancellation: 'unknown',
     availability: 'verify-at-booking',
     photo: PHOTOS.propMethowRiver,
     photos: [PHOTOS.propMethowRiver, PHOTOS.regMethowRiver, PHOTOS.cabinRiver, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
@@ -1240,6 +1328,11 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.innmazama.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
+    // innmazama.com/terms-and-conditions (verified May 17, 2026): "FIRST
+    // NIGHT IS NON-REFUNDABLE & DUE AT BOOKING." Cancellations 2+ weeks
+    // out refund all-but-first-night per room. Inside 2 weeks = full charge.
+    // First-night non-refundable = not free-cancellation.
+    freeCancellation: 'no',
     availability: 'verify-at-booking',
     photo: PHOTOS.lodgeMountain,
     photos: [PHOTOS.lodgeMountain, PHOTOS.regMazama, PHOTOS.regWashingtonPass, PHOTOS.carouselForest, PHOTOS.carouselInterior],
@@ -1303,6 +1396,9 @@ export const EAST_LODGING: Lodging[] = [
     // microwave + coffee maker only. Not a fit for kosher cook-in over a
     // 4-night stay.
     kosherCookingFit: false,
+    // chewuchinn.com (checked May 17, 2026): ECONNREFUSED on direct fetch.
+    // Unable to verify cancellation policy. Left 'unknown'.
+    freeCancellation: 'unknown',
     availability: 'verify-at-booking',
     photo: PHOTOS.propChewuch,
     photos: [PHOTOS.propChewuch, PHOTOS.regMethowSunset, PHOTOS.bnbCozy, PHOTOS.carouselForest, PHOTOS.cabinClassic],
@@ -1352,6 +1448,10 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://www.sunmountainlodge.com/',
     tier: 'splurge',
     kitchen: 'full',
+    // sunmountainlodge.com/faqs (verified May 17, 2026): "Notice of
+    // cancellation must be given 21 days prior to arrival date or the
+    // guest is responsible for the entire stay." 21-day cliff. Not free.
+    freeCancellation: 'no',
     availability: 'verify-at-booking',
     photo: PHOTOS.regPattersonLake,
     photos: [PHOTOS.regPattersonLake, PHOTOS.propSunMountain, PHOTOS.regMethowSunset, PHOTOS.lodgeRidge, PHOTOS.carouselDeck],
@@ -1410,6 +1510,8 @@ export const EAST_LODGING: Lodging[] = [
     bookingUrl: 'https://rollinghuts.com/',
     tier: 'not-a-fit',
     kitchen: 'kitchenette',
+    // Not researched (not-a-fit for the brief).
+    freeCancellation: 'unknown',
     availability: 'verify-at-booking',
     photo: PHOTOS.glampingHut,
     photos: [PHOTOS.glampingHut, PHOTOS.regMazama, PHOTOS.regMethowSunset, PHOTOS.carouselForest, PHOTOS.carouselSunset],
@@ -1455,6 +1557,7 @@ export const EAST_LODGING: Lodging[] = [
     tier: 'not-a-fit',
     kitchen: 'none',
     kosherCookingFit: false,
+    freeCancellation: 'unknown',
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
     photos: [PHOTOS.motelInn, PHOTOS.regMethowRiver, PHOTOS.regMethowSunset, PHOTOS.carouselRiver, PHOTOS.carouselInterior],
@@ -1496,6 +1599,7 @@ export const EAST_LODGING: Lodging[] = [
     tier: 'not-a-fit',
     kitchen: 'none',
     kosherCookingFit: false,
+    freeCancellation: 'unknown',
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
     photos: [PHOTOS.motelInn, PHOTOS.regMazama, PHOTOS.innClassic, PHOTOS.carouselInterior, PHOTOS.carouselForest],

@@ -61,6 +61,14 @@ interface FilterState {
   kitchen: Set<'full' | 'kitchenette' | 'none'>;
   nature: Set<NatureTag>;
   sunsetOnly: boolean;
+  /**
+   * Free-cancellation hard filter (Allison May 17, 2026 — booking-discipline
+   * mechanism while flights + lodging + WA-20 status are unresolved). Default
+   * OFF — don't gatekeep the list until the research data is fully populated.
+   * When ON, narrows to `freeCancellation === 'yes'` ONLY (not 'unknown' —
+   * we don't show speculative inventory as flexible).
+   */
+  freeCancelOnly: boolean;
 }
 
 function emptyFilters(): FilterState {
@@ -71,6 +79,7 @@ function emptyFilters(): FilterState {
     kitchen: new Set(),
     nature: new Set(),
     sunsetOnly: false,
+    freeCancelOnly: false,
   };
 }
 
@@ -157,6 +166,10 @@ function lodgingMatchesFilters(l: Lodging, base: 'west' | 'east'): boolean {
   if (filters.kitchen.size > 0 && !filters.kitchen.has(l.kitchen)) return false;
   if (filters.nature.size > 0 && !filters.nature.has(l.natureTag)) return false;
   if (filters.sunsetOnly && (!l.sunset || l.sunset.worth !== 'yes')) return false;
+  // Free-cancellation hard filter: only 'yes' passes. 'unknown' is treated
+  // as a fail — we don't show speculative inventory as flexible when the
+  // user explicitly asked for the booking-discipline guarantee.
+  if (filters.freeCancelOnly && l.freeCancellation !== 'yes') return false;
   return true;
 }
 
@@ -167,7 +180,8 @@ function activeFilterCount(): number {
     (filters.bedsMin2 ? 1 : 0) +
     filters.kitchen.size +
     filters.nature.size +
-    (filters.sunsetOnly ? 1 : 0)
+    (filters.sunsetOnly ? 1 : 0) +
+    (filters.freeCancelOnly ? 1 : 0)
   );
 }
 
@@ -492,7 +506,26 @@ function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElement {
           { class: 'card__pill card__pill--bad' },
           '🚫 No real kitchen — won\'t work for cook-in'
         )
-      : null
+      : null,
+    // Free-cancellation per-card pill (May 17, 2026 — Allison's booking-
+    // discipline ask). Renders ONLY when we have a definitive answer.
+    //   - 'no'  → red bad pill (warn the reader before they get attached)
+    //   - 'yes' → green good pill (matches the filter chip's promise)
+    //   - 'unknown' / omitted → render NOTHING (don't add visual noise for
+    //     missing data — fail-loud rule, no fake confidence).
+    lodging.freeCancellation === 'no'
+      ? h(
+          'li',
+          { class: 'card__pill card__pill--bad' },
+          '🚫 No free cancellation'
+        )
+      : lodging.freeCancellation === 'yes'
+        ? h(
+            'li',
+            { class: 'card__pill card__pill--good' },
+            '✓ Free cancellation'
+          )
+        : null
   );
 
   // Nature proximity line — prominent.
@@ -854,7 +887,7 @@ function renderPanel(
 interface ChipDef {
   key: string;
   label: string;
-  group: 'base' | 'tier' | 'beds' | 'kitchen' | 'nature' | 'sunset';
+  group: 'base' | 'tier' | 'beds' | 'kitchen' | 'nature' | 'sunset' | 'cancel';
   isActive: () => boolean;
   toggle: () => void;
 }
@@ -947,12 +980,29 @@ function buildChipDefs(): ChipDef[] {
   // overlap". Sunset-having lodging is still surfaced via the per-card
   // sunset row + sorted naturally — just not a filter anymore.
 
+  // Free-cancellation toggle — added 2026-05-17 evening per Allison's
+  // booking-discipline ask. Default OFF (don't gatekeep while research
+  // data is still landing). When ON, narrows to freeCancellation === 'yes'
+  // ONLY. Lives in its own group ('cancel') so the visual hierarchy stays
+  // legible — it's a hard booking-policy filter, not a property attribute
+  // like setting or kitchen.
+  chips.push({
+    key: 'cancel-free-only',
+    label: '✓ Free cancellation',
+    group: 'cancel',
+    isActive: () => filters.freeCancelOnly,
+    toggle: () => {
+      filters.freeCancelOnly = !filters.freeCancelOnly;
+      notifyFilters();
+    },
+  });
+
   return chips;
 }
 
 function renderChipBar(): HTMLElement {
   const chips = buildChipDefs();
-  const groupOrder: ChipDef['group'][] = ['base', 'tier', 'beds', 'kitchen', 'nature'];
+  const groupOrder: ChipDef['group'][] = ['base', 'tier', 'beds', 'kitchen', 'nature', 'cancel'];
   const groupLabels: Record<ChipDef['group'], string> = {
     base: 'Base',
     tier: 'Price tier',
@@ -960,6 +1010,7 @@ function renderChipBar(): HTMLElement {
     kitchen: 'Kitchen',
     nature: 'Setting',
     sunset: 'Bonus',
+    cancel: 'Cancellation',
   };
 
   const groups = groupOrder.map((g) => {
@@ -1033,6 +1084,7 @@ function renderChipBar(): HTMLElement {
       filters.kitchen.clear();
       filters.nature.clear();
       filters.sunsetOnly = false;
+      filters.freeCancelOnly = false;
       notifyFilters();
       return;
     }
@@ -1311,6 +1363,7 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
         filters.kitchen.clear();
         filters.nature.clear();
         filters.sunsetOnly = false;
+        filters.freeCancelOnly = false;
         notifyFilters();
       }
     });
