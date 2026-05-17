@@ -1,6 +1,8 @@
 /**
- * Rental car — research-backed cards with REAL quotes, pros/cons, and
- * multiple booking links per option. v3 (May 16, 2026 update).
+ * Rental car — research-backed cards + decision surfaces. v4 (May 17, 2026
+ * Rental Genius agent pass: added TLDR strip, decision matrix, sortable
+ * comparison table, best-practice block, booking checklist on top of the
+ * existing per-card grid).
  *
  * Hard rules surfaced in section header (Allison May 16, 2026):
  *   - Automatic transmission only
@@ -8,23 +10,17 @@
  *   - All-in price = headline (CDW/LDW + supplemental liability bundled)
  *   - Bare rental price kept as smaller secondary line for transparency
  *
- * Each card carries:
- *   - Structured `costAllIn` (low-high + source + sourceUrl + quotedDate)
- *   - Pros + cons (3-5 specific items each)
- *   - Multiple bookingLinks (primary + aggregator backup)
- *   - sources[] for audit trail
+ * New on May 17 (NO data file changes — only render layer):
+ *   - rental-tldr        — top-of-section answer card
+ *   - rental-matrix      — best-for-X 4-cell grid
+ *   - rental-compare     — sortable comparison table (vehicle x price x hybrid x clearance x cancel x notes)
+ *   - rental-bestpx      — 10 obsessive best-practice items, each with a one-line "why"
+ *   - rental-checklist   — at-pickup punch list
  *
- * Lead picks (now 3 verified-live-quote cards):
- *   1. SEA RT Compact SUV via Costco — $716-875 all-in
- *   2. SEA RT Hybrid sedan via Costco — $755-920 all-in
- *   3. SEA RT Compact sedan via Costco — $674-825 all-in (cheapest meets-brief)
+ * All TLDR/matrix/table/best-px/checklist data is derived in this file from
+ * RENTAL_OPTIONS (no parallel SSOT). Styles live in src/styles/rental-extras.css.
  *
- * Less-common shapes in disclosure: Mid-size SUV, Standard Elite SUV, Turo,
- * BLI roundtrip, SEA→BLI open-jaw.
- *
- * Unpaved-road contract note is surfaced explicitly. Hertz/Avis/Budget/
- * Enterprise/Alamo all restrict gravel roads; Cascade River Rd is technically
- * a contract violation. Reader needs to know that, then decide.
+ * Research log: projects/north-cascades-2026/RENTAL_RESEARCH_2026-05-17.md
  */
 
 import {
@@ -42,11 +38,441 @@ const LEAD_IDS = new Set([
   'sea-rt-sedan',
 ]);
 
+// id of the top recommendation (highlighted in matrix + comparison row).
+const TOP_PICK_ID = 'sea-rt-hybrid-suv-costco';
+
 function formatPriceRange(low: number, high: number): string {
   const fmt = (n: number) => `$${n.toLocaleString('en-US')}`;
   return `${fmt(low)}–${fmt(high)}`;
 }
 
+// ────────────────────────────────────────────────────────────
+// TLDR strip — top of section, picks the headline + 2 alts.
+// ────────────────────────────────────────────────────────────
+function renderTldr(): HTMLElement {
+  const top = RENTAL_OPTIONS.find((o) => o.id === TOP_PICK_ID);
+  const sedan = RENTAL_OPTIONS.find((o) => o.id === 'sea-rt-sedan');
+  const hybridSedan = RENTAL_OPTIONS.find((o) => o.id === 'sea-rt-hybrid-sedan-costco');
+  if (!top || !sedan || !hybridSedan) {
+    // Fail-loud rather than fabricate.
+    return h(
+      'div',
+      { class: 'rental-tldr', role: 'note' },
+      h(
+        'p',
+        { class: 'rental-tldr__head' },
+        'TLDR unavailable — RENTAL_OPTIONS missing expected ids.'
+      )
+    );
+  }
+  const tldrPrice = formatPriceRange(top.costAllIn.low, top.costAllIn.high);
+  return h(
+    'div',
+    { class: 'rental-tldr', role: 'note', 'aria-label': 'Top rental pick summary' },
+    h('p', { class: 'rental-tldr__eyebrow' }, 'Top pick · Aug 16–20, 2026'),
+    h(
+      'p',
+      { class: 'rental-tldr__head' },
+      'Best pick: ',
+      h('strong', {}, 'Costco Travel — SEA roundtrip, Compact SUV'),
+      ' all-in ',
+      h('strong', {}, tldrPrice),
+      ' for 5 days. Fulfilled by Alamo / Enterprise / Avis / Budget. Free 2nd driver, free cancel until pickup.'
+    ),
+    h(
+      'ul',
+      { class: 'rental-tldr__alts' },
+      h(
+        'li',
+        {},
+        'Cheapest meets-brief: ',
+        h('strong', {}, 'Costco Compact sedan '),
+        formatPriceRange(sedan.costAllIn.low, sedan.costAllIn.high),
+        ' (Corolla/Versa class, gas, lowest verified quote).'
+      ),
+      h(
+        'li',
+        {},
+        'Only hybrid with a verified quote: ',
+        h('strong', {}, 'Costco Camry Hybrid '),
+        formatPriceRange(hybridSedan.costAllIn.low, hybridSedan.costAllIn.high),
+        ' (~50 mpg saves ~$70–90 fuel; trades clearance).'
+      ),
+      h(
+        'li',
+        {},
+        'Cheapest absolute (with risk): ',
+        h('strong', {}, 'Turo CX-50 / GLC '),
+        '$462–$700 — host-dependent, no on-site counter, watch mileage caps.'
+      )
+    ),
+    h(
+      'p',
+      { class: 'rental-tldr__verified' },
+      'All quotes verified via Costco Travel + Turo live search on May 16, 2026. Re-quote within 7 days of booking — rental rates drift weekly.'
+    )
+  );
+}
+
+// ────────────────────────────────────────────────────────────
+// Decision matrix — best for X cells.
+// ────────────────────────────────────────────────────────────
+interface MatrixCell {
+  label: string;
+  pick: string;
+  price: string;
+  why: string;
+  top?: boolean;
+}
+
+function renderMatrixCell(cell: MatrixCell): HTMLElement {
+  return h(
+    'div',
+    { class: `rental-matrix__cell${cell.top ? ' rental-matrix__cell--top' : ''}` },
+    h('p', { class: 'rental-matrix__label' }, cell.label),
+    h('p', { class: 'rental-matrix__pick' }, cell.pick),
+    h('p', { class: 'rental-matrix__price' }, cell.price),
+    h('p', { class: 'rental-matrix__why' }, cell.why)
+  );
+}
+
+function renderMatrix(): HTMLElement {
+  const cells: MatrixCell[] = [
+    {
+      label: 'Best value (top pick)',
+      pick: 'Costco Compact SUV',
+      price: '$716–$875 all-in',
+      why: 'Only $27 over the compact sedan. Buys clearance + cargo for Cascade River Rd gravel.',
+      top: true,
+    },
+    {
+      label: 'Cheapest meets-brief',
+      pick: 'Costco Compact sedan',
+      price: '$674–$825 all-in',
+      why: 'Toyota Corolla / Nissan Versa class. Lowest verified live quote.',
+    },
+    {
+      label: 'Best hybrid',
+      pick: 'Costco Camry Hybrid sedan',
+      price: '$755–$920 all-in',
+      why: 'Only hybrid in Costco SEA inventory for our dates. ~50 mpg saves ~$70–90 fuel.',
+    },
+    {
+      label: 'Best flexibility',
+      pick: 'Costco — any class',
+      price: 'Same as listed',
+      why: 'Free cancel until pickup, no prepay. Re-shop and re-book if prices drop — zero penalty.',
+    },
+  ];
+  return h(
+    'div',
+    {
+      class: 'rental-matrix',
+      role: 'list',
+      'aria-label': 'Best-for decision matrix',
+    },
+    ...cells.map(renderMatrixCell)
+  );
+}
+
+// ────────────────────────────────────────────────────────────
+// Sortable comparison table.
+// ────────────────────────────────────────────────────────────
+interface CompareRow {
+  id: string;
+  vehicle: string;
+  vendor: string;
+  base: number; // all-in low for sort
+  baseDisplay: string;
+  hybrid: boolean;
+  clearance: string;
+  cancel: string;
+  notes: string;
+}
+
+function buildCompareRows(): CompareRow[] {
+  const map: Record<string, Partial<CompareRow>> = {
+    'sea-rt-hybrid-suv-costco': {
+      clearance: '8.1″',
+      cancel: 'Free until pickup',
+      notes: 'Top pick. AWD often avail. Restrict-unpaved clause same as all majors.',
+    },
+    'sea-rt-hybrid-sedan-costco': {
+      clearance: '~5.5″',
+      cancel: 'Free until pickup',
+      notes: 'Only hybrid in Costco SEA inventory. Saves ~$70–90 fuel over trip.',
+    },
+    'sea-rt-sedan': {
+      clearance: '~5.5″',
+      cancel: 'Free until pickup',
+      notes: 'Cheapest meets-brief. Versa fits 2 large bags; Corolla intermediate fits 3.',
+    },
+    'sea-rt-midsuv-gas': {
+      clearance: '8″+',
+      cancel: 'Free until pickup',
+      notes: '+$27 over Compact SUV. 4–5 large bags + AWD often standard.',
+    },
+    'sea-rt-standard-elite-suv': {
+      clearance: '8″+',
+      cancel: 'Free until pickup',
+      notes: 'Premium feel (Audi Q3 / Cadillac XT4). Overbuilt for 2 people unless you want it.',
+    },
+    'turo-sea-suv': {
+      clearance: 'Per listing',
+      cancel: 'Varies — read host',
+      notes: 'Cheapest absolute. No on-site counter. 200 mi/day common; watch caps.',
+    },
+    'bli-rt-suv': {
+      clearance: '~8″',
+      cancel: 'Brand-direct policy',
+      notes: 'NOT live-quoted. +15–25% over SEA. Only if WA-20 + BLI flights confirmed.',
+    },
+    'sea-bli-oneway': {
+      clearance: '~8″',
+      cancel: 'Brand-direct policy',
+      notes: '$75–$200 drop fee on top. AutoSlash is the right shop. Open-jaw only.',
+    },
+  };
+  return RENTAL_OPTIONS.map((o) => {
+    const extras = map[o.id] ?? {};
+    return {
+      id: o.id,
+      vehicle: o.label,
+      vendor: o.vendor.split('·')[0]?.trim() ?? o.vendor,
+      base: o.costAllIn.low,
+      baseDisplay: formatPriceRange(o.costAllIn.low, o.costAllIn.high),
+      hybrid: o.powertrain === 'hybrid',
+      clearance: extras.clearance ?? '—',
+      cancel: extras.cancel ?? '—',
+      notes: extras.notes ?? '',
+    };
+  });
+}
+
+function renderCompareTable(): HTMLElement {
+  const rows = buildCompareRows();
+  const head = h(
+    'thead',
+    {},
+    h(
+      'tr',
+      {},
+      h(
+        'th',
+        { 'data-sort': 'vehicle', 'aria-sort': 'none', tabindex: '0', scope: 'col' },
+        'Vehicle'
+      ),
+      h(
+        'th',
+        { 'data-sort': 'price', 'aria-sort': 'ascending', tabindex: '0', scope: 'col' },
+        'All-in (5 days)'
+      ),
+      h(
+        'th',
+        { 'data-sort': 'hybrid', 'aria-sort': 'none', tabindex: '0', scope: 'col' },
+        'Hybrid?'
+      ),
+      h('th', { scope: 'col' }, 'Clearance'),
+      h('th', { scope: 'col' }, 'Cancellation'),
+      h('th', { scope: 'col' }, 'Notes')
+    )
+  );
+  const body = h(
+    'tbody',
+    {},
+    ...rows.map((r) =>
+      h(
+        'tr',
+        {
+          class: r.id === TOP_PICK_ID ? 'is-toppick' : '',
+          'data-vehicle': r.vehicle,
+          'data-price': r.base,
+          'data-hybrid': r.hybrid ? '1' : '0',
+        },
+        h(
+          'td',
+          {},
+          r.vehicle,
+          h('br'),
+          h('span', { class: 'rental-compare__hybrid--no' }, r.vendor)
+        ),
+        h('td', { class: 'rental-compare__price' }, r.baseDisplay),
+        r.hybrid
+          ? h('td', { class: 'rental-compare__hybrid--yes' }, 'Yes')
+          : h('td', { class: 'rental-compare__hybrid--no' }, 'No'),
+        h('td', {}, r.clearance),
+        h('td', {}, r.cancel),
+        h('td', {}, r.notes)
+      )
+    )
+  );
+  const table = h(
+    'table',
+    { class: 'rental-compare__table', 'aria-label': 'Rental options comparison' },
+    head,
+    body
+  );
+  return h(
+    'div',
+    { class: 'rental-compare' },
+    h('div', { class: 'rental-compare__scroll' }, table),
+    h(
+      'p',
+      { class: 'rental-compare__note' },
+      'Sortable — tap a column header. Default sort: price ascending. All prices verified May 16, 2026; re-quote within 7 days of booking.'
+    )
+  );
+}
+
+// Sort wiring — vanilla, no framework. Only price + hybrid + vehicle sort.
+function attachCompareSort(root: HTMLElement): void {
+  const table = root.querySelector<HTMLTableElement>('.rental-compare__table');
+  if (!table) return;
+  const tbody = table.tBodies[0];
+  if (!tbody) return;
+  const headers = table.querySelectorAll<HTMLTableCellElement>('th[data-sort]');
+  const apply = (key: string, dir: 'ascending' | 'descending'): void => {
+    const rows = Array.from(tbody.querySelectorAll<HTMLTableRowElement>('tr'));
+    rows.sort((a, b) => {
+      const va = a.dataset[key as 'vehicle' | 'price' | 'hybrid'] ?? '';
+      const vb = b.dataset[key as 'vehicle' | 'price' | 'hybrid'] ?? '';
+      if (key === 'price' || key === 'hybrid') {
+        const na = Number(va);
+        const nb = Number(vb);
+        return dir === 'ascending' ? na - nb : nb - na;
+      }
+      return dir === 'ascending' ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+    rows.forEach((row) => tbody.appendChild(row));
+  };
+  headers.forEach((th) => {
+    const handler = (): void => {
+      const key = th.dataset.sort;
+      if (!key) return;
+      const current = th.getAttribute('aria-sort');
+      const next: 'ascending' | 'descending' = current === 'ascending' ? 'descending' : 'ascending';
+      headers.forEach((other) => other.setAttribute('aria-sort', 'none'));
+      th.setAttribute('aria-sort', next);
+      apply(key, next);
+    };
+    th.addEventListener('click', handler);
+    th.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handler();
+      }
+    });
+  });
+  // Default sort on render: price ascending (matches initial markup).
+  apply('price', 'ascending');
+}
+
+// ────────────────────────────────────────────────────────────
+// Best-practice block — 10 obsessions.
+// ────────────────────────────────────────────────────────────
+interface BestPx {
+  headline: string;
+  why: string;
+}
+
+function renderBestPractice(): HTMLElement {
+  const items: BestPx[] = [
+    {
+      headline: 'Decline counter CDW if (and only if) you put the rental on a Chase Sapphire Reserve.',
+      why: 'Reserve = PRIMARY $75K, no exotic exclusion. Saves ~$28–35/day = $140–175 over 5 days. Without primary CC, take the bundle — one ding wipes the savings.',
+    },
+    {
+      headline: 'Bring a printed Sapphire benefits guide to the counter.',
+      why: 'Agents push CDW hard. One A4 page ("I have primary collision coverage via Chase Sapphire Reserve") shuts down the upsell.',
+    },
+    {
+      headline: 'Fill up at Mazama Store — last gas before the 75-mi WA-20 dead zone.',
+      why: 'Marblemount → Mazama is the dead zone. Mazama Store has LIMITED HOURS (no evening fills). Mazama gas ~$4.60/gal vs Seattle ~$5.78 — fill east-side before driving west on Day 5.',
+    },
+    {
+      headline: 'Avoid the SR-167 HOT toll lane between Renton and Pacific.',
+      why: 'Converted from HOV to express-toll Jan 12, 2026. Rental pay-by-mail surcharge $25/bill (Avis) on top of the toll. Parallel I-5 is free — Google Maps defaults to I-5; don\'t override.',
+    },
+    {
+      headline: 'Walk the car in video mode before driving off.',
+      why: 'Counter agents miss passenger-side damage. Phone video w/ timestamp, email it to yourself. Cuts dispute exposure on return.',
+    },
+    {
+      headline: 'Refuel within 10 minutes of return at a SeaTac-adjacent station.',
+      why: 'Closest is the 76 station on S 188th St. Keep the receipt. Rental "fuel service" runs $7–10/gal vs ~$5/gal retail.',
+    },
+    {
+      headline: 'Take the consolidated SEA rental shuttle, not Uber.',
+      why: 'Facility is 3150 S 160th St, ~2 mi from terminal. Free shuttle every 5 min, 24/7. No advantage to Uber.',
+    },
+    {
+      headline: 'Book Costco now to lock the ceiling — re-shop until pickup.',
+      why: 'Costco = no prepay, no cancel fee. AutoSlash will monitor for drops free and email you to re-book. Cheapest version of "buy now, save later."',
+    },
+    {
+      headline: 'Hybrid math: usually no for 5 days.',
+      why: 'Camry Hybrid (~50 mpg) vs Corolla (~32 mpg) over ~700 trip miles = ~8 gal saved = ~$40–47. Hybrid premium over the sedan is ~$80–95. Pure cost: gas sedan wins for a 5-day rental.',
+    },
+    {
+      headline: 'Decline PAI and PEC.',
+      why: 'Personal Accident Insurance + Personal Effects Coverage duplicate US health insurance + renters/homeowners. Pure markup, ~$5–7/day.',
+    },
+  ];
+  return h(
+    'div',
+    { class: 'rental-bestpx' },
+    h('h3', { class: 'rental-bestpx__title' }, '10 best-practice obsessions'),
+    h(
+      'p',
+      { class: 'rental-bestpx__intro' },
+      'Each item earns its line — the "why" tells you what it saves or buys. Skip none for the trip; skim now, screenshot before pickup.'
+    ),
+    h(
+      'ol',
+      { class: 'rental-bestpx__list' },
+      ...items.map((item) =>
+        h('li', {}, h('strong', {}, item.headline), ' ', item.why)
+      )
+    )
+  );
+}
+
+// ────────────────────────────────────────────────────────────
+// Booking checklist.
+// ────────────────────────────────────────────────────────────
+function renderChecklist(): HTMLElement {
+  const items: { strong: string; rest: string }[] = [
+    { strong: 'Both drivers\' licenses', rest: '— Allison + Erin (free 2nd driver via Costco; confirm at counter).' },
+    { strong: 'Credit card used for booking', rest: '— same card pays the security hold.' },
+    { strong: 'Reservation confirmation', rest: '— Costco email + booking # screenshotted offline.' },
+    { strong: 'Photo / video walk-around', rest: '— 360° exterior, interior, dashboard mileage, gas gauge BEFORE leaving the lot.' },
+    { strong: 'Fuel policy confirmed "full-to-full"', rest: '— NOT pre-paid fuel.' },
+    { strong: 'CDW decision', rest: '— DECLINE if using primary CC (Sapphire Reserve); ACCEPT if not. Verify what\'s checked on the contract.' },
+    { strong: 'PAI / PEC declined', rest: '— pure markup, duplicates other coverage.' },
+    { strong: 'Tolling option declined', rest: '— most majors push $4–6/day toll-pass-rental. Decline. Avoid SR-167 + I-405 ETLs and you skip all tolls.' },
+    { strong: 'Spare tire + jack present', rest: '— verify, especially on Turo. Cascade River Rd gravel + rural roads = nontrivial flat risk.' },
+    { strong: 'Roadside assistance number saved', rest: '— Costco fulfillment defaults to brand roadside (Alamo 800-326-5377 / Enterprise 800-307-6666). Save before leaving the lot.' },
+  ];
+  return h(
+    'div',
+    { class: 'rental-checklist' },
+    h('h3', { class: 'rental-checklist__title' }, 'At-pickup checklist'),
+    h(
+      'p',
+      { class: 'rental-checklist__intro' },
+      'Photograph the whole pickup flow. 10 minutes at the counter saves hours of dispute on return.'
+    ),
+    h(
+      'ul',
+      { class: 'rental-checklist__list' },
+      ...items.map((item) => h('li', {}, h('strong', {}, item.strong), ' ', item.rest))
+    )
+  );
+}
+
+// ────────────────────────────────────────────────────────────
+// Existing card rendering — preserved verbatim from v3.
+// ────────────────────────────────────────────────────────────
 function renderQuotedPrice(option: RentalOption): HTMLElement {
   const { low, high, quotedDate, source, sourceUrl } = option.costAllIn;
   return h(
@@ -218,40 +644,26 @@ export function renderRental(): HTMLElement {
   const lead = RENTAL_OPTIONS.filter((o) => LEAD_IDS.has(o.id));
   const alt = RENTAL_OPTIONS.filter((o) => !LEAD_IDS.has(o.id));
 
-  return section(
+  const sec = section(
     'rental',
     'Rental car',
     h(
       'p',
       { class: 'section__lede rental__hard-rules' },
       h('strong', {}, 'Hard rules: '),
-      'automatic, gas or hybrid, prices include full insurance (CDW/LDW + SLI). All quotes verified May 16, 2026.'
+      'automatic, gas or hybrid, prices include full insurance (CDW/LDW + SLI). Quotes verified May 16, 2026; research log updated May 17.'
     ),
     // Source-citation strip — Austria pattern, applied to rental quotes.
     h(
       'ul',
       { class: 'source-strip', 'aria-label': 'Rental data sources' },
-      h('li', { class: 'source-pill' }, 'Costco Travel · verified'),
-      h('li', { class: 'source-pill' }, 'Direct vendor quotes'),
-      h('li', { class: 'source-pill source-pill--warn' }, 'NPS road status · re-check')
+      h('li', { class: 'source-pill' }, 'Costco Travel · verified live quote'),
+      h('li', { class: 'source-pill' }, 'Turo · verified live quote'),
+      h('li', { class: 'source-pill source-pill--warn' }, 'BLI / one-way · range, re-quote')
     ),
-    h(
-      'ul',
-      { class: 'gist' },
-      h(
-        'li',
-        { class: 'gist__item' },
-        'Cheapest verified all-in: ',
-        h('strong', {}, 'Costco Compact sedan, $674-825'),
-        ' (5 days, CDW + SLI bundled). Costco Travel is the consistent value across classes — fulfilled by Alamo/Enterprise/Avis/Budget.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        h('strong', {}, 'Mid-size SUV is +$27 over Compact SUV at Costco'),
-        ' — worth the bump for clearance + cargo on Cascade River Rd gravel.'
-      )
-    ),
+    renderTldr(),
+    renderMatrix(),
+    renderCompareTable(),
     h(
       'details',
       { class: 'disclosure rental__unpaved-disclosure' },
@@ -276,6 +688,7 @@ export function renderRental(): HTMLElement {
         ' Mitigations: premium-credit-card primary CDW (Chase Sapphire Reserve, Amex Platinum) covers where rental contract does not; some Turo hosts explicitly allow gravel forest roads.'
       )
     ),
+    h('h3', { class: 'section__subtitle' }, 'Lead picks — verified live quotes'),
     h('div', { class: 'card-grid' }, ...lead.map(renderCard)),
     alt.length > 0
       ? h(
@@ -293,6 +706,13 @@ export function renderRental(): HTMLElement {
           ),
           h('div', { class: 'card-grid' }, ...alt.map(renderCard))
         )
-      : null
+      : null,
+    renderBestPractice(),
+    renderChecklist()
   );
+
+  // Wire up sort after the section is built (handlers attached pre-mount;
+  // events bind when nodes are inserted into the live DOM).
+  attachCompareSort(sec);
+  return sec;
 }

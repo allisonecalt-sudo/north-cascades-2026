@@ -20,7 +20,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'rental',
     title: 'Rental car',
-    lede: 'Automatic, gas or hybrid, all-in pricing (CDW/LDW + SLI bundled). Lead picks below — less-common shapes in disclosure.',
+    lede: 'Automatic, gas or hybrid, all-in pricing (CDW/LDW + SLI bundled). Top pick + decision matrix + sortable comparison + 10 best-practice obsessions + at-pickup checklist. Quotes verified May 16, 2026; research log refreshed May 17.',
     imageHero: {
       src: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1920&q=70',
       alt: 'Compact SUV on an empty mountain highway',
