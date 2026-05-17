@@ -418,14 +418,6 @@ const PHOTOS = {
     width: 800,
     height: 533,
   },
-  carouselLake: {
-    src: 'https://images.unsplash.com/photo-1439853949127-fa647821eba0?auto=format&fit=crop&w=800&q=70',
-    alt: 'Alpine lake with snow-dusted peaks reflected in still water.',
-    credit: 'Photo: Steven Lewis / Unsplash',
-    creditUrl: 'https://unsplash.com/photos/r4He4Btlsro',
-    width: 800,
-    height: 533,
-  },
   carouselRiver: {
     src: 'https://images.unsplash.com/photo-1502301103665-0b95cc738daf?auto=format&fit=crop&w=800&q=70',
     alt: 'River winding through forested mountain valley.',
@@ -466,6 +458,172 @@ const PHOTOS = {
     width: 800,
     height: 533,
   },
+
+  // ====================================================================
+  // PROPERTY-AUTHENTIC photos — pulled May 17, 2026 from each property's
+  // own marketing site (og:image or hero <img>). These ARE the actual
+  // property, not representative. Verified 200 + image bytes > 60KB.
+  // ====================================================================
+  propFreestone: {
+    src: 'https://lirp.cdn-website.com/0107d1ac/dms3rep/multi/opt/freestone-og-1920w.jpg',
+    alt: 'Freestone Inn — view from cabin porch across the lawn to the alpine lake and Cascades.',
+    credit: 'Photo: Freestone Inn (property site)',
+    creditUrl: 'https://www.freestoneinn.com/',
+    width: 900,
+    height: 472,
+  },
+  propRiversEdge: {
+    src: 'https://media.q4launch.website/uploads/sites/15/2020/10/hero.jpg',
+    alt: "River's Edge Resort — private hot tub on the cabin deck overlooking the Chewuch River.",
+    credit: "Photo: River's Edge Resort (property site)",
+    creditUrl: 'https://riversedgewinthrop.com/',
+    width: 900,
+    height: 350,
+  },
+  propMethowRiver: {
+    src: 'https://images.ctfassets.net/zfyf8amirbtp/7Ai4QQxX89NkVF6VnTZ5ed/f7d402be479e875b57f4ad2392ec0103/IMG_3406.jpeg?fm=jpg&w=1200&h=630&fit=crop&f=center',
+    alt: 'Methow River Lodge — Methow River flowing past riverside cabin grounds in summer.',
+    credit: 'Photo: Methow River Lodge (property site)',
+    creditUrl: 'https://methowriverlodge.com/',
+    width: 900,
+    height: 472,
+  },
+  propChewuch: {
+    src: 'https://images.ctfassets.net/zfyf8amirbtp/LKOdEjM91FvZ4HnaeI4WL/368360f899698666dafffcb73b747a90/IMG_1978.jpeg?fm=jpg&w=1200&h=630&fit=crop&f=center',
+    alt: 'Chewuch Inn — log dining area set for breakfast with morning light.',
+    credit: 'Photo: Chewuch Inn & Cabins (property site)',
+    creditUrl: 'https://chewuchinn.com/',
+    width: 900,
+    height: 472,
+  },
+  propGlacierPeak: {
+    src: 'https://img1.wsimg.com/isteam/ip/cfc68586-fdbe-4cef-8031-1befc7e32d97/IMG_6397-ad92bd7.jpg/:/rs=w:900,h:600,cg:true',
+    alt: 'Glacier Peak Resort & Winery — on-site winery building with mountains behind in summer.',
+    credit: 'Photo: Glacier Peak Resort & Winery (property site)',
+    creditUrl: 'https://glacierpeakresortandwinery.com/',
+    width: 900,
+    height: 600,
+  },
+  propOvenellsCabin: {
+    src: 'https://www.ovenells-inn.com/wp-content/uploads/2025/04/0071ef_c471687ca27c47098394bb16accfa25bmv2.jpg',
+    alt: "Ovenell's Heritage Inn — log cabin entrance with rocking chairs and sun through the trees.",
+    credit: "Photo: Ovenell's Heritage Inn (property site)",
+    creditUrl: 'https://www.ovenells-inn.com/',
+    width: 506,
+    height: 419,
+  },
+  propOvenellsRoad: {
+    src: 'https://www.ovenells-inn.com/wp-content/uploads/2025/04/0071ef_12fa21f6cb4845feaa3633303079acf8mv2.jpg',
+    alt: "Ovenell's — ranch road through evergreens with golden sunlight at the end.",
+    credit: "Photo: Ovenell's Heritage Inn (property site)",
+    creditUrl: 'https://www.ovenells-inn.com/',
+    width: 506,
+    height: 332,
+  },
+  propSunMountain: {
+    src: 'https://sunmountainlodge.com/wp-content/uploads/2023/11/home-hero.jpg',
+    alt: 'Sun Mountain Lodge — hand reaching toward sunlight through tall Methow Valley pines.',
+    credit: 'Photo: Sun Mountain Lodge (property site)',
+    creditUrl: 'https://www.sunmountainlodge.com/',
+    width: 900,
+    height: 506,
+  },
+  propSpringCreekRanch: {
+    src: 'https://springcreekwinthrop.com/wp-content/uploads/2018/02/welcome_01-960x610.jpg',
+    alt: 'Spring Creek Ranch — open meadow with the ranch buildings and Methow Valley behind in summer.',
+    credit: 'Photo: Spring Creek Ranch (property site)',
+    creditUrl: 'https://springcreekwinthrop.com/',
+    width: 960,
+    height: 610,
+  },
+  propSpringCreekInterior: {
+    src: 'https://springcreekwinthrop.com/wp-content/uploads/2022/01/scr_slide_4-960x610.jpg',
+    alt: 'Spring Creek Ranch — twin beds in a sunlit cabin bedroom with patchwork quilts.',
+    credit: 'Photo: Spring Creek Ranch (property site)',
+    creditUrl: 'https://springcreekwinthrop.com/',
+    width: 960,
+    height: 610,
+  },
+  propBuffaloRun: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Buffalo_Run_Restaurant_-_Flickr_-_brewbooks.jpg/960px-Buffalo_Run_Restaurant_-_Flickr_-_brewbooks.jpg',
+    alt: 'Buffalo Run Restaurant & Inn — roadside sign in summer with the WA-20 corridor and Cascades behind.',
+    credit: 'Photo: brewbooks via Wikimedia Commons (CC BY-SA)',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Buffalo_Run_Restaurant_-_Flickr_-_brewbooks.jpg',
+    width: 900,
+    height: 675,
+  },
+
+  // ====================================================================
+  // REGIONAL CONTEXT photos (Wikimedia Commons) — the actual region the
+  // property sits in, not the property itself. Use to fill carousels when
+  // the property's own gallery is hard to extract. Alt text + credit are
+  // explicit that these are "Representative — [region]" so readers know
+  // they are looking at the area, not the room. Pulled May 17, 2026.
+  // ====================================================================
+  regPattersonLake: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/PattersonLake_Winthrop.jpg/960px-PattersonLake_Winthrop.jpg',
+    alt: 'Representative — Patterson Lake, Winthrop, WA — alpine lake with wildflowers and rolling Methow hills in summer.',
+    credit: 'Photo: Geaugagrrl via Wikimedia Commons',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:PattersonLake_Winthrop.jpg',
+    width: 900,
+    height: 675,
+  },
+  regMazama: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Mazama%2C_Washington.JPG/960px-Mazama%2C_Washington.JPG',
+    alt: 'Representative — Mazama, WA — tall-grass meadow in the Methow Valley with the Cascades behind, summer.',
+    credit: 'Photo: Wikimedia Commons (public domain)',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Mazama,_Washington.JPG',
+    width: 900,
+    height: 675,
+  },
+  regMethowRiver: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Methow_River.JPG/960px-Methow_River.JPG',
+    alt: 'Representative — Methow River near Mazama — turquoise river flowing through evergreen forest, summer.',
+    credit: 'Photo: Benjamin Cody via Wikimedia Commons',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Methow_River.JPG',
+    width: 900,
+    height: 675,
+  },
+  regMethowSunset: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Methow_River_near_Pateros_at_sunset.jpg/960px-Methow_River_near_Pateros_at_sunset.jpg',
+    alt: 'Representative — Methow River at sunset — orange-and-red sky over the river and Methow hills.',
+    credit: 'Photo: Thayne via Wikimedia Commons',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Methow_River_near_Pateros_at_sunset.jpg',
+    width: 900,
+    height: 675,
+  },
+  regWashingtonPass: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Washington_pass_overlook.jpg/960px-Washington_pass_overlook.jpg',
+    alt: 'Representative — Washington Pass overlook in summer — Liberty Bell Mountain group against clear blue sky.',
+    credit: 'Photo: Wikimedia Commons',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_pass_overlook.jpg',
+    width: 900,
+    height: 710,
+  },
+  regDiabloLake: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Diablo_Lake_%28Washington_State%29.jpg/960px-Diablo_Lake_%28Washington_State%29.jpg',
+    alt: 'Representative — Diablo Lake, WA — turquoise glacial water surrounded by forested ridges in summer.',
+    credit: 'Photo: Wikimedia Commons',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_(Washington_State).jpg',
+    width: 900,
+    height: 598,
+  },
+  regConcrete: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Concrete_town_hall.jpg/960px-Concrete_town_hall.jpg',
+    alt: 'Representative — Concrete, WA town hall in summer — green-painted historic building with the US flag flying.',
+    credit: 'Photo: Wikimedia Commons',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Concrete_town_hall.jpg',
+    width: 900,
+    height: 630,
+  },
+  regMarblemount: {
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Marblemount_Community_Club.jpg/960px-Marblemount_Community_Club.jpg',
+    alt: 'Representative — Marblemount, WA Community Club in summer — small wood-shingle community building set in evergreens.',
+    credit: 'Photo: Wikimedia Commons',
+    creditUrl: 'https://commons.wikimedia.org/wiki/File:Marblemount_Community_Club.jpg',
+    width: 900,
+    height: 600,
+  },
 } as const satisfies Record<string, LodgingPhoto>;
 
 // ====================================================================
@@ -502,7 +660,7 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'likely-available',
     photo: PHOTOS.rentalAFrame,
-    photos: [PHOTOS.rentalAFrame, PHOTOS.carouselInterior, PHOTOS.carouselDeck, PHOTOS.carouselForest],
+    photos: [PHOTOS.rentalAFrame, PHOTOS.regMarblemount, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.carouselDeck],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 50, miles: 23 },
       { destinationId: 'maple-pass', minutes: 75, miles: 38 },
@@ -541,7 +699,7 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'likely-available',
     photo: PHOTOS.cabinHot,
-    photos: [PHOTOS.cabinHot, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselFirepit, PHOTOS.carouselInterior],
+    photos: [PHOTOS.cabinHot, PHOTOS.regConcrete, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselFirepit],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 85, miles: 42 },
       { destinationId: 'maple-pass', minutes: 110, miles: 60 },
@@ -581,7 +739,7 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'likely-available',
     photo: PHOTOS.rentalModern,
-    photos: [PHOTOS.rentalModern, PHOTOS.carouselForest, PHOTOS.carouselFirepit, PHOTOS.carouselInterior],
+    photos: [PHOTOS.rentalModern, PHOTOS.regConcrete, PHOTOS.carouselForest, PHOTOS.carouselFirepit, PHOTOS.carouselInterior],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 85, miles: 42 },
       { destinationId: 'maple-pass', minutes: 110, miles: 60 },
@@ -627,8 +785,8 @@ export const WEST_LODGING: Lodging[] = [
     tier: 'fits-brief',
     kitchen: 'full',
     availability: 'verify-at-booking',
-    photo: PHOTOS.ranchProperty,
-    photos: [PHOTOS.ranchProperty, PHOTOS.carouselRanch, PHOTOS.carouselSunset, PHOTOS.cabinClassic, PHOTOS.carouselInterior],
+    photo: PHOTOS.propOvenellsCabin,
+    photos: [PHOTOS.propOvenellsCabin, PHOTOS.propOvenellsRoad, PHOTOS.ranchProperty, PHOTOS.carouselSunset, PHOTOS.carouselRanch],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 85, miles: 42 },
       { destinationId: 'maple-pass', minutes: 110, miles: 60 },
@@ -667,8 +825,8 @@ export const WEST_LODGING: Lodging[] = [
     tier: 'fits-brief',
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
-    photo: PHOTOS.cabinWoods,
-    photos: [PHOTOS.cabinWoods, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.cabinClassic],
+    photo: PHOTOS.propGlacierPeak,
+    photos: [PHOTOS.propGlacierPeak, PHOTOS.cabinWoods, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.cabinClassic],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 60, miles: 28 },
       { destinationId: 'maple-pass', minutes: 85, miles: 47 },
@@ -721,7 +879,7 @@ export const WEST_LODGING: Lodging[] = [
     kitchen: 'full',
     availability: 'verify-at-booking',
     photo: PHOTOS.cabinRiver,
-    photos: [PHOTOS.cabinRiver, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselForest, PHOTOS.carouselInterior],
+    photos: [PHOTOS.cabinRiver, PHOTOS.regMarblemount, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 35, miles: 17 },
       { destinationId: 'maple-pass', minutes: 70, miles: 36 },
@@ -775,8 +933,8 @@ export const WEST_LODGING: Lodging[] = [
     tier: 'not-a-fit',
     kitchen: 'none',
     availability: 'verify-at-booking',
-    photo: PHOTOS.innClassic,
-    photos: [PHOTOS.innClassic, PHOTOS.carouselInterior, PHOTOS.carouselForest],
+    photo: PHOTOS.propBuffaloRun,
+    photos: [PHOTOS.propBuffaloRun, PHOTOS.regMarblemount, PHOTOS.innClassic, PHOTOS.carouselInterior, PHOTOS.carouselForest],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 55, miles: 25 },
       { destinationId: 'maple-pass', minutes: 80, miles: 42 },
@@ -817,7 +975,7 @@ export const WEST_LODGING: Lodging[] = [
     kosherCookingFit: false,
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
-    photos: [PHOTOS.motelInn, PHOTOS.carouselInterior, PHOTOS.innClassic],
+    photos: [PHOTOS.motelInn, PHOTOS.regMarblemount, PHOTOS.innClassic, PHOTOS.carouselInterior, PHOTOS.carouselForest],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 55, miles: 25 },
       { destinationId: 'maple-pass', minutes: 80, miles: 42 },
@@ -900,8 +1058,8 @@ export const EAST_LODGING: Lodging[] = [
     tier: 'fits-brief',
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
-    photo: PHOTOS.lodgeMountain,
-    photos: [PHOTOS.lodgeMountain, PHOTOS.carouselLake, PHOTOS.carouselDeck, PHOTOS.carouselForest, PHOTOS.carouselInterior],
+    photo: PHOTOS.propFreestone,
+    photos: [PHOTOS.propFreestone, PHOTOS.regMazama, PHOTOS.lodgeMountain, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 130, miles: 80 },
       { destinationId: 'maple-pass', minutes: 25, miles: 14 },
@@ -946,8 +1104,8 @@ export const EAST_LODGING: Lodging[] = [
     tier: 'fits-brief',
     kitchen: 'full',
     availability: 'verify-at-booking',
-    photo: PHOTOS.cabinClassic,
-    photos: [PHOTOS.cabinClassic, PHOTOS.carouselRanch, PHOTOS.carouselRiver, PHOTOS.carouselInterior, PHOTOS.carouselSunset],
+    photo: PHOTOS.propSpringCreekRanch,
+    photos: [PHOTOS.propSpringCreekRanch, PHOTOS.propSpringCreekInterior, PHOTOS.regMethowRiver, PHOTOS.regMethowSunset, PHOTOS.cabinClassic],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 145, miles: 92 },
       { destinationId: 'maple-pass', minutes: 45, miles: 24 },
@@ -1001,8 +1159,8 @@ export const EAST_LODGING: Lodging[] = [
     tier: 'fits-brief',
     kitchen: 'full',
     availability: 'verify-at-booking',
-    photo: PHOTOS.cabinHot,
-    photos: [PHOTOS.cabinHot, PHOTOS.carouselHotTub, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
+    photo: PHOTOS.propRiversEdge,
+    photos: [PHOTOS.propRiversEdge, PHOTOS.regMethowRiver, PHOTOS.cabinHot, PHOTOS.carouselHotTub, PHOTOS.carouselInterior],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 140, miles: 88 },
       { destinationId: 'maple-pass', minutes: 40, miles: 22 },
@@ -1056,8 +1214,8 @@ export const EAST_LODGING: Lodging[] = [
     tier: 'fits-brief',
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
-    photo: PHOTOS.cabinRiver,
-    photos: [PHOTOS.cabinRiver, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
+    photo: PHOTOS.propMethowRiver,
+    photos: [PHOTOS.propMethowRiver, PHOTOS.regMethowRiver, PHOTOS.cabinRiver, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 140, miles: 88 },
       { destinationId: 'maple-pass', minutes: 40, miles: 22 },
@@ -1100,7 +1258,7 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
     photo: PHOTOS.lodgeMountain,
-    photos: [PHOTOS.lodgeMountain, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.carouselSunset],
+    photos: [PHOTOS.lodgeMountain, PHOTOS.regMazama, PHOTOS.regWashingtonPass, PHOTOS.carouselForest, PHOTOS.carouselInterior],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 130, miles: 80 },
       { destinationId: 'maple-pass', minutes: 30, miles: 17 },
@@ -1162,8 +1320,8 @@ export const EAST_LODGING: Lodging[] = [
     // 4-night stay.
     kosherCookingFit: false,
     availability: 'verify-at-booking',
-    photo: PHOTOS.bnbCozy,
-    photos: [PHOTOS.bnbCozy, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.cabinClassic],
+    photo: PHOTOS.propChewuch,
+    photos: [PHOTOS.propChewuch, PHOTOS.regMethowSunset, PHOTOS.bnbCozy, PHOTOS.carouselForest, PHOTOS.cabinClassic],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 145, miles: 92 },
       { destinationId: 'maple-pass', minutes: 45, miles: 24 },
@@ -1211,8 +1369,8 @@ export const EAST_LODGING: Lodging[] = [
     tier: 'splurge',
     kitchen: 'full',
     availability: 'verify-at-booking',
-    photo: PHOTOS.lodgeRidge,
-    photos: [PHOTOS.lodgeRidge, PHOTOS.carouselLake, PHOTOS.carouselSunset, PHOTOS.carouselDeck, PHOTOS.carouselInterior],
+    photo: PHOTOS.regPattersonLake,
+    photos: [PHOTOS.regPattersonLake, PHOTOS.propSunMountain, PHOTOS.regMethowSunset, PHOTOS.lodgeRidge, PHOTOS.carouselDeck],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 150, miles: 95 },
       { destinationId: 'maple-pass', minutes: 50, miles: 28 },
@@ -1270,7 +1428,7 @@ export const EAST_LODGING: Lodging[] = [
     kitchen: 'kitchenette',
     availability: 'verify-at-booking',
     photo: PHOTOS.glampingHut,
-    photos: [PHOTOS.glampingHut, PHOTOS.carouselForest, PHOTOS.carouselSunset],
+    photos: [PHOTOS.glampingHut, PHOTOS.regMazama, PHOTOS.regMethowSunset, PHOTOS.carouselForest, PHOTOS.carouselSunset],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 145, miles: 90 },
       { destinationId: 'maple-pass', minutes: 35, miles: 19 },
@@ -1315,7 +1473,7 @@ export const EAST_LODGING: Lodging[] = [
     kosherCookingFit: false,
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
-    photos: [PHOTOS.motelInn, PHOTOS.carouselRiver, PHOTOS.carouselInterior],
+    photos: [PHOTOS.motelInn, PHOTOS.regMethowRiver, PHOTOS.regMethowSunset, PHOTOS.carouselRiver, PHOTOS.carouselInterior],
     driveTimes: [
       { destinationId: 'maple-pass', minutes: 40, miles: 22 },
       { destinationId: 'diablo-lake', minutes: 60, miles: 40 },
@@ -1356,7 +1514,7 @@ export const EAST_LODGING: Lodging[] = [
     kosherCookingFit: false,
     availability: 'verify-at-booking',
     photo: PHOTOS.motelInn,
-    photos: [PHOTOS.motelInn, PHOTOS.carouselInterior, PHOTOS.innClassic],
+    photos: [PHOTOS.motelInn, PHOTOS.regMazama, PHOTOS.innClassic, PHOTOS.carouselInterior, PHOTOS.carouselForest],
     driveTimes: [
       { destinationId: 'maple-pass', minutes: 42, miles: 23 },
       { destinationId: 'diablo-lake', minutes: 62, miles: 41 },
