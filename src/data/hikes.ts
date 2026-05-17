@@ -673,6 +673,8 @@ export const HIKES: Hike[] = [
       'Forest + meadows to a nose-to-nose Coleman Glacier overlook on Mt. Baker. Notable: a real creek crossing with slick rocks — go in the morning when flow is low. Mt. Baker corridor side trip — far from Marblemount, plan it as a Day-1 Bellingham detour or skip.',
     hiddenGem: true,
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/heliotrope-ridge',
+    researchNotes:
+      "WTA-verified May 17, 2026: 5.5 mi RT / +1,400 ft / 5,100 ft high point. CRITICAL: Glacier Creek Rd (FR 39) is CLOSED at mile 1 due to washouts at miles 3.6 + 3.8 (WTA alert 3.20.26) — trail effectively inaccessible. No 2026 trip reports yet. Re-check WTA closer to Aug 16; default to OMIT from any planned itinerary.",
     status: {
       kind: 'trailhead-closed',
       label: 'Trailhead currently closed',
@@ -702,6 +704,9 @@ export const HIKES: Hike[] = [
     verifiedAsOf: 'May 17, 2026',
     description:
       'Optional add-on past the pass and up Sahale Arm to a glacier camp basin at 7,600 ft. Long day, significant climb — only if both feel strong on the morning of, and only with an early start.',
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/cascade-pass-sahale-arm',
+    researchNotes:
+      'WTA-verified May 17, 2026: 12.8 mi RT / +4,100 ft via Cascade Pass + Sahale Arm. Day-hike requires no permit; overnight at Sahale Glacier Camp needs backcountry permit (Recreation.gov lottery, opens ~Mar). Same Cascade River Rd dependency as Cascade Pass. Loose moraine near the camp — careful footing.',
     photos: [
       {
         src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sahale_Arm_in_WA.jpg?width=1280',
@@ -747,6 +752,9 @@ export const HIKES: Hike[] = [
     verifiedAsOf: 'May 17, 2026',
     description:
       'Goes north on the PCT from Rainy Pass. Longer + harder than Maple Pass with a different ridgeline payoff. Only if Maple Pass feels too short.',
+    sourceUrl: 'https://www.wta.org/go-hiking/hikes/cutthroat-pass',
+    researchNotes:
+      'WTA-verified May 17, 2026: 10 mi RT / +2,034 ft on the PCT north from Rainy Pass. NW Forest Pass required. Same MP 158 TH as Maple Pass — east of the WA-20 closure, reachable from Mazama / Winthrop.',
   },
 ];
 

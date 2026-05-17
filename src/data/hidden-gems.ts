@@ -84,6 +84,13 @@ export interface HiddenGem {
    * by the integration-audit pass.
    */
   needsWa20Through?: boolean;
+  /**
+   * Deep-research note from the May 17, 2026 destination-research audit. 1-2
+   * sentences pulled from WTA + NPS verification of current trail conditions,
+   * permits, or seasonal status. Optional — only set for entries that needed
+   * a touch beyond what `status` + `whyHidden` already say.
+   */
+  researchNotes?: string;
 }
 
 export const HIDDEN_GEMS: HiddenGem[] = [
@@ -126,6 +133,8 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       },
     ],
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'WTA-verified May 17, 2026: 4.2 mi RT / +1,200 ft confirmed; 787 trip reports, no NW Forest Pass required (despite some older sources saying otherwise — verify at trailhead). WTA flags multiple SAR missions — stay on switchbacks. 25-car lot, vault toilet. South-facing exposed — sun + water mandatory.',
   },
   {
     id: 'hidden-lake-lookout',
@@ -134,9 +143,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     where: 'FR 1540 off Cascade River Rd, near Marblemount (West)',
     side: 'west',
     effort: 'strenuous',
-    length: '9.0 mi RT',
+    length: '8.0 mi RT',
     elevation: '+3,300 ft',
-    roadAccessRequired: 'Yes — FR 1540 high-clearance recommended; verify before counting on it',
+    roadAccessRequired: 'Yes — FR 1540 (Sibley Creek Rd) high-clearance required; large washout ~2 mi up as of NPS May 6, 2026',
     permit: 'none',
     whyHidden:
       "It's IG-famous for the lookout photo but the road + climb keep most visitors away. The lookout itself is volunteer-maintained, not in the NPS-recommended list.",
@@ -163,14 +172,16 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       },
     ],
     status: {
-      kind: 'caution',
-      label: 'Road access flagged',
+      kind: 'closed',
+      label: 'Access road currently CLOSED',
       detail:
-        'FR 1540 status varies year to year — high-clearance recommended even when "open." Check the Mt. Baker-Snoqualmie NF road status page before counting on a sub-9-mile RT (an extra walk-in adds significantly to the day).',
+        'Sibley Creek / Hidden Lake Rd (FR 1540) has a large washout ~2 mi up the road per NPS road-conditions page (last updated May 6, 2026) — "vehicle access blocked, foot/bike OK." Trail is reachable on foot but adds 4-5 mi RT to an already 8.0 mi day. Check NPS + Mt. Baker-Snoqualmie NF road status before counting on it. May or may not reopen by Aug 16.',
       asOf: 'May 17, 2026',
-      sourceUrl: 'https://www.fs.usda.gov/r6/mbs/roadcondrep',
+      sourceUrl: 'https://www.nps.gov/noca/planyourvisit/road-conditions.htm',
     },
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'WTA-verified May 17, 2026: 8.0 mi RT / +3,300 ft (NOT 9.0 mi as previously listed — corrected to WTA). FR 1540 described as "steep, rutted, rocky" — 4.5 mi to road end. WTA last worked here 2019. NPS road-conditions confirms current closure of Sibley Creek / Hidden Lake Rd — flagged on status pill.',
   },
   {
     id: 'park-butte-fire-lookout',
@@ -208,6 +219,8 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       },
     ],
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'WTA-verified May 17, 2026: 7.5 mi RT / +2,200 ft / 5,450 ft summit confirmed. Trail uses a seasonal bridge that gets installed early summer and removed early fall — mid-August reliable in normal years; verify Mt. Baker-Snoqualmie NF before going. NW Forest Pass required. Fragile alpine — pack out human waste.',
   },
   {
     id: 'pyramid-lake',
@@ -244,6 +257,8 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       },
     ],
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      "WTA-verified May 17, 2026: 4.2 mi RT / +1,500 ft / 2,500 ft high point confirmed. 6 parking spaces only — arrive early. Steep with loose rock in sections. Trail goes Douglas-fir → hemlock/cedar forest, ends at pond-sized lake with yellow waterlilies. Permit-free for day use. Note: photo shows Pyramid PEAK from Diablo Lake — the actual lake itself is a small forest tarn (no marquee photo). MP 127 — WEST of the MP 130 closure, reachable from Marblemount.",
   },
   {
     id: 'trail-of-cedars-newhalem',
@@ -281,6 +296,8 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       },
     ],
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'WTA + NPS verified May 17, 2026: 0.3 mi flat loop from Newhalem visitor center, year-round, no permit. Reachable from Marblemount regardless of WA-20 mid-pass closure. Pair with Ladder Creek Falls + Gorge Creek Falls (MP 123) for a 1-hour low-effort Newhalem stop.',
   },
 
   // ====================================================================
@@ -333,11 +350,13 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       kind: 'closed',
       label: 'Trailhead currently CLOSED',
       detail:
-        'Glacier Creek Rd (FR 39) closed at mile 1 due to washouts at miles 3.6 and 3.8 (WTA alert 3.20.26). Trail effectively inaccessible until road is repaired. May or may not reopen by Aug 16 — re-check WTA before counting on this one.',
+        'Glacier Creek Rd (FR 39) closed at mile 1 due to washouts at miles 3.6 and 3.8 (WTA alert 3.20.26 — re-verified May 17, 2026 on WTA Heliotrope Ridge page, no new alert). Trail effectively inaccessible until road is repaired. May or may not reopen by Aug 16 — re-check WTA before counting on this one.',
       asOf: 'May 17, 2026',
       sourceUrl: 'https://www.wta.org/go-hiking/hikes/heliotrope-ridge',
     },
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'WTA-verified May 17, 2026: 5.5 mi RT / +1,400 ft / 5,100 ft high point. Coleman Glacier overlook is the photo payoff. CRITICAL: Glacier Creek Rd closure still in force per WTA — no 2026 trip reports loading (608 historical). Default OMIT from itinerary. If road reopens by July, re-evaluate; if still closed mid-July, plan around it.',
   },
 
   // ====================================================================
@@ -378,6 +397,8 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       },
     ],
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'WTA-verified May 17, 2026: 3.8 mi RT / +400 ft / 4,900 ft high point confirmed. NW Forest Pass required. TH on Cutthroat Creek Rd 400 (1 mi gravel) off MP 167 WA-20 — east of the closure, reachable from Mazama / Winthrop. Larch country in fall; meadows in August. WTA worked here 2008+2004.',
   },
   {
     id: 'goat-peak-lookout',
@@ -400,7 +421,8 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       { from: 'Marblemount', text: 'WA-20 closed → not feasible' },
     ],
     sources: [
-      { name: 'WTA · Goat Peak Lookout', url: 'https://www.wta.org/go-hiking/hikes/goat-peak-lookout' },
+      { name: 'WTA · Goat Peak Lookout', url: 'https://www.wta.org/go-hiking/hikes/goat-peak' },
+      { name: 'USFS · Goat Peak Lookout Trail #457', url: 'https://www.fs.usda.gov/recarea/okawen/recreation/recarea/?recid=59259&actid=24' },
       { name: 'AllTrails · Goat Peak', url: 'https://www.alltrails.com/trail/us/washington/goat-peak-lookout-trail' },
     ],
     photos: [
@@ -422,25 +444,27 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       },
     ],
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'WTA-verified May 17, 2026: 5.0 mi RT / +1,400 ft / 7,000 ft summit confirmed. WTA URL corrected (was /goat-peak-lookout which 404s; correct slug is /goat-peak). Staffed fire lookout (1923), kid-friendly per WTA. Steep with loose rock — watch footing on exposed gravel. East-side, WA-20-independent (Mazama Rd → FR 5225).',
   },
   {
     id: 'tiffany-mountain',
     needsWa20Through: false,
     name: 'Tiffany Mountain summit',
-    where: 'FR 39 off WA-20 east of Winthrop · Okanogan NF (East)',
+    where: 'Freezeout Pass · USFS 37 + 39 from East Chewuch Rd (Winthrop) · Okanogan NF (East)',
     side: 'east',
     effort: 'moderate',
-    length: '6.4 mi RT',
-    elevation: '+1,700 ft',
-    roadAccessRequired: 'Yes — FR 39 + FR 100 last 7 mi rough gravel, high-clearance preferred',
+    length: '4.2 mi RT',
+    elevation: '+1,685 ft',
+    roadAccessRequired: 'Yes — USFS 37 (11.5 mi) then USFS 39 to Freezeout Pass; degrades significantly with climb',
     permit: 'nw-forest-pass',
     whyHidden:
-      "Sits ~1 hr east of Winthrop in the Okanogan NF — almost no North Cascades trip lists include it. A wildflower-streaked 8,242 ft summit with Cascades-to-Pasayten panorama. Locals' summer go-to.",
+      "Sits ~1 hr east of Winthrop in the Okanogan NF — almost no North Cascades trip lists include it. A wildflower-streaked 8,245 ft summit with Cascades-to-Pasayten panorama. Locals' summer go-to.",
     tripFit:
-      'East-base wildflower day for late-summer color (mid-July through mid-August is peak). Long drive earned by a true open-summit. Skip if FR 39/100 access has degraded — check Methow Trails before going.',
+      'East-base wildflower day for late-summer color. Access roads usually snow-free mid-June through September. Long drive earned by a true open-summit. Skip if forest-service road access has degraded — check WTA before going.',
     driveFromBases: [
-      { from: 'Winthrop', text: '~1 hr 15 min · 27 mi (incl. FR roads)' },
-      { from: 'Mazama', text: '~1 hr 30 min · 38 mi' },
+      { from: 'Winthrop', text: '~1 hr 15 min via East Chewuch Rd + USFS 37/39' },
+      { from: 'Mazama', text: '~1 hr 30 min · ~38 mi' },
       { from: 'Marblemount', text: 'WA-20 closed → not feasible' },
     ],
     sources: [
@@ -466,29 +490,32 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       },
     ],
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'WTA-verified May 17, 2026: corrected stats — 4.2 mi RT / +1,685 ft / 8,245 ft summit (was 6.4 mi / +1,700 / 8,242 — those are the "via Freezeout Ridge" longer-route numbers conflated). Approach: East Chewuch Rd → USFS 37 (11.5 mi) → USFS 39 to Freezeout Pass. Only ~5 cars at trailhead. Early-summer wildflowers (paintbrush, asters, lupine); fall larches on north side.',
   },
   {
     id: 'slate-peak',
     needsWa20Through: false,
-    name: 'Slate Peak (drive-up lookout)',
-    where: "Hart's Pass FR 5400 from Mazama · ends at 7,440 ft (East)",
+    name: "Slate Peak (drive-up — LOOKOUT COLLAPSED Winter 2025-26)",
+    where: "Hart's Pass FR 5400 from Mazama · 7,440 ft summit (East)",
     side: 'east',
     effort: 'low',
-    length: 'drive-up + 0.5 mi short walk to lookout',
+    length: 'Currently: park at Monument Creek green gate + walk 0.7+ mi on the road past the washout',
     elevation: 'minimal walk · 7,440 ft summit',
-    roadAccessRequired: 'YES — highest drivable road in Washington · narrow exposed gravel · ~1 hr each way from Mazama',
-    permit: 'none',
+    roadAccessRequired: 'CLOSED at Monument Creek trailhead — Dec 2025 storm washout, no repair ETA. Foot/bike OK past the gate.',
+    permit: 'nw-forest-pass',
     whyHidden:
-      "Tied for highest drivable point in WA but the road is the catch — exposed cliff-edge gravel keeps most rental-car drivers away. Those who go get a 360° Pasayten + Cascades panorama with almost no effort.",
+      "Tied for highest drivable point in WA but the road is the catch — exposed cliff-edge gravel. Was a 360° Pasayten + Cascades panorama for almost no effort; now compromised by both the road washout AND the historic lookout's collapse in winter 2025-26.",
     tripFit:
-      "East-base sunset / stargazing window — Aug 18 is new moon. Slate is far enough east that WA-20 closure doesn't block it. Drive carefully; the road is the experience.",
+      "RE-EVALUATE for Aug 16-20 — even when accessible, the lookout is gone (collapsed in winter 2025-26, confirmed by Forest Fire Lookout Association Mar 25, 2026). The summit panorama remains but the historic structure does not. Default: skip this trip; revisit when FS reopens road + decides on rebuild.",
     driveFromBases: [
       { from: 'Mazama', text: '~1 hr · 22 mi (gravel · slow)' },
       { from: 'Winthrop', text: '~1 hr 30 min · 35 mi' },
       { from: 'Marblemount', text: 'WA-20 closed → not feasible' },
     ],
     sources: [
-      { name: "WTA · Slate Peak / Hart's Pass", url: 'https://www.wta.org/go-hiking/hikes/slate-peak' },
+      { name: "WTA · Hart's Pass and Slate Peak", url: 'https://www.wta.org/go-hiking/hikes/harts-pass-and-slate-peak' },
+      { name: 'Wikipedia · Slate Peak (lookout collapse 2025-26)', url: 'https://en.wikipedia.org/wiki/Slate_Peak' },
       { name: 'NPS · scenic drives', url: 'https://www.nps.gov/noca/planyourvisit/scenicdrives.htm' },
     ],
     photos: [
@@ -510,14 +537,16 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       },
     ],
     status: {
-      kind: 'access-warning',
-      label: 'Exposed mountain road',
+      kind: 'closed',
+      label: 'ROAD CLOSED + LOOKOUT COLLAPSED',
       detail:
-        "FR 5400 above Hart's Pass is narrow, cliff-edged, no guardrail. Normally accessible mid-August once snow melts but check road status before going. Not for white-knuckle drivers; not for RVs or trailers.",
+        "Hart's Pass Road (FR 5400) is closed at the Monument Creek trailhead due to Dec 2025 storm washout — no repair ETA. AND the historic Slate Peak fire lookout (1924, National Historic Lookout Register 2000) collapsed in winter 2025-26 (Forest Fire Lookout Association announced Mar 25, 2026). The summit panorama remains but the structure is gone. Hike-in via the gate is still possible for the panorama, but this is no longer a casual drive-up + visit the lookout day.",
       asOf: 'May 17, 2026',
-      sourceUrl: 'https://www.fs.usda.gov/r6/mbs/roadcondrep',
+      sourceUrl: 'https://www.wta.org/go-hiking/hikes/harts-pass-and-slate-peak',
     },
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      "WTA + Wikipedia + FFLA-verified May 17, 2026: Major status change since site shipped. WTA URL also corrected (was /slate-peak which 404s; correct slug is /harts-pass-and-slate-peak). Two compounding issues: (1) FR 5400 closed at Monument Creek washout from Dec 2025 storm, no ETA, (2) historic lookout collapsed in winter 2025-26. Hike-in past the gate is still possible for the panorama, but the original 'easy drive-up to a historic structure' experience is gone for 2026.",
   },
   {
     id: 'maple-pass-frisco',
@@ -561,6 +590,8 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       asOf: 'May 17, 2026',
     },
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'Maple Pass base verified May 17, 2026 (7.2 mi / +2,020 ft, 4.84/5 rating, 166 votes — WTA top-tier). Frisco extension is an off-trail scramble — Summitpost is the best source. NW Forest Pass for the marquee loop; same Rainy Pass TH at MP 158, east of WA-20 closure, reachable from Mazama / Winthrop.',
   },
 
   // ====================================================================
@@ -608,6 +639,8 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       asOf: 'May 17, 2026',
     },
     verifiedAsOf: 'May 17, 2026',
+    researchNotes:
+      'NPS-verified May 17, 2026: 12.8 mi RT / +4,100 ft via Cascade Pass + Sahale Arm. Backcountry permit $10/person + $6 fee, via Recreation.gov early-access lottery (opens Mar). Same Cascade River Rd dependency as Cascade Pass — currently CLOSED at MP 20, typical reopen late-June/early-July. Camp on loose moraine near glacier — see NPS backcountry-camping for gear list.',
   },
 ];
 
