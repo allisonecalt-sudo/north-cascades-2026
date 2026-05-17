@@ -70,6 +70,6 @@ export function renderForErin(): HTMLElement {
       { class: 'section__lede' },
       "Grouped by how much it matters. Leave a note on any 💬 button on this page, or text/email Allison — whichever's easier."
     ),
-    ...sections.filter((s): s is HTMLElement => s !== null)
+    ...sections.filter((s): s is HTMLDivElement => s !== null)
   );
 }
