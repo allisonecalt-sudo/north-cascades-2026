@@ -169,7 +169,7 @@ function renderFeaturedCard(card: FeaturedCard): HTMLElement {
 export function renderFeaturedStrip(): HTMLElement {
   return section(
     'featured-strip',
-    'Three paths · pick by what the trip should feel like',
+    'Three shapes for the same 5 days · pick one or just browse',
     h(
       'p',
       { class: 'section__lede' },

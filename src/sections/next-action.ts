@@ -81,11 +81,14 @@ function computeAction(
   picks: PickCounts
 ): ActionContent {
   // Case 1 — no path yet, no picks: pure cold-start.
+  // Updated 2026-05-17 PM — also route to the 5 must-have questions on the
+  // For Erin page, since those are the most consequential next action
+  // (the path picker only resolves one of the 5).
   if (!path && picks.lodging === 0 && picks.hikes === 0) {
     return {
-      eyebrow: 'Start here',
-      label: 'Pick a path below →',
-      href: '#paths',
+      eyebrow: 'Start here, Erin',
+      label: 'See the 5 questions Allison needs answered →',
+      href: 'for-erin.html#must',
       variant: 'primary',
     };
   }

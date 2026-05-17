@@ -1228,6 +1228,85 @@
   line-height: 1.5;
 }
 
+/* Anchor offset — sticky nav covers the top of a deep-linked question
+   without this. Pseudo-element pushes the actual jump-to point above the
+   item so the question reads under the nav, not behind it. */
+.for-erin__item {
+  scroll-margin-top: 96px;
+}
+.for-erin__anchor {
+  display: block;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  scroll-margin-top: 96px;
+}
+
+/* Per-question 💬 note button (added 2026-05-17 PM). Sits at the bottom-right
+   of each question so notes can be scoped to the exact question instead of
+   the whole For-Erin section. */
+.for-erin__note-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+  padding: 0.4rem 0.75rem;
+  min-height: 36px;
+  background: transparent;
+  border: 1px solid var(--c-glacier-500);
+  border-radius: 999px;
+  color: var(--c-forest-700);
+  font-family: inherit;
+  font-size: var(--fs-xs, 0.78rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.for-erin__note-btn:hover,
+.for-erin__note-btn:focus-visible {
+  background: var(--c-glacier-100);
+  border-color: var(--c-glacier-500);
+  color: var(--c-forest-800, #1f3f2a);
+  outline: none;
+}
+
+.for-erin__note-btn-text {
+  line-height: 1.2;
+}
+
+/* "✓ I've answered these" ack button under the must group. Hides the home
+   reminder strip once Erin signals she's responded. */
+.for-erin__ack-row {
+  margin-top: var(--sp-3);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.for-erin__ack-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.95rem;
+  min-height: 40px;
+  background: var(--c-warm-50);
+  border: 1px dashed var(--c-bad-border, #c4393a);
+  border-radius: 999px;
+  color: var(--c-ink-700);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease, border-style 140ms ease;
+}
+
+.for-erin__ack-btn:hover,
+.for-erin__ack-btn:focus-visible {
+  background: #fdecec;
+  color: var(--c-ink-900);
+  border-style: solid;
+  outline: none;
+}
+
 /* ============================================================
  * Wave 3 — Lodging mini-Booking.com UX (May 17, 2026)
  * Filter chips · shortlist · drive matrix · photo carousel

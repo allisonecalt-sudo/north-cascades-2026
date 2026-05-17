@@ -59,7 +59,7 @@ export function renderStoryArc(): HTMLElement {
     h(
       'p',
       { class: 'story-arc__intro' },
-      'Plan it in this order:'
+      'Roughly the order to think through it:'
     ),
     h(
       'ol',

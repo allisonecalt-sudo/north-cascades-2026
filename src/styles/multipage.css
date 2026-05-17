@@ -1648,3 +1648,136 @@ body.site-nav__mobile-open {
   font-size: var(--fs-sm);
   line-height: 1.35;
 }
+
+/* ───────── Erin musts strip (home page) ─────────
+ * High-prominence surfacing of the 5 must-have For-Erin questions. Lives
+ * between the next-action pill and the stat-band. Self-hides when Erin
+ * flips the localStorage ack flag on /for-erin.
+ *
+ * Red-tinted to match the For-Erin must-group palette (same family). Each
+ * question is a tappable link straight to /for-erin.html#must-{id}.
+ */
+.erin-musts-strip-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto var(--sp-4);
+  padding: 0 var(--gutter);
+}
+
+.erin-musts-strip {
+  padding: 0.85rem 1rem 1rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #fdecec 0%, #fffdf7 100%);
+  border: 1px solid var(--c-bad-border, #c4393a);
+  border-left: 4px solid var(--c-bad-border, #c4393a);
+  box-shadow: var(--shadow-sm);
+}
+
+.erin-musts-strip__title-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+.erin-musts-strip__title {
+  margin: 0 0 0.25rem;
+  font-size: var(--fs-lg, 1.1rem);
+  color: var(--c-ink-900);
+  line-height: 1.25;
+}
+
+.erin-musts-strip__title-link:hover .erin-musts-strip__title,
+.erin-musts-strip__title-link:focus-visible .erin-musts-strip__title {
+  color: var(--c-forest-700);
+  text-decoration: underline;
+}
+
+.erin-musts-strip__sub {
+  margin: 0 0 0.65rem;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-600);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.erin-musts-strip__list {
+  list-style: none;
+  margin: 0 0 0.7rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.erin-musts-strip__item {
+  margin: 0;
+  padding: 0;
+}
+
+.erin-musts-strip__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  background: var(--c-warm-50, #fffdf7);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  color: var(--c-ink-900);
+  text-decoration: none;
+  font-size: var(--fs-base);
+  line-height: 1.35;
+  min-height: 44px;
+  transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.erin-musts-strip__link:hover,
+.erin-musts-strip__link:focus-visible {
+  background: #fff;
+  border-color: var(--c-bad-border, #c4393a);
+  transform: translateX(2px);
+  outline: none;
+}
+
+.erin-musts-strip__q {
+  flex: 1 1 auto;
+  font-weight: 600;
+  color: var(--c-ink-900);
+}
+
+.erin-musts-strip__chev {
+  flex: 0 0 auto;
+  color: var(--c-bad-border, #c4393a);
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.erin-musts-strip__cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  background: var(--c-forest-700);
+  color: white;
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  transition: background-color 140ms ease, transform 140ms ease;
+}
+
+.erin-musts-strip__cta:hover,
+.erin-musts-strip__cta:focus-visible {
+  background: var(--c-forest-800, #1f3f2a);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+@media (min-width: 720px) {
+  .erin-musts-strip {
+    padding: 1.1rem 1.2rem 1.1rem;
+  }
+  .erin-musts-strip__title {
+    font-size: var(--fs-xl, 1.25rem);
+  }
+}

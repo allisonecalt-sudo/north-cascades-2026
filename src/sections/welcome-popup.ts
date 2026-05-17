@@ -1,19 +1,20 @@
 /**
- * welcome-popup.ts — first-visit tutorial popup for Erin.
+ * welcome-popup.ts — first-visit intro for Erin.
  *
- * Why this file: Allison May 17, 2026 — *"erin doesnt know how to use site
- * so there needs to be a pop expalianatoin on how to do notes so i can
- * fix up site how she wants."* Erin needs a one-time, dismissible intro
- * that explains the 💬 notes mechanic.
+ * Voice: Claude (the AI Allison directs) speaking transparently to Erin in
+ * third person about Allison. Rewritten 2026-05-17 PM per Allison's directive:
+ *   *"talk as claude not as allison"*
  *
- * What's decided:
- *   - One-time show — persisted via localStorage key 'ncades2026.welcomeSeen'.
- *   - Dismissible by clicking anywhere OR the explicit "Got it" button.
- *   - Friendly tone, brief, points at the 💬 buttons.
- *   - Allison can re-trigger by clearing localStorage in DevTools.
+ * Why this matters: previously the popup spoke first-person AS Allison
+ * ("I'm 10 hours ahead, leave a note before bed"). That blurred who built
+ * the site. The honest framing is — Allison is the director, Claude is the
+ * builder + the iterator between Erin's notes and the next site update.
+ * Erin should know who she's talking to.
  *
- * Mounted on every page after the shell — but only the FIRST page Erin lands
- * on shows it. After that the key is set and the popup stays dormant.
+ * Mechanic unchanged:
+ *   - One-time show — persisted via localStorage 'ncades2026.welcomeSeen'.
+ *   - Dismissible by clicking anywhere OR the explicit CTA / X.
+ *   - Allison can re-trigger with window.resetWelcome() or ?welcome=1.
  */
 
 const WELCOME_KEY = 'ncades2026.welcomeSeen';
@@ -44,50 +45,53 @@ function buildPopup(): HTMLDivElement {
     <div class="welcome-popup">
       <button class="welcome-popup__close" type="button" aria-label="Close welcome">×</button>
       <div class="welcome-popup__eyebrow">Hey Erin —</div>
-      <h2 class="welcome-popup__title" id="welcome-popup-title">This is a draft of our trip. React however works for you.</h2>
+      <h2 class="welcome-popup__title" id="welcome-popup-title">This is a draft of the trip. React however works for you.</h2>
       <p class="welcome-popup__body">
-        Your Google Doc is still the working plan. This site is just so you can
-        <em>see</em> the options laid out — lodging, hikes, drive times — and tell
-        me what to change. Nothing here is locked.
+        Quick context — this site was built by Claude (the AI Allison's been
+        using) at Allison's direction. The Google Doc you started is still the
+        working plan. This site just lays the options out visually — lodging,
+        hikes, drive times — so it's easier to react to.
       </p>
 
       <div class="welcome-popup__steps">
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">1</span>
           <div class="welcome-popup__step-body">
-            <strong>However you want to react is fine:</strong>
-            <ul style="margin: 0.4rem 0 0 1rem; padding: 0; list-style: disc;">
-              <li><strong>Text or email me</strong> — totally fine, I'll fold it in</li>
-              <li>Edit the <strong>Google Doc</strong> — I check it before each site update</li>
-              <li>Or tap <span class="welcome-popup__chip">💬&nbsp;Note</span> on any page (corner button or next to any section title) — that goes straight to my Claude session</li>
-            </ul>
+            <strong>Five things Allison really needs from you</strong> are at the
+            top of the <a href="for-erin.html#must" style="color: inherit; text-decoration: underline;">For Erin</a> page.
+            Path A vs B vs C, your hike ceiling, hard yes/hard no, etc. Tap any
+            one to start.
           </div>
         </div>
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">2</span>
           <div class="welcome-popup__step-body">
-            <strong>Type / text it like you'd text me.</strong>
-            "Cascade River House looks great." "Swap Maple Pass for something easier."
-            "Too much driving on day 3." "I want a night in Winthrop." No filter.
+            <strong>However you want to react is fine:</strong>
+            <ul style="margin: 0.4rem 0 0 1rem; padding: 0; list-style: disc;">
+              <li><strong>Text or email Allison</strong> — totally fine, she'll relay it</li>
+              <li>Edit the <strong>Google Doc</strong> — Allison reads it between sessions</li>
+              <li>Or tap <span class="welcome-popup__chip">💬&nbsp;Note</span> on any section or question (the inline button is scoped to that exact spot) — Claude reads these in the next session and updates the site</li>
+            </ul>
           </div>
         </div>
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">3</span>
           <div class="welcome-popup__step-body">
-            <strong>I'm 10 hours ahead.</strong> Leave a note / text / doc edit before bed,
-            by the time you wake up the site will reflect it. Refresh and see.
+            <strong>Allison is 10 hours ahead.</strong> Leave a note / text / doc
+            edit before bed — by the time you wake up the site will reflect what
+            you sent. Refresh and see.
           </div>
         </div>
       </div>
 
       <p class="welcome-popup__body welcome-popup__body--small">
-        Three paths up top (A / B / C) for how to spend the 4 nights — we haven't picked one yet.
-        Have an instinct? Tell me via whichever channel above.
+        Three paths up top (A / B / C) for shaping the 4 nights — nothing's
+        picked yet. Have an instinct? Send it whichever way is easiest.
       </p>
 
       <div class="welcome-popup__actions">
         <button class="welcome-popup__cta" type="button" data-action="dismiss">
-          Got it — show me the trip
+          Got it — start exploring
         </button>
       </div>
       <p class="welcome-popup__tip">Click anywhere outside this box to close.</p>

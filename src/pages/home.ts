@@ -53,6 +53,7 @@ import { renderTowns } from '../sections/towns';
 import { renderFeaturedStrip } from '../sections/featured-strip';
 import { renderStoryArc } from '../sections/story-arc';
 import { renderNextAction } from '../sections/next-action';
+import { renderErinMustsStrip } from '../sections/erin-musts-strip';
 import { renderTripState } from '../sections/trip-state';
 import { renderFreshNotes } from '../sections/fresh-notes';
 import { renderHomeReference } from '../sections/home-reference';
@@ -61,8 +62,8 @@ import { h } from '../dom';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'home',
-    title: 'A shared draft of our trip — pick what you like, leave notes, I\'ll iterate.',
-    lede: 'Five days in North Cascades National Park, Aug 16-20, with Erin. Three paths below — tap one to filter the whole site, or stay in compare-mode and browse them all.',
+    title: 'Allison + Erin · North Cascades · Aug 16-20',
+    lede: 'A shared draft. Both keep kosher — every lodging on the shortlist has a full kitchen. Three paths below — tap one to filter the whole site, or browse all three. Leave notes (or just text Allison) and the site updates next session.',
     showClosure: true,
     imageHero: {
       // Cascade Pass / Sahale Arm — Pelton Peak + Yawning Glacier + Magic
@@ -88,6 +89,10 @@ function mount(): void {
     // Adaptive "what do I do first" pill. Sits as close to the hero as
     // possible so it's the first thing in the content stream.
     renderNextAction(),
+    // 5 must-have questions for Erin — surfaced PROMINENTLY between the
+    // pill and the stat-row so a first-time visitor can't miss them.
+    // Self-hides once Erin flips the "I've answered these" flag on /for-erin.
+    renderErinMustsStrip(),
     statBand,
     // Narrative anchor — sets the "plan in this order" mental model before
     // the path picker forces a decision.

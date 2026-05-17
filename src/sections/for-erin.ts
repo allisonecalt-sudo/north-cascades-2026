@@ -3,29 +3,46 @@
  *
  * Grouped by priority (2026-05-17 PM, per Allison "make it clear what's
  * missing"):
- *   - must-have  → "Before the trip locks, I really need…" (red header)
- *   - shape      → "Helps me build the right trip…" (amber header)
+ *   - must-have  → "Five things Allison really needs from you" (red)
+ *   - shape      → "Helps shape the right trip…" (amber header)
  *   - nice-to-have → "Treats + per-day swaps…" (neutral header)
  *
- * The whole site is Allison's research. The 💬 button (every section
- * has one) is where Erin can leave per-section reactions. This page is
- * the single scan-and-react surface.
+ * 2026-05-17 PM update (voice + findability pass):
+ *   - Each question <li> now has id="must-{q.id}" / "shape-{q.id}" / "nice-{q.id}"
+ *     so the home page's "5 things Allison needs from you" surfacing strip can
+ *     deep-link straight to a specific question.
+ *   - Each question gets its OWN 💬 mini-button that opens the notes modal
+ *     pre-scoped to "for-erin-{q.id}" — so notes can be tagged to the exact
+ *     question, not the whole page.
+ *   - A "✓ I've answered these" button under the must group lets Erin manually
+ *     flip a localStorage flag that hides the home-page surfacing strip.
+ *
+ * The whole site is Allison's research surface. The 💬 buttons are where Erin
+ * leaves reactions — page-level on every section header, plus per-question
+ * here on the most-important page.
  */
 
 import { QUESTIONS_FOR_ERIN, type QuestionPriority } from '../data/for-erin';
 import { h, section } from '../dom';
+import { openGlobalScopeModal } from './notes-button';
+
+/**
+ * Same localStorage key as home/erin-musts-strip.ts uses — flipping this hides
+ * the home-page "5 things Allison needs" surfacing strip on the next paint.
+ */
+const MUSTS_ACKED_KEY = 'ncades2026.erin-musts-acked';
 
 const GROUP_META: Record<
   QuestionPriority,
   { label: string; lede: string; cls: string }
 > = {
   must: {
-    label: '🚦 Before we lock the trip — I really need these',
-    lede: "Five answers that change the whole shape of the trip. Pick any one to start.",
+    label: '🚦 Five things Allison really needs from you',
+    lede: "These five answers change the whole shape of the trip. Tap any one to open it — leave a 💬 note inline, or just text Allison.",
     cls: 'for-erin__group--must',
   },
   shape: {
-    label: '🧭 Helps me build the right trip',
+    label: '🧭 Helps shape the right trip',
     lede: "Pace + day-type stuff. Not blockers, but answers here turn 'good plan' into 'right plan for you.'",
     cls: 'for-erin__group--shape',
   },
@@ -36,6 +53,66 @@ const GROUP_META: Record<
   },
 };
 
+function renderPerQuestionNoteBtn(
+  q: { id: string; priority: QuestionPriority; question: string }
+): HTMLElement {
+  const scope = `for-erin-${q.id}`;
+  const label = `For Erin: ${q.question}`;
+  const btn = h(
+    'button',
+    {
+      type: 'button',
+      class: 'for-erin__note-btn',
+      'aria-label': `Leave a note about: ${q.question}`,
+      'data-scope': scope,
+    },
+    h('span', { 'aria-hidden': 'true' }, '💬'),
+    h('span', { class: 'for-erin__note-btn-text' }, 'Leave a note about this')
+  );
+  btn.addEventListener('click', () => {
+    openGlobalScopeModal(scope, label);
+  });
+  return btn;
+}
+
+function renderAckMustsButton(): HTMLElement {
+  const btn = h(
+    'button',
+    {
+      type: 'button',
+      class: 'for-erin__ack-btn',
+      'aria-label': 'Mark the 5 must-answer questions as answered',
+    },
+    '✓ I\'ve answered these — hide the home reminder'
+  );
+  // Show initial state.
+  const refresh = (): void => {
+    try {
+      const acked = localStorage.getItem(MUSTS_ACKED_KEY) === '1';
+      btn.textContent = acked
+        ? '↻ Un-mark as answered (show home reminder again)'
+        : '✓ I\'ve answered these — hide the home reminder';
+    } catch {
+      /* ignore */
+    }
+  };
+  refresh();
+  btn.addEventListener('click', () => {
+    try {
+      const acked = localStorage.getItem(MUSTS_ACKED_KEY) === '1';
+      if (acked) localStorage.removeItem(MUSTS_ACKED_KEY);
+      else localStorage.setItem(MUSTS_ACKED_KEY, '1');
+      refresh();
+      // Dispatch a storage-style event so the home page can react if open in
+      // another tab — and fire a custom event for same-tab listeners.
+      window.dispatchEvent(new CustomEvent('ncades:musts-acked-change'));
+    } catch {
+      /* ignore */
+    }
+  });
+  return btn;
+}
+
 export function renderForErin(): HTMLElement {
   const groups: QuestionPriority[] = ['must', 'shape', 'nice'];
   const sections = groups.map((g) => {
@@ -44,7 +121,7 @@ export function renderForErin(): HTMLElement {
     const meta = GROUP_META[g];
     return h(
       'div',
-      { class: `for-erin__group ${meta.cls}` },
+      { class: `for-erin__group ${meta.cls}`, id: `for-erin-group-${g}` },
       h('h3', { class: 'for-erin__group-label' }, meta.label),
       h('p', { class: 'for-erin__group-lede' }, meta.lede),
       h(
@@ -53,23 +130,35 @@ export function renderForErin(): HTMLElement {
         ...qs.map((q) =>
           h(
             'li',
-            { class: 'for-erin__item' },
+            { class: 'for-erin__item', id: `${g}-${q.id}` },
             h('h4', { class: 'for-erin__question' }, q.question),
-            h('p', { class: 'for-erin__context' }, q.context)
+            h('p', { class: 'for-erin__context' }, q.context),
+            renderPerQuestionNoteBtn(q)
           )
         )
-      )
+      ),
+      g === 'must'
+        ? h(
+            'div',
+            { class: 'for-erin__ack-row' },
+            renderAckMustsButton()
+          )
+        : null
     );
   });
 
+  // Anchor target — for-erin.html#must lands here at the top of the musts group.
+  const mustAnchor = h('div', { id: 'must', class: 'for-erin__anchor', 'aria-hidden': 'true' });
+
   return section(
     'for-erin',
-    'For Erin · what I still need from you',
+    'For Erin · what Allison still needs from you',
     h(
       'p',
       { class: 'section__lede' },
-      "Grouped by how much it matters. Leave a note on any 💬 button on this page, or text/email Allison — whichever's easier."
+      "Grouped by how much each answer changes the trip. Tap any question to open it — each one has its own 💬 note button. Or just text/email Allison — whichever's easier."
     ),
+    mustAnchor,
     ...sections.filter((s): s is HTMLDivElement => s !== null)
   );
 }
