@@ -45,7 +45,8 @@ export type PageId =
   | 'costs'
   | 'top-sunsets'
   | 'pre-trip'
-  | 'driving-cascades';
+  | 'driving-cascades'
+  | 'hidden-gems';
 
 interface NavEntry {
   id: PageId;
@@ -77,6 +78,9 @@ const NAV: readonly NavEntry[] = [
   { id: 'seattle', href: 'seattle.html', label: 'Seattle' },
   { id: 'for-erin', href: 'for-erin.html', label: 'For Erin' },
   { id: 'details', href: 'details.html', label: 'Details' },
+  // Hidden Gems lives near the bottom — exploratory tier, not the locked trip
+  // spine. Wave 3 #11 from `projects/north-cascades-2026/README.md`.
+  { id: 'hidden-gems', href: 'hidden-gems.html', label: 'Hidden gems' },
   { id: 'food', href: 'food.html', label: 'Groceries' },
   { id: 'notes', href: 'notes.html', label: 'Notes' },
 ];

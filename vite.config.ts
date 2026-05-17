@@ -28,6 +28,7 @@ export default defineConfig(({ command }) => ({
         topSunsets: here('top-sunsets.html'),
         preTrip: here('pre-trip.html'),
         drivingCascades: here('driving-cascades.html'),
+        hiddenGems: here('hidden-gems.html'),
       },
     },
   },
