@@ -85,34 +85,72 @@ export interface Milestone {
  * date here, also update it there (the home widget reads from trip-state.ts).
  */
 export const MILESTONES: Milestone[] = [
-  // ── Phase 1: booking week (lodging) ──
+  // ── Phase 1: booking week ──
+  // Order reshuffled 2026-05-18 per Erin's WhatsApp: "I think we should buy
+  // flight tickets first and then we can decide on lodging areas/itinerary
+  // just bc there's not so many flights to choose from and we don't want
+  // them to fill up." Erin's right — SEA summer inventory thins. Flights
+  // pulled forward + lodging stays refundable-only until WSDOT confirms.
+  {
+    id: 'flights-book',
+    phase: 'booking-week-1',
+    title: 'Flight book-by (FIRST — per Erin)',
+    date: '2026-06-01',
+    dateLabel: 'Mon Jun 1, 2026',
+    action:
+      "Book SEA roundtrip on Alaska. Per Erin May 18: flights first — summer inventory is thin and we don't want them filling up. Lodging follows.",
+    subitems: [
+      {
+        id: 'morning-vs-midday',
+        label: 'Confirm morning vs midday departure with Erin',
+        hint: 'Morning = full Day 1 in Seattle / grocery + drive in. Midday = late arrival, hotel near SEA.',
+      },
+      {
+        id: 'book-flights',
+        label: 'Book both seats + save confirmation numbers',
+      },
+      {
+        id: 'seat-select',
+        label: 'Pick seats — same row if available',
+      },
+      {
+        id: 'tsa-precheck',
+        label: 'Confirm TSA PreCheck added to both bookings (KTN)',
+      },
+      {
+        id: 'flights-confirm-erin',
+        label: 'Send Erin the confirmation + dates locked',
+      },
+    ],
+    link: { label: 'Flights page', url: 'travel.html' },
+  },
   {
     id: 'lodging-book',
     phase: 'booking-week-1',
-    title: 'Lodging book-by',
+    title: 'Lodging book-by (REFUNDABLE-ONLY for now)',
     date: '2026-06-15',
     dateLabel: 'Mon Jun 15, 2026',
     action:
-      'Book the 2 chosen lodgings per the picked path (A = 1 base / B = 2 bases / C = 2 split).',
+      'Book the 2 chosen lodgings on REFUNDABLE-ONLY policies (per Erin: "if we find something refundable we can book it as a backup"). Final lock only after WSDOT confirm Jun 25.',
     subitems: [
       {
         id: 'confirm-path',
         label: 'Confirm the path with Erin (A / B / C / D / E) before booking',
-        hint: 'See /how-to.html — Path D = west-only Plan B if WA-20 stays closed.',
+        hint: 'Erin May 18: down for Path B if WA-20 opens, Path A as fallback.',
       },
       {
         id: 'verify-free-cancel',
-        label: 'Verify each property is free-cancellation through Jul 15',
-        hint: 'If not free-cancel, hold off until WSDOT call on Jun 25.',
+        label: 'REFUNDABLE-ONLY filter on the lodging page — anything else waits',
+        hint: 'Already the new default per Erin\'s backup-booking instinct.',
       },
       {
         id: 'book-property-1',
-        label: 'Book property #1 + save confirmation number',
+        label: 'Book property #1 (refundable) + save confirmation number',
         hint: 'Paste the confirmation into the booked-row notes below.',
       },
       {
         id: 'book-property-2',
-        label: 'Book property #2 (if Path B or C) + save confirmation number',
+        label: 'Book property #2 (refundable, if Path B or C) + save confirmation number',
       },
       {
         id: 'photograph-confirmations',
@@ -193,37 +231,29 @@ export const MILESTONES: Milestone[] = [
     link: { label: 'WA-20 deep dive', url: 'wa20-status.html' },
   },
   {
-    id: 'flights-book',
+    id: 'lodging-firm',
     phase: 'booking-week-2',
-    title: 'Flight book-by',
-    date: '2026-07-10',
-    dateLabel: 'Fri Jul 10, 2026',
+    title: 'Lodging — convert refundable to firm (after WSDOT confirms)',
+    date: '2026-07-01',
+    dateLabel: 'Wed Jul 1, 2026',
     action:
-      'Book SEA roundtrip on Alaska (primary rec). 8-12 weeks ahead window — past Jul 10 fares typically jump.',
+      'WSDOT confirmed Jun 25 → choose: keep the refundable booking AS-IS, or swap to a better (possibly non-refundable) option now that the path is locked.',
     subitems: [
       {
-        id: 'morning-vs-midday',
-        label: 'Confirm morning vs midday departure with Erin',
-        hint: 'Morning = full Day 1 in Seattle / grocery + drive in. Midday = late arrival, hotel near SEA.',
+        id: 'decision-keep-vs-swap',
+        label: 'Keep refundable picks OR swap to a non-refundable upgrade?',
+        hint: 'Non-refundable is often $40-80/night cheaper. Worth it if WSDOT is now firm.',
       },
       {
-        id: 'book-flights',
-        label: 'Book both seats + save confirmation numbers',
+        id: 'final-lodging-confirm',
+        label: 'Send Erin the final lodging confirmations',
       },
       {
-        id: 'seat-select',
-        label: 'Pick seats — same row if available',
-      },
-      {
-        id: 'tsa-precheck',
-        label: 'Confirm TSA PreCheck added to both bookings (KTN)',
-      },
-      {
-        id: 'photograph-confirmations',
-        label: 'Screenshot flight confirmations (offline backup)',
+        id: 'cancel-refundable-backup',
+        label: 'If we swapped: cancel the original refundable hold before policy expires',
       },
     ],
-    link: { label: 'Travel — flights', url: 'travel.html' },
+    link: { label: 'Lodging', url: 'lodging.html' },
   },
   {
     id: 'rental-book',

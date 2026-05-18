@@ -59,7 +59,10 @@ export function emptyFilters(): FilterState {
     kitchen: new Set(),
     nature: new Set(),
     sunsetOnly: false,
-    freeCancelOnly: false,
+    // Default ON per Erin's WhatsApp 2026-05-18: "if we find something
+    // refundable we can book it as a backup" — refundable-only matches her
+    // booking discipline until WSDOT confirms WA-20 reopen on Jun 25.
+    freeCancelOnly: true,
     showSoldOut: false,
   };
 }
