@@ -63,7 +63,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'home',
     title: 'Allison + Erin · North Cascades · Aug 16-20',
-    lede: "Erin's been leading this trip; Allison did the research pass + asked Claude to lay it out. Both kosher — every lodging on the shortlist has a full kitchen. Three paths below for shaping the 4 nights — tap one to filter, or browse all three. Leave a note (or text Allison) and the site updates next session.",
+    lede: 'A shared draft. Both keep kosher — every lodging on the shortlist has a full kitchen. Three paths below — tap one to filter the whole site, or browse all three. Leave notes (or just text Allison) and the site updates next session.',
     showClosure: true,
     imageHero: {
       // Cascade Pass / Sahale Arm — Pelton Peak + Yawning Glacier + Magic
