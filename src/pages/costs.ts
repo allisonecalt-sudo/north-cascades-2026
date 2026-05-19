@@ -2,7 +2,7 @@
  * costs.ts — budget page entrypoint.
  *
  * Per TRAVEL.md page inventory. Allison's May 16 ask: "also give range of
- * budget options" → 3 paths × 3 tiers (low/mid/high) all-in for 2 travelers.
+ * budget options" → 2 paths × 3 tiers (low/mid/high) all-in for 2 travelers.
  */
 
 import '../styles/main.css';

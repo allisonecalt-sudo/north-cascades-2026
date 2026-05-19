@@ -671,7 +671,7 @@ export const ACTIVITIES = {
 // ============================================================
 
 export interface PathTotal {
-  pathId: 'A' | 'B' | 'C';
+  pathId: 'A' | 'B';
   pathName: string;
   /** Per-person, refundable-flights scenario. */
   perPersonRefundable: { low: number; mid: number; high: number };
@@ -715,15 +715,6 @@ export const PATH_TOTALS: PathTotal[] = [
     lodgingAnchor: '2 west + 2 east (Rhody + Methow River / Riverside + Freestone / River House + Sun Mountain)',
     miles: 605,
     note: 'Two bases, mid-trip move on Day 3. Highest mileage path. Excludes rental car + transit to NYC.',
-  },
-  {
-    pathId: 'C',
-    pathName: 'Path C · Slow Winthrop Base',
-    perPersonRefundable: { low: 1310, mid: 1670, high: 2350 },
-    perPersonNonRefundable: { low: 1160, mid: 1520, high: 2200 },
-    lodgingAnchor: '1 west + 3 east (Glacier Peak + Methow River / Freestone / Sun Mountain)',
-    miles: 540,
-    note: 'One west night + 3 east nights. Excludes rental car + transit to NYC.',
   },
 ];
 

@@ -14,7 +14,7 @@
  *   4. Selected-pin pulse + ring (confirms tap before drawer slides in).
  *   5. Anchor labels — always-on names at zoom ≥11 for the 4 marquee places.
  *   6. Desktop hover preview card (thumbnail + 1-liner) replaces plain text tip.
- *   7. Path chips show shape ("A · 4 nts west", "B · 2+2", "C · 1+3 east").
+ *   7. Path chips show shape ("A · 4 nts west", "B · 2+2").
  *   8. Drawer transitions: 280ms cubic-bezier with opacity fade-in.
  *   9. Skeleton shimmer behind drawer photo (no more "broken image" appearance
  *      while loading).
@@ -91,7 +91,6 @@ const ANCHOR_LABEL_IDS = new Set<string>([
 const PATH_CHIP_SHAPE: Record<PathId, string> = {
   A: '4 nts west',
   B: '2 + 2 split',
-  C: '1 + 3 east',
 };
 
 // Drive matrix max for the visual time-bar (cap so a single 4-hr outlier
@@ -151,7 +150,6 @@ function isFaded(loc: MapLocation, path: PathId | null): boolean {
   if (loc.pathAssoc === 'both') return false;
   if (path === 'A') return loc.pathAssoc === 'east';
   if (path === 'B') return false;
-  if (path === 'C') return loc.pathAssoc === 'west';
   return false;
 }
 
@@ -731,8 +729,7 @@ function buildPathChips(): HTMLElement {
   wrap.append(
     make(null, 'All', 'browse mode', '#6b7280'),
     make('A', 'Path A', PATH_CHIP_SHAPE.A, TRIP_ROUTES.A.color),
-    make('B', 'Path B', PATH_CHIP_SHAPE.B, TRIP_ROUTES.B.color),
-    make('C', 'Path C', PATH_CHIP_SHAPE.C, TRIP_ROUTES.C.color)
+    make('B', 'Path B', PATH_CHIP_SHAPE.B, TRIP_ROUTES.B.color)
   );
   const sync = (): void => {
     const cur = getSelectedPath();

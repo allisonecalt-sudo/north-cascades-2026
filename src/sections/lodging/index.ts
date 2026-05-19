@@ -316,7 +316,7 @@ function determinePanels(selectedId: string | null): {
   if (!selectedId) {
     return { showWest: true, showEast: true, westLabel: 'West · Nights 1-2', eastLabel: 'East · Nights 3-4' };
   }
-  const path = getPathById(selectedId as 'A' | 'B' | 'C');
+  const path = getPathById(selectedId as 'A' | 'B');
   if (!path) {
     return { showWest: true, showEast: true, westLabel: 'West', eastLabel: 'East' };
   }
@@ -390,7 +390,7 @@ function renderTrustBanner(host: HTMLElement): void {
 
 function renderBody(wrap: HTMLElement, selectedId: string | null): void {
   const panels = determinePanels(selectedId);
-  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B') : null;
   const pathLodgingIds = path ? new Set(path.lodgingIds) : null;
 
   const trustBanner = wrap.querySelector<HTMLElement>('.lodging-trust-banner');
@@ -421,9 +421,14 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
     pathLodgingIds
   );
 
-  const defaultSide = path?.id === 'A' ? 'west' : path?.id === 'C' ? 'east' : 'west';
-  eastPanel.hidden = defaultSide !== 'east';
-  westPanel.hidden = defaultSide !== 'west';
+  // Default to the west panel for both Path A (west-only) and Path B (starts
+  // west). Was a path?.id === 'C' branch for east-default — Path C was removed
+  // 2026-05-19. `path` referenced to keep the binding live for future per-path
+  // defaults.
+  void path;
+  const defaultSide: 'west' | 'east' = 'west';
+  eastPanel.hidden = true;
+  westPanel.hidden = false;
 
   if (tabs) {
     const allTabs = tabs.querySelectorAll<HTMLButtonElement>('.tab');

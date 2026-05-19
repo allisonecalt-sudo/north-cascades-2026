@@ -9,7 +9,7 @@
  *   - Per-section button: small inline button injected next to each section's
  *     <h2>. Tap opens a single shared modal pre-scoped to that section.
  *   - Active path awareness: at submit time, reads current `selectedPath`
- *     (A/B/C) so the row carries the path context.
+ *     (A/B) so the row carries the path context.
  *   - Badge counts shown next to each section's button — ONLY pending (unseen)
  *     notes count, so the badge reflects "fresh feedback Allison hasn't read."
  *     Once Allison opens /notes.html the pending → seen flip clears badges.

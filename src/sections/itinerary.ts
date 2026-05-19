@@ -67,9 +67,9 @@ function renderMeals(day: ItineraryDay): HTMLElement | null {
 
 function renderBody(container: HTMLElement, selectedId: string | null): void {
   const days = selectedId
-    ? getPathById(selectedId as 'A' | 'B' | 'C')?.itinerary ?? ITINERARY
+    ? getPathById(selectedId as 'A' | 'B')?.itinerary ?? ITINERARY
     : ITINERARY;
-  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B') : null;
 
   const gist = container.querySelector<HTMLElement>('.gist');
   if (gist) {
@@ -99,7 +99,7 @@ function renderBody(container: HTMLElement, selectedId: string | null): void {
         h(
           'summary',
           { class: 'disclosure__summary' },
-          'How the three paths differ day-by-day'
+          'How the two paths differ day-by-day'
         ),
         h(
           'ul',

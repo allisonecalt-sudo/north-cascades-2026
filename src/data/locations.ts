@@ -14,7 +14,7 @@
  *
  * Path association rule (used by map.ts to fade markers when a path is picked):
  *   - 'west'   → Path A + B (west-side stays)
- *   - 'east'   → Path B + C (east-side stays)
+ *   - 'east'   → Path B (east-side stays)
  *   - 'both'   → shown on every path (trailheads, viewpoints, airports, towns)
  */
 
@@ -1494,7 +1494,7 @@ function reverseRoad(road: Array<[number, number]>): Array<[number, number]> {
 }
 
 // ---------------- Per-path route configs -----------------------------
-export const TRIP_ROUTES: Record<'A' | 'B' | 'C', TripRoute> = {
+export const TRIP_ROUTES: Record<'A' | 'B', TripRoute> = {
   A: {
     color: '#16a34a',
     nights: [
@@ -1551,39 +1551,6 @@ export const TRIP_ROUTES: Record<'A' | 'B' | 'C', TripRoute> = {
       { points: ROAD_ROSS_TO_RAINY, note: 'Day 3 · WA-20 closure zone (verify reopen)', day: 3, kind: 'drive-day' },
       { points: ROAD_RAINY_TO_WINTHROP, note: 'Day 3 · Rainy Pass → Winthrop', day: 3, kind: 'drive-day' },
       { points: reverseRoad(ROAD_RAINY_TO_WINTHROP_DIRECT), note: 'Day 4 · Winthrop ↔ Maple Pass loop', day: 4, kind: 'hike-out-and-back' },
-      { points: ROAD_WINTHROP_TO_SEA_I90, note: 'Day 5 · Winthrop → SEA via US-97 + I-90', day: 5, kind: 'drive-day' },
-    ],
-  },
-  C: {
-    color: '#f59e0b',
-    nights: [
-      {
-        lodgingIdCandidates: ['lodging-glacier-peak', 'lodging-rhody-house', 'lodging-cascade-river-house'],
-        fallbackCoord: [48.5316, -121.4448],
-        label: 'Night 1',
-        townLabel: 'Marblemount (overnight only)',
-      },
-      {
-        lodgingIdCandidates: [
-          'lodging-methow-river',
-          'lodging-rivers-edge',
-          'lodging-freestone',
-          'lodging-inn-at-mazama',
-          'lodging-chewuch',
-          'lodging-spring-creek-ranch',
-        ],
-        fallbackCoord: [48.476, -120.1859],
-        label: 'Nights 2-4',
-        townLabel: 'Winthrop/Mazama (east base · 3 nights)',
-      },
-    ],
-    segments: [
-      { points: ROAD_SEA_TO_MARBLEMOUNT, note: 'Day 1 · SEA → Marblemount', day: 1, kind: 'drive-day' },
-      { points: ROAD_MARBLEMOUNT_TO_DIABLO, note: 'Day 2 · Marblemount → Diablo (transit east)', day: 2, kind: 'drive-day' },
-      { points: ROAD_DIABLO_TO_ROSS, note: 'Day 2 · Ross Lake spur', day: 2, kind: 'drive-day' },
-      { points: ROAD_ROSS_TO_RAINY, note: 'Day 2 · WA-20 closure zone (verify reopen)', day: 2, kind: 'drive-day' },
-      { points: ROAD_RAINY_TO_WINTHROP, note: 'Day 2 · Rainy Pass → Winthrop', day: 2, kind: 'drive-day' },
-      { points: reverseRoad(ROAD_RAINY_TO_WINTHROP_DIRECT), note: 'Day 3 · Maple Pass day-trip', day: 3, kind: 'hike-out-and-back' },
       { points: ROAD_WINTHROP_TO_SEA_I90, note: 'Day 5 · Winthrop → SEA via US-97 + I-90', day: 5, kind: 'drive-day' },
     ],
   },

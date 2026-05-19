@@ -249,7 +249,7 @@ export function renderTowns(): HTMLElement {
   );
 
   const paint = (selected: string | null): void => {
-    const visible = townsForPath(selected as 'A' | 'B' | 'C' | null);
+    const visible = townsForPath(selected as 'A' | 'B' | null);
     grid.replaceChildren(...visible.map(renderTownCard));
     if (visible.length === 0) {
       grid.appendChild(

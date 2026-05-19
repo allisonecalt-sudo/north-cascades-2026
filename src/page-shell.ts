@@ -636,7 +636,7 @@ function buildClosureBanner(): HTMLElement {
         h('strong', {}, 'WA-20 currently CLOSED through the park.'),
         ' WSDOT target reopen: ',
         h('strong', {}, 'June 25, 2026'),
-        ' (pulled forward from July 4 after the May 13 second emergency contract). The 3 paths assume worst case.'
+        ' (pulled forward from July 4 after the May 13 second emergency contract). Both paths assume worst case.'
       )
     ),
     h(

@@ -2,16 +2,18 @@
  * how-to.ts — renderer for the "How to do this trip" decision-tree page.
  *
  * Layout (top → bottom):
- *   1. TLDR card — "3 paths if WA-20 opens, 2 if it doesn't"
+ *   1. TLDR card — "2 paths if WA-20 opens, 3 if it doesn't"
  *   2. WA-20 status pill — sets the branch context (reads from closure data)
  *   3. "Pick by question" widget — chips that filter the path list in real time
  *   4. Path cards — visible based on widget filters AND WA-20 branch
  *      - Each card: name + best-for + tradeoff + shape diagram + lodgings +
  *        day-by-day strip + cost + "Pick this path" button (syncs selectedPath
- *        state for A/B/C — D/E/F have no shared state target, so the button on
+ *        state for A/B — D/E/F have no shared state target, so the button on
  *        those cards is a "Lock this plan" placeholder that just toasts)
- *   5. Comparison table — all 6 paths side-by-side
+ *   5. Comparison table — all 5 paths side-by-side
  *   6. Footnotes — links to map, lodging, WA-20 status pages
+ *
+ * May 19, 2026: Path C removed entirely per Allison's call.
  *
  * Visual identity matches the WA-20 deep-dive page (scoped CSS, same palette
  * tokens via CSS vars). Path cards use the same "tone" tinting pattern as the
@@ -66,7 +68,7 @@ function renderWa20Branch(): HTMLElement {
       ? 'WA-20 currently CLOSED — both branches shown below'
       : state === 'partial'
         ? 'WA-20 PARTIALLY open — both branches shown below'
-        : 'WA-20 OPEN — Paths A/B/C are the default; D/E/F shown for reference';
+        : 'WA-20 OPEN — Paths A/B are the default; D/E/F shown for reference';
   return h(
     'div',
     { class: 'how-to-branch' },
@@ -259,13 +261,13 @@ function daysStrip(path: PathOption): HTMLElement {
 }
 
 function pickButton(path: PathOption, isSelected: boolean): HTMLElement {
-  // Paths A/B/C sync with the global selectedPath state. Paths D/E/F have no
-  // shared state target (they're Plan-B routings, not the curated 3) — for
+  // Paths A/B sync with the global selectedPath state. Paths D/E/F have no
+  // shared state target (they're Plan-B routings, not the curated 2) — for
   // those, the button just toasts "Lock this plan" so the reader has the
   // affordance but doesn't break state.
   // sharablePathId is typed to PathId | null so TS knows it's narrowable.
-  const sharablePathId: 'A' | 'B' | 'C' | null =
-    path.id === 'A' || path.id === 'B' || path.id === 'C' ? path.id : null;
+  const sharablePathId: 'A' | 'B' | null =
+    path.id === 'A' || path.id === 'B' ? path.id : null;
   const isSharable = sharablePathId !== null;
   const btn = h(
     'button',
@@ -432,7 +434,7 @@ function renderComparison(): HTMLElement {
     h(
       'p',
       { class: 'how-to-block-lede' },
-      'All 6 paths at a glance. Scroll horizontally on mobile.'
+      'All 5 paths at a glance. Scroll horizontally on mobile.'
     )
   );
 

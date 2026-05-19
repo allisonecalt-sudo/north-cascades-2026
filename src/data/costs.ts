@@ -8,7 +8,9 @@
  *  - perPersonShare() helper for Splitwise math
  *  - Public-facing tier labels: Lean / Standard / Splurge
  *
- * Three paths (A / B / C), each with low / mid / high tiers built from:
+ * May 19, 2026: Path C removed (Allison's call — not using it). Only A + B.
+ *
+ * Two paths (A / B), each with low / mid / high tiers built from:
  *   - flights.ts (SEA RT NYC, peak Aug)
  *   - rental.ts (verified Costco quotes May 16, 2026)
  *   - lodging.ts (per-night ranges from the listed cabins)
@@ -20,7 +22,7 @@
  * rental + groceries; flights are per-person × 2).
  */
 
-export type PathLetter = 'A' | 'B' | 'C';
+export type PathLetter = 'A' | 'B';
 export type Tier = 'low' | 'mid' | 'high';
 
 export type CategoryKey =
@@ -109,7 +111,7 @@ const ACTIVITIES_HIGH = 340; // AtB + Diablo lunch tour for 2 + kayak + Sun Mtn 
 const fuel = (miles: number, mpg: number): number =>
   Math.round((miles / mpg) * 5.75);
 
-const PATH_MILES: Record<PathLetter, number> = { A: 471, B: 605, C: 540 };
+const PATH_MILES: Record<PathLetter, number> = { A: 471, B: 605 };
 
 function buildTier(
   pathId: PathLetter,
@@ -196,9 +198,7 @@ function buildTier(
         note:
           (pathId === 'A'
             ? '4 nights, one west cabin · '
-            : pathId === 'B'
-              ? '2 west + 2 east, mid-trip move · '
-              : '1 west + 3 east · ') + lodgingAnchor,
+            : '2 west + 2 east, mid-trip move · ') + lodgingAnchor,
         amount: lodgingTotal,
         flex: 'locked',
         sourceHref: 'lodging.html',
@@ -266,11 +266,6 @@ function buildTier(
 //   - Low: Rhody $200×2 + Methow River $220×2 = $840 + $200 west fees = $1,040
 //   - Mid: Riverside $300×2 + Freestone $340×2 = $1,280 + $285 = $1,565
 //   - High: Cascade River House $425×2 + Sun Mountain $620×2 = $2,090 + fees + resort = $2,350
-//
-// Path C (1 west + 3 east):
-//   - Low: Rhody $200×1 + Methow River $220×3 = $860 + $200 = $1,060
-//   - Mid: Riverside $300×1 + Freestone $340×3 = $1,320 + $285 = $1,605
-//   - High: Cascade River House $425×1 + Sun Mountain $620×3 = $2,285 + fees + resort = $2,550
 
 // Path A — 4 nights one west cabin
 const PATH_A: PathCost = {
@@ -294,18 +289,7 @@ const PATH_B: PathCost = {
   ],
 };
 
-// Path C — 1 west + 3 east
-const PATH_C: PathCost = {
-  pathId: 'C',
-  pathName: 'Path C · Slow Winthrop Base',
-  tiers: [
-    buildTier('C', 'low', 1060),
-    buildTier('C', 'mid', 1605),
-    buildTier('C', 'high', 2550),
-  ],
-};
-
-export const PATH_COSTS: PathCost[] = [PATH_A, PATH_B, PATH_C];
+export const PATH_COSTS: PathCost[] = [PATH_A, PATH_B];
 
 export function tierTotal(tier: CostTier): number {
   return tier.categories.reduce((sum, c) => sum + c.amount, 0);

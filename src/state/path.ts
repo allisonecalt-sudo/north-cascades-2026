@@ -19,7 +19,7 @@ const listeners: Listener[] = [];
 let current: PathId | null = readInitial();
 
 function isValidPath(v: string | null | undefined): v is PathId {
-  return v === 'A' || v === 'B' || v === 'C';
+  return v === 'A' || v === 'B';
 }
 
 /**

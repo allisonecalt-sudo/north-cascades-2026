@@ -80,7 +80,7 @@ function renderItinerary(it: SeattleItinerary): HTMLElement {
 }
 
 function renderPathNotice(selectedId: string | null): HTMLElement {
-  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B') : null;
   if (!path) {
     return h(
       'ul',
@@ -149,7 +149,7 @@ function renderFullContent(): HTMLElement[] {
 }
 
 function renderBody(selectedId: string | null): HTMLElement {
-  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B') : null;
   const seattleExcluded = path !== null && !path.includeSeattle;
 
   if (seattleExcluded) {

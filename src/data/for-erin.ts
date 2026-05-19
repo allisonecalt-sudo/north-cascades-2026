@@ -69,7 +69,7 @@ export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
     priority: 'shape',
     question: 'Want at least one full rest day?',
     context:
-      "Path C Day 4 already has a built-in slow day (porch + Winthrop). For Paths A + B, should Allison BAKE IN a rest day too, or is Erin up for active every day with the option to bail morning-of?",
+      "Should Allison BAKE IN a rest day on either Path A or B, or is Erin up for active every day with the option to bail morning-of?",
   },
   {
     id: 'town-day',

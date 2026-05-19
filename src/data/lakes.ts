@@ -344,7 +344,7 @@ export const LAKES: Lake[] = [
     bestWindow:
       'Late morning calm for paddling. Sunset over the west shore (#5 on the sunset rank).',
     description:
-      'Sub-alpine reservoir on the Sun Mountain Lodge property. Calm water, mountain backdrop, easy beginner paddling — exactly the rest-day water option for Path B or Path C. Marina is open to the public, not guests-only. Patterson is also the most photographed reflection on the east side outside Pearrygin. Sun Mountain Patterson Lake Cabins (Cool sleeping) put you steps from the dock.',
+      'Sub-alpine reservoir on the Sun Mountain Lodge property. Calm water, mountain backdrop, easy beginner paddling — exactly the rest-day water option for the east leg of Path B. Marina is open to the public, not guests-only. Patterson is also the most photographed reflection on the east side outside Pearrygin. Sun Mountain Patterson Lake Cabins (Cool sleeping) put you steps from the dock.',
     sourceUrl: 'https://sunmountainlodge.com/adventure/water-activities/',
     sourceLabel: 'Sun Mountain Lodge',
     activityAnchor: 'activities.html#patterson-kayak',
@@ -404,7 +404,7 @@ export const LAKES: Lake[] = [
       { from: 'Marblemount (west)', minutes: '~4 hr' },
     ],
     bestWindow:
-      'Full-day commitment — only worth it if a Path-C day frees up. Otherwise admire from the map.',
+      'Full-day commitment — only worth it if a Path-B east-side day frees up. Otherwise admire from the map.',
     description:
       'Boat-only village at the head of 50-mile-long Lake Chelan, inside the North Cascades NRA. Stehekin is the legend — the bakery, the red school bus, the Stehekin Valley road, the Rainbow Falls hike from the landing. But: this is a 3-hour drive south to Chelan, then a 4-hour boat each way. On a 4-night trip with hikes already committed, this almost always falls off the plan. Listed for completeness in case a hike day collapses and you want a "real boat day" instead.',
     sourceUrl: 'https://ladyofthelake.com/boat-schedules/',

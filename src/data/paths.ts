@@ -1,13 +1,18 @@
 /**
- * Trip paths — three materially different organizing structures.
+ * Trip paths — two materially different organizing structures.
  *
- * Per options.md (2026-05-16). Each path defines:
+ * Per options.md (2026-05-16) + Allison's May 19 cut: Path C (Slow Winthrop
+ * Base) was removed entirely — she's not using it, so it shouldn't take
+ * visual real estate. Only Path A (locked fallback) + Path B (primary)
+ * remain.
+ *
+ * Each path defines:
  *   - identity (id, name, tagline, snapshot bullets)
  *   - recommended lodging ids (filter view in Lodging section)
  *   - recommended hike ids (flag "in your path" in Hikes section)
  *   - itinerary day blueprint (each path has its own 5-day shape)
- *   - Seattle inclusion (Path A skips; Paths B+C: optional Leavenworth lunch on return)
- *   - flight default (all three share SEA RT — but path doc still binds it)
+ *   - Seattle inclusion (Path A skips; Path B: optional Leavenworth lunch on return)
+ *   - flight default (both share SEA RT — but path doc still binds it)
  *
  * "View all options" mode (selectedPath = null) shows everything ungated —
  * matches the prior site behavior so users can browse.
@@ -15,7 +20,7 @@
 
 import type { ItineraryDay } from './itinerary';
 
-export type PathId = 'A' | 'B' | 'C';
+export type PathId = 'A' | 'B';
 
 export interface TripPath {
   id: PathId;
@@ -235,95 +240,6 @@ const PATH_B_ITINERARY: ItineraryDay[] = [
 ];
 
 // ============================================================
-// Path C — Slow Winthrop Base
-// ============================================================
-const PATH_C_ITINERARY: ItineraryDay[] = [
-  {
-    day: 1,
-    date: 'Sun Aug 16',
-    title: 'SEA arrival, one night Marblemount',
-    shape: 'Break up the drive — one west-side night before pushing east.',
-    stops: [
-      { step: 'Land SEA AM', detail: 'Nonstop on United EWR→SEA (primary); Alaska EWR→BLI fallback.' },
-      { step: 'Drive SEA → Marblemount', detail: '~2 hrs.', time: '~2 hrs' },
-      { step: 'Light evening', detail: 'Ladder Creek Falls at dusk, or just check in + cabin time.' },
-    ],
-    meals: { dinner: 'Cabin dinner from packaged kosher goods picked up en route.' },
-  },
-  {
-    day: 2,
-    date: 'Mon Aug 17',
-    title: 'Drive + viewpoints east',
-    shape: 'Skip Cascade Pass entirely. Slow east-bound drive, viewpoints, settle in Winthrop.',
-    stops: [
-      { step: 'Pack up, check out', detail: 'Moving to Winthrop for 3 nights.' },
-      { step: 'Gorge Creek Falls', detail: 'MP 123 · 5 min.' },
-      { step: 'Diablo Lake Overlook', detail: 'MP 132 · postcard · 20-30 min.' },
-      {
-        step: 'Thunder Knob (optional)',
-        detail: 'MP 130 · 3.6 mi RT · 1.5-2 hrs · the one hike of the day if she wants it.',
-      },
-      { step: 'Washington Pass Overlook', detail: 'MP 162 · 20 min.' },
-      { step: 'Drive to Winthrop', detail: '~40 min from Washington Pass.' },
-      { step: 'Check in (3 nights)', detail: 'Methow River Lodge or Freestone Inn.' },
-      { step: 'Boardwalk walk', detail: 'Old-west boardwalk in evening light.' },
-    ],
-    meals: { dinner: 'Cabin dinner at the new Winthrop base.' },
-  },
-  {
-    day: 3,
-    date: 'Tue Aug 18',
-    title: 'Maple Pass day (or Blue Lake)',
-    shape: 'The big hike day. Long afternoon in Winthrop after — boardwalk + ice cream + nicer dinner.',
-    stops: [
-      { step: 'Drive to Rainy Pass', detail: 'MP 158 · ~30 min from Winthrop.', time: '~30 min' },
-      { step: 'Maple Pass Loop (moderate)', detail: '7.2 mi · ~2,020 ft · 4-5 hrs.' },
-      { step: 'Or Blue Lake (easy-mod)', detail: '4.4 mi RT · ~1,050 ft · 2-3 hrs.' },
-      { step: 'Home by 4 PM', detail: 'Long afternoon in Winthrop.' },
-      { step: 'Boardwalk walk', detail: 'Old-west boardwalk + Shafer Museum exterior in the late-afternoon light.' },
-    ],
-    meals: { dinner: 'Cabin dinner — nicer kosher meal cooked at home (steak + sealed sauce, or a packaged-prepared option from Seattle Kosher if you stocked up).' },
-  },
-  {
-    day: 4,
-    date: 'Wed Aug 19',
-    title: 'Easy day — Rainy Lake or Methow lazy',
-    shape: 'No big hike. Rainy Lake paved walk, or Patterson Lake kayaks, or just a Winthrop wander.',
-    stops: [
-      {
-        step: 'Option A — Rainy Lake (easy)',
-        detail: 'MP 158 · 1.8 mi paved · ~1 hr.',
-      },
-      {
-        step: 'Option B — Patterson Lake kayaks',
-        detail: 'Sun Mountain Lodge marina rental · 60-90 min.',
-      },
-      { step: 'Option C — Winthrop wander', detail: 'Boardwalk + shops + porch time.' },
-      { step: 'Lazy lunch', detail: 'In town or a picnic.' },
-      { step: 'Second town evening', detail: 'Boardwalk light walk before dinner.' },
-    ],
-    meals: { dinner: 'Cabin dinner — easy night, leftovers or pasta.' },
-  },
-  {
-    day: 5,
-    date: 'Thu Aug 20',
-    title: 'Slow morning, drive to SEA',
-    shape: '~4 hr drive via I-90 (faster) or US-2 / Stevens Pass (scenic + Leavenworth lunch).',
-    stops: [
-      { step: 'Slow morning', detail: 'Boardwalk + coffee.' },
-      {
-        step: 'Drive Winthrop → SEA',
-        detail: '~4 hrs via WA-20 → US-97 → I-90, OR ~4.5 hrs scenic via US-2 / Stevens Pass.',
-        time: '~4 hrs',
-      },
-      { step: 'Optional Leavenworth lunch', detail: 'On US-2 only.' },
-      { step: 'Evening flight', detail: 'Nonstop SEA → NYC.' },
-    ],
-    meals: { lunch: 'Leavenworth or Cle Elum.' },
-  },
-];
-
-// ============================================================
 // Paths array
 // ============================================================
 export const TRIP_PATHS: TripPath[] = [
@@ -370,32 +286,8 @@ export const TRIP_PATHS: TripPath[] = [
     includeSeattle: true,
     seattleNote: 'Conditional Leavenworth lunch stop on the Day-5 scenic-US-2 return. Seattle itself = airport only.',
     lodgingShape: '2 nights west (Marblemount) + 2 nights east (Winthrop/Mazama)',
-    flightNote: 'United EWR→SEA nonstop primary — same as Paths A + C. Alaska EWR→BLI fallback.',
+    flightNote: 'United EWR→SEA nonstop primary — same as Path A. Alaska EWR→BLI fallback.',
     tradeoff: 'Mid-trip lodging move costs a half-day of momentum. If WA-20 stays closed Aug 1, this whole path collapses to Path A or to a Stevens-Pass-loop-to-Winthrop variant. Highest reward, highest fragility.',
-  },
-  {
-    id: 'C',
-    name: 'Path C · Slow Winthrop Base (comparison only)',
-    tagline: '1 night Marblemount + 3 nights Winthrop. Kept for comparison — not actively on the table per May 18.',
-    bestIf:
-      'Least driving, most evenings-at-the-cabin. NOT in the active May 18 plan — Erin chose Path B (with A fallback), not Path C. Kept here so the tradeoff is visible.',
-    snapshot: [
-      'Comparison-only — Erin\'s May 18 decision was Path B then A, not C',
-      '3 nights in Winthrop — fewest packing days',
-      'East-side hikes only — Maple Pass, Blue Lake, Rainy Lake',
-      'Skips Cascade Pass (the biggest tradeoff)',
-    ],
-    lodgingIds: [
-      'sauk-mountain-farmhouse', 'glacier-peak',
-      'methow-river', 'rivers-edge', 'freestone', 'chewuch', 'inn-at-mazama', 'spring-creek-ranch',
-    ],
-    hikeIds: ['ladder-creek', 'rainy-lake', 'maple-pass', 'blue-lake', 'thunder-knob'],
-    itinerary: PATH_C_ITINERARY,
-    includeSeattle: true,
-    seattleNote: 'Same as Path B — Leavenworth optional on US-2 return, SEA airport only.',
-    lodgingShape: '1 night west (Marblemount) + 3 nights east (Winthrop/Mazama)',
-    flightNote: 'United EWR→SEA nonstop primary; Alaska EWR→BLI fallback. Stevens Pass approach available if WA-20 still partially closed.',
-    tradeoff: 'Loses Cascade Pass — the signature west-side hike — entirely. Gains two full Winthrop evenings and zero mid-trip packing.',
   },
 ];
 

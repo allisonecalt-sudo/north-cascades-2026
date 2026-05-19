@@ -217,7 +217,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
       'Costco Travel live quote SEA Aug 16-20 2026 — captured May 16 2026',
       'https://customerservice.costco.com/app/answers/answer_view/a_id/2018 (Costco Travel rental car policies)',
     ],
-    pairsWith: 'SEA roundtrip flight (default for all 3 paths).',
+    pairsWith: 'SEA roundtrip flight (default for both paths).',
     tradeoff:
       'Cheapest SUV class with verified live quote. Compact SUV is the right shape for 2 people + gear without overbuying. Costco bundles free second driver and runs 10-25% under brand-direct retail. Clearance fine for Cascade River Rd gravel in August — but see contract note about unpaved roads.',
   },
@@ -273,7 +273,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
       'Costco Travel live quote SEA Aug 16-20 2026 — captured May 16 2026',
       'Toyota Camry Hybrid EPA combined: 47-52 mpg (toyota.com/camryhybrid)',
     ],
-    pairsWith: 'SEA roundtrip flight (default for all 3 paths).',
+    pairsWith: 'SEA roundtrip flight (default for both paths).',
     tradeoff:
       'Worth picking IF you prioritize fuel economy over clearance. Sedan-on-gravel works in August (drivers report doing it routinely) but adds 5-10 mph of careful driving on Cascade River Rd. Camry Hybrid is the most fuel-efficient class with a verified live quote.',
   },

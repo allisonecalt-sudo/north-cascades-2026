@@ -9,7 +9,7 @@
  * interactive map.
  *
  * Top branch: WA-20 status
- *   - "If WA-20 opens by June 25" (default branch — existing Paths A/B/C)
+ *   - "If WA-20 opens by June 25" (default branch — existing Paths A/B)
  *   - "If WA-20 stays closed past June 25" (Plan B routings — Paths D/E/F)
  *
  * Each PathOption carries:
@@ -66,8 +66,8 @@ export interface PathLodgingPick {
 }
 
 export interface PathOption {
-  /** Stable id. A/B/C reuse existing path ids — D/E/F are Plan B additions. */
-  id: 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
+  /** Stable id. A/B reuse existing path ids — D/E/F are Plan B additions. */
+  id: 'A' | 'B' | 'D' | 'E' | 'F';
   /** Which top branch this option lives under. */
   wa20Branch: Wa20Branch;
   /** Short name shown on the card head ("Path A · West-Side Anchor"). */
@@ -137,13 +137,13 @@ export const QUESTION_CHIPS: readonly QuestionChip[] = [
     tag: 'rest-days',
     question: 'Pacing',
     label: 'Want rest days',
-    hint: 'Single-base paths (A or C) leave room for cabin afternoons.',
+    hint: 'Single-base Path A leaves room for cabin afternoons.',
   },
   {
     tag: 'wants-winthrop',
     question: 'Town nights',
     label: 'Want a Winthrop town night',
-    hint: 'Narrows to east-side-night paths (B, C, E).',
+    hint: 'Narrows to east-side-night paths (B, E).',
   },
   {
     tag: 'wa20-independent',
@@ -292,78 +292,6 @@ const PATH_B: PathOption = {
   costRange: '$2,600-3,800 / pair',
   wa20Dependency: 'high',
   tags: ['scenery-max', 'hike-daily', 'wants-winthrop'],
-};
-
-// ============================================================
-// PATH C — Slow Winthrop Base (WA-20 open)
-// ============================================================
-
-const PATH_C: PathOption = {
-  id: 'C',
-  wa20Branch: 'open',
-  name: 'Path C · Slow Winthrop Base',
-  tagline: '1 night Marblemount + 3 nights Winthrop. Less driving, more porch.',
-  bestFor: 'Least driving · most porch time · east-side hikes only',
-  tradeoff: 'Skips Cascade Pass — the marquee west-side hike — entirely.',
-  shape: [
-    { nights: 'Night 1', base: 'Marblemount' },
-    { nights: 'Nights 2-4', base: 'Winthrop/Mazama' },
-  ],
-  lodgings: [
-    {
-      id: 'glacier-peak',
-      name: 'Glacier Peak Resort',
-      base: 'Rockport (night 1)',
-      kitchen: 'full',
-      why: 'One-night west pause — cabin + winery, easy in/out.',
-    },
-    {
-      id: 'spring-creek-ranch',
-      name: 'Spring Creek Ranch',
-      base: 'Winthrop (nights 2-4)',
-      kitchen: 'full',
-      why: 'Ranch-acreage 3-night base, quiet, Terra Nova-tier.',
-    },
-    {
-      id: 'rivers-edge',
-      name: 'River\'s Edge Resort',
-      base: 'Winthrop (nights 2-4)',
-      kitchen: 'full',
-      why: 'Methow riverside chalet · full kitchen confirmed.',
-    },
-  ],
-  days: [
-    {
-      label: 'Day 1 · Sun Aug 16',
-      shape: 'SEA → Marblemount, one west-side night.',
-      hits: ['Drive in', 'Ladder Creek Falls'],
-    },
-    {
-      label: 'Day 2 · Mon Aug 17',
-      shape: 'Drive + viewpoints east, settle Winthrop.',
-      hits: ['Diablo Lake', 'Washington Pass', 'Check-in east'],
-    },
-    {
-      label: 'Day 3 · Tue Aug 18',
-      shape: 'Maple Pass day — long Winthrop afternoon after.',
-      hits: ['Maple Pass Loop', 'Boardwalk evening'],
-    },
-    {
-      label: 'Day 4 · Wed Aug 19',
-      shape: 'Easy day — Rainy Lake, Patterson kayaks, or porch.',
-      hits: ['Rainy Lake OR Patterson Lake kayak OR town wander'],
-    },
-    {
-      label: 'Day 5 · Thu Aug 20',
-      shape: 'Slow morning, ~4 hr drive to SEA.',
-      hits: ['Winthrop → SEA via I-90 or US-2 / Leavenworth'],
-    },
-  ],
-  driveTotal: '~420 mi total · ~9 hrs in the car across 5 days',
-  hikeCount: 2,
-  costRange: '$2,500-3,600 / pair',
-  wa20Dependency: 'connector-only',
-  tags: ['rest-days', 'wants-winthrop'],
 };
 
 // ============================================================
@@ -549,7 +477,6 @@ const PATH_F: PathOption = {
 export const HOW_TO_PATHS: readonly PathOption[] = [
   PATH_A,
   PATH_B,
-  PATH_C,
   PATH_D,
   PATH_E,
   PATH_F,
@@ -579,7 +506,7 @@ export function matchesFilters(
 /** TLDR shown at top of the page. */
 export const HOW_TO_TLDR = {
   open:
-    'There are 3 realistic ways to do this if WA-20 opens by June 25. Path A anchors west (lowest risk), Path B splits both sides (most variety), Path C anchors east (most porch time).',
+    'There are 2 realistic ways to do this if WA-20 opens by June 25. Path A anchors west (lowest risk, locked fallback), Path B splits both sides (the primary plan — most variety).',
   closed:
     'There are 2 realistic ways to do this if WA-20 stays closed. Path D anchors west (Cascade Pass + Mt. Baker). Path E anchors east via Stevens Pass (Maple Pass + Methow). Path F is the punt — last resort.',
 };

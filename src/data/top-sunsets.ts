@@ -77,7 +77,7 @@ export const TOP_SUNSETS: SunsetSpotRanked[] = [
     accessFromEast: '~40 min drive from Winthrop / ~25 min from Mazama',
     why: 'Highest paved overlook on WA-20 — last light hits Liberty Bell + Early Winters Spires as alpenglow. Photographers list it for both sunrise and sunset.',
     allisonFit: 'Drive up after dinner, watch the sunset, stay through astro-dark (~10:00 PM) for stars at the same pull-off. New moon Aug 18 = the dark-sky bonus is real here.',
-    bestByPath: ['B', 'C'],
+    bestByPath: ['B'],
     notes: 'Park closes the gate at dusk in winter — in August the overlook stays accessible. Bring a layer; ridge is exposed.',
     source: {
       name: 'NPS · Washington Pass Overlook',
@@ -130,7 +130,7 @@ export const TOP_SUNSETS: SunsetSpotRanked[] = [
     accessFromEast: '~10 min from Winthrop / ~45 min from Mazama',
     why: 'Open ridgetop at 3,000 ft — guests and the lodge itself call out sunset from the hot tub + main-lodge patio.',
     allisonFit: 'Even if you book a Patterson Lake Cabin, the ridge is a 5-min drive up. Non-guests: grab a drink at the Wolf Creek Bar and Grill and walk the patio at sunset — call (509) 996-2211 to confirm same-day open-to-public policy.',
-    bestByPath: ['B', 'C'],
+    bestByPath: ['B'],
     fromLodging: 'Sun Mountain Lodge (if booked) — porch · otherwise 10-min drive from Winthrop',
     notes: 'Phone: (509) 996-2211. Allison-favorite kind of spot — chair, view, no one rushing.',
     source: {
@@ -210,7 +210,7 @@ export const TOP_SUNSETS: SunsetSpotRanked[] = [
     accessFromEast: '~15 min from Winthrop · ~30 min from Mazama',
     why: 'Smaller, quieter alternative to Pearrygin. Lake faces the ridge to the west; Methow Valley dark-sky designation kicks in after sunset.',
     allisonFit: 'Lower-key than the Sun Mountain patio — bring a chair, sit by the water, drive back without crowds. Stay past 9:00 PM for the Milky Way on Aug 18.',
-    bestByPath: ['B', 'C'],
+    bestByPath: ['B'],
     notes: 'Discover Pass required ($10/day or $30/year). No facilities at the launch — pack water.',
     source: {
       name: 'DarkSky International · Places finder',
@@ -227,7 +227,7 @@ export const TOP_SUNSETS: SunsetSpotRanked[] = [
     accessFromEast: '~10 min from Winthrop · ~25 min from Mazama',
     why: 'Lake oriented east-west with open western sky over the water. Quiet, accessible, no climb. Picnic tables at the launch.',
     allisonFit: 'The most "porch swap" option — easiest after-dinner reach from Winthrop. Lower drama than Washington Pass but no driving home in the dark on a mountain road.',
-    bestByPath: ['B', 'C'],
+    bestByPath: ['B'],
     notes: 'Discover Pass required ($10/day). Mosquitos real at dusk in August — DEET in the bag.',
     source: {
       name: 'Pearrygin Lake State Park',
@@ -244,7 +244,7 @@ export const TOP_SUNSETS: SunsetSpotRanked[] = [
     accessFromEast: 'From porch if staying here',
     why: 'Cabins line a small alpine lake — water-foreground sunset reflections are likely from the lake-front decks. Sun drops behind the ridge earlier than the calendar 8:18-8:26 PM time.',
     allisonFit: 'Zero-effort sunset if you book the lake-front cabin. Lower drama than the Washington Pass drive but no driving + already home.',
-    bestByPath: ['B', 'C'],
+    bestByPath: ['B'],
     fromLodging: 'Freestone Inn lake-front cabins — ask which cabin numbers face the lake at booking',
     notes: 'Sun drops behind the ridge ~30-45 min before the calendar sunset. The afterglow on the eastern peaks still lights up the lake at calendar sunset.',
     source: { name: 'Freestone Inn', url: 'https://www.freestoneinn.com/' },

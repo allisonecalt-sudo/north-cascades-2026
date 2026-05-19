@@ -15,9 +15,9 @@
  *   5. OPEN loops + Next action — what's left + who's holding it
  *   6. Story-arc — reading order ("plan in this order: stay → do → get there →
  *      costs"), still useful as orientation
- *   7. Path picker (DEEP DIVE) — three-card comparison, marked as comparison,
+ *   7. Path picker (DEEP DIVE) — two-card comparison, marked as comparison,
  *      not a decision-time-out
- *   8. Featured strip — 3 path cards w/ photos
+ *   8. Featured strip — 2 path cards w/ photos
  *   9. Trip-state — countdown + WA-20 + milestones (existing)
  *  10. Fresh notes
  *  11. Peak-moment + map

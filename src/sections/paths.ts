@@ -1,11 +1,13 @@
 /**
- * Paths picker — the new top-level "choose your path" section.
+ * Paths picker — the top-level "choose your path" section.
  *
- * Three cards (Path A / B / C). Each card shows name + tagline + 3-4 snapshot
+ * Two cards (Path A / B). Each card shows name + tagline + 3-4 snapshot
  * bullets + a "View this path's details" button. A "Compare all options"
  * toggle lets the user un-pick and see everything.
  *
  * Re-renders the picker on path change so the active card is visually marked.
+ *
+ * May 19, 2026: Path C removed entirely per Allison's call.
  */
 
 import { TRIP_PATHS, type TripPath } from '../data/paths';
@@ -21,13 +23,9 @@ import { h, section } from '../dom';
  * Headline driving line for the path card — pulled from PATH_DRIVING_ROLLUPS
  * so the path picker shows the total-driving tradeoff right alongside the
  * WA-20 dependency. Added 2026-05-19 per the "make all driving visible"
- * brief. Path C is not in the rollup (kept for comparison only) — falls back
- * to a contextual line so the card still gets a driving signal.
+ * brief.
  */
-function pathDrivingLine(pathId: 'A' | 'B' | 'C'): string {
-  if (pathId === 'C') {
-    return '~10-12 hr total driving (closer to Path A, but with one east-side base shift on Day 2 instead of mid-trip)';
-  }
+function pathDrivingLine(pathId: 'A' | 'B'): string {
   const rollup = PATH_DRIVING_ROLLUPS.find((r) => r.pathId === pathId);
   if (!rollup) return '';
   return `~${rollup.totalHoursLow.toFixed(0)}-${rollup.totalHoursHigh.toFixed(0)} hr total driving across 5 days`;
@@ -174,7 +172,7 @@ export function renderPaths(): HTMLElement {
 
   const wrap = section(
     'paths',
-    'The three paths · deep dive',
+    'The two paths · deep dive',
     h(
       'ul',
       { class: 'gist' },
@@ -182,7 +180,7 @@ export function renderPaths(): HTMLElement {
         'li',
         { class: 'gist__item' },
         h('strong', {}, 'Decision is made (Erin May 18):'),
-        ' Path B (both sides) is the plan if WA-20 reopens. Path A (Marblemount only) is the locked fallback if it doesn\'t. Path C stays here for comparison only.'
+        ' Path B (both sides) is the plan if WA-20 reopens. Path A (Marblemount only) is the locked fallback if it doesn\'t.'
       ),
       h(
         'li',
@@ -207,7 +205,7 @@ export function renderPaths(): HTMLElement {
     const action = btn.dataset['action'];
     if (action === 'select') {
       const pathId = btn.dataset['path'];
-      if (pathId === 'A' || pathId === 'B' || pathId === 'C') {
+      if (pathId === 'A' || pathId === 'B') {
         setSelectedPath(pathId);
         // Smooth-scroll to the itinerary so the user sees the filter took effect.
         setTimeout(() => scrollToSection('itinerary'), 80);

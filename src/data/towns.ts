@@ -40,7 +40,7 @@ export interface Town {
   /** One-line vibe (boardwalk old-west, NPS company town, etc.). */
   tagline: string;
   /** Path filter — show on cards for these paths (or 'all'). */
-  paths: ('A' | 'B' | 'C')[] | 'all';
+  paths: ('A' | 'B')[] | 'all';
   /** Summer vibe one-liner — green meadows / dusty heat / cool river / etc. */
   summerVibe: string;
   /** 2-line "why stop here" lede above the bullets. */
@@ -344,7 +344,7 @@ export const TOWNS: Town[] = [
     name: 'Mazama',
     side: 'east',
     tagline: 'East-side hamlet — smallest town, biggest alpine drama.',
-    paths: ['B', 'C'],
+    paths: ['B'],
     summerVibe: 'Dry-side sunshine, sagebrush + pine, ridges punching up to 8,000 ft on both sides.',
     whyStop:
       'It is the closest base to Rainy Pass / Maple Pass — saves ~30 min on hike mornings vs. Winthrop. Tiny but the Mazama Store + bakery is a genuine destination, and the lodging here (Freestone Inn, Mazama Country Inn) sits right at the foot of the eastern Cascades.',
@@ -385,7 +385,7 @@ export const TOWNS: Town[] = [
     name: 'Winthrop',
     side: 'east',
     tagline: 'Old-West boardwalk town — the proper "town night" stop.',
-    paths: ['B', 'C'],
+    paths: ['B'],
     summerVibe: 'Sunny, dusty, busy boardwalks, ice-cream weather. Most-alive town on the route.',
     whyStop:
       "Themed Old-West, but it's a real town — wooden boardwalks, false-front buildings, hitching posts, art galleries, a working historical museum. Park once, wander for 1-2 hours, optionally drive 10 min south to Patterson Lake for the sunset view.",
@@ -425,7 +425,7 @@ export const TOWNS: Town[] = [
   },
 ];
 
-export function townsForPath(path: 'A' | 'B' | 'C' | null): Town[] {
+export function townsForPath(path: 'A' | 'B' | null): Town[] {
   if (!path) return TOWNS;
   return TOWNS.filter((t) => t.paths === 'all' || t.paths.includes(path));
 }

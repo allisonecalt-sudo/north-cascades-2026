@@ -70,7 +70,7 @@ export const WA20_STATUS: Wa20Status = {
 // ====================================================================
 
 export const WA20_TLDR: readonly string[] = [
-  'The 3 trip paths still work. Path A (west-side anchor) + Path C (east-side anchor) were sized for this closure; Path B (split) adds Stevens Pass on the connector day.',
+  'Both trip paths still work. Path A (west-side anchor) is the locked fallback if the road stays closed; Path B (split) adds Stevens Pass on the connector day if WA-20 reopens partially.',
   'Sahale Arm + Cascade Pass are reachable from the WEST (Cascade River Rd, separate access). Maple Pass + Cutthroat Pass + Blue Lake are reachable from the EAST (Mazama → Rainy Pass). The losses are mid-corridor: Diablo Lake Overlook, Thunder Knob, Ross Lake water-taxi, Diablo kayak launch at Colonial Creek.',
   'If you need to drive west-to-east (or back) and WA-20 is still closed: Stevens Pass (US-2) adds ~4 hours one-way. Plan to do it once, not as a daily commute.',
 ];
@@ -377,21 +377,6 @@ export const WA20_CONTINGENCY: readonly ContingencyOption[] = [
     ],
     whenToSwitch:
       'Path A locked: WA-20 still closed by booking week (early July) OR fire/smoke flares Aug 1-15 and the east side is the smoke-pocket that day.',
-  },
-  {
-    id: 'east-only',
-    title: 'East-side-only plan (Path C staying)',
-    tone: 'info',
-    tldr:
-      'Anchor 4 nights east (Winthrop/Mazama). Maple Pass + Cutthroat + Blue Lake + Sun Mountain + Patterson Lake + Methow towns. Lose Cascade Pass + Diablo / Ross.',
-    body: [
-      'Fly into Pangborn (Wenatchee, EAT) instead of SEA — drive ~2 hrs to Winthrop. OR fly SEA + drive via Stevens Pass (~5.5 hrs) once on arrival day.',
-      'Maple Pass / Cutthroat Pass / Blue Lake / Cedar Creek / Rainy Lake all reachable from the east base (assuming WSDOT extends east-section to MP 158+).',
-      'Sun Mountain Trails (Patterson Lake) + Pearrygin Lake swim + Methow River tube fill the non-hike days.',
-      'What you lose: Cascade Pass area (the marquee west-side hike), Diablo Lake views, Ross Lake water-taxi, Newhalem/Trail of the Cedars stops.',
-    ],
-    whenToSwitch:
-      'Path C locked: WA-20 still closed by booking week AND Cascade River Rd is still gated (some years it stays closed into July).',
   },
 ];
 

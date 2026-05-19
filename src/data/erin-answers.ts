@@ -109,9 +109,8 @@ export const ANSWER_SCHEMAS: Record<string, AnswerSchema> = {
     kind: 'radio',
     question_id: 'path',
     options: [
-      { value: 'A', label: 'A — simplest, one west-side base' },
-      { value: 'B', label: 'B — full park, mid-trip move' },
-      { value: 'C', label: 'C — slow east-side base, skips Cascade Pass' },
+      { value: 'A', label: 'A — simplest, one west-side base (locked fallback)' },
+      { value: 'B', label: 'B — full park, mid-trip move (primary)' },
       { value: 'other', label: 'Other (specify in note)' },
     ],
     freeformLabel: 'Anything to add? (optional)',

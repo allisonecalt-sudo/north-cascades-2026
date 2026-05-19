@@ -38,7 +38,10 @@ const headers: Record<string, string> = {
   'Content-Type': 'application/json',
 };
 
-export type PathLetter = 'A' | 'B' | 'C';
+// Note: historical rows in the DB may have path_id='C' from before the
+// May 19, 2026 Path C removal. Reads will surface them as-is; new writes
+// can only be 'A' | 'B'.
+export type PathLetter = 'A' | 'B';
 export type NoteStatus = 'pending' | 'seen' | 'applied';
 
 export interface Note {

@@ -1,8 +1,8 @@
 /**
  * featured-strip.ts — landing featured-photo strip (Wave 4, May 17, 2026).
  *
- * What this is: a 3-card horizontal strip below the fold on home.html that
- * sells the THREE PATHS visually before the reader has to read prose. Each
+ * What this is: a 2-card horizontal strip below the fold on home.html that
+ * sells the TWO PATHS visually before the reader has to read prose. Each
  * card is a hero shot of that path's signature moment + path letter + 2-line
  * pitch + jump-to-path link.
  *
@@ -19,13 +19,15 @@
  * the reader feel concrete weight ("Path B = 9 lodging options + 5 hikes")
  * before clicking, and shows a "✓ N shortlisted" badge when this browser has
  * picks for the path's lodging set.
+ *
+ * 2026-05-19: Path C removed entirely per Allison's call.
  */
 import { h, section } from '../dom';
 import { TRIP_PATHS } from '../data/paths';
 import { SHORTLIST_KEY } from './lodging/shortlist';
 
 interface FeaturedCard {
-  pathLetter: 'A' | 'B' | 'C';
+  pathLetter: 'A' | 'B';
   pathLabel: string;
   imgSrc: string;
   imgAlt: string;
@@ -56,16 +58,6 @@ const FEATURED: readonly FeaturedCard[] = [
     pitch: '2 nights west + 2 nights east · Cascade Pass + Maple Pass · Diablo Lake drive day · Washington Pass alpenglow. The classic if WA-20 reopens.',
     jumpHref: '#paths',
   },
-  {
-    pathLetter: 'C',
-    pathLabel: 'Path C · East-heavy',
-    imgSrc: 'https://commons.wikimedia.org/wiki/Special:FilePath/Maple_Pass_at_North_Cascades_in_WA.jpg?width=1280',
-    imgAlt: 'Maple Pass alpine ridge in summer — Path C east-side signature hike.',
-    imgCredit: 'Photo: Wikimedia · CC',
-    imgCreditUrl: 'https://commons.wikimedia.org/wiki/File:Maple_Pass_at_North_Cascades_in_WA.jpg',
-    pitch: '1 night west + 3 nights east · Maple Pass · Blue Lake · Patterson Lake · Methow Valley sunsets. Most days based out of Winthrop.',
-    jumpHref: '#paths',
-  },
 ];
 
 function readLodgingPicks(): Set<string> {
@@ -88,7 +80,7 @@ interface PathScope {
   picked: number;
 }
 
-function scopeForPath(letter: 'A' | 'B' | 'C', picks: Set<string>): PathScope {
+function scopeForPath(letter: 'A' | 'B', picks: Set<string>): PathScope {
   const path = TRIP_PATHS.find((p) => p.id === letter);
   if (!path) return { lodgingCount: 0, hikeCount: 0, picked: 0 };
   const picked = path.lodgingIds.filter((id) => picks.has(id)).length;
@@ -169,7 +161,7 @@ function renderFeaturedCard(card: FeaturedCard): HTMLElement {
 export function renderFeaturedStrip(): HTMLElement {
   return section(
     'featured-strip',
-    'Three shapes for the same 5 days · pick one or just browse',
+    'Two shapes for the same 5 days · pick one or just browse',
     h(
       'p',
       { class: 'section__lede' },

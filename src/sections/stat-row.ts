@@ -2,9 +2,9 @@
  * stat-row.ts — 4-up glanceable stat tiles above the path picker.
  *
  * Austria-lifted pattern. Reads in 5 seconds, gives the shape of the trip
- * before the path picker forces a decision: "5 days · 4 nights · 2 bases ·
- * 3 paths." Pulls from `TRIP` so anything we change in the data file flows
- * here.
+ * before the path picker forces a decision: "5 days · 4 nights · 2 cabins ·
+ * 2 paths." Pulls from `TRIP_PATHS` so anything we change in the data file
+ * flows here.
  */
 
 import { TRIP_PATHS } from '../data/paths';
@@ -17,8 +17,10 @@ interface Stat {
 
 /**
  * Build the 4-stat row. Numbers are stable across paths — every path is 5
- * days / 4 nights, every path uses 2 bases (some swap which base gets more
- * nights), and there are always 3 paths.
+ * days / 4 nights, every path uses 2 bases (Path A keeps one west base and
+ * has a Mt. Baker side trip option; Path B does 2 west + 2 east), and the
+ * path count comes from TRIP_PATHS.length (2 as of May 19, 2026 — Path C
+ * removed).
  */
 export function renderStatRow(): HTMLElement {
   const stats: Stat[] = [

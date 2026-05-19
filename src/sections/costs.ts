@@ -115,8 +115,6 @@ function pathContextLine(pathId: PathLetter): string {
       return '4 nights west side · 2 travelers · all-in';
     case 'B':
       return '2 west + 2 east · 2 travelers · all-in';
-    case 'C':
-      return '1 west + 3 east · 2 travelers · all-in';
   }
 }
 
@@ -145,7 +143,7 @@ function renderPathHero(
       'header',
       { class: 'costs-hero__head' },
       h('span', { class: 'costs-hero__chip' }, `Path ${pathCost.pathId}`),
-      h('h3', { class: 'costs-hero__title' }, pathCost.pathName.replace(/^Path [A-C] · /, ''))
+      h('h3', { class: 'costs-hero__title' }, pathCost.pathName.replace(/^Path [AB] · /, ''))
     ),
     h(
       'div',
@@ -417,7 +415,7 @@ export function renderCosts(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'Three paths, three tiers, two travelers. Big number = total. Per-person = your share after the 50/50 split (flights independent). Pick your path on any card; the breakdown below follows.'
+      'Two paths, three tiers, two travelers. Big number = total. Per-person = your share after the 50/50 split (flights independent). Pick your path on any card; the breakdown below follows.'
     ),
     renderSectionSources({
       label: 'Sources',

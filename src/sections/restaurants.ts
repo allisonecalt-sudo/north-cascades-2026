@@ -84,7 +84,7 @@ function pathExcludesEastSide(pathId: string | null): boolean {
 }
 
 function renderBody(selectedId: string | null): HTMLElement {
-  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B') : null;
   const seattleExcluded = path !== null && !path.includeSeattle;
   const eastExcluded = pathExcludesEastSide(selectedId);
 
@@ -147,7 +147,7 @@ function renderBody(selectedId: string | null): HTMLElement {
 }
 
 function renderGist(selectedId: string | null): HTMLElement {
-  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B') : null;
   const seattleExcluded = path !== null && !path.includeSeattle;
 
   return h(

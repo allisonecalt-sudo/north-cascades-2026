@@ -2292,7 +2292,7 @@
   padding: 0.35rem 0.7rem;
 }
 
-/* ─── Hero row: 3 big path cards ──────────────────────────── */
+/* ─── Hero row: 2 big path cards ──────────────────────────── */
 .costs-hero-row {
   display: grid;
   grid-template-columns: 1fr;
@@ -2301,7 +2301,7 @@
 }
 @media (min-width: 760px) {
   .costs-hero-row {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -2442,7 +2442,7 @@
 }
 @media (min-width: 600px) {
   .costs-compare__row {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 .costs-compare__btn {
@@ -3402,15 +3402,16 @@
 
 /* ============================================================
  * Featured-strip on home (Wave 4 photo carousels, May 17, 2026)
- * 3 path-pitch cards under the path picker. Same .card-grid
- * minmax-0 1fr fix applies — works on mobile 412px width.
+ * 2 path-pitch cards under the path picker (Path C removed
+ * 2026-05-19). Same .card-grid minmax-0 1fr fix applies — works
+ * on mobile 412px width.
  * ============================================================ */
 .card-grid--featured {
   grid-template-columns: minmax(0, 1fr);
 }
 @media (min-width: 720px) {
   .card-grid--featured {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

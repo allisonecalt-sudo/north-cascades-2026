@@ -685,7 +685,7 @@ function renderShortlistContainer(): HTMLElement {
 // ====================================================================
 
 function renderBody(wrap: HTMLElement, selectedId: string | null): void {
-  const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
+  const path = selectedId ? getPathById(selectedId as 'A' | 'B') : null;
   const pathHikeIds = path ? new Set(path.hikeIds) : new Set<string>();
   const pathSelected = path !== null;
   const inPath = (id: string): boolean => pathHikeIds.has(id);
