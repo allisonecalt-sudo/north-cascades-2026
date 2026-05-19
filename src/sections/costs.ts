@@ -423,10 +423,13 @@ export function renderCosts(): HTMLElement {
       label: 'Sources',
       sources: [
         {
-          name: 'Costco Travel · live SEA Aug 16-20 quote',
+          name: 'Costco Travel · live SEA Aug 16-20 quote (rental)',
           url: 'https://www.costcotravel.com/Rental-Cars',
         },
-        { name: 'Google Flights · NYC↔SEA', url: 'https://www.google.com/travel/flights' },
+        { name: 'Google Flights + Expedia · NYC↔SEA Aug 2026', url: 'https://www.google.com/travel/flights' },
+        { name: 'AAA Gas Prices · WA · $5.78/gal May 19, 2026', url: 'https://gasprices.aaa.com/?state=WA' },
+        { name: 'NPS · America the Beautiful $80 (2026)', url: 'https://store.usgs.gov/2026-resident-annual-pass' },
+        { name: 'NCI Skagit Tours · Diablo Lake afternoon $35/adult', url: 'https://ncascades.org/signup/programs/skagit-tours' },
         { name: 'Booking + Airbnb listings per Lodging page', url: 'lodging.html' },
       ],
       asOf: COSTS_NOTES.asOf,

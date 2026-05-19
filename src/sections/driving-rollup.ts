@@ -22,6 +22,7 @@ import {
   type DriveDayContext,
   type PathDrivingRollup,
 } from '../data/driving';
+import { GAS, VEHICLE_MPG, fuelCost } from '../data/pricing';
 import { h } from '../dom';
 
 const DAY_ORDER: DriveDayContext[] = ['day-1', 'day-2', 'day-3', 'day-4', 'day-5'];
@@ -53,6 +54,12 @@ function statusBadge(seg: DriveSegment): HTMLElement | null {
 
 function renderRollupCard(rollup: PathDrivingRollup): HTMLElement {
   const isPathA = rollup.pathId === 'A';
+  // Gas cost at the trip-anchor price ($5.75/gal) — assume a compact SUV
+  // (28 mpg) as the realistic-rental baseline. Split 50/50.
+  const fuelLow = fuelCost(rollup.totalMilesLow, VEHICLE_MPG.compactSuv);
+  const fuelHigh = fuelCost(rollup.totalMilesHigh, VEHICLE_MPG.compactSuv);
+  const fuelHybridLow = fuelCost(rollup.totalMilesLow, VEHICLE_MPG.hybrid);
+  const fuelHybridHigh = fuelCost(rollup.totalMilesHigh, VEHICLE_MPG.hybrid);
   return h(
     'article',
     {
@@ -71,6 +78,16 @@ function renderRollupCard(rollup: PathDrivingRollup): HTMLElement {
       h('strong', {}, `~${rollup.totalHoursLow.toFixed(0)}-${rollup.totalHoursHigh.toFixed(0)} hr total driving`),
       ' · ',
       `~${rollup.totalMilesLow}-${rollup.totalMilesHigh} mi across 5 days`
+    ),
+    h(
+      'p',
+      { class: 'drive-rollup-card__fuel' },
+      h('strong', {}, 'Gas: '),
+      `~$${fuelLow}-$${fuelHigh} compact SUV @ 28 mpg`,
+      h('br', {}),
+      h('em', {}, `~$${fuelHybridLow}-$${fuelHybridHigh} if hybrid @ 45 mpg`),
+      h('br', {}),
+      h('span', { class: 'drive-rollup-card__fuel-note' }, `WA gas $${GAS.tripAnchor}/gal (AAA ${GAS.verifiedOn}). Split 2-ways = ~$${Math.round(fuelLow / 2)}-$${Math.round(fuelHigh / 2)}/person.`)
     ),
     h(
       'dl',

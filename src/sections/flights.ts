@@ -61,6 +61,43 @@ const ARRIVAL_PHOTOS: readonly CarouselPhoto[] = [
 
 type CardVariant = 'leading' | 'fallback' | 'tertiary';
 
+function renderPricingBlock(option: FlightOption): HTMLElement | null {
+  if (!option.pricing) return null;
+  const p = option.pricing;
+  return h(
+    'div',
+    { class: 'flight-card__pricing', 'aria-label': 'Round-trip fare estimates per person' },
+    h('h4', { class: 'flight-card__pricing-title' }, '$ per person · round-trip'),
+    h(
+      'ul',
+      { class: 'flight-card__pricing-rows' },
+      h(
+        'li',
+        { class: 'flight-card__pricing-row' },
+        h('span', { class: 'flight-card__pricing-label' }, 'Basic / Saver'),
+        h('span', { class: 'flight-card__pricing-amount' }, `~$${p.low}`)
+      ),
+      h(
+        'li',
+        { class: 'flight-card__pricing-row' },
+        h('span', { class: 'flight-card__pricing-label' }, 'Main Cabin (typical)'),
+        h('span', { class: 'flight-card__pricing-amount' }, `~$${p.mid}`)
+      ),
+      h(
+        'li',
+        { class: 'flight-card__pricing-row flight-card__pricing-row--refundable' },
+        h('span', { class: 'flight-card__pricing-label' }, `Refundable / Flex (+$${p.refundablePremium} flex)`),
+        h('span', { class: 'flight-card__pricing-amount' }, `~$${p.refundable}`)
+      )
+    ),
+    h(
+      'p',
+      { class: 'flight-card__pricing-source' },
+      `Source: ${p.sourceLabel} · re-verify before booking.`
+    )
+  );
+}
+
 function renderFlightCard(option: FlightOption, variant: CardVariant): HTMLElement {
   return h(
     'article',
@@ -75,6 +112,7 @@ function renderFlightCard(option: FlightOption, variant: CardVariant): HTMLEleme
     ),
     h('p', { class: 'card__route' }, option.route),
     h('p', { class: 'card__diagram', 'aria-hidden': 'true' }, option.routeDiagram),
+    renderPricingBlock(option),
     h(
       'dl',
       { class: 'card__facts' },

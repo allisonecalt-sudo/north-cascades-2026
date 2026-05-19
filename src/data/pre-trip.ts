@@ -327,6 +327,36 @@ export const MILESTONES: Milestone[] = [
     link: { label: 'Groceries + restaurants', url: 'food.html' },
   },
   {
+    id: 'park-pass',
+    phase: 'two-weeks-out',
+    title: 'America the Beautiful pass — buy + split',
+    date: '2026-08-02',
+    dateLabel: 'Sun Aug 2, 2026',
+    action:
+      'Buy ONE $80 America the Beautiful annual pass (2026 digital). Covers all Forest Service trailheads on this trip (Rainy Pass, Blue Lake, Cutthroat, Park Butte) + any other US National Park for 12 months. Split with Erin = $40/person. Skip the $30 Northwest Forest Pass — AtB does the same job plus everything else.',
+    subitems: [
+      {
+        id: 'buy-pass-recreation-gov',
+        label: 'Buy 2026 America the Beautiful annual pass at Recreation.gov ($80)',
+        hint: 'https://store.usgs.gov/2026-resident-annual-pass — digital pass, no shipping wait, both travelers can use it together.',
+      },
+      {
+        id: 'save-pass-pdf',
+        label: 'Save the digital pass PDF + screenshot to phone (offline-accessible)',
+      },
+      {
+        id: 'splitwise-pass',
+        label: 'Add $80 to Splitwise (pass + 50/50 split = $40/person)',
+      },
+      {
+        id: 'check-resident-status',
+        label: 'Confirm US-resident status at checkout (nonresident pass is $250, NOT $80)',
+        hint: 'Allison is US-resident even while living in Jerusalem — the IRS definition (not the day-by-day where-you-physically-are) governs.',
+      },
+    ],
+    link: { label: 'NPS · North Cascades fees', url: 'https://www.nps.gov/noca/planyourvisit/fees.htm' },
+  },
+  {
     id: 'kitchen-confirm',
     phase: 'two-weeks-out',
     title: 'Lodging kitchen-scope confirmation',

@@ -193,6 +193,274 @@
   border-width: 1.5px;
 }
 
+/* Pricing block on a flight card — added 2026-05-19. */
+.flight-card__pricing {
+  margin: var(--space-3) 0;
+  padding: var(--space-3);
+  background: var(--c-ink-50, #f6f5f0);
+  border: 1px solid var(--c-ink-200, #e0ddd4);
+  border-radius: 6px;
+}
+
+.flight-card__pricing-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-ink-700, #4a463d);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.flight-card__pricing-rows {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.flight-card__pricing-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--c-ink-200, #e0ddd4);
+  font-size: 0.95rem;
+}
+
+.flight-card__pricing-row:last-child {
+  border-bottom: none;
+}
+
+.flight-card__pricing-row--refundable {
+  font-weight: 600;
+  color: var(--c-forest-700, #1f4732);
+}
+
+.flight-card__pricing-amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.flight-card__pricing-source {
+  font-size: 0.78rem;
+  color: var(--c-ink-600, #6c685d);
+  margin: var(--space-2) 0 0 0;
+  font-style: italic;
+}
+
+/* Lodging price detail (4-night estimate) — added 2026-05-19 */
+.price-detail {
+  margin: var(--space-3) 0;
+  padding: var(--space-3);
+  background: var(--c-ink-50, #f6f5f0);
+  border: 1px solid var(--c-ink-200, #e0ddd4);
+  border-radius: 6px;
+}
+
+.price-detail__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.price-detail__title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-ink-700, #4a463d);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.price-detail__verify {
+  font-size: 0.78rem;
+  color: var(--c-warn-text, #8a5a00);
+  background: var(--c-warn-bg, #fbf3df);
+  border: 1px solid var(--c-warn-border, #ead29a);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.price-detail__rows {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.price-detail__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--c-ink-200, #e0ddd4);
+  font-size: 0.9rem;
+}
+
+.price-detail__row:last-child {
+  border-bottom: none;
+}
+
+.price-detail__row--total {
+  font-weight: 600;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--c-ink-300, #cfcabd);
+}
+
+.price-detail__row--per-person {
+  color: var(--c-forest-700, #1f4732);
+  font-weight: 600;
+}
+
+.price-detail__amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.price-detail__source {
+  font-size: 0.78rem;
+  color: var(--c-ink-600, #6c685d);
+  margin: var(--space-2) 0 0 0;
+  font-style: italic;
+}
+
+/* Food budget block — added 2026-05-19 */
+.food-budget {
+  margin: var(--space-4) 0;
+  padding: var(--space-4);
+  background: var(--c-cream-50, #f6f5f0);
+  border: 1px solid var(--c-ink-200, #e0ddd4);
+  border-radius: 8px;
+}
+
+.food-budget__title {
+  margin: 0 0 var(--space-3) 0;
+  font-size: 1.2rem;
+  color: var(--c-forest-700, #1f4732);
+}
+
+.food-budget__totals {
+  background: white;
+  border: 1px solid var(--c-ink-200);
+  border-radius: 6px;
+  padding: var(--space-3);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.food-budget__total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--c-ink-200);
+}
+
+.food-budget__total-row:last-child {
+  border-bottom: none;
+}
+
+.food-budget__total-row--combined {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--c-ink-300, #cfcabd);
+  font-weight: 700;
+  color: var(--c-forest-700);
+  font-size: 1.05rem;
+}
+
+.food-budget__total-label {
+  flex: 1;
+}
+
+.food-budget__total-amount {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.food-budget__subtitle {
+  font-size: 1rem;
+  margin: var(--space-3) 0 var(--space-2) 0;
+  color: var(--c-ink-700);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.food-budget__list,
+.food-budget__restaurants {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-3) 0;
+}
+
+.food-budget__list-item {
+  padding: var(--space-2) 0;
+  border-bottom: 1px dashed var(--c-ink-200);
+}
+
+.food-budget__list-where {
+  display: inline-block;
+  margin-right: var(--space-2);
+}
+
+.food-budget__list-cost {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--c-forest-700);
+}
+
+.food-budget__list-detail {
+  margin: 4px 0 0 0;
+  font-size: 0.92rem;
+  color: var(--c-ink-700);
+}
+
+.food-budget__rest-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px var(--space-2);
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--c-ink-200);
+  font-size: 0.92rem;
+}
+
+.food-budget__rest-cost {
+  font-variant-numeric: tabular-nums;
+  color: var(--c-forest-700);
+  font-weight: 600;
+}
+
+.food-budget__rest-note {
+  flex: 1 1 100%;
+  color: var(--c-ink-600);
+  font-size: 0.85rem;
+}
+
+.food-budget__verified,
+.food-budget__note {
+  font-size: 0.85rem;
+  color: var(--c-ink-700);
+  margin: var(--space-2) 0;
+}
+
+/* Drive rollup fuel line — added 2026-05-19 */
+.drive-rollup-card__fuel {
+  margin: var(--space-2) 0 0 0;
+  padding: var(--space-2);
+  background: var(--c-cream-50, #f6f5f0);
+  border-radius: 4px;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.drive-rollup-card__fuel-note {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.82rem;
+  color: var(--c-ink-700);
+}
+
 /* Lodging tier accents — no crown, just a hairline color signal. */
 .lodging-card--fits-brief {
   border-left: 3px solid var(--c-forest-500);

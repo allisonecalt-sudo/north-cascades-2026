@@ -23,6 +23,7 @@ import {
   type Lodging,
   type LodgingAmenities,
 } from '../../data/lodging';
+import { LODGING_PRICES } from '../../data/pricing';
 import { badge, h } from '../../dom';
 import { shortlist, togglePick } from './shortlist';
 
@@ -231,6 +232,91 @@ export function renderDriveMatrix(lodging: Lodging): HTMLElement | null {
       'p',
       { class: 'drive-matrix__note' },
       'Drive times from Google Maps norms (May 17, 2026 spot-check). Add buffer for weekend Aug traffic on WA-20.'
+    )
+  );
+}
+
+// ====================================================================
+// PRICE DETAIL — 4-night estimate (Aug 16-20) per pricing.ts
+// ====================================================================
+
+export function renderPriceDetail(lodging: Lodging): HTMLElement | null {
+  const price = LODGING_PRICES[lodging.id];
+  if (!price) return null;
+  // 4 nights = Sun Aug 16 → Thu Aug 20.
+  const nights = 4;
+  const subtotalLow = price.nightlyLow * nights;
+  const subtotalHigh = price.nightlyHigh * nights;
+  const feesPerStay = price.cleaningFee + price.serviceFee;
+  const resortFeeTotal = price.resortFee * nights;
+  const stayLow = subtotalLow + feesPerStay + resortFeeTotal;
+  const stayHigh = subtotalHigh + feesPerStay + resortFeeTotal;
+
+  const rows: (HTMLElement | null)[] = [
+    h(
+      'li',
+      { class: 'price-detail__row' },
+      h('span', { class: 'price-detail__label' }, `4 nights × $${price.nightlyLow}-$${price.nightlyHigh}/night`),
+      h('span', { class: 'price-detail__amount' }, `$${subtotalLow}-$${subtotalHigh}`)
+    ),
+    price.cleaningFee > 0
+      ? h(
+          'li',
+          { class: 'price-detail__row' },
+          h('span', { class: 'price-detail__label' }, 'Cleaning fee (per stay)'),
+          h('span', { class: 'price-detail__amount' }, `$${price.cleaningFee}`)
+        )
+      : null,
+    price.serviceFee > 0
+      ? h(
+          'li',
+          { class: 'price-detail__row' },
+          h('span', { class: 'price-detail__label' }, 'Booking / service fee'),
+          h('span', { class: 'price-detail__amount' }, `$${price.serviceFee}`)
+        )
+      : null,
+    price.resortFee > 0
+      ? h(
+          'li',
+          { class: 'price-detail__row' },
+          h('span', { class: 'price-detail__label' }, `Resort fee · $${price.resortFee}/night × ${nights}`),
+          h('span', { class: 'price-detail__amount' }, `$${resortFeeTotal}`)
+        )
+      : null,
+    h(
+      'li',
+      { class: 'price-detail__row price-detail__row--total' },
+      h('span', { class: 'price-detail__label' }, `Stay total (4 nights, pre-tax)`),
+      h('span', { class: 'price-detail__amount' }, `$${stayLow}-$${stayHigh}`)
+    ),
+    h(
+      'li',
+      { class: 'price-detail__row price-detail__row--per-person' },
+      h('span', { class: 'price-detail__label' }, 'Split 2-ways · per person'),
+      h(
+        'span',
+        { class: 'price-detail__amount' },
+        `$${Math.round(stayLow / 2)}-$${Math.round(stayHigh / 2)}`
+      )
+    ),
+  ];
+
+  return h(
+    'div',
+    { class: 'price-detail', 'aria-label': '4-night stay estimate' },
+    h(
+      'div',
+      { class: 'price-detail__head' },
+      h('h4', { class: 'price-detail__title' }, '4-night estimate · Aug 16-20'),
+      price.verifyAtBooking
+        ? h('span', { class: 'price-detail__verify' }, '[verify at booking]')
+        : null
+    ),
+    h('ul', { class: 'price-detail__rows' }, ...rows),
+    h(
+      'p',
+      { class: 'price-detail__source' },
+      `Source: ${price.source.name} · verified ${price.verifiedOn}. ${price.note}`
     )
   );
 }
@@ -489,6 +575,7 @@ export function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElemen
       h('dt', {}, 'Location'),
       h('dd', {}, lodging.distance)
     ),
+    renderPriceDetail(lodging),
     renderDriveMatrix(lodging),
     h('p', { class: 'card__note' }, lodging.notes),
     lodging.bookingUrl

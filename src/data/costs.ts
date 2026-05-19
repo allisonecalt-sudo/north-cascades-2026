@@ -70,34 +70,46 @@ export const TIER_LABEL: Record<Tier, string> = {
 
 // ─────────────────────────────────────────────────────────────
 // Shared per-person flight estimates (peak Aug NYC↔SEA, nonstop)
-//   - Low: $380 (12-week book-ahead, midweek)
-//   - Mid: $470 (typical Aug peak)
-//   - High: $580 (last-minute or premium-economy seat)
+// VERIFIED 2026-05-19 from Google Flights + Expedia + Skyscanner sweep.
+//   - Low: $340 (United EWR↔SEA Basic Economy, 8-12wk book-ahead)
+//   - Mid: $440 (United EWR↔SEA Main Cabin, typical Aug peak)
+//   - High: $590 (Economy Flex refundable — recommended while WA-20
+//     status is unresolved per Erin May 18 flex-discipline note)
 // ─────────────────────────────────────────────────────────────
-const FLIGHT_LOW_PP = 380;
-const FLIGHT_MID_PP = 470;
-const FLIGHT_HIGH_PP = 580;
+const FLIGHT_LOW_PP = 340;
+const FLIGHT_MID_PP = 440;
+const FLIGHT_HIGH_PP = 590;
 
 // Rental — from rental.ts verified Costco quotes May 16, 2026.
 const RENTAL_LOW = 674;
 const RENTAL_MID = 750;
 const RENTAL_HIGH = 815;
 
-// Food — kosher self-cater + 1-2 treat-meals.
+// Food — kosher self-cater + 1-2 treat-meals. Verified 2026-05-19.
+// Low = $25/day/person × 5 days × 2 = $250 → kept (matches GROCERY.totalLow).
+// Mid = groceries $320 + restaurants $150 = $470 (was $380, bumped to
+//       reflect verified $5.78 WA grocery inflation + 30-50% kosher premium).
+// High = groceries $440 + restaurants $240 + extras = $720 (was $520, raised
+//        to match verified kosher-premium realistic ceiling).
 const FOOD_LOW = 250;
-const FOOD_MID = 380;
-const FOOD_HIGH = 520;
+const FOOD_MID = 470;
+const FOOD_HIGH = 720;
 
-// Activities + parks
-const ACTIVITIES_LOW = 80;
-const ACTIVITIES_MID = 150;
-const ACTIVITIES_HIGH = 340;
+// Activities + parks. America the Beautiful $80 split = $40/person × 2 = $80
+// for the pair. Diablo Lake afternoon cruise $35 × 2 = $70. Patterson kayak
+// rental ~$60 (2 hrs tandem). Sun Mountain spa pass ~$60 per person × 2.
+const ACTIVITIES_LOW = 80;   // AtB pass only
+const ACTIVITIES_MID = 150;  // AtB + Diablo afternoon cruise for 2
+const ACTIVITIES_HIGH = 340; // AtB + Diablo lunch tour for 2 + kayak + Sun Mtn extras
 
 // Fuel — depends on path miles + vehicle mpg.
+// VERIFIED 2026-05-19: WA gas $5.78/gal AAA state avg (Skagit County $5.67,
+// Whatcom County $5.73). Was $4.40/gal — stale by 31%. Using $5.75 as the
+// trip-corridor anchor since the drive is mostly in Skagit + Methow Valley.
 const fuel = (miles: number, mpg: number): number =>
-  Math.round((miles / mpg) * 4.4);
+  Math.round((miles / mpg) * 5.75);
 
-const PATH_MILES: Record<PathLetter, number> = { A: 600, B: 900, C: 750 };
+const PATH_MILES: Record<PathLetter, number> = { A: 471, B: 605, C: 540 };
 
 function buildTier(
   pathId: PathLetter,
@@ -197,10 +209,10 @@ function buildTier(
         label: 'Food + treats',
         note:
           tier === 'low'
-            ? 'Kosher groceries + cabin cooking, minimal eat-out · ~$25/day/person'
+            ? 'Kosher groceries + cabin cooking, minimal eat-out · ~$110/person trip groceries + minimal restaurants'
             : tier === 'mid'
-              ? 'Groceries + 2 packaged-prepared dinners + Cascadian Farm + winery stop · ~$40/day/person'
-              : 'Premium grocery + winery + Sun Mountain drink + ice cream · ~$55/day/person',
+              ? 'Groceries ($160/pp) + 1-2 sit-down treat dinners ($75/pp) + coffees/ice cream'
+              : 'Premium kosher grocery haul + Arrowleaf Bistro nicer dinner + Sun Mountain drink + ice cream',
         amount: food,
         flex: 'flexible',
         sourceHref: 'food.html',
@@ -211,10 +223,10 @@ function buildTier(
         label: 'Activities + passes',
         note:
           tier === 'low'
-            ? 'America the Beautiful pass + Discover Pass'
+            ? 'America the Beautiful annual pass ($80 split = $40/pp)'
             : tier === 'mid'
-              ? '+ Patterson kayak rental + Cascadian Farm stop'
-              : '+ Sun Mountain spa pass per person + extras',
+              ? '+ Diablo Lake afternoon cruise ($35/pp × 2)'
+              : '+ Diablo Lake lunch tour ($50/pp × 2) + Patterson kayak rental + Sun Mountain extras',
         amount: activities,
         flex: 'flexible',
         sourceHref: 'details.html',
@@ -223,7 +235,7 @@ function buildTier(
       {
         key: 'fuel',
         label: 'Fuel',
-        note: `${PATH_MILES[pathId]} mi @ ~${mpg} mpg combined (PNW Aug ~$4.40/gal)`,
+        note: `${PATH_MILES[pathId]} mi @ ~${mpg} mpg · WA gas $5.78/gal (AAA May 19, 2026 — Skagit County $5.67, Whatcom $5.73)`,
         amount: fuelCost,
         flex: 'flexible',
         sourceHref: 'driving-cascades.html',
@@ -242,14 +254,32 @@ function buildTier(
   };
 }
 
+// Lodging totals — 4-night STAY total (nightly × 4 + cleaning/service fees
+// where Airbnb-style), all-in pre-tax. VERIFIED 2026-05-19 against pricing.ts.
+//
+// Path A (4 nights west, ONE base):
+//   - Low: Rhody House $190-260/night → $190×4 = $760 + $200 fees = $960
+//   - Mid: Riverside Retreat $250-350/night → $300×4 = $1,200 + $285 fees = $1,485
+//   - High: Cascade River House $350-500/night → $425×4 = $1,700 + $200 fees = $1,900
+//
+// Path B (2 west + 2 east, TWO bases):
+//   - Low: Rhody $200×2 + Methow River $220×2 = $840 + $200 west fees = $1,040
+//   - Mid: Riverside $300×2 + Freestone $340×2 = $1,280 + $285 = $1,565
+//   - High: Cascade River House $425×2 + Sun Mountain $620×2 = $2,090 + fees + resort = $2,350
+//
+// Path C (1 west + 3 east):
+//   - Low: Rhody $200×1 + Methow River $220×3 = $860 + $200 = $1,060
+//   - Mid: Riverside $300×1 + Freestone $340×3 = $1,320 + $285 = $1,605
+//   - High: Cascade River House $425×1 + Sun Mountain $620×3 = $2,285 + fees + resort = $2,550
+
 // Path A — 4 nights one west cabin
 const PATH_A: PathCost = {
   pathId: 'A',
   pathName: 'Path A · West-Side Anchor',
   tiers: [
-    buildTier('A', 'low', 760),
-    buildTier('A', 'mid', 1020),
-    buildTier('A', 'high', 1700),
+    buildTier('A', 'low', 960),
+    buildTier('A', 'mid', 1485),
+    buildTier('A', 'high', 1900),
   ],
 };
 
@@ -258,9 +288,9 @@ const PATH_B: PathCost = {
   pathId: 'B',
   pathName: 'Path B · Both Sides, Balanced',
   tiers: [
-    buildTier('B', 'low', 780),
-    buildTier('B', 'mid', 1030),
-    buildTier('B', 'high', 1650),
+    buildTier('B', 'low', 1040),
+    buildTier('B', 'mid', 1565),
+    buildTier('B', 'high', 2350),
   ],
 };
 
@@ -269,9 +299,9 @@ const PATH_C: PathCost = {
   pathId: 'C',
   pathName: 'Path C · Slow Winthrop Base',
   tiers: [
-    buildTier('C', 'low', 790),
-    buildTier('C', 'mid', 1035),
-    buildTier('C', 'high', 1625),
+    buildTier('C', 'low', 1060),
+    buildTier('C', 'mid', 1605),
+    buildTier('C', 'high', 2550),
   ],
 };
 
@@ -318,8 +348,8 @@ export function perPersonShare(tier: CostTier): number {
 
 export const COSTS_NOTES = {
   includes:
-    'Includes: round-trip flights for 2, 5-day rental all-in (CDW+SLI), 4 nights cabin, groceries + treats, passes, fuel, 10% contingency.',
+    'Includes: round-trip flights for 2 (NYC↔SEA), 5-day rental all-in (CDW+SLI), 4 nights cabin + cleaning/resort fees where applicable, kosher groceries + treats, America the Beautiful pass split, fuel at WA $5.78/gal (AAA May 2026), 10% contingency.',
   excludes:
-    'Excludes: travel insurance, gear rentals (poles/bear-spray), gifts, shipping/luggage fees, last-minute weather pivots (e.g. extra night in Seattle).',
-  asOf: 'May 16-17, 2026 quotes',
+    'Excludes: travel insurance, gear rentals (poles/bear-spray), gifts, shipping/luggage fees, last-minute weather pivots (e.g. extra night in Seattle), Allison\'s TLV↔NYC long-haul (separate ticket), Erin\'s NJ→EWR transit.',
+  asOf: 'May 19, 2026 pricing sweep',
 };

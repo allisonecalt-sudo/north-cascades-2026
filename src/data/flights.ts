@@ -26,6 +26,15 @@ export interface FlightOption {
   /** Headline tradeoff line under the route diagram. Cites the source quote. */
   costDelta: string;
   drivingHours: string;
+  /** Per-person fare ranges, USD round-trip — added 2026-05-19. */
+  pricing?: {
+    low: number;
+    mid: number;
+    refundable: number;
+    refundablePremium: number;
+    sourceLabel: string;
+    verifiedOn: string;
+  };
   pros: string[];
   cons: string[];
   /** True if it leads the section. */
@@ -47,6 +56,14 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
       'Erin verified May 18 11:07pm: "Yes we could do United. They fly into SEA. That\'s looking much cheaper." Allison May 18: "amazing and united ideal! If possible cuz I have this travel credit but not a must." Refundable preferred — Erin May 18 5:25am: "if we find something refundable we can book it as a backup."',
     drivingHours:
       '~5.5-6 hr nonstop EWR↔SEA · ~2 hr 15 min drive SEA → Marblemount on Day 1 (~115 mi) · ~2-4 hr drive back on Day 5 depending on east-side base',
+    pricing: {
+      low: 340,
+      mid: 440,
+      refundable: 590,
+      refundablePremium: 150,
+      sourceLabel: 'Google Flights + Expedia · Aug 2026 sweep, verified May 19, 2026',
+      verifiedOn: '2026-05-19',
+    },
     pros: [
       'Cheapest carrier on this route per Erin\'s May 18 research',
       'Allison\'s United travel credit applies — direct $-off',
@@ -73,6 +90,14 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
       'Use only if United pricing breaks. Higher base fare + Alaska\'s refundable upgrade is significantly steeper than United\'s — worse flex-tradeoff for the same Aug 16-20 booking-as-backup discipline.',
     drivingHours:
       '~5.5-6 hr to SEA + ~30 min hop to BLI · ~1 hr 25 min drive BLI → Marblemount (~71 mi) · ~4 hr drive back to SEA on Day 5 if open-jaw',
+    pricing: {
+      low: 365,
+      mid: 470,
+      refundable: 670,
+      refundablePremium: 200,
+      sourceLabel: 'Travelocity · Alaska EWR↔BLI Aug 2026, verified May 19, 2026',
+      verifiedOn: '2026-05-19',
+    },
     pros: [
       'Shortest Day-1 drive (~1 hr 25 min from BLI vs ~2 hr 15 min from SEA)',
       'Alaska runs the BLI feeder all day; tight reliable connections',
@@ -95,6 +120,14 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
       'Same airline preference (United) but a different NYC airport. Useful if EWR fares spike on the chosen travel dates. JFK has more carriers competing on this route; LGA is usable but tighter inventory.',
     drivingHours:
       'JFK is ~5-6 hr nonstop on United / Alaska / Delta / JetBlue · LGA tighter inventory (cross-shop)',
+    pricing: {
+      low: 320,
+      mid: 420,
+      refundable: 570,
+      refundablePremium: 150,
+      sourceLabel: 'Skyscanner · JFK↔SEA + Google Flights LGA cross-shop, verified May 19, 2026',
+      verifiedOn: '2026-05-19',
+    },
     pros: [
       'NYC airport flexibility if EWR fares jump',
       'Allison May 19: EWR primary, JFK secondary, LGA acceptable — all three are reachable for both travelers',
@@ -195,20 +228,20 @@ export const FLIGHT_RETURN_OPTIONS = [
     id: 'thu-evening',
     label: 'Thu Aug 20 evening SEA departure · RECOMMENDED',
     note:
-      'Sleep east-side Wed night, slow Thu morning, drive west, evening flight home. Redeye lands NJ Fri AM. Matches the "back by 7-8 PM, balanced pace" brief and keeps Day 5 alive as a real travel day.',
+      'Sleep east-side Wed night, slow Thu morning, drive west, evening flight home. Redeye lands NJ Fri AM. Matches the "back by 7-8 PM, balanced pace" brief and keeps Day 5 alive as a real travel day. Baseline fare = the headline number on each card above.',
     leading: true,
   },
   {
     id: 'thu-redeye',
     label: 'Thu Aug 20 redeye SEA → EWR/JFK',
     note:
-      'Same shape as the evening option but a true overnight flight — lands NJ Fri AM. Useful if Allison is connecting onward to TLV Fri evening on her separate long-haul ticket.',
+      'Same shape as the evening option but a true overnight flight — lands NJ Fri AM. Useful if Allison is connecting onward to TLV Fri evening on her separate long-haul ticket. Typically ~$30/person cheaper than Thu evening.',
     leading: false,
   },
   {
     id: 'wed-late',
     label: 'Wed Aug 19 late-night SEA departure',
-    note: 'Drive east-side base → SEA after dinner Wed (~4 hrs). Kills Day 5. Only if a flight deal forces it.',
+    note: 'Drive east-side base → SEA after dinner Wed (~4 hrs). Kills Day 5. Typically ~$60/person cheaper than Thu evening — only earns its keep on a real fare deal.',
     leading: false,
   },
 ];
@@ -227,7 +260,7 @@ export const BOOKING_TIPS: BookingTip[] = [
   {
     topic: 'Refundable fare class',
     detail:
-      'On United, Economy Flex or Premium Cabin both offer free cancellation / changes. Adds ~$150-300 per traveler over standard Economy. Worth it while WA-20 status is unresolved — refundable = the booking-as-backup discipline Erin named May 18.',
+      'On United, Economy Flex adds ~$150/person over Main Cabin (Premium Cabin adds $250-400 more depending on route). Alaska\'s refundable upgrade runs ~$200/person — steeper than United\'s. Worth it while WA-20 status is unresolved — refundable = the booking-as-backup discipline Erin named May 18. Concrete: budget +$300 for the pair to keep flex.',
   },
   {
     topic: 'When to book',
