@@ -693,19 +693,14 @@ export const WEST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      'Bright two-bedroom cabin rental — well-reviewed, room to spread out. Lands squarely in the Terra Nova-tier sweet spot. Confirm exact bed type at booking — listings vary by season.',
+      'SOLD OUT for Aug 16-20, 2026 — confirmed by Allison May 19, 2026 (Airbnb showed unavailable). Was: bright two-bedroom cabin rental, well-reviewed.',
     bookingHint: 'Listed on Airbnb — search "Rhody House Marblemount".',
     bookingUrl: 'https://www.airbnb.com/marblemount-wa/stays',
-    tier: 'fits-brief',
+    tier: 'not-a-fit',
     kitchen: 'full',
-    // Airbnb listing — cancellation policy is per-host, not platform-wide.
-    // Per spec: aggregator inventory left 'unknown' until a per-listing check.
     freeCancellation: 'unknown',
-    availability: 'likely-available',
+    availability: 'sold-out-or-unavailable',
     photo: PHOTOS.rentalAFrame,
-    // TODO Allison 2026-05-17: Airbnb blocks automated photo scraping —
-    // when you next open this listing, take 3-5 screenshots of the actual
-    // Airbnb gallery and replace photos[0..n] here.
     photos: [PHOTOS.rentalAFrame, PHOTOS.regMarblemount, PHOTOS.carouselForest, PHOTOS.carouselInterior, PHOTOS.carouselDeck],
     driveTimes: [
       { destinationId: 'cascade-pass', minutes: 50, miles: 23 },
@@ -739,14 +734,12 @@ export const WEST_LODGING: Lodging[] = [
     },
     verifyBeds: false,
     notes:
-      'Strongest "nature-near" pick on the west side — actual riverside, hot tub on the water-facing deck. **Listing verified May 19, 2026:** 3 bedrooms / 4 beds (1 king + 1 king + 2 queens) / sleeps 8 — much bigger than the 2-traveler brief but easy to book without using extra rooms.',
+      'SOLD OUT for Aug 16-20, 2026 — confirmed by Allison May 19, 2026 (Airbnb showed unavailable). Was: strongest "nature-near" pick on west side — riverside Skagit cabin with hot tub on water-facing deck, 3BR/4 beds sleeps 8.',
     bookingUrl: 'https://www.airbnb.com/rooms/1159630003390456641?check_in=2026-08-16&check_out=2026-08-20&adults=2',
-    tier: 'fits-brief',
+    tier: 'not-a-fit',
     kitchen: 'full',
-    // Airbnb listing — per-host cancellation policy. Left 'unknown' until
-    // per-listing check (Airbnb blocks WebFetch).
     freeCancellation: 'unknown',
-    availability: 'likely-available',
+    availability: 'sold-out-or-unavailable',
     photo: PHOTOS.cabinHot,
     // TODO Allison 2026-05-17: Airbnb screenshots — replace these slides.
     photos: [PHOTOS.cabinHot, PHOTOS.regConcrete, PHOTOS.carouselRiver, PHOTOS.carouselDeck, PHOTOS.carouselFirepit],
@@ -782,15 +775,13 @@ export const WEST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      'Further from Cascade Pass trailhead than Marblemount picks, but a calm wooded base if the cabin matters more than drive minutes. Verify exact bed counts at booking.',
+      'SOLD OUT for Aug 16-20, 2026 — confirmed by Allison May 19, 2026 (Airbnb showed unavailable). Was: 2BR wooded cabin in Concrete with full kitchen + firepit.',
     bookingHint: 'Listed on Airbnb.',
     bookingUrl: 'https://www.airbnb.com/rooms/724602112999024219?check_in=2026-08-16&check_out=2026-08-20&adults=2',
-    tier: 'fits-brief',
+    tier: 'not-a-fit',
     kitchen: 'full',
-    // Airbnb listing — per-host cancellation policy. Left 'unknown' until
-    // per-listing check (Airbnb blocks WebFetch).
     freeCancellation: 'unknown',
-    availability: 'likely-available',
+    availability: 'sold-out-or-unavailable',
     photo: PHOTOS.rentalModern,
     // TODO Allison 2026-05-17: Airbnb screenshots — replace these slides.
     photos: [PHOTOS.rentalModern, PHOTOS.regConcrete, PHOTOS.carouselForest, PHOTOS.carouselFirepit, PHOTOS.carouselInterior],
