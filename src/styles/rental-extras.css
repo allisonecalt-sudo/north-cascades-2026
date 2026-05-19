@@ -381,3 +381,70 @@
 .rental-checklist__list li strong {
   color: var(--c-ink-900);
 }
+
+/* ────────────────────────────────────────────────────────────
+ * Where-to-book — consolidated source comparison.
+ * Added 2026-05-19: cross-shop strategy block (Costco / AutoSlash /
+ * Kayak / Turo / brand-direct / Priceline / AAA-Sams discounts).
+ * ──────────────────────────────────────────────────────────── */
+.rental-wheretobook {
+  margin: var(--sp-6) 0 var(--sp-5);
+  padding: var(--sp-4);
+  background: var(--c-surface);
+  border: 1px solid var(--c-ink-200);
+  border-radius: var(--radius-md);
+}
+
+.rental-wheretobook__title {
+  margin: 0 0 var(--sp-2);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--c-ink-900);
+}
+
+.rental-wheretobook__intro {
+  margin: 0 0 var(--sp-4);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--c-ink-700);
+}
+
+.rental-wheretobook__list {
+  list-style: decimal;
+  padding-left: 1.4rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.rental-wheretobook__item {
+  padding-left: 0.3rem;
+  line-height: 1.5;
+}
+
+.rental-wheretobook__name {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--c-forest-700);
+  text-decoration: none;
+  margin-bottom: var(--sp-1);
+}
+
+.rental-wheretobook__name:hover,
+.rental-wheretobook__name:focus {
+  text-decoration: underline;
+}
+
+.rental-wheretobook__bestfor,
+.rental-wheretobook__why,
+.rental-wheretobook__tradeoff {
+  margin: 0 0 var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--c-ink-700);
+}
+
+.rental-wheretobook__bestfor strong {
+  color: var(--c-ink-900);
+}

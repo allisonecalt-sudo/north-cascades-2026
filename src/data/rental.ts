@@ -44,6 +44,20 @@
  *   host vehicle rules — check the listing.
  *   Sources: NPS Cascade River Road page + Hertz/Avis/Budget rental terms.
  *
+ * NPS vehicle-guidance correction (verified May 19, 2026 against
+ * https://www.nps.gov/noca/planyourvisit/cascade-river-road.htm):
+ *   NPS does NOT explicitly recommend AWD/4WD or high-clearance as a baseline.
+ *   They do publish this warning: "At times, ruts and washouts are impassable
+ *   without a high clearance vehicle." Translation: a standard sedan is FINE
+ *   in good August conditions, but after rain or storm events, deep ruts can
+ *   appear that genuinely demand clearance. Practical rule: pre-trip, check
+ *   NPS road-conditions page in the 48 hr before Day 2; if a Pacific storm
+ *   has rolled through, take the SUV. The other hard rule: vehicles >22 ft
+ *   long or >8 ft wide are PROHIBITED past milepost 18 — irrelevant for
+ *   sedan/SUV class, only blocks oversize trucks/RVs.
+ *   Verification (May 19, 2026): Recommendation now defaults to Compact SUV
+ *   to give margin without overbuying — see the Top Pick.
+ *
  * Insurance breakdown reference (per day, US 2025-2026):
  *   - CDW/LDW (collision damage waiver): $25-40/day. Removes most/all
  *     deductible if you damage the car.
