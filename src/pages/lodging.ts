@@ -14,12 +14,13 @@ import { renderPageCtas } from '../sections/page-ctas';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'lodging',
-    title: 'Where we sleep',
-    verifiedOn: '2026-05-17 (Wave 4 — Owner pass + free-cancel + sold-out hide)',
-    // Hero lede rewritten 2026-05-17 (Lodging Owner pass): set context up
-    // front. Dates + travelers + the kosher-cook-in HARD requirement that
-    // drives why kitchen pills lead every card.
-    lede: '4 nights · Sun Aug 16 → Thu Aug 20, 2026 · Allison + Erin. Both kosher → full kitchen is required, not a nice-to-have. 2 beds always. Spacious-mid-tier (~$200-300/night), nature-near leads. Refundable filter is ON by default (Erin May 18 — booking-as-backup discipline). DEFAULT BASE per Erin May 18: Marblemount cluster (Marblemount / Concrete / Rockport). Path B adds an east-side stretch (Winthrop / Mazama) as 2 nights west + 2 nights east. Path A keeps all 4 nights in the Marblemount cluster.',
+    title: 'Marblemount cluster — west-side base',
+    verifiedOn: '2026-05-19 (post-rework — Marblemount default + refundable + 2+2 split explicit)',
+    // Hero lede rewritten 2026-05-19 (site rework): one-line current state +
+    // the path-shape lookup. Background framing (kosher kitchen / 2 beds /
+    // mid-tier) moves into the page-level disclaimer below.
+    lede:
+      'Erin\'s May 18 call — "the Marble Mount side… within an hour driving range." Default base = the Marblemount / Concrete / Rockport cluster. Path A keeps all 4 nights here. Path B splits 2 nights west + 2 nights east (Winthrop / Mazama). Refundable filter is ON by default (booking-as-backup discipline). Dates: Sun Aug 16 → Thu Aug 20, 2026.',
     imageHero: {
       // Re-re-swapped May 17, 2026 (8:13 AM IDT) — prior URL loaded fine but
       // depicted a tropical beach resort, not PNW. Switching to the Diablo

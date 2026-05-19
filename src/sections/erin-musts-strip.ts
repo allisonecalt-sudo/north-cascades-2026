@@ -24,8 +24,23 @@
 
 import { h } from '../dom';
 import { QUESTIONS_FOR_ERIN } from '../data/for-erin';
+import { latestAnswersForQuestions, type EAnswer } from '../data/erin-answers';
 
 const MUSTS_ACKED_KEY = 'ncades2026.erin-musts-acked';
+
+/**
+ * Compact summary of a submitted answer for the home strip — short version
+ * so the line stays one-row on mobile.
+ */
+function shortLabel(ans: EAnswer): string {
+  // answer_label is already the human form when set; fall back to value.
+  const raw = (ans.answer_label ?? ans.answer_value).trim();
+  // Strip "YES: " / "NO: " framing for the pair-text case → keep it brief.
+  // Truncate aggressively so the home strip stays scan-friendly.
+  const max = 64;
+  if (raw.length <= max) return raw;
+  return `${raw.slice(0, max - 1).trimEnd()}…`;
+}
 
 function isAcked(): boolean {
   try {
@@ -43,36 +58,72 @@ function isAcked(): boolean {
 export function renderErinMustsStrip(): HTMLElement {
   const wrap = h('div', { class: 'erin-musts-strip-wrap' });
 
+  /** Latest answer per must question. Populated async; paint() reads it. */
+  let answers: Record<string, EAnswer> = {};
+
   const paint = (): void => {
     if (isAcked()) {
       wrap.replaceChildren();
       wrap.hidden = true;
       return;
     }
-    wrap.hidden = false;
     const musts = QUESTIONS_FOR_ERIN.filter((q) => q.priority === 'must');
+    // Auto-hide once all 5 are answered — keeps the existing ack flag as a
+    // manual override but doesn't require it for the all-done case.
+    const allAnswered = musts.every((q) => answers[q.id]);
+    if (allAnswered && musts.length > 0) {
+      wrap.replaceChildren();
+      wrap.hidden = true;
+      return;
+    }
+    wrap.hidden = false;
     const list = h(
       'ul',
       { class: 'erin-musts-strip__list' },
-      ...musts.map((q) =>
-        h(
+      ...musts.map((q) => {
+        const ans = answers[q.id];
+        const linkChildren = ans
+          ? [
+              h(
+                'span',
+                { class: 'erin-musts-strip__q erin-musts-strip__q--answered' },
+                h(
+                  'span',
+                  { class: 'erin-musts-strip__check', 'aria-hidden': 'true' },
+                  '✓ '
+                ),
+                h('span', { class: 'erin-musts-strip__answer-label' }, shortLabel(ans)),
+                h('span', { class: 'erin-musts-strip__q-tail' }, ` · ${q.question}`)
+              ),
+              h(
+                'span',
+                { class: 'erin-musts-strip__chev', 'aria-hidden': 'true' },
+                '›'
+              ),
+            ]
+          : [
+              h('span', { class: 'erin-musts-strip__q' }, q.question),
+              h(
+                'span',
+                { class: 'erin-musts-strip__chev', 'aria-hidden': 'true' },
+                '›'
+              ),
+            ];
+        return h(
           'li',
-          { class: 'erin-musts-strip__item' },
+          {
+            class: `erin-musts-strip__item${ans ? ' erin-musts-strip__item--answered' : ''}`,
+          },
           h(
             'a',
             {
               class: 'erin-musts-strip__link',
               href: `for-erin.html#must-${q.id}`,
             },
-            h('span', { class: 'erin-musts-strip__q' }, q.question),
-            h(
-              'span',
-              { class: 'erin-musts-strip__chev', 'aria-hidden': 'true' },
-              '›'
-            )
+            ...linkChildren
           )
-        )
-      )
+        );
+      })
     );
 
     const strip = h(
@@ -96,7 +147,7 @@ export function renderErinMustsStrip(): HTMLElement {
       h(
         'p',
         { class: 'erin-musts-strip__sub' },
-        'Tap a question to open it + leave a note inline. Or just text Allison — whichever is easier.'
+        'Tap a question to open the form (or leave a 💬 note). Or just text Allison — whichever is easier.'
       ),
       list,
       h(
@@ -114,6 +165,18 @@ export function renderErinMustsStrip(): HTMLElement {
 
   paint();
 
+  // Fetch latest answers, then repaint with ✓ inline state.
+  const refreshAnswers = async (): Promise<void> => {
+    try {
+      const musts = QUESTIONS_FOR_ERIN.filter((q) => q.priority === 'must');
+      answers = await latestAnswersForQuestions(musts.map((q) => q.id));
+      paint();
+    } catch {
+      // Fail-quiet — strip still works without answer overlay.
+    }
+  };
+  void refreshAnswers();
+
   // Cross-tab + same-tab updates: storage event for other tabs, custom event
   // for the For-Erin ack button on the same tab if user navs back.
   if (typeof window !== 'undefined') {
@@ -122,6 +185,11 @@ export function renderErinMustsStrip(): HTMLElement {
     });
     window.addEventListener('ncades:musts-acked-change', () => paint());
     window.addEventListener('focus', paint);
+    // When a new answer is submitted from /for-erin in the same tab session
+    // (unlikely but possible if the user opens both via tab nav), refresh.
+    window.addEventListener('ncades:erin-answer-submitted', () => {
+      void refreshAnswers();
+    });
   }
 
   return wrap;

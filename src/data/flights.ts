@@ -1,11 +1,21 @@
 /**
- * Flights — fastest + reasonable schedule first, options below.
+ * Flights — NYC + United reality (full rewrite 2026-05-19).
  *
- * Per Allison May 16: "fastest + good times" = fewest stopovers + reasonable
- * schedule. Not cheapest-at-all-cost. SEA roundtrip on Alaska still surfaces
- * as the leading option because it's nonstop NYC↔SEA on multiple carriers
- * (Alaska, Delta, JetBlue, United), but the framing is "fewest stops" not
- * "cheapest pick".
+ * Posture: both Allison + Erin depart NYC area on the joint booking. Allison's
+ * TLV→NYC long-haul is on a separate ticket — NOT in scope here. The May 18
+ * WhatsApp thread + the May 19 corrections collapsed the routing question:
+ *   - United EWR→SEA nonstop is the leading shape (Erin: "much cheaper" +
+ *     Allison has a United travel credit + both have loyalty)
+ *   - Alaska EWR→BLI stays as the fallback if United pricing breaks (faster
+ *     drive but steep refundable premium)
+ *   - JFK / LGA alternatives sit underneath as airport flex if EWR spikes
+ *   - Cross-country open-jaw routings (BLI in / SEA out, etc.) and far-out
+ *     alternates (PDX, YVR, GEG) are archived behind a single "comparison
+ *     only" disclosure — these were the pre-decision research dump and are
+ *     not in the active plan
+ *
+ * Voice rule: every recommendation card carries the verbatim Erin/Allison quote
+ * that established the preference. Don't paraphrase the WhatsApp.
  */
 
 export interface FlightOption {
@@ -13,215 +23,140 @@ export interface FlightOption {
   label: string;
   route: string;
   routeDiagram: string;
-  /** Headline tradeoff line under the route diagram. Neutral; no "cheapest" hype. */
+  /** Headline tradeoff line under the route diagram. Cites the source quote. */
   costDelta: string;
   drivingHours: string;
   pros: string[];
   cons: string[];
-  /** True if it leads the section. No "Pick" badge — just the order. */
+  /** True if it leads the section. */
   leading: boolean;
-  /** Plain prose note under the leading card (no badge). */
+  /** True if it's the recommended fallback (loud secondary card). */
+  fallback?: boolean;
+  /** Plain prose note under the leading card. */
   leadingNote?: string;
   warning?: string;
 }
 
 export const FLIGHT_OPTIONS: FlightOption[] = [
   {
-    id: 'united-sea-rt',
-    label: 'United → SEA roundtrip (RECOMMENDED — Erin May 18)',
-    route: 'NYC (EWR/JFK) → SEA → NYC · United',
-    routeDiagram: 'NYC ──► SEA ──► NYC  (United)',
+    id: 'united-ewr-sea',
+    label: 'United EWR → SEA nonstop · RECOMMENDED',
+    route: 'EWR → SEA → EWR · United',
+    routeDiagram: 'EWR ──► SEA ──► EWR  (United nonstop)',
     costDelta:
-      'Erin May 18 11:07pm: "Yes we could do United. They fly into SEA. That\'s looking much cheaper." Allison has a United travel credit (May 18: "amazing and united ideal! If possible cuz I have this travel credit but not a must"). Refundable preferred when the price gap is reasonable.',
-    drivingHours: '~5.5-6 hr nonstop EWR↔SEA · ~2.5 hr drive SEA → Marblemount · ~4 hr Day-5 drive back',
+      'Erin verified May 18 11:07pm: "Yes we could do United. They fly into SEA. That\'s looking much cheaper." Allison May 18: "amazing and united ideal! If possible cuz I have this travel credit but not a must." Refundable preferred — Erin May 18 5:25am: "if we find something refundable we can book it as a backup."',
+    drivingHours:
+      '~5.5-6 hr nonstop EWR↔SEA · ~2.5 hr drive SEA → Marblemount on Day 1 · ~2-4 hr drive back on Day 5 depending on east-side base',
     pros: [
       'Cheapest carrier on this route per Erin\'s May 18 research',
       'Allison\'s United travel credit applies — direct $-off',
+      'Both travelers have United loyalty status',
       'Nonstop EWR↔SEA on United',
-      'Refundable fare class available (typically Economy Flex or Premium) — keeps Path B/A optionality open until WSDOT confirms',
-      'Works under every WA-20 contingency',
+      'Refundable fare class (Economy Flex / Premium) keeps Path B/A optionality open until WSDOT confirms',
       'No one-way rental drop fee (SEA roundtrip)',
+      'Works under every WA-20 contingency',
     ],
     cons: [
-      '+2.5 hrs of driving on Day 1 morning to reach Marblemount',
+      '+1 hr of driving on Day 1 vs landing at BLI',
       'Refundable upgrade adds ~$150-300 vs non-refundable on United',
     ],
     leading: true,
     leadingNote:
-      'Leading option after the May 18 thread. Both Erin (cheapest) and Allison (travel credit) want United. Refundable add-on keeps booking-discipline alive while WA-20 status is still unresolved.',
+      'Lock this when the United fare + refundable upgrade price the way Erin expects tonight. Allison: log into united.com so the travel credit is visible at checkout — credit applies pre-tax to the fare, so the displayed price will be lower for her than for Erin doing a logged-out search.',
   },
   {
-    id: 'alaska-bli',
-    label: 'Alaska → BLI (faster drive, more expensive)',
-    route: 'NYC → SEA → BLI · Alaska',
-    routeDiagram: 'NYC ──► SEA ──► BLI  (Alaska)',
+    id: 'alaska-ewr-bli',
+    label: 'Alaska EWR → BLI · FALLBACK',
+    route: 'EWR → SEA → BLI · Alaska',
+    routeDiagram: 'EWR ──► SEA ──► BLI  (Alaska, 1 stop)',
     costDelta:
-      'Higher fare + adds SEA→BLI feeder hop. Non-refundable unless upgraded — Alaska\'s refundable add-on is significantly steeper than United\'s.',
-    drivingHours: '~5.5-6 hr to SEA + ~30 min hop to BLI · ~1 hr drive BLI → Marblemount · ~4 hr drive SEA on return (if open-jaw)',
+      'Use only if United pricing breaks. Higher base fare + Alaska\'s refundable upgrade is significantly steeper than United\'s — worse flex-tradeoff for the same Aug 16-20 booking-as-backup discipline.',
+    drivingHours:
+      '~5.5-6 hr to SEA + ~30 min hop to BLI · ~1.5 hr drive BLI → Marblemount · ~4 hr drive back to SEA on Day 5 if open-jaw',
     pros: [
-      'Shortest Day-1 drive (lands ~1 hr from Marblemount — saves 1.5 hrs vs SEA)',
+      'Shortest Day-1 drive (~1.5 hr from BLI vs ~2.5 hr from SEA)',
       'Alaska runs the BLI feeder all day; tight reliable connections',
     ],
     cons: [
-      'More expensive than United → SEA',
-      'Refundable fares add significant cost on Alaska — worse flex-tradeoff than United',
-      'BLI lands on the wrong side of the corridor if WA-20 stays closed',
+      'More expensive than United → SEA per Erin\'s research',
+      'Refundable upgrade premium is higher than United\'s',
+      'No United travel credit to apply',
+      'BLI lands on the wrong side of the corridor if WA-20 stays closed (Path A becomes harder, not easier)',
     ],
     leading: false,
+    fallback: true,
   },
   {
-    id: 'sea-rt-other',
-    label: 'SEA roundtrip on other carriers (Alaska / Delta / JetBlue)',
-    route: 'NYC (JFK/EWR) → SEA → NYC',
-    routeDiagram: 'NYC ──► SEA ──► NYC',
+    id: 'united-jfk-sea',
+    label: 'United / JFK or LGA → SEA · airport flex if EWR spikes',
+    route: 'JFK or LGA → SEA → JFK/LGA',
+    routeDiagram: 'JFK/LGA ──► SEA ──► JFK/LGA',
     costDelta:
-      'Cross-shop if the United fare gap doesn\'t hold. Same airport, same ~2.5 hr drive — only the carrier changes.',
-    drivingHours: '~5.5-6 hr nonstop · +2.5 hr Day-1 drive to Marblemount · 4 hr Day-5 drive back',
+      'Same airline preference (United) but a different NYC airport. Useful if EWR fares spike on the chosen travel dates. JFK has more carriers competing on this route; LGA is usable but tighter inventory.',
+    drivingHours:
+      'JFK is ~5-6 hr nonstop on United / Alaska / Delta / JetBlue · LGA tighter inventory (cross-shop)',
     pros: [
-      'Nonstops both ways on Alaska, Delta, JetBlue — schedule flexibility',
-      'Hedge if United\'s fare moves before booking',
+      'NYC airport flexibility if EWR fares jump',
+      'Allison May 19: EWR primary, JFK secondary, LGA acceptable — all three are reachable for both travelers',
+      'Erin can still depart from NJ area (EWR is hometown for her)',
     ],
     cons: [
-      'No travel credit to apply (vs United)',
-      'Typically higher base fare on this NYC↔SEA route per Erin\'s research',
+      'JFK adds NYC traffic from Erin\'s NJ base',
+      'No travel credit if booking outside United on JFK',
     ],
     leading: false,
-  },
-  {
-    id: 'bli-sea',
-    label: 'BLI in / SEA out (open-jaw)',
-    route: 'NYC → SEA → BLI in; SEA → NYC out',
-    routeDiagram: 'NYC ──► SEA ──► BLI  ···  SEA ──► NYC',
-    costDelta:
-      'Adds ~30 min SEA→BLI hop. Pays the feeder + one-way rental drop fee (~$300-450 combined).',
-    drivingHours: '-2 hrs Day 1 (closer to park) · 4-hr drive Day 5',
-    pros: [
-      'Shortest Day 1 drive (lands close to the park)',
-      'No backtracking on WA-20 when the corridor is open',
-    ],
-    cons: [
-      'Adds a stopover on the inbound (no nonstop NYC→BLI)',
-      'If WA-20 stays closed, lands on the wrong side of the corridor',
-    ],
-    leading: false,
-  },
-  {
-    id: 'sea-bli',
-    label: 'SEA in / BLI out (reverse open-jaw)',
-    route: 'NYC → SEA in; BLI → SEA → NYC out',
-    routeDiagram: 'NYC ──► SEA  ···  BLI ──► SEA ──► NYC',
-    costDelta: 'Same economics as BLI/SEA but extra stopover on the outbound.',
-    drivingHours: 'Drive east → west · ~2 hr SEA backtrack on the return',
-    pros: ['Same open-jaw structure as B'],
-    cons: [
-      'Worse pacing — Cascade Pass on Day 4, Maple Pass on Day 2 (jet-lagged)',
-      'Return trip stops over to SEA',
-    ],
-    leading: false,
-  },
-  {
-    id: 'bli-rt',
-    label: 'BLI roundtrip (west-side only)',
-    route: 'NYC → SEA → BLI in/out',
-    routeDiagram: 'NYC ──► SEA ──► BLI ──► SEA ──► NYC',
-    costDelta: 'Two stopovers (BLI feeder both ways). No one-way drop fee.',
-    drivingHours: 'West side only · no east-side driving',
-    pros: [
-      'Pairs naturally with a west-side-only Plan B',
-      'Shortest drive days both ends',
-    ],
-    cons: ['Skips the entire east side (Winthrop, Maple Pass)', 'Stopovers on both ends'],
-    leading: false,
-  },
-  {
-    id: 'geg',
-    label: 'Spokane (GEG) into east side',
-    route: 'NYC → SEA → GEG in; SEA → NYC out',
-    routeDiagram: 'NYC ──► SEA ──► GEG  ···  SEA ──► NYC',
-    costDelta: 'Stopover both ways + one-way drop fee. Adds significant driving on arrival.',
-    drivingHours: 'GEG → Winthrop ~3 hr 45 min, 180 mi · SEA out via Stevens Pass ~4 hr',
-    pros: [
-      'Lands east of the WA-20 closure — Winthrop guaranteed even if highway stays shut',
-    ],
-    cons: [
-      'Extra ~4 hrs total driving vs SEA RT',
-      'No nonstops from JFK/EWR — always 1+ stops',
-    ],
-    leading: false,
-  },
-  {
-    id: 'pdx',
-    label: 'Portland (PDX) southern alternate',
-    route: 'NYC → PDX in; SEA → NYC out (or PDX RT)',
-    routeDiagram: 'NYC ──► PDX  ···  SEA ──► NYC',
-    costDelta: 'Nonstop JFK↔PDX exists (Alaska, Delta, JetBlue, ~6 hr 25 min).',
-    drivingHours: 'PDX → Marblemount ~5 hr 15 min via I-5 north. Adds ~3 hrs vs SEA.',
-    pros: [
-      'Direct JFK↔PDX nonstops — fewer connection-failure risks',
-      'Scenic I-5 drive option',
-    ],
-    cons: ['~3 extra hrs driving vs SEA', 'Only worth it if a fare deal lines up'],
-    leading: false,
-  },
-  {
-    id: 'yvr',
-    label: 'Vancouver, BC (YVR) northern alternate',
-    route: 'NYC → YVR in; SEA → NYC out',
-    routeDiagram: 'NYC ──► YVR  ···  SEA ──► NYC',
-    costDelta: 'JetBlue runs the only JFK→YVR nonstop (~6 hr 20 min, 4×/week).',
-    drivingHours: 'YVR → Marblemount ~2 hr 45 min via Hwy 1 + Sumas border. Add 30-90 min border.',
-    pros: ['Lands closest to the park', 'JetBlue JFK→YVR nonstop is a real option'],
-    cons: [
-      'Border crossing adds unpredictable wait',
-      'Cross-border rental rules add friction',
-    ],
-    leading: false,
-    warning:
-      'Passport required (US/Canada border). Confirm rental brand allows cross-border drive — many do not, or charge surcharges.',
   },
 ];
 
+/** Cross-country open-jaw + far-out alternates — kept for the comparison-only
+ *  disclosure. These were the pre-decision research dump and aren't in the
+ *  active May 18-19 plan. Don't promote them up the page. */
 export interface FlightOptionSummary {
   id: string;
   label: string;
   oneLiner: string;
 }
 
-export const OTHER_FLIGHT_SUMMARIES: FlightOptionSummary[] = [
+export const ARCHIVED_FLIGHT_SUMMARIES: FlightOptionSummary[] = [
   {
-    id: 'sea-bli',
+    id: 'bli-sea-openjaw',
+    label: 'BLI in / SEA out (open-jaw)',
+    oneLiner:
+      'Originally framed as the "no-backtrack" option. Pays the BLI feeder + ~$100-250 one-way rental drop fee. Lost its edge once Erin chose the Marblemount cluster — both bases sit ~1 hr from each airport now, so the open-jaw premium isn\'t earning its keep.',
+  },
+  {
+    id: 'sea-bli-reverse',
     label: 'SEA in / BLI out (reverse open-jaw)',
     oneLiner:
-      'Same structure as the standard open-jaw but pacing is worse — Cascade Pass falls on Day 4 instead of Day 2.',
+      'Pacing is worse — Cascade Pass falls on Day 4 (deeper in trip) instead of Day 2. Kept here only because the lodging math sometimes flips on a deep fare deal.',
   },
   {
     id: 'bli-rt',
     label: 'BLI roundtrip (west-side only)',
-    oneLiner: 'Two BLI feeders. Pairs naturally with a west-side-only Plan B; skips the east side.',
+    oneLiner: 'Two BLI feeders. Only makes sense for a deliberately west-side-only Plan B — skips the east side entirely.',
   },
   {
     id: 'geg',
     label: 'GEG (Spokane) into east side',
     oneLiner:
-      'Lands east of the closure — Winthrop guaranteed even if WA-20 stays shut. Always +1 stopover; 3:45 drive on arrival.',
+      'Lands east of the closure — Winthrop guaranteed even if WA-20 stays shut. Always +1 stopover from NYC; 3:45 drive on arrival. Only worth it if a Path B → east-side-only collapse happens late.',
   },
   {
     id: 'pdx',
     label: 'PDX (Portland) southern alternate',
-    oneLiner: 'Nonstop JFK→PDX exists but adds ~3 hrs of driving north. Only if a deep fare deal appears.',
+    oneLiner: 'Nonstop JFK→PDX exists but adds ~3 hrs of driving north. Only worth it on a deep fare deal.',
   },
   {
     id: 'yvr',
     label: 'YVR (Vancouver, BC) northern alternate',
     oneLiner:
-      'Closest landing to the park, but border + passport + rental cross-border rules add friction.',
+      'Closest landing to the park, but border + passport + rental cross-border rules add friction. Cross-shop only.',
   },
 ];
 
 /**
- * Airport → Marblemount drive comparison. Surfaced as a quick reference next
- * to the leading card so the SEA vs BLI tradeoff is one glance.
- * (Added 2026-05-19 per Erin May 18 thread.)
+ * Airport → Marblemount drive comparison. Surfaced next to the leading card
+ * so the SEA vs BLI tradeoff is one glance.
  */
 export interface AirportDriveCompare {
   airport: string;
@@ -235,51 +170,35 @@ export const AIRPORT_DRIVE_COMPARE: AirportDriveCompare[] = [
     airport: 'SEA → Marblemount',
     drive: '~2 hr 30 min',
     miles: '~110 mi',
-    note: 'I-5 N → WA-20 E. Stock kosher pantry at a Seattle Trader Joe\'s / QFC / Whole Foods on the way out.',
+    note: 'I-5 N → WA-20 E. Stock kosher-friendly groceries at a Seattle Trader Joe\'s / QFC / Whole Foods on the way out. Works for Path A (all 4 nights west) and Path B (2 west + 2 east).',
   },
   {
     airport: 'BLI → Marblemount',
     drive: '~1 hr 30 min',
     miles: '~85 mi',
-    note: 'I-5 S briefly → WA-20 E. Saves 1 hour vs SEA. No major Seattle Va\'ad grocery on this route.',
-  },
-];
-
-export const AIRPORT_ALTERNATIVES: FlightOptionSummary[] = [
-  {
-    id: 'gef-short',
-    label: 'Spokane (GEG)',
-    oneLiner: 'East-side fallback if WA-20 stays closed. 3:45 from Winthrop. Always 1 stop from NYC.',
-  },
-  {
-    id: 'pdx-short',
-    label: 'Portland (PDX)',
-    oneLiner: 'Has nonstops from JFK on Alaska/Delta. ~5:15 drive to Marblemount. Cheaper sometimes.',
-  },
-  {
-    id: 'yvr-short',
-    label: 'Vancouver, BC (YVR)',
-    oneLiner: 'Closest landing (~2:45 to Marblemount). Border + passport overhead.',
+    note: 'I-5 S briefly → WA-20 E. Saves ~1 hour on Day 1 vs SEA. No major Seattle Va\'ad grocery on this route — stock from BLI-area grocery instead.',
   },
 ];
 
 export const FLIGHT_RETURN_OPTIONS = [
   {
     id: 'thu-evening',
-    label: 'Thu Aug 20 evening SEA departure',
-    note: 'Sleep Winthrop Wed, slow morning, drive Thu, evening flight east. Redeye lands Fri AM. Matches the "back by 7-8 PM, balanced pace" brief.',
+    label: 'Thu Aug 20 evening SEA departure · RECOMMENDED',
+    note:
+      'Sleep east-side Wed night, slow Thu morning, drive west, evening flight home. Redeye lands NJ Fri AM. Matches the "back by 7-8 PM, balanced pace" brief and keeps Day 5 alive as a real travel day.',
     leading: true,
   },
   {
     id: 'thu-redeye',
-    label: 'Thu Aug 20 redeye SEA → JFK/EWR',
-    note: 'Same as the evening option but lands east coast Fri AM. Useful if connecting onward to TLV Fri evening.',
+    label: 'Thu Aug 20 redeye SEA → EWR/JFK',
+    note:
+      'Same shape as the evening option but a true overnight flight — lands NJ Fri AM. Useful if Allison is connecting onward to TLV Fri evening on her separate long-haul ticket.',
     leading: false,
   },
   {
     id: 'wed-late',
     label: 'Wed Aug 19 late-night SEA departure',
-    note: 'Drive Winthrop → SEA after dinner Wed (~4 hrs). Cuts a day; only if a flight deal forces it.',
+    note: 'Drive east-side base → SEA after dinner Wed (~4 hrs). Kills Day 5. Only if a flight deal forces it.',
     leading: false,
   },
 ];
@@ -291,28 +210,28 @@ export interface BookingTip {
 
 export const BOOKING_TIPS: BookingTip[] = [
   {
+    topic: 'United travel credit',
+    detail:
+      'Allison has a United travel credit — apply it at checkout. Price logged-in to united.com so the credit is visible pre-tax. Erin doing a logged-out search will see a higher number than what Allison actually pays. Don\'t book through a third-party (Expedia / Hopper) — credits only apply on united.com direct.',
+  },
+  {
+    topic: 'Refundable fare class',
+    detail:
+      'On United, Economy Flex or Premium Cabin both offer free cancellation / changes. Adds ~$150-300 per traveler over standard Economy. Worth it while WA-20 status is unresolved — refundable = the booking-as-backup discipline Erin named May 18.',
+  },
+  {
     topic: 'When to book',
     detail:
-      'Peak August West-Coast flights: book 8-12 weeks ahead (~late May / early June for Aug 16-20). Long-haul TLV→NYC: book 5-7 months out. Fares stabilize ~6 weeks pre-departure; last-minute peak fares spike hard.',
-  },
-  {
-    topic: 'Fare-alert tools',
-    detail:
-      'Google Flights (price-tracking graph + email alerts), Hopper (predicts cheaper dates), Going (formerly Scott\'s Cheap Flights). Start monitoring 3-5 months out to learn the typical price band.',
-  },
-  {
-    topic: 'Carriers serving SEA from NYC',
-    detail:
-      'Alaska, Delta, JetBlue, United all run nonstop JFK↔SEA. Delta + United also run EWR↔SEA. Cross-shopping gives the best chance at a reasonable-time departure.',
-  },
-  {
-    topic: 'Open-jaw pricing',
-    detail:
-      'Open-jaw (BLI in / SEA out) sometimes prices the same as a roundtrip when booked as a multi-city itinerary. Check both single-airline multi-city AND two separate one-ways before booking.',
+      'Peak August West-Coast flights typically stabilize 8-12 weeks out (~late May for Aug 16-20). Erin said May 7 "once we pick a place, we should make reservations" — booking-discipline aware. Don\'t wait past mid-June for non-refundable; refundable buys flex up to 24 hrs before.',
   },
   {
     topic: 'Day-of-week strategy',
     detail:
-      'For peak-summer SEA, Tuesday and Wednesday departures typically run 10-20% cheaper than Friday/Sunday. Mid-week return is fine — Thu Aug 20 is the target.',
+      'Tuesday and Wednesday departures typically run 10-20% cheaper than Friday/Sunday for peak-summer SEA. Sun Aug 16 outbound + Thu Aug 20 return is decent — Sunday morning is busier than Tuesday, but Thursday return is favorable.',
+  },
+  {
+    topic: 'Cross-shopping carriers',
+    detail:
+      'Alaska, Delta, JetBlue, United all run nonstop JFK↔SEA. Delta + United also run EWR↔SEA. United is the active default for the credit + Erin\'s research, but cross-shop the same dates on Google Flights to confirm the gap is real before booking.',
   },
 ];

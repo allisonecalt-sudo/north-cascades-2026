@@ -809,6 +809,13 @@ function buildPathIndicator(): HTMLElement {
   return wrap;
 }
 
+/**
+ * Last-sync date — kept inline (not derived) so site-wide updates only require
+ * one edit. Bumped by Allison whenever the site is reshaped (NOT per-page
+ * verifiedOn — that's the per-fact "when was this confirmed" trail).
+ */
+const LAST_SYNC = 'May 19, 2026';
+
 function buildFooter(pageId: PageId, verifiedOn: string | undefined): HTMLElement {
   // Per-page verification date (plan item #8, 2026-05-17). Falls back to the
   // site-wide TRIP.researchedOn when a page doesn't pass its own date.
@@ -826,7 +833,16 @@ function buildFooter(pageId: PageId, verifiedOn: string | undefined): HTMLElemen
         { class: 'site-footer__verified' },
         h('em', {}, `Researched ${verifyDate} · Re-verify before booking week.`)
       ),
-      h('p', { class: 'site-footer__meta' }, 'v5 · multi-page digestibility pass · May 16, 2026')
+      h(
+        'p',
+        { class: 'site-footer__sync' },
+        `Last sync: ${LAST_SYNC}`
+      ),
+      h(
+        'p',
+        { class: 'site-footer__tagline' },
+        'Made by Allison + Claude for Erin'
+      )
     )
   );
 }

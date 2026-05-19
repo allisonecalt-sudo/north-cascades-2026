@@ -450,33 +450,38 @@ export function renderLodging(): HTMLElement {
     h('li', { class: 'source-pill source-pill--warn' }, 'Photos partly representative')
   );
 
-  // Added 2026-05-19 after Erin May 18 11:43pm VN about the 2+2 split idea.
-  // Surfaces the three shape options Allison is researching against.
+  // Added 2026-05-19. Updated for site rework — Path B is primary, Path A is
+  // the locked fallback, both lean on the Marblemount cluster as the west base.
   const splitCallout = h(
     'div',
     { class: 'lodging-split-callout' },
-    h('h3', { class: 'lodging-split-callout__title' }, 'Three shapes Allison is researching'),
+    h('h3', { class: 'lodging-split-callout__title' }, 'Two locked shapes · same west base'),
     h(
       'ol',
       { class: 'lodging-split-callout__list' },
       h(
         'li',
         {},
-        h('strong', {}, 'Path A — 4 nights in Marblemount cluster:'),
-        ' one cabin all trip in Marblemount / Concrete / Rockport. Locked fallback if WA-20 stays closed.'
+        h('strong', {}, 'Path B (primary) — 2 nights west + 2 nights east:'),
+        ' Marblemount cluster Nights 1-2 → Winthrop/Mazama Nights 3-4. ',
+        h(
+          'em',
+          {},
+          '"the Marble Mount side, just because in case that road doesn\'t open up in time… within an hour driving range."'
+        ),
+        ' — Erin May 18, 11:43pm VN.'
       ),
       h(
         'li',
         {},
-        h('strong', {}, 'Path B — 2 nights west + 2 nights east (the split):'),
-        ' Marblemount cluster Nights 1-2 → Winthrop/Mazama Nights 3-4. Erin May 18: "wondering if it\'s hard to find things if we do two nights in one place, two nights in another place, but still within that realm." Active default if WA-20 reopens.'
-      ),
-      h(
-        'li',
-        {},
-        h('strong', {}, 'Single Marblemount-cluster property all 4 nights:'),
-        ' if a single cabin can do both vibes (Marblemount cluster is still ~1 hr driving range to most Path-B activities per Erin\'s May 18 framing).'
+        h('strong', {}, 'Path A (locked fallback) — 4 nights in Marblemount cluster:'),
+        ' one cabin all trip in Marblemount / Concrete / Rockport. Engages automatically if WA-20 stays closed.'
       )
+    ),
+    h(
+      'p',
+      { class: 'lodging-split-callout__note' },
+      'Both shapes share the same west base — what differs is whether we add an east-side stretch. Picks below are graded against the Path B 2+2 by default; the Path B picks also work for Path A by extending the west stay.'
     )
   );
   // Lodging Owner pass (2026-05-17): page-level disclaimer absorbs the

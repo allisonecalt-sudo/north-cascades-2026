@@ -17,10 +17,11 @@
  *   - Allison can re-trigger with window.resetWelcome() or ?welcome=1.
  */
 
-// Key bumped to v2 on 2026-05-19 after Path B + A fallback decision: copy
-// changed substantively and we want Erin to see the new "what's decided"
-// framing on her next visit, not the stale "pick a path" popup.
-const WELCOME_KEY = 'ncades2026.welcomeSeen.v2';
+// Key bumped to v3 on 2026-05-19 PM (site rework). Copy was rewritten around
+// the post-NYC-correction + Marblemount-default + United-primary state. We
+// want Erin to see the new "what's locked / what's open" framing on her next
+// visit, not the earlier "Path B + A fallback" announcement.
+const WELCOME_KEY = 'ncades2026.welcomeSeen.v3';
 
 function hasSeenWelcome(): boolean {
   try {
@@ -48,33 +49,37 @@ function buildPopup(): HTMLDivElement {
     <div class="welcome-popup">
       <button class="welcome-popup__close" type="button" aria-label="Close welcome">×</button>
       <div class="welcome-popup__eyebrow">Hey Erin —</div>
-      <h2 class="welcome-popup__title" id="welcome-popup-title">You picked Path B + A fallback ✓ — now locking flights + lodging.</h2>
+      <h2 class="welcome-popup__title" id="welcome-popup-title">Status update: both leaving from EWR (United primary) · Path B + A fallback locked · picking flights tonight + lodging today.</h2>
       <p class="welcome-popup__body">
-        Quick recap of where we landed in the May 18 thread — Path B (both sides)
-        if WA-20 reopens, Path A (Marblemount-only) if it doesn't. Site has been
-        re-shaped around that: the "What's decided" strip on the home page is
-        the live state, and the deeper picker below is the deep dive for when
-        you want to peek at the alternates.
+        Site has been reshaped around the May 18-19 decisions. Home page now
+        leads with <strong>what's locked</strong> (quoted from your messages)
+        and <strong>what's still open</strong> (with who's holding each loop).
+        The three-paths picker is still here but it's a deep dive now, not
+        the front-door question.
       </p>
 
       <div class="welcome-popup__steps">
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">1</span>
           <div class="welcome-popup__step-body">
-            <strong>What's decided strip</strong> sits right at the top of the
-            home page. Path · road gate · flights · lodging · Mt Baker — each
-            row shows current state + who's holding the ball. That's your
-            30-second status check.
+            <strong>What's locked since last visit:</strong>
+            <ul style="margin: 0.4rem 0 0 1rem; padding: 0; list-style: disc;">
+              <li>Both depart NYC area — EWR primary, JFK/LGA flex</li>
+              <li>United is the main carrier (your "much cheaper" call + Allison's travel credit)</li>
+              <li>Marblemount cluster as the default base (your VN — "within an hour driving range")</li>
+              <li>Refundable preferred ("if we find something refundable we can book it as a backup")</li>
+              <li>Mt Baker / Park Butte added as Day-2 alternative to Cascade Pass</li>
+            </ul>
           </div>
         </div>
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">2</span>
           <div class="welcome-popup__step-body">
-            <strong>What's new since you last looked:</strong>
+            <strong>What's still open:</strong>
             <ul style="margin: 0.4rem 0 0 1rem; padding: 0; list-style: disc;">
-              <li><strong>Flights:</strong> United → SEA is now the leading option (your May 18 note — cheaper, Allison has the travel credit, refundable preferred)</li>
-              <li><strong>Lodging:</strong> Marblemount cluster (Marblemount / Concrete / Rockport) is the default. Refundable-only filter is ON by default. 2-nights-west + 2-nights-east split for Path B is flagged on the lodging page.</li>
-              <li><strong>Mt Baker:</strong> added a Park Butte card per your Google Doc — ~1 hr west of Marblemount, swap-in for Path A or side trip for Path B.</li>
+              <li>Exact United fare + refundable upgrade cost — you tonight</li>
+              <li>Marblemount-cluster lodging picks (3-4 refundable shortlist) — Allison today</li>
+              <li>WSDOT WA-20 reopen confirmation — gates Path B vs Path A</li>
             </ul>
           </div>
         </div>
@@ -82,7 +87,7 @@ function buildPopup(): HTMLDivElement {
           <span class="welcome-popup__step-num">3</span>
           <div class="welcome-popup__step-body">
             <strong>However you want to react is fine:</strong> text Allison
-            (she's 10 hrs ahead, will get it on her morning), edit the
+            (she's 10 hrs ahead, will get it in her morning), edit the
             <strong>Google Doc</strong>, or tap
             <span class="welcome-popup__chip">💬&nbsp;Note</span> on any section.
             All three reach the next session.
@@ -90,15 +95,9 @@ function buildPopup(): HTMLDivElement {
         </div>
       </div>
 
-      <p class="welcome-popup__body welcome-popup__body--small">
-        Still open: WSDOT WA-20 reopen confirmation (gates Path B vs Path A),
-        exact United fares (you're researching), exact Marblemount lodging picks
-        (Allison's researching today).
-      </p>
-
       <div class="welcome-popup__actions">
         <button class="welcome-popup__cta" type="button" data-action="dismiss">
-          Got it — start exploring
+          Got it — scroll for the live state
         </button>
       </div>
       <p class="welcome-popup__tip">Click anywhere outside this box to close.</p>

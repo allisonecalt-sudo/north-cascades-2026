@@ -1,43 +1,35 @@
 /**
- * home.ts — landing page entry, re-sequenced 2026-05-17 for cold-start UX.
+ * home.ts — landing page entry, restructured 2026-05-19 (site rework).
  *
- * Question this page must answer in 30 seconds for a cold visitor (Erin):
- *   1. WHAT is this?       → image hero + tagline ("shared draft for Aug 16-20")
- *   2. WHO is it for?      → image hero subline + welcome-popup (Erin's intro)
- *   3. WHAT do I do first? → next-action pill ("Start: pick a path →")
- *   4. HOW does it work?   → story-arc strip (the 4-chip planning sequence)
- *   5. WHERE are decisions? → path picker + featured-strip + fresh-notes
+ * Posture shift: the site WAS "react to three options." It's now "execute on
+ * the decisions we made." May 18 WhatsApp thread + May 19 corrections (NYC +
+ * United + Marblemount cluster + refundable) closed the path question. The
+ * home page now foregrounds DECISIONS and OPEN LOOPS; the path picker and
+ * deep research sit below the fold.
  *
- * Sequence (top → bottom):
- *   1. Image hero (with closure banner below in the hero band)
- *   2. Next-action pill (adapts to Erin's state — picker / shortlist / review)
- *   3. Stat-row (5 days · 4 nights · 2 bases · 3 paths)
- *   4. Story-arc strip (Stay → Do → Get there → Costs, with live counts)
- *   5. Path picker (the central choose-your-path decision)
- *   6. Featured-strip (3 path cards with photos + per-path scope counts)
- *   7. Trip-state (countdown + WA-20 status + next milestone)
- *   8. Fresh-notes (3 most recent notes from Erin, auto-hides if zero)
- *   9. Peak-moment (Cascade Pass emotional anchor)
- *  10. Map (path-aware Leaflet map)
- *  11. Overview (gist + contingency disclosure)
- *  12. Itinerary (5-day shape, path-filtered)
- *  13. Towns (corridor character stops, path-filtered)
- *  14. Home-reference (collapsed disclosure: weather / pre-trip / details / etc.)
- *  15. Page-CTAs (cross-promo to other pages, footer-style)
+ * New sequence (top → bottom):
+ *   1. Image hero — "The trip we're planning · Aug 16-20"
+ *   2. Stat-band — 5 days · 4 nights · 2 cabins · NYC + United
+ *   3. Conversation-state strip — quick status summary (existing, kept)
+ *   4. LOCKED decisions — full list with verbatim quotes per item
+ *   5. OPEN loops + Next action — what's left + who's holding it
+ *   6. Story-arc — reading order ("plan in this order: stay → do → get there →
+ *      costs"), still useful as orientation
+ *   7. Path picker (DEEP DIVE) — three-card comparison, marked as comparison,
+ *      not a decision-time-out
+ *   8. Featured strip — 3 path cards w/ photos
+ *   9. Trip-state — countdown + WA-20 + milestones (existing)
+ *  10. Fresh notes
+ *  11. Peak-moment + map
+ *  12. Overview + itinerary + towns
+ *  13. Home-reference (collapsed)
+ *  14. Cross-promo footer
  *
- * What's NEW (vs previous home, before this rebuild):
- *   - next-action pill (renderNextAction) — top-of-page adaptive CTA
- *   - trip-state (renderTripState) — countdown + WA-20 + milestones
- *   - fresh-notes (renderFreshNotes) — latest 3 notes, fail-loud
- *   - home-reference (renderHomeReference) — admin disclosure at bottom
- *   - story-arc enhanced with live count badges
- *   - featured-strip enhanced with per-path scope + shortlist count
+ * Removed from above-the-fold:
+ *   - "Start: pick a path" pill (decision already made)
+ *   - "5 must-have questions for Erin" strip (decisions captured above)
  *
- * What's REMOVED: nothing — every prior section is still in the sequence.
- * Order changed to put orientation surfaces above content-detail surfaces.
- *
- * Strategy doc: see the task brief in the agent transcript + NAV_STRATEGY_
- * 2026-05-17.md for the 4 user-moments mapping.
+ * Both still exist on /for-erin for explicit invitation to keep adding input.
  */
 
 import '../styles/main.css';
@@ -52,33 +44,33 @@ import { renderPeakMoment } from '../sections/peak-moment';
 import { renderTowns } from '../sections/towns';
 import { renderFeaturedStrip } from '../sections/featured-strip';
 import { renderStoryArc } from '../sections/story-arc';
-import { renderNextAction } from '../sections/next-action';
-import { renderErinMustsStrip } from '../sections/erin-musts-strip';
 import { renderTripState } from '../sections/trip-state';
 import { renderFreshNotes } from '../sections/fresh-notes';
 import { renderHomeReference } from '../sections/home-reference';
 import { renderConversationState } from '../sections/conversation-state';
+import { renderLockedDecisions } from '../sections/locked-decisions';
+import { renderOpenLoops } from '../sections/open-loops';
 import { h } from '../dom';
 
 function mount(): void {
   const main = mountPageShell({
     pageId: 'home',
-    title: 'Allison + Erin · North Cascades · Aug 16-20',
-    lede: 'A shared draft. Both keep kosher — every lodging on the shortlist has a full kitchen. Three paths below — tap one to filter the whole site, or browse all three. Leave notes (or just text Allison) and the site updates next session.',
+    title: 'North Cascades · Aug 16-20, 2026 · Allison + Erin',
+    lede:
+      'The trip we\'re planning. Dates locked, path decided, lodging area chosen, airline preference set. What\'s open now: exact United fare (Erin tonight), Marblemount-cluster picks (Allison today), WSDOT reopen (WA-20 gate). Scroll for live state.',
     showClosure: true,
     imageHero: {
       // Cascade Pass / Sahale Arm — Pelton Peak + Yawning Glacier + Magic
-      // Mountain. CC BY 2.0 Daniel Hershman, 2007. Brand-fit: glacial palette.
+      // Mountain. CC BY 2.0 Daniel Hershman, 2007.
       src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Cascade_pass.jpg/1920px-Cascade_pass.jpg',
       alt: 'Pelton Peak, Yawning Glacier, and Magic Mountain seen from the Sahale Arm above Cascade Pass in North Cascades National Park',
       credit: 'Photo: Daniel Hershman / Wikimedia · CC BY 2.0',
-      ctaLabel: 'Choose a path',
-      ctaHref: '#paths',
+      ctaLabel: 'See what\'s locked',
+      ctaHref: '#locked',
     },
   });
 
-  // Stat-row sits in its own framed band so it visually bridges the hero
-  // and the path picker without colliding with either.
+  // Stat-band — quick orientation: 5 days · 4 nights · etc.
   const statBand = h(
     'div',
     { class: 'stat-band' },
@@ -86,33 +78,24 @@ function mount(): void {
   );
 
   main.append(
-    // ──── Orientation block (above-the-fold on mobile after the hero) ────
-    // Adaptive "what do I do first" pill. Sits as close to the hero as
-    // possible so it's the first thing in the content stream.
-    renderNextAction(),
-    // 5 must-have questions for Erin — surfaced PROMINENTLY between the
-    // pill and the stat-row so a first-time visitor can't miss them.
-    // Self-hides once Erin flips the "I've answered these" flag on /for-erin.
-    renderErinMustsStrip(),
     statBand,
-    // What's-decided strip (May 19, 2026): sources from the actual back-and-
-    // forth (WhatsApp + Google Doc). Sits ABOVE the path picker because the
-    // path decision is MADE — Path B if WA-20 opens, Path A fallback if not
-    // (Erin May 18). The picker is now a deep-dive, not the central question.
+
+    // ──── Decision-state block (the new headline) ────
+    // Conversation-state stays — it's the 30-sec summary. Locked + open are
+    // the longer-form per-item record below it.
     renderConversationState(),
-    // Narrative anchor — sets the "plan in this order" mental model before
-    // the path picker forces a decision.
+    renderLockedDecisions(),
+    renderOpenLoops(),
+
+    // ──── Reading-order orientation ────
     renderStoryArc(),
 
-    // ──── Path deep-dive (no longer the central decision) ────
+    // ──── Path picker — DEEP DIVE, no longer the central decision ────
     renderPaths(),
     renderFeaturedStrip(),
 
     // ──── Live state ────
-    // Countdown + road status + next milestone. After the decision-making
-    // block so the reader has already engaged with the picker.
     renderTripState(),
-    // Fresh notes from Erin (auto-removes itself if zero notes exist).
     renderFreshNotes(),
 
     // ──── Emotional + map orientation ────

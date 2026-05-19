@@ -25,6 +25,8 @@
 import { QUESTIONS_FOR_ERIN, type QuestionPriority } from '../data/for-erin';
 import { h, section } from '../dom';
 import { openGlobalScopeModal } from './notes-button';
+import { renderAnswerForm } from './erin-answer-form';
+import { hasSchema } from '../data/erin-answers';
 
 /**
  * Same localStorage key as home/erin-musts-strip.ts uses — flipping this hides
@@ -127,15 +129,28 @@ export function renderForErin(): HTMLElement {
       h(
         'ul',
         { class: 'for-erin__list' },
-        ...qs.map((q) =>
-          h(
+        ...qs.map((q) => {
+          // Structured-answer form (2026-05-17 PM): for must-have questions
+          // only, sits between context and the 💬 freeform button. Falls back
+          // gracefully if the schema is missing.
+          const answerForm =
+            g === 'must' && hasSchema(q.id)
+              ? renderAnswerForm(q.id, q.question, () =>
+                  openGlobalScopeModal(
+                    `for-erin-${q.id}`,
+                    `For Erin: ${q.question}`
+                  )
+                )
+              : null;
+          return h(
             'li',
             { class: 'for-erin__item', id: `${g}-${q.id}` },
             h('h4', { class: 'for-erin__question' }, q.question),
             h('p', { class: 'for-erin__context' }, q.context),
+            answerForm,
             renderPerQuestionNoteBtn(q)
-          )
-        )
+          );
+        })
       ),
       g === 'must'
         ? h(
