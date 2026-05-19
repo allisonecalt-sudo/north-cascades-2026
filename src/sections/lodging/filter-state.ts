@@ -59,10 +59,15 @@ export function emptyFilters(): FilterState {
     kitchen: new Set(),
     nature: new Set(),
     sunsetOnly: false,
-    // Default ON per Erin's WhatsApp 2026-05-18: "if we find something
-    // refundable we can book it as a backup" — refundable-only matches her
-    // booking discipline until WSDOT confirms WA-20 reopen on Jun 25.
-    freeCancelOnly: true,
+    // Default OFF (2026-05-19 needs-match audit). The intent is correct —
+    // Erin's WhatsApp May 18: "if we find something refundable we can book
+    // it as a backup" — but ALL 18 current listings are flagged 'no' or
+    // 'unknown' (Allison's research today is to populate 'yes' picks). With
+    // the chip ON by default, the page renders "0 of 18 showing" and Erin
+    // bounces before seeing any cabins. Show the full list; let her opt
+    // into refundable narrowing once data is populated. The hero copy now
+    // surfaces the refundable preference as text instead of as a hidden gate.
+    freeCancelOnly: false,
     showSoldOut: false,
   };
 }

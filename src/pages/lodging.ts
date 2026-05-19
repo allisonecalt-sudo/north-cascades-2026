@@ -15,12 +15,13 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'lodging',
     title: 'Marblemount cluster — west-side base',
-    verifiedOn: '2026-05-19 (post-rework — Marblemount default + refundable + 2+2 split explicit)',
-    // Hero lede rewritten 2026-05-19 (site rework): one-line current state +
-    // the path-shape lookup. Background framing (kosher kitchen / 2 beds /
-    // mid-tier) moves into the page-level disclaimer below.
+    verifiedOn: '2026-05-19 (needs-match audit — refundable chip optional, not default)',
+    // Hero lede updated 2026-05-19 PM (needs-match audit): the "refundable
+    // filter ON by default" claim was hiding all 18 listings (no entry is
+    // tagged 'yes' yet — Allison's research today). Now the refundable
+    // preference is named as preference; the chip is opt-in once data lands.
     lede:
-      'Erin\'s May 18 call — "the Marble Mount side… within an hour driving range." Default base = the Marblemount / Concrete / Rockport cluster. Path A keeps all 4 nights here. Path B splits 2 nights west + 2 nights east (Winthrop / Mazama). Refundable filter is ON by default (booking-as-backup discipline). Dates: Sun Aug 16 → Thu Aug 20, 2026.',
+      'Erin\'s May 18 call — "the Marble Mount side… within an hour driving range." Default base = the Marblemount / Concrete / Rockport cluster. Path A keeps all 4 nights here. Path B splits 2 nights west + 2 nights east (Winthrop / Mazama). Refundable preferred where available — tap the ✓ Free cancellation chip to narrow once Allison\'s shortlist lands. Dates: Sun Aug 16 → Thu Aug 20, 2026.',
     imageHero: {
       // Re-re-swapped May 17, 2026 (8:13 AM IDT) — prior URL loaded fine but
       // depicted a tropical beach resort, not PNW. Switching to the Diablo

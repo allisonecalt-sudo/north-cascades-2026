@@ -39,8 +39,8 @@ const GROUP_META: Record<
   { label: string; lede: string; cls: string }
 > = {
   must: {
-    label: '🚦 Five things Allison really needs from you',
-    lede: "These five answers change the whole shape of the trip. Tap any one to open it — leave a 💬 note inline, or just text Allison.",
+    label: '🚦 What Allison really needs from you',
+    lede: "These answers change the whole shape of the trip. Tap any one to open it — leave a 💬 note inline, or just text Allison.",
     cls: 'for-erin__group--must',
   },
   shape: {

@@ -141,7 +141,7 @@ export function renderErinMustsStrip(): HTMLElement {
         h(
           'h3',
           { class: 'erin-musts-strip__title' },
-          '5 things Allison needs from you, Erin → '
+          `${QUESTIONS_FOR_ERIN.filter((q) => q.priority === 'must').length} things Allison still needs from you, Erin → `
         )
       ),
       h(
@@ -156,7 +156,7 @@ export function renderErinMustsStrip(): HTMLElement {
           class: 'erin-musts-strip__cta',
           href: 'for-erin.html#must',
         },
-        'See all five →'
+        'See all →'
       )
     );
 

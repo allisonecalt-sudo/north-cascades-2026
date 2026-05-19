@@ -24,7 +24,9 @@ export function renderStatRow(): HTMLElement {
   const stats: Stat[] = [
     { num: '5', label: 'Days' },
     { num: '4', label: 'Nights' },
-    { num: '2', label: 'Scenic bases' },
+    // "Scenic bases" was Allison's planning vocab — Erin would say "cabins."
+    // Microcopy fix per 2026-05-19 PM needs-match audit (Erin gap doc #13).
+    { num: '2', label: 'Cabins' },
     { num: String(TRIP_PATHS.length), label: 'Paths' },
   ];
   return h(

@@ -108,7 +108,7 @@ export function renderConversationState(): HTMLElement {
     h(
       'p',
       { class: 'convstate__sync' },
-      `Last sync: ${LAST_SYNC}. Edit ${'src/sections/conversation-state.ts'} when the state changes.`
+      `Last sync: ${LAST_SYNC}. Sourced from WhatsApp + the Google Doc.`
     )
   );
 }

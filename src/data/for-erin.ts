@@ -24,27 +24,20 @@ export interface QuestionForErin {
 export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
   // ──────────────────────────────────────────────────────────────
   // MUST-HAVE — needed before the trip locks
+  //
+  // 2026-05-19 PM needs-match audit: removed `path` + `site-channel` +
+  // `flight-time` questions. Path B (with A fallback) is LOCKED per
+  // home-page conversation state strip (Erin's May 18 4:57am call).
+  // Channel is covered in the welcome popup. Flight-time decision now
+  // sits inside Erin's flight-research-tonight loop. Re-asking decided
+  // things violates the "decisions reflected, not re-asked" rule.
   // ──────────────────────────────────────────────────────────────
-  {
-    id: 'path',
-    priority: 'must',
-    question: 'Of A, B, or C — which one feels right? (Or propose a 4th.)',
-    context:
-      "A = simplest, one west-side base. B = full park, mid-trip move. C = slow east-side base, skips Cascade Pass. Nothing's picked yet — Allison wants Erin to weigh in first. (See the path picker on the home page + the How to do this trip page for the full breakdown.) If none of the three feel right, propose a 4th — that's also a valid answer.",
-  },
   {
     id: 'hike-ceiling',
     priority: 'must',
     question: 'What\'s the hike ceiling — what feels GOOD and what feels TOO MUCH?',
     context:
       "Erin's real comfort zone, not the should-say version. Examples to react to: Thunder Knob (3.6 mi · 635 ft) easy · Blue Lake (4.4 mi · 1,050 ft) moderate · Maple Pass Loop (7.2 mi · 2,020 ft) hard but stunning · Cascade Pass (7 mi · 1,800 ft) signature but climby · Sahale Arm (12 mi · 4,000 ft) full-day-killer. Where does Erin tap out? Where does she say \"absolutely\"?",
-  },
-  {
-    id: 'site-channel',
-    priority: 'must',
-    question: 'Site, Google Doc, or text Allison directly — which channel works for Erin?',
-    context:
-      "Allison directed Claude to build this as a comparison-pitch Erin can react to. The 💬 buttons let her leave notes inline (Allison reads them between sessions, Claude updates the site next session). The Google Doc Erin started is also still the working plan — totally fine to keep editing there + just text/email Allison. Whichever's easier. The site stops guessing once Erin says.",
   },
   {
     id: 'wants-overall',
@@ -110,13 +103,10 @@ export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
     context:
       'Default is the Terra Nova-tier cabins ($200-300/night). A one-night bump to a splurge property is a fine alternative if Erin wants the lodge-view experience for a stretch. Listed under "Splurge options" in Lodging.',
   },
-  {
-    id: 'flight-time',
-    priority: 'nice',
-    question: 'Morning arrival into SEA or mid-day?',
-    context:
-      'Morning maximizes Day 1 (cabin by 1-2 PM, easy evening hike). Mid-day means sleeping on the redeye and landing fresher. Allison leans morning but no strong preference. Affects nothing else if WA-20 is open.',
-  },
+  // `flight-time` removed 2026-05-19 PM needs-match audit — Erin's actively
+  // researching the exact United fare tonight per home-page open-loop, so the
+  // arrival-time slice will be answered as part of that booking. Surfacing
+  // it as a separate question created duplicate-state confusion.
   {
     id: 'leavenworth',
     priority: 'nice',
