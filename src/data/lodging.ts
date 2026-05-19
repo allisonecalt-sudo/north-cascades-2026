@@ -667,9 +667,193 @@ const PHOTOS = {
 } as const satisfies Record<string, LodgingPhoto>;
 
 // ====================================================================
-// WEST SIDE — Marblemount / Rockport / Concrete
+// WEST SIDE — Marblemount / Rockport / Concrete / Sauk Mtn / Mt. Baker
 // ====================================================================
 export const WEST_LODGING: Lodging[] = [
+  // ---- Allison-vetted Aug 16-20 LIVE-AVAILABLE Airbnbs (May 19, 2026 browser-confirmed) ----
+  // These four were sent by Allison to Erin via WhatsApp on May 19, 2026 after
+  // Rhody House / NC Riverside / NC Hideaway all sold out the same day.
+  // Each was opened in Playwright with check_in=2026-08-16&check_out=2026-08-20
+  // and confirmed bookable (calendar resolved, "4 nights total" pricing shown,
+  // free-cancellation window visible). Photos pulled from Airbnb og:image.
+  {
+    id: 'sauk-mountain-farmhouse',
+    name: 'Sauk Mountain Farmhouse Getaway',
+    address: 'Concrete, WA · entire home (Airbnb)',
+    type: 'Remodeled 1950s farmhouse — 3BR, EV-friendly, on Sauk Mountain',
+    vibe: 'rental',
+    pricePerNight: '~$385/night ($1,540 total Aug 16-20, 2026)',
+    distance: 'Concrete, base of Sauk Mountain · ~1 hr to Cascade Pass trailhead',
+    beds: '3 queens (1 per bedroom — sleeps 6)',
+    bedrooms: '3-bedroom farmhouse',
+    nature: 'Woods-set at the base of Sauk Mountain — scenic mountain location, EV charger on-site.',
+    natureTag: 'woods',
+    extras: 'Full kitchen, washer/dryer, AC, new memory mattresses, BBQ + sun beds, 220V EV charger. Self check-in.',
+    reviews: {
+      score: '4.91/5',
+      count: '11 reviews',
+      source: 'Airbnb (Guest Favorite)',
+      asOf: 'May 19, 2026 (verified live)',
+      highlights: 'Reviewers call out the scenic location, the modern remodel, the outdoor space.',
+    },
+    notes:
+      'Allison-vetted May 19, 2026 — sent to Erin via WhatsApp. **Aug 16-20 CONFIRMED available** (browser-verified May 19, 2026). Free cancellation before Aug 11.',
+    bookingUrl: 'https://www.airbnb.com/rooms/1461099136777901554?check_in=2026-08-16&check_out=2026-08-20&adults=2',
+    tier: 'fits-brief',
+    kitchen: 'full',
+    freeCancellation: 'yes',
+    availability: 'confirmed-aug-16-20',
+    photo: {
+      src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-1461099136777901554/original/f77da6aa-ba44-4bf1-9f9f-b60964ebd384.jpeg',
+      alt: 'Sauk Mountain Farmhouse Getaway — exterior of remodeled 1950s farmhouse.',
+      credit: 'Photo: Airbnb listing',
+      creditUrl: 'https://www.airbnb.com/rooms/1461099136777901554',
+      width: 720,
+      height: 480,
+    },
+    amenities: {
+      laundry: 'in-unit',
+      baths: '2',
+      ac: 'yes',
+      parking: 'free',
+      wifi: 'strong',
+      pets: 'unknown',
+      hotTub: false,
+    },
+  },
+  {
+    id: 'twin-cedars-treehouse',
+    name: 'Twin Cedars Treehouse',
+    address: 'Concrete, WA · entire treehouse (Airbnb)',
+    type: 'Hand-milled treehouse with hot tub + private firepit',
+    vibe: 'rental',
+    pricePerNight: '~$268/night ($1,070 total Aug 16-20, 2026)',
+    distance: 'Concrete · ~1 hr 20 min to Cascade Pass trailhead',
+    beds: '2 doubles + 1 sofa bed (sleeps 5)',
+    bedrooms: '2-bedroom treehouse',
+    nature: 'Treehouse in deep woods — pond on property, complete privacy, stars at night.',
+    natureTag: 'woods',
+    extras: 'Hot tub, outdoor shower, fireplace, private firepit. **Note:** mini-fridge + microwave + Keurig (no full kitchen); 500-ft trail to carry bags up to treehouse.',
+    sunset: {
+      worth: 'maybe',
+      note: 'Property description: "catch a sunset through the trees." Tree-canopy view, not open horizon.',
+    },
+    reviews: {
+      score: '4.9/5',
+      count: '303 reviews',
+      source: 'Airbnb (Superhost + Guest Favorite)',
+      asOf: 'May 19, 2026 (verified live)',
+      highlights: 'Reviewers call out the privacy, the hot tub, the stars, the treehouse uniqueness.',
+    },
+    kosherCookingFit: false,
+    notes:
+      'Allison-vetted May 19, 2026 — sent to Erin via WhatsApp. **Aug 16-20 CONFIRMED available** (browser-verified May 19, 2026). 303 reviews + Superhost = trust signal. Free cancellation before Aug 15. **Kosher cook-in NOT fit** (mini-fridge + microwave + Keurig only). 500-ft trail + stairs to reach treehouse — pack light.',
+    bookingUrl: 'https://www.airbnb.com/rooms/619805721232504402?check_in=2026-08-16&check_out=2026-08-20&adults=2',
+    tier: 'fits-brief',
+    kitchen: 'kitchenette',
+    freeCancellation: 'yes',
+    availability: 'confirmed-aug-16-20',
+    photo: {
+      src: 'https://a0.muscache.com/im/pictures/1acb970a-dca9-4271-acb8-dd679116d445.jpg',
+      alt: 'Twin Cedars Treehouse — hand-milled treehouse in the trees with hot tub.',
+      credit: 'Photo: Airbnb listing',
+      creditUrl: 'https://www.airbnb.com/rooms/619805721232504402',
+      width: 720,
+      height: 480,
+    },
+    amenities: {
+      baths: '0.5',
+      parking: 'free',
+      wifi: 'unknown',
+      hotTub: true,
+    },
+  },
+  {
+    id: 'glaciers-lagom-cabin',
+    name: "Glacier's Lagom Cabin",
+    address: 'Deming, WA · entire cabin (Airbnb) — Mt. Baker side',
+    type: 'Newly-renovated 2BR cabin with hot tub, fireplace, full kitchen',
+    vibe: 'cabin',
+    pricePerNight: '~$315/night ($1,260 total Aug 16-20, 2026)',
+    distance: 'Deming, WA (Mt. Baker Hwy / WA-542) · ~1 hr 18 min to Mt. Baker side · different area but near that mountain',
+    beds: '2 queens (1 per bedroom — sleeps 4)',
+    bedrooms: '2-bedroom cabin',
+    nature: 'Woods-set near Mt. Baker — cozy interior, fireplace, dedicated office space.',
+    natureTag: 'mountain-view',
+    extras: 'Full kitchen with induction cooktop + oven, full fridge, dishwasher. Hot tub, fireplace, dedicated office. Memory-foam mattresses.',
+    reviews: {
+      score: '4.98/5',
+      count: '154 reviews',
+      source: 'Airbnb (Superhost + Guest Favorite)',
+      asOf: 'May 19, 2026 (verified live)',
+      highlights: 'Reviewers call out the hot tub, the fireplace, the well-equipped kitchen, the host responsiveness, ski-trip location.',
+    },
+    notes:
+      'Allison-vetted May 19, 2026 — sent to Erin via WhatsApp. Allison\'s quote: *"1 hr 18 min, dif area but near that mt"* (Mt. Baker side). **Aug 16-20 CONFIRMED available** (browser-verified May 19, 2026). 154 reviews + Superhost + 4.98★. Full kitchen = kosher cook-in fit. Free cancellation before Aug 15. **Different area** — Mt. Baker side via WA-542, not the WA-20 corridor; affects Cascade Pass / Maple Pass drive times.',
+    bookingUrl: 'https://www.airbnb.com/rooms/825620405007368841?check_in=2026-08-16&check_out=2026-08-20&adults=2',
+    tier: 'fits-brief',
+    kitchen: 'full',
+    freeCancellation: 'yes',
+    availability: 'confirmed-aug-16-20',
+    photo: {
+      src: 'https://a0.muscache.com/im/pictures/miso/Hosting-825620405007368841/original/6b3d2502-0e32-42d0-bfc6-60189aa743f4.jpeg',
+      alt: "Glacier's Lagom Cabin — newly-renovated 2BR cabin near Mt. Baker with hot tub.",
+      credit: 'Photo: Airbnb listing',
+      creditUrl: 'https://www.airbnb.com/rooms/825620405007368841',
+      width: 720,
+      height: 480,
+    },
+    amenities: {
+      baths: '1',
+      parking: 'free',
+      wifi: 'strong',
+      hotTub: true,
+    },
+  },
+  {
+    id: 'jade-river-haven',
+    name: 'Jade River Haven',
+    address: 'Arlington, WA · entire home (Airbnb)',
+    type: '3BR farmhouse with king + queen + bunk room',
+    vibe: 'rental',
+    pricePerNight: '~$228/night ($910 total Aug 16-20, 2026) — best price of the four',
+    distance: 'Arlington, WA · ~1 hr 30 min to Cascade Pass trailhead (still inside 1-hr-rule per Allison)',
+    beds: '1 king + 1 queen + bunk beds (4 beds total — sleeps 6)',
+    bedrooms: '3-bedroom home',
+    nature: 'Quiet residential setting, riverside ("Jade River" Haven) — open kitchen/living/dining.',
+    natureTag: 'riverside',
+    extras: 'New Tempurpedic mattresses on king + queen, laundry, kids\' corner, baby bath available.',
+    reviews: {
+      score: '5.0/5',
+      count: '7 reviews',
+      source: 'Airbnb (Guest Favorite)',
+      asOf: 'May 19, 2026 (verified live)',
+      highlights: 'Reviewers call out the location (100% 5-star location rating), the upstairs bunk room for kids.',
+    },
+    notes:
+      'Allison-vetted May 19, 2026 — sent to Erin via WhatsApp. Allison\'s quote: *"farther but cheaper, 7 reviews ★, pretty place, still 1 hr rule"*. **Aug 16-20 CONFIRMED available** (browser-verified May 19, 2026). Lowest price of the four new vetted picks. Free cancellation before Aug 15. Smaller review count (7) but all 5-star.',
+    bookingUrl: 'https://www.airbnb.com/rooms/1612643467359015764?check_in=2026-08-16&check_out=2026-08-20&adults=2',
+    tier: 'fits-brief',
+    kitchen: 'full',
+    freeCancellation: 'yes',
+    availability: 'confirmed-aug-16-20',
+    photo: {
+      src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-1612643467359015764/original/62b7adf0-d552-40ad-9cfc-b330ca7f7d20.jpeg',
+      alt: 'Jade River Haven — 3BR farmhouse near North Cascades.',
+      credit: 'Photo: Airbnb listing',
+      creditUrl: 'https://www.airbnb.com/rooms/1612643467359015764',
+      width: 720,
+      height: 480,
+    },
+    amenities: {
+      laundry: 'in-unit',
+      baths: '2',
+      parking: 'free',
+      wifi: 'unknown',
+      hotTub: false,
+    },
+  },
+
   // ---- Fits the brief (2 beds confirmed, Terra Nova tier) ----
   {
     id: 'rhody-house',
@@ -825,7 +1009,7 @@ export const WEST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      'Working cattle ranch with Mt. Baker views — distinctive setting. **Book a log cabin specifically**, NOT a guesthouse inn room (those are 1 bed only and not a fit). Log cabins have full kitchens.',
+      'Working cattle ranch with Mt. Baker views — distinctive setting. **Book a log cabin specifically**, NOT a guesthouse inn room (those are 1 bed only and not a fit). Log cabins have full kitchens. **Aug 16-20 availability NOT live-verified May 19 — call (360) 853-8494 to confirm before booking.** ResNexus widget showed cabins with rates ($190-295/night) but date-specific availability requires interactive calendar check.',
     bookingUrl: 'https://www.ovenells-inn.com/',
     tier: 'fits-brief',
     kitchen: 'full',
@@ -875,7 +1059,7 @@ export const WEST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      'A bit under the Terra Nova price band — fine if you want simple. Most cabins have a queen + sofa-sleeper (2 sleep spots, not 2 separate proper beds — ask which units have two queens). **Below-floor signal:** TripAdvisor 3.3/5 (150 reviews) trips the trip-site review-floor; passes Google 4.0 but barely. (This is the property that operated as Skagit River Resort / Clark\'s Cabins until early 2026 — review history spans operators.)',
+      'A bit under the Terra Nova price band — fine if you want simple. Most cabins have a queen + sofa-sleeper (2 sleep spots, not 2 separate proper beds — ask which units have two queens). **Below-floor signal:** TripAdvisor 3.3/5 (150 reviews) trips the trip-site review-floor; passes Google 4.0 but barely. (This is the property that operated as Skagit River Resort / Clark\'s Cabins until early 2026 — review history spans operators.) **Aug 16-20 availability NOT live-verified May 19 — call (360) 708-3005 to confirm before booking.**',
     bookingUrl: 'https://glacierpeakresortandwinery.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
@@ -932,7 +1116,7 @@ export const WEST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      'Riverfront private house — biggest, most-nature-immersed west-side option. Splurge tier ($350-500), listed if you want a step up from Terra Nova-tier. Verify exact bedroom layout at booking — 2BR and 3BR configurations exist. **Naming drift [verified 2026-05-17]:** cascaderiverhouse.com now lists only two units — "vacation home" and "luxury trailer" — dropping the earlier "Bungalow" / "House" branding. The Hospitable booking portal (riverstonerentals.hospitable.rentals) carries the live inventory; confirm at booking which physical unit + kitchen scope you are reserving (owner restructured product names).',
+      'Riverfront private house — biggest, most-nature-immersed west-side option. Splurge tier ($350-500), listed if you want a step up from Terra Nova-tier. Verify exact bedroom layout at booking — 2BR and 3BR configurations exist. **Naming drift [verified 2026-05-17]:** cascaderiverhouse.com now lists only two units — "vacation home" and "luxury trailer" — dropping the earlier "Bungalow" / "House" branding. The Hospitable booking portal (riverstonerentals.hospitable.rentals) carries the live inventory; confirm at booking which physical unit + kitchen scope you are reserving (owner restructured product names). **Aug 16-20 availability NOT live-verified May 19 — check the Hospitable portal or contact the property before booking.**',
     bookingUrl: 'https://www.cascaderiverhouse.com/',
     tier: 'splurge',
     kitchen: 'full',
@@ -992,7 +1176,7 @@ export const WEST_LODGING: Lodging[] = [
     notFitReason:
       'Single-bed rooms only — does NOT meet the 2-beds rule. Listed for transparency, not as an option.',
     notes:
-      'Cheaper, simpler — but each room has only one bed. **Not a fit for this trip\'s 2-beds requirement.**',
+      'Cheaper, simpler — but each room has only one bed. **Not a fit for this trip\'s 2-beds requirement.** Aug 16-20 availability NOT live-verified May 19 — call (360) 873-2103 if you want to use it anyway.',
     bookingUrl: 'https://www.buffalorunrestaurant.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
@@ -1034,7 +1218,7 @@ export const WEST_LODGING: Lodging[] = [
     notFitReason:
       'Single-bed rooms only — does NOT meet the 2-beds rule.',
     notes:
-      'Same single-room layout as Buffalo Run. **Not a fit for the 2-beds requirement.**',
+      'Same single-room layout as Buffalo Run. **Not a fit for the 2-beds requirement.** Aug 16-20 availability NOT live-verified May 19 — call (360) 661-8990 if you want to use it anyway.',
     bookingUrl: 'https://www.northcascadesinn.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
@@ -1094,7 +1278,7 @@ export const EAST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      'Strongest east-side "nature-near" pick — actual lakeside, woods-set property. Apartment-sized kitchens. Closest east-side stay to Rainy Pass, which matters on Maple Pass morning. **Book the 2-bedroom cabin** for two real beds. Top of the Terra Nova band.',
+      'Strongest east-side "nature-near" pick — actual lakeside, woods-set property. Apartment-sized kitchens. Closest east-side stay to Rainy Pass, which matters on Maple Pass morning. **Book the 2-bedroom cabin** for two real beds. Top of the Terra Nova band. **Aug 16-20 availability NOT live-verified May 19** — May 19 ResNexus widget showed Two Bedroom Cabin listed at $264/night base rate but date-specific check needs interactive calendar. Call (509) 996-3906 to confirm before booking.',
     bookingUrl: 'https://www.freestoneinn.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
@@ -1146,7 +1330,7 @@ export const EAST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      '**Book the Spring Creek Cabin (2BR log) or Ranch House — skip Owl\'s Nest (studio, single bed, not a fit).** Riverside alfalfa-field setting. Top of the Terra Nova band.',
+      '**Book the Spring Creek Cabin (2BR log) or Ranch House — skip Owl\'s Nest (studio, single bed, not a fit).** Riverside alfalfa-field setting. Top of the Terra Nova band. **Aug 16-20 availability NOT live-verified May 19 — contact via springcreekwinthrop.com/lodging or call to confirm before booking.**',
     bookingUrl: 'https://springcreekwinthrop.com/lodging/',
     tier: 'fits-brief',
     kitchen: 'full',
@@ -1207,7 +1391,7 @@ export const EAST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      'Riverside chalets with full kitchens + private hot tubs. Walkable to Winthrop boardwalk — bridges downtown convenience with riverside. Verify 2-bed configuration per chalet at booking.',
+      'Riverside chalets with full kitchens + private hot tubs. Walkable to Winthrop boardwalk — bridges downtown convenience with riverside. Verify 2-bed configuration per chalet at booking. **Aug 16-20 availability NOT live-verified May 19 — call (509) 996-8000 to confirm before booking.**',
     bookingUrl: 'https://riversedgewinthrop.com/',
     tier: 'fits-brief',
     kitchen: 'full',
@@ -1270,7 +1454,7 @@ export const EAST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      '**Book a cabin with two queens — skip the lodge rooms (single bed, not a fit).** River setting + walkable to Winthrop boardwalk = best-of-both. Lands squarely in the Terra Nova sweet spot.',
+      '**Book a cabin with two queens — skip the lodge rooms (single bed, not a fit).** River setting + walkable to Winthrop boardwalk = best-of-both. Lands squarely in the Terra Nova sweet spot. **Aug 16-20 availability NOT live-verified May 19 — call (509) 996-4348 to confirm before booking.**',
     bookingUrl: 'https://methowriverlodge.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
@@ -1318,7 +1502,7 @@ export const EAST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      '**Book a cabin specifically — confirm 2-bed configuration and kitchen at booking.** Lodge rooms are single-bed and not a fit. Solid Mazama-side option close to Rainy Pass.',
+      '**Book a cabin specifically — confirm 2-bed configuration and kitchen at booking.** Lodge rooms are single-bed and not a fit. Solid Mazama-side option close to Rainy Pass. **Aug 16-20 availability NOT live-verified May 19 — call (509) 996-2681 to confirm before booking.**',
     bookingUrl: 'https://www.innmazama.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
@@ -1382,7 +1566,7 @@ export const EAST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      '**Book a cabin — inn rooms are single-bed and not a fit.** Cabins with kitchenettes sit in the Terra Nova band. Walkable to the Old-West boardwalk.',
+      '**Book a cabin — inn rooms are single-bed and not a fit.** Cabins with kitchenettes sit in the Terra Nova band. Walkable to the Old-West boardwalk. **Aug 16-20 availability NOT live-verified May 19 — call (509) 996-3107 to confirm before booking.**',
     bookingUrl: 'https://chewuchinn.com/',
     tier: 'fits-brief',
     kitchen: 'kitchenette',
@@ -1445,7 +1629,7 @@ export const EAST_LODGING: Lodging[] = [
     },
     verifyBeds: true,
     notes:
-      '1,500 acres of trails + spa + lakeside cabins. **Book a 2BR Patterson Lake Cabin.** Splurge tier — listed if you want the resort feel; otherwise Terra Nova-tier picks above match the brief better.',
+      '1,500 acres of trails + spa + lakeside cabins. **Book a 2BR Patterson Lake Cabin.** Splurge tier — listed if you want the resort feel; otherwise Terra Nova-tier picks above match the brief better. **Aug 16-20 availability NOT live-verified May 19 — Patterson Lake Cabins are notoriously over-subscribed in mid-August. Call (509) 996-2211 to confirm before booking.**',
     bookingUrl: 'https://www.sunmountainlodge.com/',
     tier: 'splurge',
     kitchen: 'full',
@@ -1507,7 +1691,7 @@ export const EAST_LODGING: Lodging[] = [
     notFitReason:
       'Single platform bed per hut — does NOT meet the 2-beds rule.',
     notes:
-      '**Not a fit — each hut has only one queen platform.** Aesthetic is striking but the bed configuration rules it out.',
+      '**Not a fit — each hut has only one queen platform.** Aesthetic is striking but the bed configuration rules it out. Aug 16-20 availability NOT live-verified May 19.',
     bookingUrl: 'https://rollinghuts.com/',
     tier: 'not-a-fit',
     kitchen: 'kitchenette',
@@ -1553,7 +1737,7 @@ export const EAST_LODGING: Lodging[] = [
     notFitReason:
       'Single-bed rooms only — does NOT meet the 2-beds rule.',
     notes:
-      '**Not a fit — single-bed rooms only.** Riverfront and downtown-adjacent, but the bed configuration rules it out.',
+      '**Not a fit — single-bed rooms only.** Riverfront and downtown-adjacent, but the bed configuration rules it out. Aug 16-20 availability NOT live-verified May 19.',
     bookingUrl: 'https://hotelriovista.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
@@ -1595,7 +1779,7 @@ export const EAST_LODGING: Lodging[] = [
     notFitReason:
       'Single-bed rooms only — does NOT meet the 2-beds rule.',
     notes:
-      '**Not a fit — single-bed rooms only.**',
+      '**Not a fit — single-bed rooms only.** Aug 16-20 availability NOT live-verified May 19.',
     bookingUrl: 'https://mtgardnerinn.com/',
     tier: 'not-a-fit',
     kitchen: 'none',
