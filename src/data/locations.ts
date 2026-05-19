@@ -123,7 +123,7 @@ const AIRPORTS: MapLocation[] = [
     id: 'airport-sea',
     type: 'airport',
     name: 'SEA — Seattle-Tacoma',
-    context: 'Default arrival. Nonstop on Alaska from NYC.',
+    context: 'Default arrival. Nonstop on United EWR→SEA from NYC (primary — Allison\'s travel credit + both have loyalty). Alaska is the fallback carrier.',
     lat: 47.4502,
     lng: -122.3088,
     pathAssoc: 'both',

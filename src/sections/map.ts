@@ -568,7 +568,7 @@ function drawerMetaHtml(loc: MapLocation): string {
     const m = loc.meta.airport;
     return pillsHtml([
       { label: 'Code', value: m.code, color: '#f97316' },
-      { label: 'NYC nonstop', value: m.nonstopFromNyc ? 'Yes (Alaska)' : 'Connection required', color: '#6b7280' },
+      { label: 'NYC nonstop', value: m.nonstopFromNyc ? 'Yes (United primary)' : 'Connection required', color: '#6b7280' },
     ]);
   }
   return '';

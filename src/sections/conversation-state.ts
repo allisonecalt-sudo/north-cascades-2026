@@ -52,15 +52,15 @@ const DECISIONS: DecisionRow[] = [
   },
   {
     label: 'Flights',
-    state: 'Leaning United → SEA (budget-friendly), refundable preferred',
-    sub: 'Erin May 18 11:07pm — "Yes we could do United. They fly into SEA. That\'s looking much cheaper." Erin researching exact fares tonight.',
+    state: 'United Main Cabin · leaning Option 2 nonstop (~$799) over Option 1 1-stop (~$656). Both options sent to Erin · awaiting her pick.',
+    sub: 'Erin May 18 11:07pm — "Yes we could do United. They fly into SEA. That\'s looking much cheaper." Allison sent both flight options via WhatsApp May 19.',
     tone: 'in-progress',
     holder: 'Erin',
   },
   {
     label: 'Lodging',
-    state: 'West-side cluster (Marblemount/Concrete/Rockport) as default; possibly 2+2 split for Path B',
-    sub: 'Erin May 18 11:43pm — "the Marble Mount side, just because in case that road doesn\'t open up in time…within an hour driving range." Refundable-only filter is ON.',
+    state: 'Book 1 location, 4 nights, refundable in the Marblemount cluster (Path A coverage). Optional swap to east-side nights 3-4 if WA-20 confirms June 25.',
+    sub: 'Erin May 18 11:43pm — "the Marble Mount side, just because in case that road doesn\'t open up in time…within an hour driving range." 4 Allison-verified picks live, narrowing to one today.',
     tone: 'in-progress',
     holder: 'Allison',
   },
@@ -72,7 +72,7 @@ const DECISIONS: DecisionRow[] = [
   },
 ];
 
-const LAST_SYNC = 'May 19, 2026 morning';
+const LAST_SYNC = 'May 19, 2026 afternoon';
 
 function renderRow(row: DecisionRow): HTMLElement {
   return h(

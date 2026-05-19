@@ -98,7 +98,7 @@ export const MILESTONES: Milestone[] = [
     date: '2026-06-01',
     dateLabel: 'Mon Jun 1, 2026',
     action:
-      "Book SEA roundtrip on Alaska. Per Erin May 18: flights first — summer inventory is thin and we don't want them filling up. Lodging follows.",
+      "Book United EWR→SEA nonstop (primary, Allison's travel credit applies — log into united.com first). Alaska EWR→BLI is the fallback if United pricing breaks. Per Erin May 18: flights first — summer inventory is thin and we don't want them filling up. Lodging follows. Book Main Cabin (NOT Basic — Basic gives up voucher coverage).",
     subitems: [
       {
         id: 'morning-vs-midday',
@@ -474,7 +474,7 @@ export const MILESTONES: Milestone[] = [
     subitems: [
       {
         id: 'confirm-flight',
-        label: 'Confirm flight on time + gate (Alaska app)',
+        label: 'Confirm flight on time + gate (United app — or Alaska app if fallback was booked)',
       },
       {
         id: 'kosher-snacks',

@@ -53,7 +53,7 @@ const PATH_A_ITINERARY: ItineraryDay[] = [
     title: 'SEA arrival, drive in, easy evening',
     shape: 'Morning SEA landing, drive to Marblemount, settle in, Ladder Creek Falls at dusk.',
     stops: [
-      { step: 'Land SEA AM', detail: 'Nonstop on Alaska from NYC. Morning arrival.' },
+      { step: 'Land SEA AM', detail: 'Nonstop on United EWR→SEA from NYC (primary; Alaska EWR→BLI fallback). Morning arrival.' },
       { step: 'Rental pickup', detail: 'SEA has every major rental on-site.' },
       {
         step: 'Drive SEA → Marblemount',
@@ -130,7 +130,7 @@ const PATH_A_ITINERARY: ItineraryDay[] = [
     stops: [
       { step: 'Slow morning', detail: 'Coffee on the porch, pack up.' },
       { step: 'Drive Marblemount → SEA', detail: '~2 hrs via WA-20 west → I-5 south.', time: '~2 hrs' },
-      { step: 'Evening flight', detail: 'Nonstop SEA → NYC on Alaska.' },
+      { step: 'Evening flight', detail: 'Nonstop SEA → NYC on United (primary); Alaska SEA → BLI → EWR fallback.' },
     ],
     meals: {},
   },
@@ -146,7 +146,7 @@ const PATH_B_ITINERARY: ItineraryDay[] = [
     title: 'SEA arrival, drive to Marblemount',
     shape: 'Morning SEA landing, drive in, Ladder Creek Falls evening.',
     stops: [
-      { step: 'Land SEA AM', detail: 'Nonstop on Alaska or United from NYC.' },
+      { step: 'Land SEA AM', detail: 'Nonstop on United EWR→SEA from NYC (primary, both have loyalty + Allison\'s travel credit); Alaska EWR→BLI fallback.' },
       { step: 'Rental pickup', detail: 'SEA on-site rentals.' },
       { step: 'Drive SEA → Marblemount', detail: '~2.5 hrs via I-5 → WA-20.', time: '~2.5 hrs' },
       { step: 'Check in (west)', detail: 'Nights 1-2 in the Marblemount cluster (Cascade River House, Glacier Peak Resort, or other Marblemount/Concrete/Rockport pick).' },
@@ -244,7 +244,7 @@ const PATH_C_ITINERARY: ItineraryDay[] = [
     title: 'SEA arrival, one night Marblemount',
     shape: 'Break up the drive — one west-side night before pushing east.',
     stops: [
-      { step: 'Land SEA AM', detail: 'Nonstop on Alaska.' },
+      { step: 'Land SEA AM', detail: 'Nonstop on United EWR→SEA (primary); Alaska EWR→BLI fallback.' },
       { step: 'Drive SEA → Marblemount', detail: '~2 hrs.', time: '~2 hrs' },
       { step: 'Light evening', detail: 'Ladder Creek Falls at dusk, or just check in + cabin time.' },
     ],
@@ -345,7 +345,7 @@ export const TRIP_PATHS: TripPath[] = [
     includeSeattle: false,
     seattleNote: 'Skip Seattle on inbound (drive straight to park). Outbound: airport only — default is just fly home.',
     lodgingShape: '4 nights, one west-side cabin (Marblemount/Rockport)',
-    flightNote: 'SEA roundtrip nonstop on Alaska — morning in Sun, evening out Thu.',
+    flightNote: 'United EWR→SEA nonstop primary (Allison\'s travel credit, both have loyalty); Alaska EWR→BLI fallback. Morning in Sun, evening out Thu.',
     tradeoff: 'Loses the east side entirely — no Maple Pass, no Washington Pass postcard, no Winthrop town flavor. Most weather-proof and road-proof of the three.',
   },
   {
@@ -370,7 +370,7 @@ export const TRIP_PATHS: TripPath[] = [
     includeSeattle: true,
     seattleNote: 'Conditional Leavenworth lunch stop on the Day-5 scenic-US-2 return. Seattle itself = airport only.',
     lodgingShape: '2 nights west (Marblemount) + 2 nights east (Winthrop/Mazama)',
-    flightNote: 'SEA roundtrip nonstop on Alaska — same as Paths A + C.',
+    flightNote: 'United EWR→SEA nonstop primary — same as Paths A + C. Alaska EWR→BLI fallback.',
     tradeoff: 'Mid-trip lodging move costs a half-day of momentum. If WA-20 stays closed Aug 1, this whole path collapses to Path A or to a Stevens-Pass-loop-to-Winthrop variant. Highest reward, highest fragility.',
   },
   {
@@ -394,7 +394,7 @@ export const TRIP_PATHS: TripPath[] = [
     includeSeattle: true,
     seattleNote: 'Same as Path B — Leavenworth optional on US-2 return, SEA airport only.',
     lodgingShape: '1 night west (Marblemount) + 3 nights east (Winthrop/Mazama)',
-    flightNote: 'SEA roundtrip nonstop on Alaska — Stevens Pass approach available if WA-20 still partially closed.',
+    flightNote: 'United EWR→SEA nonstop primary; Alaska EWR→BLI fallback. Stevens Pass approach available if WA-20 still partially closed.',
     tradeoff: 'Loses Cascade Pass — the signature west-side hike — entirely. Gains two full Winthrop evenings and zero mid-trip packing.',
   },
 ];

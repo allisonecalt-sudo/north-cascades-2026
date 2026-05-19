@@ -34,17 +34,17 @@ interface OpenLoop {
 const OPEN: OpenLoop[] = [
   {
     label: 'Flights',
-    state: 'United EWR→SEA nonstop is the leading shape. Exact fare + refundable upgrade cost still to lock.',
+    state: 'United Main Cabin · Allison sent two options to Erin via WhatsApp: Option 1 1-stop ~$656, Option 2 nonstop ~$799 (leaning). Awaiting Erin\'s pick + United travel-credit verify at united.com login.',
     holder: 'Erin',
-    eta: 'Researching tonight (may book by tomorrow)',
+    eta: 'Researching tonight (her time) — may book by tomorrow',
     quote: '"Yes we could do United. They fly into SEA. That\'s looking much cheaper."',
     attribution: 'Erin · May 18, 11:07pm',
   },
   {
     label: 'Lodging picks',
-    state: 'Marblemount-cluster shortlist needs the actual refundable picks — names, dates, prices verified.',
+    state: '4 verified refundable Airbnbs live for Aug 16-20 (Sauk Mountain Farmhouse, Twin Cedars Treehouse, Glacier\'s Lagom Cabin, Jade River Haven). About to lock one — 4 nights, single base, Path A coverage.',
     holder: 'Allison',
-    eta: 'Researching today',
+    eta: 'Locking today',
   },
   {
     label: 'WA-20 reopen',
@@ -64,11 +64,11 @@ interface NextActionRow {
 const NEXT_ACTIONS: NextActionRow[] = [
   {
     holder: 'Allison',
-    action: 'Research Marblemount-cluster refundable lodging today — narrow to 3-4 picks with verified Aug 16-20 availability + cancellation policies.',
+    action: 'Lock 1 of the 4 verified Airbnbs today — 4 nights refundable Marblemount cluster (Path A coverage). Log into united.com to verify the travel-credit amount + expiration before booking flights.',
   },
   {
     holder: 'Erin',
-    action: 'Pick the United fare option tonight — confirm exact $ + refundable upgrade. Allison\'s travel credit applies, so price logged-in to united.com.',
+    action: 'Pick between Option 1 1-stop (~$656) and Option 2 nonstop (~$799) tonight — both are United Main Cabin (NOT Basic — Basic gives up voucher coverage). E-credit voucher path covers cancellation, no refundable upgrade needed.',
   },
 ];
 

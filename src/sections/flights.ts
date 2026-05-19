@@ -241,8 +241,8 @@ export function renderFlights(): HTMLElement {
       h(
         'li',
         { class: 'gist__item' },
-        h('strong', {}, 'United is the main carrier.'),
-        ' Erin verified May 18 it\'s "much cheaper" on EWR→SEA. Allison has a United travel credit. Refundable preferred while WA-20 is unresolved.'
+        h('strong', {}, 'United Main Cabin — NOT Basic Economy.'),
+        ' Erin verified May 18 it\'s "much cheaper" on EWR→SEA. Allison has a United travel credit. Plan is Main Cabin (Basic gives up voucher coverage) — using United\'s e-credit voucher path for cancellation flex instead of paying for the refundable upgrade.'
       ),
       h(
         'li',

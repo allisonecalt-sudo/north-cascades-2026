@@ -29,7 +29,7 @@ export const ITINERARY: ItineraryDay[] = [
     title: 'Arrive Bellingham, drive in',
     shape: 'Land BLI, drive WA-20 to Marblemount, easy evening orientation.',
     stops: [
-      { step: 'Land BLI', detail: 'Afternoon, via SEA layover on Alaska Airlines.' },
+      { step: 'Land SEA (or BLI)', detail: 'Morning EWR→SEA nonstop on United (primary, Allison\'s travel credit applies); Alaska EWR→BLI is the fallback if United pricing breaks.' },
       { step: 'Rental car pickup', detail: 'Enterprise / Hertz / Budget / Alamo — all on-site at BLI.' },
       {
         step: 'Drive BLI → Marblemount via WA-20',
