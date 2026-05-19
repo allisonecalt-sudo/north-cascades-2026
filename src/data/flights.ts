@@ -157,7 +157,12 @@ export const ARCHIVED_FLIGHT_SUMMARIES: FlightOptionSummary[] = [
 /**
  * Airport → Marblemount drive comparison. Surfaced next to the leading card
  * so the SEA vs BLI tradeoff is one glance.
+ *
+ * Migrated 2026-05-19 to derive from `data/driving.ts` (DRIVE_SEGMENTS) so
+ * there's a single source of truth for every drive time on the site.
  */
+import { DRIVE_SEGMENTS } from './driving';
+
 export interface AirportDriveCompare {
   airport: string;
   drive: string;
@@ -165,18 +170,23 @@ export interface AirportDriveCompare {
   note: string;
 }
 
+const SEA_SEG = DRIVE_SEGMENTS.find((s) => s.id === 'sea-marblemount-arrival');
+const BLI_SEG = DRIVE_SEGMENTS.find((s) => s.id === 'bli-marblemount-arrival');
+
 export const AIRPORT_DRIVE_COMPARE: AirportDriveCompare[] = [
   {
     airport: 'SEA → Marblemount',
-    drive: '~2 hr 15 min',
-    miles: '~115 mi',
-    note: 'I-5 N → WA-20 E. Stock kosher-friendly groceries at a Seattle Trader Joe\'s / QFC / Whole Foods on the way out. Works for Path A (all 4 nights west) and Path B (2 west + 2 east).',
+    drive: SEA_SEG?.drive ?? '~2 hr 15 min',
+    miles: SEA_SEG?.miles ?? '~115 mi',
+    note:
+      'I-5 N → WA-20 E. Stock kosher-friendly groceries at a Seattle Trader Joe\'s / QFC / Whole Foods on the way out. Works for Path A (all 4 nights west) and Path B (2 west + 2 east).',
   },
   {
     airport: 'BLI → Marblemount',
-    drive: '~1 hr 25 min',
-    miles: '~71 mi',
-    note: 'I-5 S briefly → WA-20 E. Saves ~50 min on Day 1 vs SEA. No major Seattle Va\'ad grocery on this route — stock from BLI-area grocery instead.',
+    drive: BLI_SEG?.drive ?? '~1 hr 25 min',
+    miles: BLI_SEG?.miles ?? '~71 mi',
+    note:
+      'I-5 S briefly → WA-20 E. Saves ~50 min on Day 1 vs SEA. No major Seattle Va\'ad grocery on this route — stock from BLI-area grocery instead.',
   },
 ];
 

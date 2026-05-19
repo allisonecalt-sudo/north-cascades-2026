@@ -21,11 +21,29 @@
 
 import { HIKES, LEVEL_LABELS, type Hike, type HikeLevel } from '../data/hikes';
 import { getPathById } from '../data/paths';
+import { getDriveSegment } from '../data/driving';
 import { getSelectedPath, subscribeSelectedPath } from '../state/path';
 import { badge, h, section } from '../dom';
 import { renderSectionSources } from './section-sources';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
 import { renderVideoPill } from './video-embed';
+
+/**
+ * Map hike id → canonical drive-segment id (from data/driving.ts). When set,
+ * a "Drive from base" pill renders on the hike card so the reader sees the
+ * driving load without leaving the page. Added 2026-05-19 per the "make
+ * driving visible at every level" brief.
+ */
+const HIKE_DRIVE_SEGMENT: Record<string, string> = {
+  'cascade-pass': 'marblemount-cascade-pass-rt',
+  'sahale-arm': 'marblemount-cascade-pass-rt',
+  'park-butte': 'marblemount-park-butte-rt',
+  'thunder-knob': 'marblemount-thunder-knob-rt',
+  'rainy-lake': 'winthrop-rainy-pass-rt',
+  'maple-pass': 'winthrop-rainy-pass-rt',
+  'blue-lake': 'winthrop-rainy-pass-rt',
+  'cutthroat-pass': 'winthrop-rainy-pass-rt',
+};
 
 // ====================================================================
 // FILTER CHIP STATE
@@ -178,6 +196,25 @@ function renderHikePills(hike: Hike): HTMLElement {
   items.push(pill('card__pill', `⛰ ${hike.elevation}`));
   items.push(pill('card__pill', `⏱ ${hike.duration}`));
   items.push(pill('card__pill', `${sideEmoji(hike.side)} ${sideLabel(hike.side)}`));
+
+  // Drive-from-base pill — pulls from the canonical driving.ts module so
+  // there's one source of truth for every drive time on the site.
+  const driveSegId = HIKE_DRIVE_SEGMENT[hike.id];
+  if (driveSegId) {
+    const seg = getDriveSegment(driveSegId);
+    if (seg) {
+      // Cascade Pass especially — flag the gravel + 1-hr-each-way callout.
+      const isCascadePass = hike.id === 'cascade-pass' || hike.id === 'sahale-arm';
+      const pillClass =
+        seg.status === 'gravel' || seg.status === 'wa20-and-gravel'
+          ? 'card__pill card__pill--warn'
+          : 'card__pill';
+      const label = isCascadePass
+        ? `🚗 ${seg.drive} from ${seg.from} (gravel, slow)`
+        : `🚗 ${seg.drive} from ${seg.from}`;
+      items.push(pill(pillClass, label));
+    }
+  }
 
   const season = seasonLabel(hike.season);
   if (season) items.push(pill('card__pill', `📅 ${season}`));

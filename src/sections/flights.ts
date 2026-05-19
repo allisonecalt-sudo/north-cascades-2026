@@ -30,6 +30,7 @@ import {
 } from '../data/flights';
 import { h, section } from '../dom';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
+import { renderDrivingRollup } from './driving-rollup';
 
 const ARRIVAL_PHOTOS: readonly CarouselPhoto[] = [
   {
@@ -189,6 +190,12 @@ export function renderFlights(): HTMLElement {
         )
       )
     ),
+
+    // ─── All driving on this trip (added 2026-05-19) ───
+    // Per-path rollups + collapsible per-segment table. Lives inside the
+    // flights section so the airport-compare and the full-trip drive view
+    // sit together as one "how much driving" surface.
+    renderDrivingRollup(),
 
     // ─── United credit callout (Allison-specific booking note) ───
     h(

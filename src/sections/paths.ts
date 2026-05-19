@@ -9,12 +9,29 @@
  */
 
 import { TRIP_PATHS, type TripPath } from '../data/paths';
+import { PATH_DRIVING_ROLLUPS } from '../data/driving';
 import {
   getSelectedPath,
   setSelectedPath,
   subscribeSelectedPath,
 } from '../state/path';
 import { h, section } from '../dom';
+
+/**
+ * Headline driving line for the path card — pulled from PATH_DRIVING_ROLLUPS
+ * so the path picker shows the total-driving tradeoff right alongside the
+ * WA-20 dependency. Added 2026-05-19 per the "make all driving visible"
+ * brief. Path C is not in the rollup (kept for comparison only) — falls back
+ * to a contextual line so the card still gets a driving signal.
+ */
+function pathDrivingLine(pathId: 'A' | 'B' | 'C'): string {
+  if (pathId === 'C') {
+    return '~10-12 hr total driving (closer to Path A, but with one east-side base shift on Day 2 instead of mid-trip)';
+  }
+  const rollup = PATH_DRIVING_ROLLUPS.find((r) => r.pathId === pathId);
+  if (!rollup) return '';
+  return `~${rollup.totalHoursLow.toFixed(0)}-${rollup.totalHoursHigh.toFixed(0)} hr total driving across 5 days`;
+}
 
 function renderCard(path: TripPath, active: boolean): HTMLElement {
   const card = h(
@@ -35,6 +52,12 @@ function renderCard(path: TripPath, active: boolean): HTMLElement {
       { class: 'path-card__bestif' },
       h('strong', {}, 'Best if: '),
       path.bestIf
+    ),
+    h(
+      'p',
+      { class: 'path-card__driving' },
+      h('strong', {}, '🚗 Driving: '),
+      pathDrivingLine(path.id)
     ),
     h(
       'ul',
