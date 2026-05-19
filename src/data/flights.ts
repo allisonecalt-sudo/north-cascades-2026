@@ -46,7 +46,7 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
     costDelta:
       'Erin verified May 18 11:07pm: "Yes we could do United. They fly into SEA. That\'s looking much cheaper." Allison May 18: "amazing and united ideal! If possible cuz I have this travel credit but not a must." Refundable preferred — Erin May 18 5:25am: "if we find something refundable we can book it as a backup."',
     drivingHours:
-      '~5.5-6 hr nonstop EWR↔SEA · ~2.5 hr drive SEA → Marblemount on Day 1 · ~2-4 hr drive back on Day 5 depending on east-side base',
+      '~5.5-6 hr nonstop EWR↔SEA · ~2 hr 15 min drive SEA → Marblemount on Day 1 (~115 mi) · ~2-4 hr drive back on Day 5 depending on east-side base',
     pros: [
       'Cheapest carrier on this route per Erin\'s May 18 research',
       'Allison\'s United travel credit applies — direct $-off',
@@ -57,7 +57,7 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
       'Works under every WA-20 contingency',
     ],
     cons: [
-      '+1 hr of driving on Day 1 vs landing at BLI',
+      '+~50 min of driving on Day 1 vs landing at BLI (~115 mi vs ~71 mi)',
       'Refundable upgrade adds ~$150-300 vs non-refundable on United',
     ],
     leading: true,
@@ -72,9 +72,9 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
     costDelta:
       'Use only if United pricing breaks. Higher base fare + Alaska\'s refundable upgrade is significantly steeper than United\'s — worse flex-tradeoff for the same Aug 16-20 booking-as-backup discipline.',
     drivingHours:
-      '~5.5-6 hr to SEA + ~30 min hop to BLI · ~1.5 hr drive BLI → Marblemount · ~4 hr drive back to SEA on Day 5 if open-jaw',
+      '~5.5-6 hr to SEA + ~30 min hop to BLI · ~1 hr 25 min drive BLI → Marblemount (~71 mi) · ~4 hr drive back to SEA on Day 5 if open-jaw',
     pros: [
-      'Shortest Day-1 drive (~1.5 hr from BLI vs ~2.5 hr from SEA)',
+      'Shortest Day-1 drive (~1 hr 25 min from BLI vs ~2 hr 15 min from SEA)',
       'Alaska runs the BLI feeder all day; tight reliable connections',
     ],
     cons: [
@@ -168,15 +168,15 @@ export interface AirportDriveCompare {
 export const AIRPORT_DRIVE_COMPARE: AirportDriveCompare[] = [
   {
     airport: 'SEA → Marblemount',
-    drive: '~2 hr 30 min',
-    miles: '~110 mi',
+    drive: '~2 hr 15 min',
+    miles: '~115 mi',
     note: 'I-5 N → WA-20 E. Stock kosher-friendly groceries at a Seattle Trader Joe\'s / QFC / Whole Foods on the way out. Works for Path A (all 4 nights west) and Path B (2 west + 2 east).',
   },
   {
     airport: 'BLI → Marblemount',
-    drive: '~1 hr 30 min',
-    miles: '~85 mi',
-    note: 'I-5 S briefly → WA-20 E. Saves ~1 hour on Day 1 vs SEA. No major Seattle Va\'ad grocery on this route — stock from BLI-area grocery instead.',
+    drive: '~1 hr 25 min',
+    miles: '~71 mi',
+    note: 'I-5 S briefly → WA-20 E. Saves ~50 min on Day 1 vs SEA. No major Seattle Va\'ad grocery on this route — stock from BLI-area grocery instead.',
   },
 ];
 

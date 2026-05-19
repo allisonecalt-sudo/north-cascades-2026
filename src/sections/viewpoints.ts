@@ -554,7 +554,7 @@ export function renderViewpointsGallery(): HTMLElement {
     renderSectionSources({
       label: 'Viewpoint facts sourced from',
       sources: [
-        { name: 'NPS · North Cascades', url: 'https://www.nps.gov/noca/planyourvisit/things-to-do.htm' },
+        { name: 'NPS · North Cascades', url: 'https://www.nps.gov/noca/planyourvisit/things2do.htm' },
         { name: 'WTA · Washington Trails Association', url: 'https://www.wta.org/' },
         { name: 'USFS · Mt. Baker-Snoqualmie + Okanogan-Wenatchee', url: 'https://www.fs.usda.gov/mbs' },
       ],
