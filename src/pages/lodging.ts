@@ -19,7 +19,7 @@ function mount(): void {
     // Hero lede rewritten 2026-05-17 (Lodging Owner pass): set context up
     // front. Dates + travelers + the kosher-cook-in HARD requirement that
     // drives why kitchen pills lead every card.
-    lede: '4 nights · Sun Aug 16 → Thu Aug 20, 2026 · Allison + Erin. Both kosher → full kitchen is required, not a nice-to-have. 2 beds always. Spacious-mid-tier (~$200-300/night), nature-near leads. Search playbook lives at the bottom of the page if you want it.',
+    lede: '4 nights · Sun Aug 16 → Thu Aug 20, 2026 · Allison + Erin. Both kosher → full kitchen is required, not a nice-to-have. 2 beds always. Spacious-mid-tier (~$200-300/night), nature-near leads. Refundable filter is ON by default (Erin May 18 — booking-as-backup discipline). DEFAULT BASE per Erin May 18: Marblemount cluster (Marblemount / Concrete / Rockport). Path B adds an east-side stretch (Winthrop / Mazama) as 2 nights west + 2 nights east. Path A keeps all 4 nights in the Marblemount cluster.',
     imageHero: {
       // Re-re-swapped May 17, 2026 (8:13 AM IDT) — prior URL loaded fine but
       // depicted a tropical beach resort, not PNW. Switching to the Diablo

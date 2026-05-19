@@ -151,19 +151,20 @@ export function renderPaths(): HTMLElement {
 
   const wrap = section(
     'paths',
-    'Choose a path',
+    'The three paths · deep dive',
     h(
       'ul',
       { class: 'gist' },
       h(
         'li',
         { class: 'gist__item' },
-        'Three shapes for the same five days. Pick one to filter the rest of the page — or browse all three.'
+        h('strong', {}, 'Decision is made (Erin May 18):'),
+        ' Path B (both sides) is the plan if WA-20 reopens. Path A (Marblemount only) is the locked fallback if it doesn\'t. Path C stays here for comparison only.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        'None is "the recommendation." They trade simplicity, variety, and east-side time differently.'
+        'Use the cards to filter the rest of the page to a specific path\'s lodging + hikes + itinerary, or just read through them to remember the tradeoffs.'
       )
     ),
     grid,

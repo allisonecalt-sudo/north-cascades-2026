@@ -27,23 +27,65 @@ export interface FlightOption {
 
 export const FLIGHT_OPTIONS: FlightOption[] = [
   {
-    id: 'sea-rt',
-    label: 'SEA roundtrip — fastest + most schedule options',
+    id: 'united-sea-rt',
+    label: 'United → SEA roundtrip (RECOMMENDED — Erin May 18)',
+    route: 'NYC (EWR/JFK) → SEA → NYC · United',
+    routeDiagram: 'NYC ──► SEA ──► NYC  (United)',
+    costDelta:
+      'Erin May 18 11:07pm: "Yes we could do United. They fly into SEA. That\'s looking much cheaper." Allison has a United travel credit (May 18: "amazing and united ideal! If possible cuz I have this travel credit but not a must"). Refundable preferred when the price gap is reasonable.',
+    drivingHours: '~5.5-6 hr nonstop EWR↔SEA · ~2.5 hr drive SEA → Marblemount · ~4 hr Day-5 drive back',
+    pros: [
+      'Cheapest carrier on this route per Erin\'s May 18 research',
+      'Allison\'s United travel credit applies — direct $-off',
+      'Nonstop EWR↔SEA on United',
+      'Refundable fare class available (typically Economy Flex or Premium) — keeps Path B/A optionality open until WSDOT confirms',
+      'Works under every WA-20 contingency',
+      'No one-way rental drop fee (SEA roundtrip)',
+    ],
+    cons: [
+      '+2.5 hrs of driving on Day 1 morning to reach Marblemount',
+      'Refundable upgrade adds ~$150-300 vs non-refundable on United',
+    ],
+    leading: true,
+    leadingNote:
+      'Leading option after the May 18 thread. Both Erin (cheapest) and Allison (travel credit) want United. Refundable add-on keeps booking-discipline alive while WA-20 status is still unresolved.',
+  },
+  {
+    id: 'alaska-bli',
+    label: 'Alaska → BLI (faster drive, more expensive)',
+    route: 'NYC → SEA → BLI · Alaska',
+    routeDiagram: 'NYC ──► SEA ──► BLI  (Alaska)',
+    costDelta:
+      'Higher fare + adds SEA→BLI feeder hop. Non-refundable unless upgraded — Alaska\'s refundable add-on is significantly steeper than United\'s.',
+    drivingHours: '~5.5-6 hr to SEA + ~30 min hop to BLI · ~1 hr drive BLI → Marblemount · ~4 hr drive SEA on return (if open-jaw)',
+    pros: [
+      'Shortest Day-1 drive (lands ~1 hr from Marblemount — saves 1.5 hrs vs SEA)',
+      'Alaska runs the BLI feeder all day; tight reliable connections',
+    ],
+    cons: [
+      'More expensive than United → SEA',
+      'Refundable fares add significant cost on Alaska — worse flex-tradeoff than United',
+      'BLI lands on the wrong side of the corridor if WA-20 stays closed',
+    ],
+    leading: false,
+  },
+  {
+    id: 'sea-rt-other',
+    label: 'SEA roundtrip on other carriers (Alaska / Delta / JetBlue)',
     route: 'NYC (JFK/EWR) → SEA → NYC',
     routeDiagram: 'NYC ──► SEA ──► NYC',
     costDelta:
-      'Cleanest schedule: nonstop both ways on Alaska, Delta, JetBlue, or United. ~5.5-6 hr each leg.',
-    drivingHours: '~5.5-6 hr nonstop · +2 hr Day-1 drive to Marblemount · 4 hr Day-5 drive back',
+      'Cross-shop if the United fare gap doesn\'t hold. Same airport, same ~2.5 hr drive — only the carrier changes.',
+    drivingHours: '~5.5-6 hr nonstop · +2.5 hr Day-1 drive to Marblemount · 4 hr Day-5 drive back',
     pros: [
-      'Fewest stopovers — JFK↔SEA + EWR↔SEA both run nonstop on four carriers',
-      'Most schedule flexibility (morning + afternoon + evening departures daily)',
-      'Works under every WA-20 contingency',
-      'No one-way rental drop fee',
+      'Nonstops both ways on Alaska, Delta, JetBlue — schedule flexibility',
+      'Hedge if United\'s fare moves before booking',
     ],
-    cons: ['+2 hrs of driving on Day 1 morning to reach Marblemount'],
-    leading: true,
-    leadingNote:
-      'Leading option for the "fastest + reasonable schedule" brief. Nonstop both ways on four carriers gives the most departure-time flexibility.',
+    cons: [
+      'No travel credit to apply (vs United)',
+      'Typically higher base fare on this NYC↔SEA route per Erin\'s research',
+    ],
+    leading: false,
   },
   {
     id: 'bli-sea',
@@ -147,12 +189,6 @@ export interface FlightOptionSummary {
 
 export const OTHER_FLIGHT_SUMMARIES: FlightOptionSummary[] = [
   {
-    id: 'bli-sea',
-    label: 'BLI in / SEA out (open-jaw)',
-    oneLiner:
-      '+1 stopover SEA→BLI (~30 min hop). Saves ~2 hrs of Day-1 driving but adds a stopover + one-way drop fee. Wins only if WA-20 is confirmed open.',
-  },
-  {
     id: 'sea-bli',
     label: 'SEA in / BLI out (reverse open-jaw)',
     oneLiner:
@@ -179,6 +215,33 @@ export const OTHER_FLIGHT_SUMMARIES: FlightOptionSummary[] = [
     label: 'YVR (Vancouver, BC) northern alternate',
     oneLiner:
       'Closest landing to the park, but border + passport + rental cross-border rules add friction.',
+  },
+];
+
+/**
+ * Airport → Marblemount drive comparison. Surfaced as a quick reference next
+ * to the leading card so the SEA vs BLI tradeoff is one glance.
+ * (Added 2026-05-19 per Erin May 18 thread.)
+ */
+export interface AirportDriveCompare {
+  airport: string;
+  drive: string;
+  miles: string;
+  note: string;
+}
+
+export const AIRPORT_DRIVE_COMPARE: AirportDriveCompare[] = [
+  {
+    airport: 'SEA → Marblemount',
+    drive: '~2 hr 30 min',
+    miles: '~110 mi',
+    note: 'I-5 N → WA-20 E. Stock kosher pantry at a Seattle Trader Joe\'s / QFC / Whole Foods on the way out.',
+  },
+  {
+    airport: 'BLI → Marblemount',
+    drive: '~1 hr 30 min',
+    miles: '~85 mi',
+    note: 'I-5 S briefly → WA-20 E. Saves 1 hour vs SEA. No major Seattle Va\'ad grocery on this route.',
   },
 ];
 

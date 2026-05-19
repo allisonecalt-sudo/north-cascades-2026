@@ -57,6 +57,7 @@ import { renderErinMustsStrip } from '../sections/erin-musts-strip';
 import { renderTripState } from '../sections/trip-state';
 import { renderFreshNotes } from '../sections/fresh-notes';
 import { renderHomeReference } from '../sections/home-reference';
+import { renderConversationState } from '../sections/conversation-state';
 import { h } from '../dom';
 
 function mount(): void {
@@ -94,11 +95,16 @@ function mount(): void {
     // Self-hides once Erin flips the "I've answered these" flag on /for-erin.
     renderErinMustsStrip(),
     statBand,
+    // What's-decided strip (May 19, 2026): sources from the actual back-and-
+    // forth (WhatsApp + Google Doc). Sits ABOVE the path picker because the
+    // path decision is MADE — Path B if WA-20 opens, Path A fallback if not
+    // (Erin May 18). The picker is now a deep-dive, not the central question.
+    renderConversationState(),
     // Narrative anchor — sets the "plan in this order" mental model before
     // the path picker forces a decision.
     renderStoryArc(),
 
-    // ──── Central decision ────
+    // ──── Path deep-dive (no longer the central decision) ────
     renderPaths(),
     renderFeaturedStrip(),
 

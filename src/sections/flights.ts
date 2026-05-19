@@ -8,6 +8,7 @@
 
 import {
   AIRPORT_ALTERNATIVES,
+  AIRPORT_DRIVE_COMPARE,
   BOOKING_TIPS,
   FLIGHT_OPTIONS,
   FLIGHT_RETURN_OPTIONS,
@@ -100,13 +101,41 @@ export function renderFlights(): HTMLElement {
   return section(
     'flights',
     'Flights',
-    // Gist in 3 lines.
+    // Gist in 3 lines — updated 2026-05-19 after Erin May 18 thread.
     h(
       'ul',
       { class: 'gist' },
-      h('li', { class: 'gist__item' }, 'Target: fastest + good times (fewest stopovers + reasonable departure).'),
-      h('li', { class: 'gist__item' }, 'SEA roundtrip nonstop on Alaska / Delta / JetBlue / United matches the brief most cleanly — leading option below.'),
-      h('li', { class: 'gist__item' }, 'Open-jaw + other routings sit below as alternatives, mostly relevant if WA-20 status changes.')
+      h(
+        'li',
+        { class: 'gist__item' },
+        h('strong', {}, 'Leaning United → SEA'),
+        ' (Erin May 18: "cheaper"; Allison has travel credit). Refundable preferred while WA-20 is still unresolved.'
+      ),
+      h('li', { class: 'gist__item' }, 'Alaska → BLI is the faster-drive alternate but costs more and refundable adds steep premium.'),
+      h('li', { class: 'gist__item' }, 'Other carriers + open-jaw routings sit below as alternatives, mostly relevant if WA-20 status changes.')
+    ),
+    // Airport → Marblemount drive comparison — added 2026-05-19.
+    h(
+      'div',
+      { class: 'airport-compare' },
+      h('h3', { class: 'airport-compare__title' }, 'Drive from airport · SEA vs BLI'),
+      h(
+        'ul',
+        { class: 'airport-compare__list' },
+        ...AIRPORT_DRIVE_COMPARE.map((row) =>
+          h(
+            'li',
+            { class: 'airport-compare__row' },
+            h('strong', { class: 'airport-compare__airport' }, row.airport),
+            h(
+              'span',
+              { class: 'airport-compare__stats' },
+              `${row.drive} · ${row.miles}`
+            ),
+            h('span', { class: 'airport-compare__note' }, row.note)
+          )
+        )
+      )
     ),
     h(
       'div',

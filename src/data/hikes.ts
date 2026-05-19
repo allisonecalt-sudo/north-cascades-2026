@@ -537,10 +537,10 @@ export const HIKES: Hike[] = [
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
     description:
-      'West-side alternate, especially useful if east-side smoke or WA-20 status changes. Historic 1932 fire lookout, in-your-face Mt. Baker views.',
+      'Erin May 18 callout — "I have something in the Google doc about Mt Baker, it sounds like it\'s worth checking out." West-side alternate, especially useful if east-side smoke or WA-20 status changes. Historic 1932 fire lookout, in-your-face Mt. Baker views. ~1 hr west of Marblemount.',
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/park-butte',
     researchNotes:
-      'WTA-verified May 17, 2026: 7.5 mi RT / +2,200 ft / 5,450 ft summit, NW Forest Pass required. FR 13 / Baker Lake Rd is Mt. Baker corridor — west-side access INDEPENDENT of WA-20 closure. Seasonal bridge usually in place by early summer; verify Mt. Baker-Snoqualmie NF road status before counting on it.',
+      'WTA-verified May 17, 2026: 7.5 mi RT / +2,200 ft / 5,450 ft summit, NW Forest Pass required. FR 13 / Baker Lake Rd is Mt. Baker corridor — west-side access INDEPENDENT of WA-20 closure. Seasonal bridge usually in place by early summer; verify Mt. Baker-Snoqualmie NF road status before counting on it. ADDED TO PATH B HIKES May 19, 2026 per Erin\'s explicit callout.',
   },
   {
     id: 'chain-lakes',

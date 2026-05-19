@@ -146,10 +146,10 @@ const PATH_B_ITINERARY: ItineraryDay[] = [
     title: 'SEA arrival, drive to Marblemount',
     shape: 'Morning SEA landing, drive in, Ladder Creek Falls evening.',
     stops: [
-      { step: 'Land SEA AM', detail: 'Nonstop on Alaska from NYC.' },
+      { step: 'Land SEA AM', detail: 'Nonstop on Alaska or United from NYC.' },
       { step: 'Rental pickup', detail: 'SEA on-site rentals.' },
-      { step: 'Drive SEA → Marblemount', detail: '~2 hrs via I-5 → WA-20.', time: '~2 hrs' },
-      { step: 'Check in (west)', detail: 'Nights 1-2 at Cascade River House or Glacier Peak Resort.' },
+      { step: 'Drive SEA → Marblemount', detail: '~2.5 hrs via I-5 → WA-20.', time: '~2.5 hrs' },
+      { step: 'Check in (west)', detail: 'Nights 1-2 in the Marblemount cluster (Cascade River House, Glacier Peak Resort, or other Marblemount/Concrete/Rockport pick).' },
       {
         step: 'Ladder Creek Falls',
         detail: 'MP 120 · <0.5 mi paved loop · lit at dusk.',
@@ -160,12 +160,20 @@ const PATH_B_ITINERARY: ItineraryDay[] = [
   {
     day: 2,
     date: 'Mon Aug 17',
-    title: 'Cascade Pass day (west signature)',
-    shape: 'Cascade Pass — moderate, alpine views. Back by 5-6 PM.',
+    title: 'Cascade Pass day (west signature) · Mt Baker side trip option',
+    shape: 'Cascade Pass — moderate, alpine views. Back by 5-6 PM. Mt Baker / Park Butte available as the swap-in alternative.',
     stops: [
       { step: 'Pre-hike fuel', detail: 'Cabin breakfast + packed lunch + 2L water each.' },
-      { step: 'Drive to trailhead', detail: '~1 hr · last 13 mi dirt + gravel.', time: '~1 hr' },
-      { step: 'Cascade Pass (moderate)', detail: '7.0 mi RT · ~1,800 ft · 3.5-4 hrs. Pass only.' },
+      {
+        step: 'Option A — Cascade Pass (default)',
+        detail: 'Drive ~1 hr (last 13 mi dirt + gravel) · 7.0 mi RT · ~1,800 ft · 3.5-4 hrs. Pass only.',
+        time: '~5 hrs total',
+      },
+      {
+        step: 'Option B — Mt Baker / Park Butte (Erin May 18)',
+        detail: 'Drive ~1 hr 15 min west to FR 13 off Baker Lake Rd · 7.5 mi RT · ~2,200 ft · ~5 hrs. Historic 1932 fire lookout with in-your-face Mt Baker views. NW Forest Pass required. Off WA-20 corridor — accessible even if WA-20 stays closed.',
+        time: '~5 hrs total',
+      },
       { step: 'Drive back', detail: '~1 hr to Marblemount.', time: '~1 hr' },
     ],
     meals: { dinner: 'Cabin dinner.' },
@@ -321,13 +329,14 @@ const PATH_C_ITINERARY: ItineraryDay[] = [
 export const TRIP_PATHS: TripPath[] = [
   {
     id: 'A',
-    name: 'Path A · West-Side Anchor',
-    tagline: 'One Marblemount cabin all 4 nights. Lowest WA-20 risk.',
+    name: 'Path A · West-Side Anchor (LOCKED FALLBACK)',
+    tagline: 'One Marblemount cabin all 4 nights. The fallback if WA-20 stays closed.',
     bestIf:
-      'WA-20 reopen looks shaky in July — OR you want the simplest version with the least driving.',
+      'WA-20 still closed by booking week. Erin May 18: "otherwise it\'s probably better to do Path A." This is the locked fallback if Path B falls through.',
     snapshot: [
-      'One base, one cabin — matches Erin\'s single-base preference',
-      'Cascade Pass + WA-20 viewpoints + slow days',
+      'Locked fallback (Erin May 18) — picks up if WA-20 stays closed',
+      'One base, one cabin in the Marblemount cluster',
+      'Cascade Pass + WA-20 viewpoints + Mt Baker swap-in option',
       'Skips the east side (no Maple Pass, no Winthrop)',
     ],
     lodgingIds: ['cascade-river-house', 'glacier-peak', 'rhody-house', 'nc-hideaway', 'nc-riverside', 'ovenells'],
@@ -341,20 +350,22 @@ export const TRIP_PATHS: TripPath[] = [
   },
   {
     id: 'B',
-    name: 'Path B · Both Sides, Balanced',
-    tagline: 'Marblemount 2 nights → Winthrop 2 nights. The full park.',
+    name: 'Path B · Both Sides, Balanced (PRIMARY PLAN)',
+    tagline: 'Marblemount 2 nights → Winthrop 2 nights. The plan if WA-20 reopens.',
     bestIf:
-      'WA-20 looks solid by mid-July AND you want the full park — both signature hikes, both viewpoints, a Winthrop town night.',
+      'WA-20 reopens by booking week. Erin May 18: "I\'d be down to do Path B but only once we know the road is opened." This is the primary plan, gated only on the road.',
     snapshot: [
+      'Primary plan (Erin May 18) — gated on WA-20 reopen',
       'Both signature hikes: Cascade Pass + Maple Pass',
       'Both viewpoints + a real Winthrop town night',
-      'Two bases, one move — fits Erin\'s "max 2 places" rule',
+      '2 nights west (Marblemount cluster) + 2 nights east — fits Erin\'s "max 2 places" rule',
+      'Mt Baker / Park Butte available as Day 1.5 side trip',
     ],
     lodgingIds: [
       'cascade-river-house', 'glacier-peak', 'rhody-house',
       'methow-river', 'rivers-edge', 'freestone', 'chewuch', 'inn-at-mazama', 'spring-creek-ranch',
     ],
-    hikeIds: ['ladder-creek', 'cascade-pass', 'thunder-knob', 'maple-pass', 'blue-lake'],
+    hikeIds: ['ladder-creek', 'cascade-pass', 'thunder-knob', 'maple-pass', 'blue-lake', 'park-butte'],
     itinerary: PATH_B_ITINERARY,
     includeSeattle: true,
     seattleNote: 'Conditional Leavenworth lunch stop on the Day-5 scenic-US-2 return. Seattle itself = airport only.',
@@ -364,12 +375,13 @@ export const TRIP_PATHS: TripPath[] = [
   },
   {
     id: 'C',
-    name: 'Path C · Slow Winthrop Base',
-    tagline: '1 night Marblemount + 3 nights Winthrop. Less driving, more porch.',
+    name: 'Path C · Slow Winthrop Base (comparison only)',
+    tagline: '1 night Marblemount + 3 nights Winthrop. Kept for comparison — not actively on the table per May 18.',
     bestIf:
-      'Least driving, most evenings-at-the-cabin. Easy-to-moderate hikes only. More town time in Winthrop.',
+      'Least driving, most evenings-at-the-cabin. NOT in the active May 18 plan — Erin chose Path B (with A fallback), not Path C. Kept here so the tradeoff is visible.',
     snapshot: [
-      '3 nights in Winthrop — fewest packing days, fits "max 2 places" rule',
+      'Comparison-only — Erin\'s May 18 decision was Path B then A, not C',
+      '3 nights in Winthrop — fewest packing days',
       'East-side hikes only — Maple Pass, Blue Lake, Rainy Lake',
       'Skips Cascade Pass (the biggest tradeoff)',
     ],

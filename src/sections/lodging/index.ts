@@ -449,6 +449,36 @@ export function renderLodging(): HTMLElement {
     h('li', { class: 'source-pill' }, 'Airbnb · live'),
     h('li', { class: 'source-pill source-pill--warn' }, 'Photos partly representative')
   );
+
+  // Added 2026-05-19 after Erin May 18 11:43pm VN about the 2+2 split idea.
+  // Surfaces the three shape options Allison is researching against.
+  const splitCallout = h(
+    'div',
+    { class: 'lodging-split-callout' },
+    h('h3', { class: 'lodging-split-callout__title' }, 'Three shapes Allison is researching'),
+    h(
+      'ol',
+      { class: 'lodging-split-callout__list' },
+      h(
+        'li',
+        {},
+        h('strong', {}, 'Path A — 4 nights in Marblemount cluster:'),
+        ' one cabin all trip in Marblemount / Concrete / Rockport. Locked fallback if WA-20 stays closed.'
+      ),
+      h(
+        'li',
+        {},
+        h('strong', {}, 'Path B — 2 nights west + 2 nights east (the split):'),
+        ' Marblemount cluster Nights 1-2 → Winthrop/Mazama Nights 3-4. Erin May 18: "wondering if it\'s hard to find things if we do two nights in one place, two nights in another place, but still within that realm." Active default if WA-20 reopens.'
+      ),
+      h(
+        'li',
+        {},
+        h('strong', {}, 'Single Marblemount-cluster property all 4 nights:'),
+        ' if a single cabin can do both vibes (Marblemount cluster is still ~1 hr driving range to most Path-B activities per Erin\'s May 18 framing).'
+      )
+    )
+  );
   // Lodging Owner pass (2026-05-17): page-level disclaimer absorbs the
   // pills that used to repeat on every card: ✅ Verified May 2026, ⚠️ Verify
   // beds at booking, 📅 Aug 16-20: verify. Surfacing once instead of 19x.
@@ -477,6 +507,7 @@ export function renderLodging(): HTMLElement {
     h('ul', { class: 'gist' }),
     sourceStrip,
     sourceNote,
+    splitCallout,
     chipBar,
     shortlistContainer,
     tabs,

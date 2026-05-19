@@ -17,7 +17,10 @@
  *   - Allison can re-trigger with window.resetWelcome() or ?welcome=1.
  */
 
-const WELCOME_KEY = 'ncades2026.welcomeSeen';
+// Key bumped to v2 on 2026-05-19 after Path B + A fallback decision: copy
+// changed substantively and we want Erin to see the new "what's decided"
+// framing on her next visit, not the stale "pick a path" popup.
+const WELCOME_KEY = 'ncades2026.welcomeSeen.v2';
 
 function hasSeenWelcome(): boolean {
   try {
@@ -45,50 +48,52 @@ function buildPopup(): HTMLDivElement {
     <div class="welcome-popup">
       <button class="welcome-popup__close" type="button" aria-label="Close welcome">×</button>
       <div class="welcome-popup__eyebrow">Hey Erin —</div>
-      <h2 class="welcome-popup__title" id="welcome-popup-title">Your Google Doc is still the plan. This is Allison's research dump on top of it.</h2>
+      <h2 class="welcome-popup__title" id="welcome-popup-title">You picked Path B + A fallback ✓ — now locking flights + lodging.</h2>
       <p class="welcome-popup__body">
-        Quick context — you've been leading this trip (proposed it, narrowed the
-        parks, pushed booking discipline). Allison did a deep research pass on
-        North Cascades and asked Claude (the AI she's been using) to lay it all
-        out visually so you'd have something concrete to react to. Lodging,
-        hikes, drive times, costs — pick what looks right, push back on what
-        doesn't.
+        Quick recap of where we landed in the May 18 thread — Path B (both sides)
+        if WA-20 reopens, Path A (Marblemount-only) if it doesn't. Site has been
+        re-shaped around that: the "What's decided" strip on the home page is
+        the live state, and the deeper picker below is the deep dive for when
+        you want to peek at the alternates.
       </p>
 
       <div class="welcome-popup__steps">
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">1</span>
           <div class="welcome-popup__step-body">
-            <strong>Five things Allison really needs from you</strong> are at the
-            top of the <a href="for-erin.html#must" style="color: inherit; text-decoration: underline;">For Erin</a> page.
-            Path A vs B vs C, your hike ceiling, hard yes/hard no, etc. Tap any
-            one to start.
+            <strong>What's decided strip</strong> sits right at the top of the
+            home page. Path · road gate · flights · lodging · Mt Baker — each
+            row shows current state + who's holding the ball. That's your
+            30-second status check.
           </div>
         </div>
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">2</span>
           <div class="welcome-popup__step-body">
-            <strong>However you want to react is fine:</strong>
+            <strong>What's new since you last looked:</strong>
             <ul style="margin: 0.4rem 0 0 1rem; padding: 0; list-style: disc;">
-              <li><strong>Text or email Allison</strong> — totally fine, she'll relay it</li>
-              <li>Edit the <strong>Google Doc</strong> — Allison reads it between sessions</li>
-              <li>Or tap <span class="welcome-popup__chip">💬&nbsp;Note</span> on any section or question (the inline button is scoped to that exact spot) — Claude reads these in the next session and updates the site</li>
+              <li><strong>Flights:</strong> United → SEA is now the leading option (your May 18 note — cheaper, Allison has the travel credit, refundable preferred)</li>
+              <li><strong>Lodging:</strong> Marblemount cluster (Marblemount / Concrete / Rockport) is the default. Refundable-only filter is ON by default. 2-nights-west + 2-nights-east split for Path B is flagged on the lodging page.</li>
+              <li><strong>Mt Baker:</strong> added a Park Butte card per your Google Doc — ~1 hr west of Marblemount, swap-in for Path A or side trip for Path B.</li>
             </ul>
           </div>
         </div>
         <div class="welcome-popup__step">
           <span class="welcome-popup__step-num">3</span>
           <div class="welcome-popup__step-body">
-            <strong>Allison is 10 hours ahead.</strong> Leave a note / text / doc
-            edit before bed — by the time you wake up the site will reflect what
-            you sent. Refresh and see.
+            <strong>However you want to react is fine:</strong> text Allison
+            (she's 10 hrs ahead, will get it on her morning), edit the
+            <strong>Google Doc</strong>, or tap
+            <span class="welcome-popup__chip">💬&nbsp;Note</span> on any section.
+            All three reach the next session.
           </div>
         </div>
       </div>
 
       <p class="welcome-popup__body welcome-popup__body--small">
-        Three paths up top (A / B / C) for shaping the 4 nights — nothing's
-        picked yet. Have an instinct? Send it whichever way is easiest.
+        Still open: WSDOT WA-20 reopen confirmation (gates Path B vs Path A),
+        exact United fares (you're researching), exact Marblemount lodging picks
+        (Allison's researching today).
       </p>
 
       <div class="welcome-popup__actions">
