@@ -27,6 +27,7 @@ import {
   FLIGHT_OPTIONS,
   FLIGHT_RETURN_OPTIONS,
   type FlightOption,
+  type TravelerView,
 } from '../data/flights';
 import { h, section } from '../dom';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
@@ -61,40 +62,86 @@ const ARRIVAL_PHOTOS: readonly CarouselPhoto[] = [
 
 type CardVariant = 'leading' | 'fallback' | 'tertiary';
 
+/** Per-traveler mini-row inside the split pricing block.
+ *  Same flight, one booking view. Two of these sit side-by-side on
+ *  desktop (≥640px) and stack on mobile. Allison's row gets a credit-
+ *  applies accent when `creditApplies === true`. */
+function renderTravelerView(
+  view: TravelerView,
+  who: 'allison' | 'erin'
+): HTMLElement {
+  const creditAccent = view.creditApplies ? ' traveler-view--credit' : '';
+  return h(
+    'div',
+    {
+      class: `traveler-view traveler-view--${who}${creditAccent}`,
+      'aria-label': `${view.name} booking view`,
+    },
+    h(
+      'header',
+      { class: 'traveler-view__head' },
+      h('span', { class: 'traveler-view__name' }, view.name),
+      view.creditApplies
+        ? h('span', { class: 'traveler-view__credit-tag' }, '💳 credit applies')
+        : null
+    ),
+    h(
+      'dl',
+      { class: 'traveler-view__facts' },
+      h('dt', {}, 'Airport'),
+      h('dd', {}, view.airportPref),
+      h('dt', {}, 'Loyalty'),
+      h('dd', {}, view.loyalty),
+      h('dt', {}, 'Expected price'),
+      h('dd', { class: 'traveler-view__price' }, view.expectedPrice),
+      h('dt', {}, 'Book at'),
+      h('dd', {}, view.bookingNote),
+      view.refundableNote
+        ? [h('dt', {}, 'Refundable'), h('dd', {}, view.refundableNote)]
+        : null
+    )
+  );
+}
+
 function renderPricingBlock(option: FlightOption): HTMLElement | null {
-  if (!option.pricing) return null;
+  if (!option.pricing && !option.allison && !option.erin) return null;
   const p = option.pricing;
   return h(
     'div',
-    { class: 'flight-card__pricing', 'aria-label': 'Round-trip fare estimates per person' },
-    h('h4', { class: 'flight-card__pricing-title' }, '$ per person · round-trip'),
+    {
+      class: 'flight-card__pricing flight-card__pricing--split',
+      'aria-label': 'Per-traveler booking views — Allison and Erin book independently',
+    },
     h(
-      'ul',
-      { class: 'flight-card__pricing-rows' },
-      h(
-        'li',
-        { class: 'flight-card__pricing-row' },
-        h('span', { class: 'flight-card__pricing-label' }, 'Basic / Saver'),
-        h('span', { class: 'flight-card__pricing-amount' }, `~$${p.low}`)
-      ),
-      h(
-        'li',
-        { class: 'flight-card__pricing-row' },
-        h('span', { class: 'flight-card__pricing-label' }, 'Main Cabin (typical)'),
-        h('span', { class: 'flight-card__pricing-amount' }, `~$${p.mid}`)
-      ),
-      h(
-        'li',
-        { class: 'flight-card__pricing-row flight-card__pricing-row--refundable' },
-        h('span', { class: 'flight-card__pricing-label' }, `Refundable / Flex (+$${p.refundablePremium} flex)`),
-        h('span', { class: 'flight-card__pricing-amount' }, `~$${p.refundable}`)
-      )
+      'h4',
+      { class: 'flight-card__pricing-title' },
+      'Per-traveler booking views · they book independently'
     ),
     h(
-      'p',
-      { class: 'flight-card__pricing-source' },
-      `Source: ${p.sourceLabel} · re-verify before booking.`
-    )
+      'div',
+      { class: 'traveler-split' },
+      option.allison ? renderTravelerView(option.allison, 'allison') : null,
+      option.erin ? renderTravelerView(option.erin, 'erin') : null
+    ),
+    // Keep the shared baseline numbers visible underneath the split so the
+    // sourcing line + headline range stay one-glance for the booker.
+    p
+      ? h(
+          'div',
+          { class: 'flight-card__pricing-baseline' },
+          h(
+            'p',
+            { class: 'flight-card__pricing-baseline-line' },
+            h('strong', {}, 'Shared baseline · '),
+            `Basic ~$${p.low} · Main Cabin ~$${p.mid} · Refundable ~$${p.refundable} (+$${p.refundablePremium} flex).`
+          ),
+          h(
+            'p',
+            { class: 'flight-card__pricing-source' },
+            `Source: ${p.sourceLabel} · re-verify before booking.`
+          )
+        )
+      : null
   );
 }
 
@@ -245,6 +292,14 @@ export function renderFlights(): HTMLElement {
         { class: 'united-credit-callout__body' },
         'Allison has a United travel credit. Price logged in to united.com so the credit is visible pre-tax — Erin doing a logged-out search will see a higher number than what Allison actually pays. Book direct on united.com (NOT Expedia / Hopper / third-party) — credits only redeem there.'
       )
+    ),
+
+    // ─── Two-travelers intro (sits directly above the flight cards) ───
+    h(
+      'p',
+      { class: 'flights-two-travelers-intro' },
+      h('strong', {}, 'Two travelers, two bookings. '),
+      'Allison and Erin book independently — same flights, different prices because Allison\'s United travel credit applies on her ticket. Each card below shows both views.'
     ),
 
     // ─── Leading card ───

@@ -26,7 +26,11 @@ export interface FlightOption {
   /** Headline tradeoff line under the route diagram. Cites the source quote. */
   costDelta: string;
   drivingHours: string;
-  /** Per-person fare ranges, USD round-trip — added 2026-05-19. */
+  /** Per-person fare ranges, USD round-trip — added 2026-05-19.
+   *  This is the SHARED baseline (Erin's expected number is `mid`; her
+   *  refundable upgrade is `refundable`). Allison's number diverges because
+   *  her United travel credit applies pre-tax on united.com — see
+   *  `allison.expectedPriceNote` below. */
   pricing?: {
     low: number;
     mid: number;
@@ -35,6 +39,12 @@ export interface FlightOption {
     sourceLabel: string;
     verifiedOn: string;
   };
+  /** Per-traveler booking view — added 2026-05-19 per Allison ask.
+   *  Both travelers book INDEPENDENTLY on the same flights; they have
+   *  different airport prefs, loyalty, and (for Allison) a United travel
+   *  credit that lands a different displayed price. */
+  allison?: TravelerView;
+  erin?: TravelerView;
   pros: string[];
   cons: string[];
   /** True if it leads the section. */
@@ -44,6 +54,29 @@ export interface FlightOption {
   /** Plain prose note under the leading card. */
   leadingNote?: string;
   warning?: string;
+}
+
+/** Per-traveler booking view on a single flight card.
+ *  Same flight, two booking flows — different prices, different prefs. */
+export interface TravelerView {
+  /** Display name on the mini-row header (e.g. "Allison"). */
+  name: string;
+  /** Compact airport-preference summary
+   *  (e.g. "✓ EWR best · JFK ok · LGA backup"). */
+  airportPref: string;
+  /** Loyalty / status summary (e.g. "United loyalty"). */
+  loyalty: string;
+  /** TRUE only for Allison — drives the United-credit callout per row. */
+  creditApplies?: boolean;
+  /** Plain-language expected price line (e.g. "~$440 Main Cabin · less her
+   *  United travel credit [verify amount at login]"). DO NOT fabricate the
+   *  exact credit dollar value — flag it as TBD. */
+  expectedPrice: string;
+  /** Where to book + any traveler-specific booking instruction
+   *  (e.g. "Book at united.com logged in so the credit applies pre-tax"). */
+  bookingNote: string;
+  /** Optional refundable-upgrade callout — Erin asked for refundable May 18. */
+  refundableNote?: string;
 }
 
 export const FLIGHT_OPTIONS: FlightOption[] = [
@@ -63,6 +96,29 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
       refundablePremium: 150,
       sourceLabel: 'Google Flights + Expedia · Aug 2026 sweep, verified May 19, 2026',
       verifiedOn: '2026-05-19',
+    },
+    allison: {
+      name: 'Allison',
+      airportPref: '✓ EWR primary · JFK secondary · LGA acceptable',
+      loyalty: 'United loyalty + United travel credit on file',
+      creditApplies: true,
+      expectedPrice:
+        '~$440 Main Cabin (~$590 refundable) minus her United travel credit · [verify Allison\'s credit amount + expiration at united.com login]',
+      bookingNote:
+        'Book direct on united.com logged in — credit applies pre-tax to the fare, NOT on Expedia / Hopper / any third-party.',
+      refundableNote:
+        'Economy Flex adds ~$150 over Main Cabin — keeps Path B/A optionality open until WA-20 confirms.',
+    },
+    erin: {
+      name: 'Erin',
+      airportPref: '✓ EWR primary (NJ-based, hometown)',
+      loyalty: 'United loyalty — "United is the only thing I have anything for"',
+      creditApplies: false,
+      expectedPrice: '~$440 Main Cabin · ~$590 refundable (her likely number)',
+      bookingNote:
+        'Search united.com logged-out or with her own account. Main Cabin / Economy Flex per her refundable preference.',
+      refundableNote:
+        'Erin May 18 5:25am: "if we find something refundable we can book it as a backup." $1000+ refundable acceptable to her.',
     },
     pros: [
       'Cheapest carrier on this route per Erin\'s May 18 research',
@@ -98,6 +154,29 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
       sourceLabel: 'Travelocity · Alaska EWR↔BLI Aug 2026, verified May 19, 2026',
       verifiedOn: '2026-05-19',
     },
+    allison: {
+      name: 'Allison',
+      airportPref: '✓ EWR primary · JFK secondary · LGA acceptable',
+      loyalty: 'No Alaska loyalty · United travel credit does NOT apply here',
+      creditApplies: false,
+      expectedPrice:
+        '~$470 Main Cabin · ~$670 refundable · no United travel credit redeems on Alaska — she pays the full Alaska number.',
+      bookingNote:
+        'Only book if United pricing breaks. Booking on alaskaair.com direct is fine — no credit to preserve here.',
+      refundableNote:
+        'Alaska\'s refundable upgrade is ~$200 — steeper than United\'s ~$150. Worse flex-tradeoff for the same dates.',
+    },
+    erin: {
+      name: 'Erin',
+      airportPref: '✓ EWR primary (NJ-based)',
+      loyalty: 'No Alaska loyalty — United-only',
+      creditApplies: false,
+      expectedPrice: '~$470 Main Cabin · ~$670 refundable',
+      bookingNote:
+        'Book on alaskaair.com direct. Same fare class she\'d pick on United (refundable preferred).',
+      refundableNote:
+        'Refundable upgrade is steeper here than United — only use if United pricing has actually broken on the dates.',
+    },
     pros: [
       'Shortest Day-1 drive (~1 hr 25 min from BLI vs ~2 hr 15 min from SEA)',
       'Alaska runs the BLI feeder all day; tight reliable connections',
@@ -127,6 +206,28 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
       refundablePremium: 150,
       sourceLabel: 'Skyscanner · JFK↔SEA + Google Flights LGA cross-shop, verified May 19, 2026',
       verifiedOn: '2026-05-19',
+    },
+    allison: {
+      name: 'Allison',
+      airportPref: 'EWR primary · ✓ JFK secondary · LGA acceptable (her ranking — May 19)',
+      loyalty: 'United loyalty + travel credit on file',
+      creditApplies: true,
+      expectedPrice:
+        '~$420 Main Cabin (~$570 refundable) minus her United travel credit (United metal only) · [verify credit amount + that the JFK/LGA fare is on United, not Delta / JetBlue / Alaska]',
+      bookingNote:
+        'Book direct on united.com logged in. If the cheapest JFK/LGA→SEA fare is on Delta or JetBlue, the credit won\'t apply — cross-shop EWR before switching airports.',
+      refundableNote:
+        'Same United Economy Flex math as EWR. ~$150 over Main Cabin.',
+    },
+    erin: {
+      name: 'Erin',
+      airportPref: '✓ EWR primary (her home airport) — JFK / LGA add NYC traffic for her',
+      loyalty: 'United loyalty only',
+      creditApplies: false,
+      expectedPrice: '~$420 Main Cabin · ~$570 refundable',
+      bookingNote:
+        'If Allison ends up on JFK/LGA United, Erin can still leave from EWR on a different United flight — they don\'t have to be on the same metal.',
+      refundableNote: 'Refundable preference holds — same upgrade math as EWR.',
     },
     pros: [
       'NYC airport flexibility if EWR fares jump',
@@ -253,9 +354,24 @@ export interface BookingTip {
 
 export const BOOKING_TIPS: BookingTip[] = [
   {
-    topic: 'United travel credit',
+    topic: 'Allison · booking steps',
     detail:
-      'Allison has a United travel credit — apply it at checkout. Price logged-in to united.com so the credit is visible pre-tax. Erin doing a logged-out search will see a higher number than what Allison actually pays. Don\'t book through a third-party (Expedia / Hopper) — credits only apply on united.com direct.',
+      'Log into united.com FIRST so the travel credit is visible pre-tax at checkout. Verify the credit amount + expiration before locking dates. NEVER book through Expedia / Hopper / Capital One Travel / any third-party — United credits only redeem on united.com direct. Same logic on JFK/LGA only if the fare is on United metal (not Delta / JetBlue / Alaska codeshare).',
+  },
+  {
+    topic: 'Erin · booking steps',
+    detail:
+      'Search united.com logged-out or with her own MileagePlus account. Book Main Cabin / Economy Flex per her refundable preference (she said May 18 5:25am: "if we find something refundable we can book it as a backup"). $1000+ refundable is acceptable to her. She can book before or after Allison — they don\'t have to share a PNR; they\'re booking the same flight independently.',
+  },
+  {
+    topic: 'Cross-check the fare gap',
+    detail:
+      'After both have priced the flight in their own session, compare. If Allison\'s logged-in price is significantly HIGHER than Erin\'s logged-out price, something is off — the credit may not be applying, or Allison may be looking at a different fare class. Pause + recheck before either of them clicks book.',
+  },
+  {
+    topic: 'United travel credit · how it works',
+    detail:
+      'Allison has a United travel credit — apply it at checkout. Price logged-in to united.com so the credit is visible pre-tax. Erin doing a logged-out search will see a higher number than what Allison actually pays. Credit amount + expiration date are unknown until she logs in — VERIFY first.',
   },
   {
     topic: 'Refundable fare class',

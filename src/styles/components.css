@@ -246,6 +246,143 @@
   font-style: italic;
 }
 
+/* ─── Per-traveler split pricing — added 2026-05-19 per Allison ask ───
+ * Allison and Erin book independently on the same flights. Each card now
+ * shows TWO mini-rows (one per traveler) instead of a single shared price
+ * block. Side-by-side on desktop ≥640px; stacked on mobile.
+ */
+.flight-card__pricing--split {
+  /* override the original pricing block padding so the two-column grid
+   * has room to breathe on a mobile viewport */
+  padding: var(--space-3);
+}
+
+.traveler-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+@media (min-width: 640px) {
+  .traveler-split {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    /* subtle divider between the two views so it's clear they're two
+     * booking flows on the same flight, not two competing options */
+    position: relative;
+  }
+  .traveler-split > .traveler-view + .traveler-view {
+    border-left: 1px dashed var(--c-ink-200, #e0ddd4);
+    padding-left: var(--space-3);
+  }
+}
+
+@media (max-width: 639px) {
+  /* On mobile: stacked, with a horizontal divider between the two views */
+  .traveler-split > .traveler-view + .traveler-view {
+    border-top: 1px dashed var(--c-ink-200, #e0ddd4);
+    padding-top: var(--space-3);
+  }
+}
+
+.traveler-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.traveler-view--credit {
+  /* soft tint on Allison's row when her United travel credit applies */
+  background: rgba(44, 107, 179, 0.04);
+  border-radius: 4px;
+  padding: var(--space-2);
+  margin: calc(-1 * var(--space-2));
+}
+
+@media (min-width: 640px) {
+  .traveler-view--credit {
+    /* keep the tint but don't fight the divider's left padding */
+    margin: 0;
+  }
+}
+
+.traveler-view__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.traveler-view__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--c-forest-700, #1f4732);
+}
+
+.traveler-view__credit-tag {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(44, 107, 179, 0.12);
+  color: #1d4f86;
+  white-space: nowrap;
+}
+
+.traveler-view__facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px var(--space-2);
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.traveler-view__facts dt {
+  font-weight: 600;
+  color: var(--c-ink-700, #4a463d);
+  white-space: nowrap;
+}
+
+.traveler-view__facts dd {
+  margin: 0;
+  color: var(--c-ink-800, #2c2920);
+}
+
+.traveler-view__price {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.flight-card__pricing-baseline {
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--c-ink-200, #e0ddd4);
+}
+
+.flight-card__pricing-baseline-line {
+  font-size: 0.85rem;
+  color: var(--c-ink-700, #4a463d);
+  margin: 0 0 4px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Two-travelers intro paragraph above the flight cards */
+.flights-two-travelers-intro {
+  margin: 0.4rem 0 1rem;
+  padding: 0.7rem 0.9rem;
+  background: rgba(31, 71, 50, 0.05);
+  border-left: 3px solid var(--c-forest-500, #3d7755);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: var(--c-ink-800, #2c2920);
+  line-height: 1.5;
+}
+
 /* Lodging price detail (4-night estimate) — added 2026-05-19 */
 .price-detail {
   margin: var(--space-3) 0;
