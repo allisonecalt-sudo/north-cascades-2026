@@ -49,6 +49,20 @@ export interface FilterState {
    * The banner above the cards shows "Hiding N sold-out — show all" when N > 0.
    */
   showSoldOut: boolean;
+  /**
+   * Trust-mode default (Allison May 19, 2026). When TRUE (default), only
+   * shows lodgings with `availability === 'confirmed-aug-16-20'` — the
+   * picks Allison has personally verified for Aug 16-20. The auto-scrape
+   * `'likely-available'` signal proved unreliable (sold-out properties
+   * leaking into "likely"), and the 15 `'verify-at-booking'` entries
+   * require a phone call before they can be trusted. Toggling this OFF
+   * shows everything UNVERIFIED too (still respects showSoldOut for
+   * sold-out entries — they stay hidden unless that's also flipped).
+   *
+   * Her words: trust principle is "only show properties she has
+   * personally verified."
+   */
+  verifiedOnly: boolean;
 }
 
 export function emptyFilters(): FilterState {
@@ -69,6 +83,12 @@ export function emptyFilters(): FilterState {
     // surfaces the refundable preference as text instead of as a hidden gate.
     freeCancelOnly: false,
     showSoldOut: false,
+    // Default ON (2026-05-19, Allison's trust principle). Page opens
+    // showing ONLY the 4 confirmed Aug-16-20 picks she's personally
+    // verified. Banner above the grid invites toggling to see all 15
+    // unverified properties. Sold-out (3 entries) stays hidden behind
+    // its own showSoldOut toggle even when verifiedOnly is OFF.
+    verifiedOnly: true,
   };
 }
 
@@ -93,6 +113,10 @@ export function resetFilters(): void {
   filters.sunsetOnly = false;
   filters.freeCancelOnly = false;
   filters.showSoldOut = false;
+  // resetFilters returns to the trust-mode default (verifiedOnly ON).
+  // "Clear filters" should NOT widen the list to unverified — it should
+  // return to the safe baseline.
+  filters.verifiedOnly = true;
 }
 
 // Tier mapping — parse the pricePerNight string and assign one bucket.
@@ -129,6 +153,12 @@ export function lodgingMatchesFilters(l: Lodging, base: 'west' | 'east'): boolea
   // Sold-out is hidden by default. The show-all banner above the grid flips
   // showSoldOut to true so a user can audit what was hidden.
   if (!filters.showSoldOut && l.availability === 'sold-out-or-unavailable') return false;
+  // Trust-mode (default ON, Allison 2026-05-19): narrow to ONLY personally
+  // verified Aug 16-20 picks. The auto-scrape 'likely-available' signal
+  // proved unreliable; 'verify-at-booking' entries need a phone call before
+  // they're trustworthy. Toggle OFF (via the "Verified picks only" chip or
+  // the banner above the grid) to widen the list to unverified inventory.
+  if (filters.verifiedOnly && l.availability !== 'confirmed-aug-16-20') return false;
   return true;
 }
 
@@ -137,6 +167,29 @@ export function soldOutCount(): number {
   return (
     WEST_LODGING.filter((l) => l.availability === 'sold-out-or-unavailable').length +
     EAST_LODGING.filter((l) => l.availability === 'sold-out-or-unavailable').length
+  );
+}
+
+/**
+ * Count of properties currently hidden by the trust-mode toggle — i.e.,
+ * non-sold-out entries that are NOT 'confirmed-aug-16-20'. Used to drive
+ * the "Show all (N more, need phone-confirmation)" banner copy above the
+ * cards. Excludes sold-out (those are tracked separately via soldOutCount).
+ */
+export function unverifiedHiddenCount(): number {
+  const isUnverified = (a: string): boolean =>
+    a !== 'confirmed-aug-16-20' && a !== 'sold-out-or-unavailable';
+  return (
+    WEST_LODGING.filter((l) => isUnverified(l.availability)).length +
+    EAST_LODGING.filter((l) => isUnverified(l.availability)).length
+  );
+}
+
+/** Live count of personally-verified picks (across both bases). */
+export function verifiedPickCount(): number {
+  return (
+    WEST_LODGING.filter((l) => l.availability === 'confirmed-aug-16-20').length +
+    EAST_LODGING.filter((l) => l.availability === 'confirmed-aug-16-20').length
   );
 }
 

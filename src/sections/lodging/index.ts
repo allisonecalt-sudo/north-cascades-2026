@@ -42,10 +42,13 @@ import { getSelectedPath, subscribeSelectedPath } from '../../state/path';
 import { h, section } from '../../dom';
 
 import {
+  filters,
   lodgingMatchesFilters,
   notifyFilters,
   onFilterChange,
   resetFilters,
+  unverifiedHiddenCount,
+  verifiedPickCount,
 } from './filter-state';
 import { renderLodgingCard } from './card';
 import {
@@ -94,22 +97,42 @@ function renderPanel(
 
   const totalShown = filtered.length;
 
+  // Empty-state copy depends on WHY the list is empty. In trust-mode with
+  // 0 confirmed picks on this side, the friendlier framing is "Allison
+  // hasn't verified any picks on this side yet" + an explicit widen-the-
+  // list button — not the generic "clear filters" pointer (which lands
+  // on the same trust-mode default and just re-renders empty).
   const emptyState =
     totalShown === 0
-      ? h(
-          'p',
-          { class: 'lodging-empty' },
-          'No properties on this side match your filters. ',
-          h(
-            'button',
-            {
-              type: 'button',
-              class: 'lodging-empty__clear',
-              'data-action': 'clear-filters',
-            },
-            'Clear filters'
+      ? filters.verifiedOnly
+        ? h(
+            'p',
+            { class: 'lodging-empty' },
+            'Allison hasn\'t verified any picks on this side yet. ',
+            h(
+              'button',
+              {
+                type: 'button',
+                class: 'lodging-empty__clear',
+                'data-action': 'show-unverified',
+              },
+              'Show unverified properties (needs phone-confirmation)'
+            )
           )
-        )
+        : h(
+            'p',
+            { class: 'lodging-empty' },
+            'No properties on this side match your filters. ',
+            h(
+              'button',
+              {
+                type: 'button',
+                class: 'lodging-empty__clear',
+                'data-action': 'clear-filters',
+              },
+              'Clear filters'
+            )
+          )
       : null;
 
   const fitsBriefGrid = h(
@@ -306,10 +329,72 @@ function determinePanels(selectedId: string | null): {
 // MAIN RENDER + WIRE-UP
 // ====================================================================
 
+/**
+ * Re-render the trust-mode banner in place. Called both at first render
+ * and on every filter change (so toggling "Verified picks only" off via
+ * the chip flips the banner copy in sync).
+ *
+ * The banner has two voices:
+ *   - trust-mode ON  (default): "Showing N personally verified picks for
+ *     Aug 16-20. [Show all (M more, need phone-confirmation)]"
+ *   - trust-mode OFF: "Showing all properties incl. unverified.
+ *     [Back to verified-only]"
+ */
+function renderTrustBanner(host: HTMLElement): void {
+  const verifiedCount = verifiedPickCount();
+  const unverifiedCount = unverifiedHiddenCount();
+
+  if (filters.verifiedOnly) {
+    host.replaceChildren(
+      h(
+        'p',
+        { class: 'lodging-trust-banner__copy' },
+        h(
+          'strong',
+          {},
+          `Showing only the ${verifiedCount} propert${verifiedCount === 1 ? 'y' : 'ies'} Allison personally verified for Aug 16-20.`
+        ),
+        ' Auto-scraped availability proved unreliable, so unverified picks are hidden until phone-confirmed. '
+      ),
+      h(
+        'button',
+        {
+          type: 'button',
+          class: 'lodging-trust-banner__toggle',
+          'data-action': 'show-unverified',
+        },
+        `Show all (${unverifiedCount} more, need phone-confirmation)`
+      )
+    );
+  } else {
+    host.replaceChildren(
+      h(
+        'p',
+        { class: 'lodging-trust-banner__copy' },
+        'Showing all properties, including ',
+        h('strong', {}, `${unverifiedCount} unverified`),
+        ' picks that need a phone call to confirm Aug 16-20 availability.'
+      ),
+      h(
+        'button',
+        {
+          type: 'button',
+          class: 'lodging-trust-banner__toggle',
+          'data-action': 'verified-only',
+        },
+        `Back to verified-only (${verifiedCount})`
+      )
+    );
+  }
+}
+
 function renderBody(wrap: HTMLElement, selectedId: string | null): void {
   const panels = determinePanels(selectedId);
   const path = selectedId ? getPathById(selectedId as 'A' | 'B' | 'C') : null;
   const pathLodgingIds = path ? new Set(path.lodgingIds) : null;
+
+  const trustBanner = wrap.querySelector<HTMLElement>('.lodging-trust-banner');
+  if (trustBanner) renderTrustBanner(trustBanner);
 
   const tabs = wrap.querySelector<HTMLElement>('.tabs');
   const westTabBtn = wrap.querySelector<HTMLButtonElement>('#lodging-tab-west');
@@ -352,11 +437,18 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
   const container = wrap.querySelector<HTMLElement>('.lodging-panels');
   if (container) {
     container.replaceChildren(westPanel, eastPanel);
-    // Empty-state clear-filters delegate
+    // Empty-state delegate. Handles both:
+    //   - clear-filters  (legacy: returns to default trust-mode baseline)
+    //   - show-unverified (trust-mode 0-results case: flips verifiedOnly off
+    //     so the user can see what's behind the curtain on this side)
     container.addEventListener('click', (event) => {
       const target = event.target;
-      if (target instanceof HTMLButtonElement && target.dataset['action'] === 'clear-filters') {
+      if (!(target instanceof HTMLButtonElement)) return;
+      if (target.dataset['action'] === 'clear-filters') {
         resetFilters();
+        notifyFilters();
+      } else if (target.dataset['action'] === 'show-unverified') {
+        filters.verifiedOnly = false;
         notifyFilters();
       }
     });
@@ -506,6 +598,31 @@ export function renderLodging(): HTMLElement {
   const shortlistContainer = renderShortlistContainer();
   const shortlistFab = renderShortlistFloater();
 
+  // Trust-mode banner — sits directly above the tabs so it's the first
+  // thing a reader sees when scanning into the lodging grid. Populated
+  // by renderTrustBanner() on every renderBody() call so its copy
+  // tracks `filters.verifiedOnly`.
+  const trustBanner = h('div', {
+    class: 'lodging-trust-banner',
+    role: 'note',
+    'aria-live': 'polite',
+  });
+
+  // Delegate the trust-banner toggle buttons. Lives on the banner element
+  // itself (not bubbled up through the panels container, which already
+  // owns the empty-state delegate).
+  trustBanner.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLButtonElement)) return;
+    if (target.dataset['action'] === 'show-unverified') {
+      filters.verifiedOnly = false;
+      notifyFilters();
+    } else if (target.dataset['action'] === 'verified-only') {
+      filters.verifiedOnly = true;
+      notifyFilters();
+    }
+  });
+
   const wrap = section(
     'lodging',
     'Lodging',
@@ -515,6 +632,7 @@ export function renderLodging(): HTMLElement {
     splitCallout,
     chipBar,
     shortlistContainer,
+    trustBanner,
     tabs,
     h('div', { class: 'lodging-panels' }),
     shortlistFab

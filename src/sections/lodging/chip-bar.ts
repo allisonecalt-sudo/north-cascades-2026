@@ -34,13 +34,30 @@ import {
 export interface ChipDef {
   key: string;
   label: string;
-  group: 'base' | 'tier' | 'beds' | 'kitchen' | 'nature' | 'sunset' | 'cancel';
+  group: 'trust' | 'base' | 'tier' | 'beds' | 'kitchen' | 'nature' | 'sunset' | 'cancel';
   isActive: () => boolean;
   toggle: () => void;
 }
 
 export function buildChipDefs(): ChipDef[] {
   const chips: ChipDef[] = [];
+
+  // Trust-mode (Allison 2026-05-19) — page-default narrowing to ONLY the
+  // 4 Aug-16-20 personally-verified picks. ON by default. Lives in its
+  // own group at the very top of the chip bar so the trust posture is
+  // the first thing a visitor reads. Un-checking widens the list to the
+  // 15 verify-at-booking entries (sold-out stays hidden via its own
+  // toggle).
+  chips.push({
+    key: 'trust-verified-only',
+    label: '✅ Verified picks only',
+    group: 'trust',
+    isActive: () => filters.verifiedOnly,
+    toggle: () => {
+      filters.verifiedOnly = !filters.verifiedOnly;
+      notifyFilters();
+    },
+  });
 
   // Base
   for (const v of ['west', 'east'] as const) {
@@ -149,8 +166,9 @@ export function buildChipDefs(): ChipDef[] {
 
 export function renderChipBar(): HTMLElement {
   const chips = buildChipDefs();
-  const groupOrder: ChipDef['group'][] = ['base', 'tier', 'beds', 'kitchen', 'nature', 'cancel'];
+  const groupOrder: ChipDef['group'][] = ['trust', 'base', 'tier', 'beds', 'kitchen', 'nature', 'cancel'];
   const groupLabels: Record<ChipDef['group'], string> = {
+    trust: 'Trust mode',
     base: 'Base',
     tier: 'Price tier',
     beds: 'Beds',

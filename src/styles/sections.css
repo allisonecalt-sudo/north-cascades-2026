@@ -1446,6 +1446,63 @@
   color: var(--c-forest-700);
 }
 
+/* ---- Trust-mode banner (2026-05-19) -------------------------------- */
+/* Sits above the tabs to communicate the page's trust default — only
+ * personally-verified Aug-16-20 picks are visible until the user toggles.
+ * Style: glacier-tinted note with a high-contrast toggle button, so the
+ * "Show all" action reads as primary not buried. */
+.lodging-trust-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  background: var(--c-glacier-100, #e8f3f7);
+  border: 1px solid var(--c-glacier-300, #b8d8e3);
+  border-radius: var(--radius-md, 8px);
+  padding: var(--sp-3) var(--sp-3);
+  margin: 0 0 var(--sp-3);
+}
+
+.lodging-trust-banner__copy {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--c-ink-700);
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+
+.lodging-trust-banner__copy strong {
+  color: var(--c-forest-700, #1f4a3a);
+}
+
+.lodging-trust-banner__toggle {
+  appearance: none;
+  background: var(--c-forest-600);
+  border: 1px solid var(--c-forest-700);
+  color: white;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.lodging-trust-banner__toggle:hover {
+  background: var(--c-forest-700);
+}
+
+.lodging-trust-banner__toggle:focus-visible {
+  outline: 2px solid var(--c-glacier-500);
+  outline-offset: 2px;
+}
+
 /* ---- Photo carousel ------------------------------------------------ */
 .card__figure--carousel {
   position: relative;
