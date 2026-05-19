@@ -339,7 +339,7 @@ export const TRIP_PATHS: TripPath[] = [
       'Cascade Pass + WA-20 viewpoints + Mt Baker swap-in option',
       'Skips the east side (no Maple Pass, no Winthrop)',
     ],
-    lodgingIds: ['cascade-river-house', 'glacier-peak', 'rhody-house', 'nc-hideaway', 'nc-riverside', 'ovenells'],
+    lodgingIds: ['sauk-mountain-farmhouse', 'twin-cedars-treehouse', 'cascade-river-house', 'glacier-peak', 'ovenells'],
     hikeIds: ['ladder-creek', 'cascade-pass', 'thunder-knob', 'park-butte'],
     itinerary: PATH_A_ITINERARY,
     includeSeattle: false,
@@ -362,7 +362,7 @@ export const TRIP_PATHS: TripPath[] = [
       'Mt Baker / Park Butte available as Day 1.5 side trip',
     ],
     lodgingIds: [
-      'cascade-river-house', 'glacier-peak', 'rhody-house',
+      'sauk-mountain-farmhouse', 'twin-cedars-treehouse', 'cascade-river-house', 'glacier-peak',
       'methow-river', 'rivers-edge', 'freestone', 'chewuch', 'inn-at-mazama', 'spring-creek-ranch',
     ],
     hikeIds: ['ladder-creek', 'cascade-pass', 'thunder-knob', 'maple-pass', 'blue-lake', 'park-butte'],
@@ -386,7 +386,7 @@ export const TRIP_PATHS: TripPath[] = [
       'Skips Cascade Pass (the biggest tradeoff)',
     ],
     lodgingIds: [
-      'glacier-peak', 'rhody-house',
+      'sauk-mountain-farmhouse', 'glacier-peak',
       'methow-river', 'rivers-edge', 'freestone', 'chewuch', 'inn-at-mazama', 'spring-creek-ranch',
     ],
     hikeIds: ['ladder-creek', 'rainy-lake', 'maple-pass', 'blue-lake', 'thunder-knob'],

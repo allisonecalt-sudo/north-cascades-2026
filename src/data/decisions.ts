@@ -37,9 +37,9 @@ export const OPEN_DECISIONS: OpenDecision[] = [
     id: 'west-lodging',
     question: 'West-side lodging (Nights 1-2)',
     options:
-      'Rhody House · North Cascades Hideaway · Riverside Retreat · Glacier Peak Resort · Ovenell\'s · Cascade River House (splurge)',
-    targetBy: 'Book ASAP — cabins fill for August',
-    rec: 'Do not book under "Skagit River Resort / Clark\'s Cabins" — that operator is closed. Same address is now Glacier Peak Resort.',
+      'Sauk Mountain Farmhouse (verified May 19, refundable, top pick) · Twin Cedars Treehouse (verified, no kitchen — kosher issue) · Glacier\'s Lagom Cabin (Deming/Mt Baker, verified) · Jade River Haven (Arlington, verified, cheapest) · Cascade River House (splurge — call owner to verify) · Glacier Peak Resort · Ovenell\'s',
+    targetBy: 'Book ASAP — cabins fill for August. Rhody House / NC Hideaway / NC Riverside Retreat all SOLD OUT (verified May 19).',
+    rec: 'Do not book under "Skagit River Resort / Clark\'s Cabins" — that operator is closed. Same address is now Glacier Peak Resort. Site trust mode shows only the 4 Allison-verified Airbnbs by default.',
   },
   {
     id: 'east-lodging',
