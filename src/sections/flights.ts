@@ -23,6 +23,7 @@
 import {
   AIRPORT_DRIVE_COMPARE,
   ARCHIVED_FLIGHT_SUMMARIES,
+  BOOKED_FLIGHTS,
   BOOKING_TIPS,
   FLIGHT_OPTIONS,
   FLIGHT_RETURN_OPTIONS,
@@ -216,19 +217,84 @@ function renderReturnRow(opt: (typeof FLIGHT_RETURN_OPTIONS)[number]): HTMLEleme
   );
 }
 
+/** BOOKED itinerary card — the headline now that flights are locked. */
+function renderBookedFlights(): HTMLElement {
+  const b = BOOKED_FLIGHTS;
+  return h(
+    'article',
+    { class: 'card flight-card flight-card--booked', 'aria-label': 'Booked flights' },
+    h(
+      'header',
+      { class: 'card__header' },
+      h('h3', { class: 'card__title' }, `✅ Booked · ${b.carrier} ${b.cabin}`)
+    ),
+    h(
+      'ul',
+      { class: 'booked-flights__legs' },
+      ...b.legs.map((leg) =>
+        h(
+          'li',
+          { class: 'booked-flights__leg' },
+          h(
+            'div',
+            { class: 'booked-flights__leg-head' },
+            h('strong', { class: 'booked-flights__flight' }, `${leg.flight}`),
+            h('span', { class: 'booked-flights__dir' }, ` · ${leg.direction}`)
+          ),
+          h('p', { class: 'booked-flights__line' }, `${leg.date} · ${leg.route} · ${leg.times}`),
+          leg.note
+            ? h('p', { class: 'booked-flights__note card__warning' }, h('strong', {}, '⚠ '), leg.note)
+            : null
+        )
+      )
+    ),
+    h(
+      'dl',
+      { class: 'card__facts' },
+      h('dt', {}, 'Allison'),
+      h('dd', {}, `Conf ${b.allisonConf} · seats ${b.allisonSeats}`),
+      h('dt', {}, 'Erin'),
+      h('dd', {}, b.erinNote)
+    ),
+    h(
+      'blockquote',
+      { class: 'locked-row__quote' },
+      b.quote,
+      h('cite', { class: 'locked-row__attribution' }, ` — ${b.attribution}`)
+    )
+  );
+}
+
 export function renderFlights(): HTMLElement {
   const leading = FLIGHT_OPTIONS.find((o) => o.leading) ?? FLIGHT_OPTIONS[0];
   const fallback = FLIGHT_OPTIONS.find((o) => o.fallback);
   const tertiary = FLIGHT_OPTIONS.find((o) => !o.leading && !o.fallback);
 
+  // No comparison data at all — still show the booked itinerary as the headline.
   if (!leading) {
-    return section('flights', 'Flights');
+    return section('flights', 'Flights', renderBookedFlights());
   }
 
-  return section(
-    'flights',
-    'Flights',
-    // ─── 3-bullet gist — reads the decision state out loud ───
+  // ─── How we got here / alternates considered ───
+  // The whole comparison apparatus (gist, recommendation cards, return-timing
+  // strip, archived routings, booking tips) is now history. Flights are
+  // BOOKED — see renderBookedFlights() above. Collapse it all behind one
+  // expander so the booked itinerary reads as the headline.
+  const alternatesConsidered = h(
+    'details',
+    { class: 'disclosure' },
+    h(
+      'summary',
+      { class: 'disclosure__summary' },
+      'How we got here · alternates considered (pre-booking research)'
+    ),
+    h(
+      'p',
+      { class: 'disclosure__lede' },
+      'Flights are booked (above). Everything below is the comparison that led there — kept for the record, not a live decision.'
+    ),
+
+    // ─── 3-bullet gist — reads the (now-historical) decision state ───
     h(
       'ul',
       { class: 'gist' },
@@ -328,21 +394,6 @@ export function renderFlights(): HTMLElement {
       )
     ),
 
-    // ─── Arrival photos (moved below cards so they don't lead) ───
-    h(
-      'div',
-      { class: 'flights-arrival-figure' },
-      renderPhotoCarousel(ARRIVAL_PHOTOS, {
-        ariaLabel: 'What you are flying into — North Cascades viewpoints',
-        className: 'flights-arrival-carousel',
-      }),
-      h(
-        'p',
-        { class: 'flights-arrival-caption' },
-        'What you\'re flying into — Diablo Lake, Washington Pass, Cascade Pass. SEA → park gate is ~2 hr east on WA-20; BLI is ~1.5 hr.'
-      )
-    ),
-
     // ─── Archived routings (open-jaw + PDX/YVR/GEG) — comparison only ───
     h(
       'details',
@@ -393,5 +444,38 @@ export function renderFlights(): HTMLElement {
         )
       )
     )
+  );
+
+  return section(
+    'flights',
+    'Flights',
+    // ─── Booked itinerary — the headline now that flights are locked ───
+    h(
+      'p',
+      { class: 'section__lede' },
+      'Flights are booked — United Economy, EWR ⇄ SEA, both travelers on the same flights. The comparison that got us here is collapsed at the bottom.'
+    ),
+    renderBookedFlights(),
+
+    // ─── Arrival photos — what you're flying into (kept; not comparison) ───
+    h(
+      'div',
+      { class: 'flights-arrival-figure' },
+      renderPhotoCarousel(ARRIVAL_PHOTOS, {
+        ariaLabel: 'What you are flying into — North Cascades viewpoints',
+        className: 'flights-arrival-carousel',
+      }),
+      h(
+        'p',
+        { class: 'flights-arrival-caption' },
+        'What you\'re flying into — Diablo Lake, Washington Pass, Cascade Pass. SEA → park gate is ~2 hr east on WA-20.'
+      )
+    ),
+
+    // ─── All driving on this trip ───
+    renderDrivingRollup(),
+
+    // ─── How we got here / alternates considered (collapsed) ───
+    alternatesConsidered
   );
 }

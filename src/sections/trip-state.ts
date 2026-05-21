@@ -42,24 +42,19 @@ interface Milestone {
 // recent and label it "past".
 const MILESTONES: Milestone[] = [
   {
-    label: 'Lodging book by',
-    date: new Date('2026-06-15T00:00:00-07:00'),
-    detail: 'Free-cancellation properties hold well past this — book even if WA-20 still in question.',
+    label: 'Confirm primary house · cancel backup',
+    date: new Date('2026-06-01T00:00:00-07:00'),
+    detail: 'Two Airbnbs booked for the same dates (Arlington + Sedro-Woolley). Confirm the keeper, cancel the other, settle the whole-house question.',
   },
   {
     label: 'WSDOT reopen target',
     date: new Date('2026-06-25T00:00:00-07:00'),
-    detail: 'WA-20 target reopen — "a goal, not a promise." Watch for slip.',
+    detail: 'WA-20 target reopen — "a goal, not a promise." Both booked houses are west of the corridor, so the trip works either way; this just gates the east-side stretch.',
   },
   {
     label: 'WSDOT re-check',
     date: new Date('2026-06-28T00:00:00-07:00'),
     detail: '3 days post-target — confirm reopen actually happened. Call 1-800-695-7623 if site stale.',
-  },
-  {
-    label: 'Flight lock',
-    date: new Date('2026-07-10T00:00:00-07:00'),
-    detail: 'WA-20 status known by now — lock flights, rental, finalise path.',
   },
   {
     label: 'Kosher phone-sweep',

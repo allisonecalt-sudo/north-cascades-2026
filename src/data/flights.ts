@@ -18,6 +18,72 @@
  * that established the preference. Don't paraphrase the WhatsApp.
  */
 
+/**
+ * BOOKED itinerary — the trip flipped from "compare" to "booked" on May 20,
+ * 2026. Source: `projects/north-cascades-2026/BOOKED.md` (Gmail confirmation
+ * emails + Erin WhatsApp thread). Everything below is verbatim from the
+ * confirmation; the comparison cards lower in this file are now history
+ * ("how we got here"), not a live decision.
+ */
+export interface BookedFlightLeg {
+  /** Out / Return. */
+  direction: string;
+  /** United flight number, e.g. "UA1330". */
+  flight: string;
+  /** Date label, e.g. "Sun Aug 16, 2026". */
+  date: string;
+  /** Route, e.g. "EWR → SEA". */
+  route: string;
+  /** Time line, e.g. "7:59 AM → 11:03 AM". */
+  times: string;
+  /** Optional callout (redeye, arrives next day, etc.). */
+  note?: string;
+}
+
+export interface BookedFlights {
+  carrier: string;
+  cabin: string;
+  legs: BookedFlightLeg[];
+  /** Allison's confirmation code. */
+  allisonConf: string;
+  /** Allison's seats, one per leg. */
+  allisonSeats: string;
+  /** Erin's booking note. */
+  erinNote: string;
+  /** Verbatim quote from the booking thread + attribution. */
+  quote: string;
+  attribution: string;
+}
+
+export const BOOKED_FLIGHTS: BookedFlights = {
+  carrier: 'United',
+  cabin: 'United Economy',
+  legs: [
+    {
+      direction: 'Out',
+      flight: 'UA1330',
+      date: 'Sun Aug 16, 2026',
+      route: 'EWR → SEA',
+      times: '7:59 AM → 11:03 AM',
+    },
+    {
+      direction: 'Return',
+      flight: 'UA2017',
+      date: 'Thu Aug 20, 2026',
+      route: 'SEA → EWR',
+      times: '10:58 PM → 7:10 AM +1',
+      note:
+        'Redeye — departs SEA late Thu night, lands EWR Fri Aug 21 morning. Thursday is a FULL day in WA; drive back to SEA in the evening for the late departure.',
+    },
+  ],
+  allisonConf: 'IXMH2Z',
+  allisonSeats: 'EWR–SEA 37A · SEA–EWR 31D',
+  erinNote:
+    'Erin booked her own matching seats separately on the same UA1330 / UA2017 flights (her confirmation code not captured).',
+  quote: '"BOOKED IT"',
+  attribution: 'Erin · WhatsApp, May 20, 2026',
+};
+
 export interface FlightOption {
   id: string;
   label: string;

@@ -33,24 +33,24 @@ interface OpenLoop {
 
 const OPEN: OpenLoop[] = [
   {
-    label: 'Flights',
-    state: 'United Main Cabin · Allison sent two options to Erin via WhatsApp: Option 1 1-stop ~$656, Option 2 nonstop ~$799 (leaning). Awaiting Erin\'s pick + United travel-credit verify at united.com login.',
-    holder: 'Erin',
-    eta: 'Researching tonight (her time) — may book by tomorrow',
-    quote: '"Yes we could do United. They fly into SEA. That\'s looking much cheaper."',
-    attribution: 'Erin · May 18, 11:07pm',
+    label: 'Which booked house is primary',
+    state: 'TWO Airbnbs are booked for the same dates (Aug 16–20): Arlington (host Brandi, 6 guests, conf HMKXHM8AW5) and Sedro-Woolley "Lakeside Cabin" (host Jackie, 4 guests, conf HMA4W2E22N). One is the keeper, one a backup — confirm primary, then cancel the other.',
+    holder: 'Allison',
+    eta: 'Decide + cancel the backup',
   },
   {
-    label: 'Lodging picks',
-    state: '4 verified refundable Airbnbs live for Aug 16-20 (Sauk Mountain Farmhouse, Twin Cedars Treehouse, Glacier\'s Lagom Cabin, Jade River Haven). About to lock one — 4 nights, single base, Path A coverage.',
-    holder: 'Allison',
-    eta: 'Locking today',
+    label: 'Whole-house vs shared (Sedro-Woolley)',
+    state: 'Unresolved whether the Sedro-Woolley Lakeside Cabin is the whole place or shared with other guests.',
+    holder: 'Allison + Erin',
+    eta: 'Confirm with host Jackie',
+    quote: '"will the other people be there?" / "I thought it was the whole place."',
+    attribution: 'Erin / Allison · WhatsApp, May 19',
   },
   {
     label: 'WA-20 reopen',
-    state: 'WSDOT is the gate between Path B (primary) and Path A (locked fallback). Same 24/7 emergency contracts running since early May.',
+    state: 'WSDOT is the gate on whether the east-side stretch is reachable. Both booked houses are WEST of the corridor, so a west-side trip works regardless. Same 24/7 emergency contracts running since early May.',
     holder: 'WSDOT',
-    eta: '3-day re-check window before booking week',
+    eta: '3-day re-check window before the trip',
   },
 ];
 
@@ -64,11 +64,11 @@ interface NextActionRow {
 const NEXT_ACTIONS: NextActionRow[] = [
   {
     holder: 'Allison',
-    action: 'Lock 1 of the 4 verified Airbnbs today — 4 nights refundable Marblemount cluster (Path A coverage). Log into united.com to verify the travel-credit amount + expiration before booking flights.',
+    action: 'Confirm which booked house is primary (Arlington vs Sedro-Woolley Lakeside Cabin) and cancel the backup reservation — both are held for the same Aug 16–20 dates.',
   },
   {
-    holder: 'Erin',
-    action: 'Pick between Option 1 1-stop (~$656) and Option 2 nonstop (~$799) tonight — both are United Main Cabin (NOT Basic — Basic gives up voucher coverage). E-credit voucher path covers cancellation, no refundable upgrade needed.',
+    holder: 'Allison + Erin',
+    action: 'Confirm with host Jackie whether the Sedro-Woolley Lakeside Cabin is the whole house or shared, before deciding which to keep.',
   },
 ];
 

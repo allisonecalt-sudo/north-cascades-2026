@@ -52,36 +52,18 @@ const LOCKED: LockedRow[] = [
     attribution: 'Erin · WhatsApp May 18, 4:57am',
   },
   {
-    label: 'Lodging area',
-    state: 'Marblemount cluster (Marblemount / Concrete / Rockport / Glacier Peak Resort area) as the default base',
-    quote:
-      '"I\'d say the Marble Mount side, just because in case that road doesn\'t open up in time… within an hour driving range."',
-    attribution: 'Erin · WhatsApp May 18, 11:43pm VN',
-  },
-  {
-    label: 'Lodging — booked',
+    label: 'Lodging — BOOKED (2 held, same dates)',
     state:
-      'House booked at 27024 Minkler Rd, Sedro-Woolley, WA 98284 — west of the Marblemount cluster (~40 min to the park entrance). Still to confirm: whole-house vs. shared with other guests.',
+      'Two Airbnbs booked for Aug 16–20: Arlington (host Brandi, 6 guests, conf HMKXHM8AW5) and Sedro-Woolley "Lakeside Cabin w/ Dock, Boats & Stunning Views" (27024 Minkler Rd, host Jackie, 4 guests, conf HMA4W2E22N). Both west of the WA-20 corridor, ~40 min farther west than the Marblemount cluster. STILL OPEN: confirm which is primary + cancel the backup; whole-house vs. shared on the Sedro-Woolley one.',
     quote: '"Address to the house:  27024 Minkler Rd, Sedro-Woolley, WA 98284, USA"',
     attribution: 'Erin · WhatsApp May 19, 2026',
   },
   {
-    label: 'Origin airports',
-    state: 'Both depart NYC area. Allison: EWR primary, JFK secondary, LGA acceptable. Erin: EWR (NJ-based).',
-    attribution: 'Confirmed May 19, 2026 — Allison handles her TLV→NYC leg on a separate ticket; the joint booking starts at NYC.',
-  },
-  {
-    label: 'Flights — booked',
+    label: 'Flights — BOOKED',
     state:
-      'Booked May 20, 2026 on the agreed United → SEA routing. Erin booked her seats (standard economy); Allison booked the matching itinerary.',
+      'United Economy EWR⇄SEA, booked May 20, 2026. Out: UA1330 Sun Aug 16, EWR 7:59 AM → SEA 11:03 AM. Return: UA2017 Thu Aug 20, SEA 10:58 PM → EWR 7:10 AM Fri Aug 21 (redeye — Thursday is a full WA day, drive to SEA in the evening). Allison conf IXMH2Z (seats 37A / 31D); Erin booked matching seats separately.',
     quote: '"BOOKED IT"',
     attribution: 'Erin · WhatsApp May 20, 2026',
-  },
-  {
-    label: 'Refundable',
-    state: 'Refundable required where reasonable — $1,000+ premium acceptable if it keeps Path B/A optionality open',
-    quote: '"if we find something refundable we can book it as a backup"',
-    attribution: 'Erin · WhatsApp May 18, 5:25am',
   },
   {
     label: 'Mt Baker / Park Butte',

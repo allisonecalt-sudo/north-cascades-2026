@@ -26,25 +26,25 @@ export const ITINERARY: ItineraryDay[] = [
   {
     day: 1,
     date: 'Sun Aug 16',
-    title: 'Arrive Bellingham, drive in',
-    shape: 'Land BLI, drive WA-20 to Marblemount, easy evening orientation.',
+    title: 'Arrive SEA, drive to the booked house',
+    shape: 'Land SEA late morning, drive I-5 N to the Sedro-Woolley / Arlington house, easy evening.',
     stops: [
-      { step: 'Land SEA (or BLI)', detail: 'Morning EWR→SEA nonstop on United (primary, Allison\'s travel credit applies); Alaska EWR→BLI is the fallback if United pricing breaks.' },
-      { step: 'Rental car pickup', detail: 'Enterprise / Hertz / Budget / Alamo — all on-site at BLI.' },
+      { step: 'Land SEA (UA1330)', detail: 'EWR→SEA nonstop, lands 11:03 AM. Rental car pickup at SEA — Enterprise / Hertz / Budget / Alamo all on-site.' },
       {
-        step: 'Drive BLI → Marblemount via WA-20',
-        detail: '~85 mi · ~1 hr 45 min',
-        time: '~1 hr 45 min',
+        step: 'Drive SEA → booked house (Sedro-Woolley / Arlington)',
+        detail:
+          '~75-80 mi up I-5 N · ~1 hr 30 min to Sedro-Woolley (Arlington is ~20 min closer). Stock kosher-friendly packaged groceries at a Seattle / Everett Trader Joe\'s, QFC, or Whole Foods on the way out. [drive-time TBD — re-verify exact figure from the confirmed address, 27024 Minkler Rd.]',
+        time: '~1 hr 30 min',
       },
       {
         step: 'Check in',
         detail:
-          'West-side base — see Lodging section for the Terra Nova-tier picks (Rhody House, North Cascades Hideaway, Glacier Peak Resort, etc).',
+          'The booked house (see Lodging — Arlington or Sedro-Woolley Lakeside Cabin, primary still to confirm).',
       },
       {
         step: 'Evening orientation (easy)',
         detail:
-          'Newhalem Visitor Center (~25 min east) for a park briefing, then Ladder Creek Falls — short paved 0.5 mi loop behind Gorge Powerhouse, lit dusk-to-11 pm.',
+          'Optional: the house is ~40 min west of the Marblemount cluster, so the Newhalem / Ladder Creek Falls orientation drive is now ~1 hr+ each way — better saved for a hike day than Day-1 evening. Easy unwind at the house instead.',
       },
     ],
     meals: {
@@ -64,10 +64,10 @@ export const ITINERARY: ItineraryDay[] = [
           'Cabin breakfast + packed lunch + 2L water each. No services at the trailhead.',
       },
       {
-        step: 'Drive Marblemount → Cascade Pass Trailhead',
+        step: 'Drive house → Cascade Pass Trailhead',
         detail:
-          'End of Cascade River Rd · ~23 mi · ~1 hr. First 10 mi paved, final 13 mi compacted dirt + gravel. Any car w/ reasonable clearance is fine — go slow.',
-        time: '~1 hr',
+          'From Sedro-Woolley: ~1 hr 15 min to the Marblemount area + ~1 hr up Cascade River Rd (final 13 mi compacted dirt + gravel) = ~2 hr 15 min total each way. Earlier start than the old Marblemount-base plan. [drive-time TBD — re-verify the Cascade River Rd leg from the booked address.]',
+        time: '~2 hr 15 min',
       },
       {
         step: 'Hike option — Cascade Pass (moderate)',
@@ -76,9 +76,9 @@ export const ITINERARY: ItineraryDay[] = [
       {
         step: 'Hike option — Sahale Arm add-on (ambitious)',
         detail:
-          '12.8 mi RT · ~4,100 ft gain · 7-8 hrs. Long day with significant climb to the glacier camp basin at 7,600 ft. Only if both feel strong on the morning of, with an early start.',
+          '12.8 mi RT · ~4,100 ft gain · 7-8 hrs. Long day. With the longer drive from the west-side house, this likely needs a very early start — judge on the morning.',
       },
-      { step: 'Drive back to Marblemount', detail: '~1 hr.', time: '~1 hr' },
+      { step: 'Drive back to the house', detail: '~2 hr 15 min.', time: '~2 hr 15 min' },
     ],
     meals: {
       dinner: 'Cabin dinner — pasta + sealed sauce is the easy post-hike option.',
@@ -90,7 +90,7 @@ export const ITINERARY: ItineraryDay[] = [
     title: 'Drive day — WA-20 viewpoints, transit east',
     shape: 'Pack up, work the viewpoints west → east along WA-20, settle into the east-side base by evening.',
     stops: [
-      { step: 'Pack up, check out', detail: 'Moving lodging to Winthrop / Mazama tonight. Restock packaged kosher goods in Marblemount or en route.' },
+      { step: 'Pack up, check out', detail: 'Moving lodging to Winthrop / Mazama tonight. Restock packaged kosher goods en route. NOTE: the booked house is reserved all 4 nights (Aug 16–20) — if we stay on the west side the whole trip (single-base / Path A shape), this east-transit day becomes a viewpoint day-trip out-and-back from the west house instead. [structure TBD — depends on the final single-base vs. two-base call.]' },
       { step: 'Gorge Creek Falls', detail: 'MP 123 · pull-out + footbridge · 5 min.' },
       {
         step: 'Diablo Lake Overlook',
@@ -179,16 +179,20 @@ export const ITINERARY: ItineraryDay[] = [
           'Patterson Lake kayaks (Sun Mountain Lodge marina, 60-90 min) OR Winthrop boardwalk + gifts.',
       },
       {
-        step: 'Drive Winthrop → SEA',
+        step: 'Drive to SEA',
         detail:
-          '~4 hrs via WA-20 east → US-97 south → I-90 west. Or ~4-4.5 hrs scenic via Stevens Pass (US-2). I-90 for time, US-2 for views.',
-        time: '~4 hrs',
+          'IF staying east (Winthrop): ~4 hrs via WA-20 → US-97 → I-90, or ~4-4.5 hrs scenic via Stevens Pass (US-2). IF staying west the whole trip (booked-house / single-base shape): only ~1 hr 30 min Sedro-Woolley → SEA, so the day is far more relaxed. [drive-time TBD — depends on the final single-base vs. two-base call.]',
+        time: '~1 hr 30 min – 4 hrs',
       },
       {
         step: 'Lunch en route',
-        detail: 'Leavenworth (Bavarian village on US-2) or Cle Elum (on I-90). See Seattle section for kosher-specific stop info if useful.',
+        detail: 'If east/scenic: Leavenworth (US-2) or Cle Elum (I-90). If west: an easy Skagit Valley / Seattle stop. See Seattle section for kosher-specific stop info.',
       },
-      { step: 'Arrive SEA', detail: 'Mid-afternoon for the evening flight east.' },
+      {
+        step: 'Return flight — UA2017 (redeye)',
+        detail:
+          'Departs SEA 10:58 PM, lands EWR 7:10 AM Fri Aug 21. Thursday is a FULL day in WA — no rush to the airport until the evening. Drive to SEA for the late departure.',
+      },
     ],
     meals: {},
   },

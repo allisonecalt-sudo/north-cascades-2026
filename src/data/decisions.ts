@@ -16,37 +16,24 @@ export interface OpenDecision {
 
 export const OPEN_DECISIONS: OpenDecision[] = [
   {
-    id: 'flight-routing',
-    question: 'Flight routing',
-    options: 'SEA roundtrip · BLI in / SEA out · SEA in / BLI out · BLI roundtrip',
-    targetBy: 'Decide by late June (after WSDOT June 25 status check)',
+    id: 'flights-booked',
+    question: '✅ Flights — BOOKED',
+    options: 'United Economy EWR⇄SEA · out UA1330 Sun Aug 16 (7:59 AM → 11:03 AM) · return UA2017 Thu Aug 20 redeye (10:58 PM → 7:10 AM+1)',
+    targetBy: 'Done — booked May 20, 2026 (Allison conf IXMH2Z; Erin booked matching seats).',
   },
   {
-    id: 'return-flight',
-    question: 'Return flight timing',
-    options: 'Wed Aug 19 late · Thu Aug 20 evening · Thu Aug 20 redeye',
-    targetBy: 'Lock when flight routing locks',
+    id: 'lodging-primary',
+    question: 'Which booked house is primary (cancel the backup)',
+    options:
+      'Arlington (host Brandi, 6 guests, conf HMKXHM8AW5) · Sedro-Woolley "Lakeside Cabin w/ Dock & Boats" (host Jackie, 4 guests, conf HMA4W2E22N)',
+    targetBy: 'Soon — both held for the same Aug 16–20 dates; confirm one, cancel the other.',
+    rec: 'Both are BOOKED for identical dates. Also unresolved: whether the Sedro-Woolley cabin is whole-house or shared (confirm with host Jackie).',
   },
   {
     id: 'rental-car',
     question: 'Rental car',
-    options: 'SEA RT compact SUV · SEA RT sedan · BLI→SEA one-way · Turo',
+    options: 'SEA RT compact SUV · SEA RT sedan · Turo (flights land + depart SEA, so SEA roundtrip)',
     targetBy: 'Book ~6-8 weeks out (late June)',
-  },
-  {
-    id: 'west-lodging',
-    question: 'West-side lodging (Nights 1-2)',
-    options:
-      'Sauk Mountain Farmhouse (verified May 19, refundable, top pick) · Twin Cedars Treehouse (verified, no kitchen — kosher issue) · Glacier\'s Lagom Cabin (Deming/Mt Baker, verified) · Jade River Haven (Arlington, verified, cheapest) · Cascade River House (splurge — call owner to verify) · Glacier Peak Resort · Ovenell\'s',
-    targetBy: 'Book ASAP — cabins fill for August. Rhody House / NC Hideaway / NC Riverside Retreat all SOLD OUT (verified May 19).',
-    rec: 'Do not book under "Skagit River Resort / Clark\'s Cabins" — that operator is closed. Same address is now Glacier Peak Resort. Site trust mode shows only the 4 Allison-verified Airbnbs by default.',
-  },
-  {
-    id: 'east-lodging',
-    question: 'East-side lodging (Nights 3-4)',
-    options:
-      'Methow River Lodge · River\'s Edge Resort · Freestone Inn cabins · Chewuch Inn cabins · Inn at Mazama · Spring Creek Ranch · Sun Mountain Patterson Lake (splurge)',
-    targetBy: 'Book ASAP — peak season',
   },
   {
     id: 'cascade-pass-extent',

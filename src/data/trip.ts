@@ -3,7 +3,7 @@ export const TRIP = {
   dates: 'Sun Aug 16 → Thu Aug 20, 2026',
   duration: '5 days · 4 nights',
   travelers: 'Allison + Erin',
-  lodgingBases: 'West side (Marblemount/Rockport) · East side (Winthrop/Mazama)',
+  lodgingBases: 'Booked: west-side house (Sedro-Woolley / Arlington) · primary vs backup TBC',
   researchedOn: 'May 16, 2026',
 } as const;
 
@@ -12,7 +12,7 @@ export const TRIP = {
  * Read in 10 seconds, then explore. No hype, no must-dos.
  */
 export const TRIP_GIST: readonly string[] = [
-  'Five days of easy-to-moderate hiking with big alpine views, balanced pace, back to the cabin by 7-8pm.',
-  'Two scenic bases: west side (Marblemount) for the Cascade Pass area, east side (Winthrop/Mazama) for Maple Pass + Methow Valley.',
-  'This page is a menu of options — pick what fits the day. Nothing here is locked.',
+  'Five days of easy-to-moderate hiking with big alpine views, balanced pace, back to the house by 7-8pm.',
+  'Flights + lodging are booked: United EWR⇄SEA (Aug 16 out, Aug 20 redeye back) and a west-side house in Sedro-Woolley / Arlington.',
+  'Still open: confirm which booked house is primary (two are held), and whether WA-20 reopens to add the east-side stretch.',
 ];

@@ -97,11 +97,11 @@ export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
   // NICE-TO-HAVE — per-day swaps + treats
   // ──────────────────────────────────────────────────────────────
   {
-    id: 'splurge-night',
+    id: 'whole-house-check',
     priority: 'nice',
-    question: 'Splurge one night on Sun Mountain Lodge or Cascade River House?',
+    question: 'Sedro-Woolley cabin — whole house or shared? Worth a quick check with Jackie.',
     context:
-      'Default is the Terra Nova-tier cabins ($200-300/night). A one-night bump to a splurge property is a fine alternative if Erin wants the lodge-view experience for a stretch. Listed under "Splurge options" in Lodging.',
+      'Lodging is booked (two houses held for the same dates — see Lodging). One open thread: whether the Sedro-Woolley Lakeside Cabin is the whole place or shared with other guests. Erin asked "will the other people be there?"; Allison thought it was the whole place. A quick host message would settle it before we cancel the backup.',
   },
   // `flight-time` removed 2026-05-19 PM needs-match audit — Erin's actively
   // researching the exact United fare tonight per home-page open-loop, so the

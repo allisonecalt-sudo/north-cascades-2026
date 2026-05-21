@@ -125,10 +125,33 @@ function renderBody(container: HTMLElement, selectedId: string | null): void {
   }
 }
 
+/** Base-shift banner — the booked house moved WEST of the Marblemount cluster
+ *  the itinerary was built around. Drive-times are being re-based; some legs
+ *  are flagged TBD rather than guessed. */
+function renderBaseShiftBanner(): HTMLElement {
+  return h(
+    'div',
+    { class: 'itin-base-shift card__warning', role: 'note' },
+    h('p', {}, h('strong', {}, '⚠ Lodging base shifted WEST. ')),
+    h(
+      'p',
+      {},
+      'This itinerary was built around a Marblemount base. The booked house is in ',
+      h('strong', {}, 'Sedro-Woolley / Arlington'),
+      ' — ~40 min farther west. Sedro-Woolley is ≈ ',
+      h('strong', {}, '1 hr 15 min'),
+      ' to the Marblemount-area trailheads (Cascade Pass etc.). Drive legs below are being re-based from Sedro-Woolley; anything not yet confidently re-estimated is flagged ',
+      h('em', {}, '[drive-time TBD — re-verify from Sedro-Woolley]'),
+      '.'
+    )
+  );
+}
+
 export function renderItinerary(): HTMLElement {
   const wrap = section(
     'itinerary',
     'Itinerary',
+    renderBaseShiftBanner(),
     h('ul', { class: 'gist' }),
     h('div', { class: 'days' })
   );

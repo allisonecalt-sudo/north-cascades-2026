@@ -31,9 +31,11 @@
  */
 
 import {
+  BOOKED_STAYS,
   EAST_LODGING,
   WEST_LODGING,
   sortByNature,
+  type BookedStay,
   type Lodging,
   type LodgingTier,
 } from '../../data/lodging';
@@ -465,22 +467,18 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
       h(
         'li',
         { class: 'gist__item' },
-        path
-          ? `Filtered to ${path.name}: ${path.lodgingShape}.`
-          : 'Two bases — west side (Marblemount/Rockport, Nights 1-2) and east side (Winthrop/Mazama, Nights 3-4).'
+        h('strong', {}, 'Lodging is booked.'),
+        ' Two Airbnbs are confirmed for Aug 16–20 (Arlington + Sedro-Woolley) — one is the keeper, one a backup to cancel. See the booked-stays cards above.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        h('strong', {}, 'Filter chips above narrow the list.'),
-        ' Tap ',
-        h('strong', {}, '✓ Pick'),
-        ' on cards to build a shortlist · compare table appears below.'
+        'Both booked houses sit WEST of the WA-20 corridor — accessible even if the highway stays closed — and ~40 min farther west than the Marblemount cluster the comparison below was built around.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        'Each card has a photo carousel + a drive-time matrix (tap to expand). 2 beds, 1-2 bedrooms, ~$200-300 — Terra Nova tier.'
+        'The filter/shortlist comparison below is pre-booking research, kept for the record.'
       )
     );
   }
@@ -504,6 +502,84 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
       eastPanel.hidden = side !== 'east';
     });
   }
+}
+
+// ====================================================================
+// BOOKED STAYS — top-of-section reality (May 19-20, 2026)
+// ====================================================================
+
+/** One booked-stay card. */
+function renderBookedStayCard(stay: BookedStay): HTMLElement {
+  return h(
+    'article',
+    { class: 'card booked-stay-card', 'aria-label': `Booked: ${stay.name}` },
+    h(
+      'header',
+      { class: 'card__header' },
+      h('span', { class: 'booked-stay-card__badge' }, '✅ Booked'),
+      h('h4', { class: 'card__title' }, stay.name)
+    ),
+    h('p', { class: 'booked-stay-card__place' }, stay.place),
+    stay.address ? h('p', { class: 'booked-stay-card__addr' }, stay.address) : null,
+    h(
+      'dl',
+      { class: 'card__facts' },
+      h('dt', {}, 'Host'),
+      h('dd', {}, stay.host),
+      h('dt', {}, 'Sleeps'),
+      h('dd', {}, `${stay.guests} guests`),
+      h('dt', {}, 'Confirmation'),
+      h('dd', {}, stay.conf)
+    ),
+    stay.feature ? h('p', { class: 'booked-stay-card__feature' }, stay.feature) : null,
+    stay.source ? h('p', { class: 'booked-stay-card__source' }, stay.source) : null
+  );
+}
+
+/** Booked-stays block — leads the Lodging section now that two Airbnbs are
+ *  confirmed for the same dates. Honest flag: one is keeper, one is backup,
+ *  not yet resolved; the Sedro-Woolley whole-house question is also open. */
+function renderBookedStays(): HTMLElement {
+  return h(
+    'div',
+    { class: 'booked-stays' },
+    h('h3', { class: 'booked-stays__title' }, 'Booked stays'),
+    h(
+      'p',
+      { class: 'booked-stays__warning', role: 'note' },
+      h('strong', {}, '⚠ Two reservations, same dates. '),
+      'Both Airbnbs below are confirmed for the identical nights (Aug 16–20). ',
+      h('strong', {}, 'One needs to be confirmed as primary and the other canceled'),
+      ' — not yet resolved.'
+    ),
+    h(
+      'div',
+      { class: 'card-grid booked-stays__grid' },
+      ...BOOKED_STAYS.map(renderBookedStayCard)
+    ),
+    h(
+      'ul',
+      { class: 'booked-stays__notes' },
+      h(
+        'li',
+        {},
+        h('strong', {}, 'Open · whole-house vs shared: '),
+        'the Sedro-Woolley listing\'s whole-place-vs-shared status is unresolved (Erin asked "will the other people be there?"; Allison: "I thought it was the whole place").'
+      ),
+      h(
+        'li',
+        {},
+        h('strong', {}, 'Location: '),
+        'both Arlington and Sedro-Woolley are WEST of the WA-20 corridor — accessible even if the highway stays closed — but ~40 min farther west than the old Marblemount-cluster plan. Sedro-Woolley is ≈ 1 hr 15 to Marblemount-area trailheads.'
+      ),
+      h(
+        'li',
+        {},
+        h('strong', {}, 'Kosher / kitchen: '),
+        'both are full-house Airbnbs with kitchens — the cook-in-from-Va\'ad-groceries plan still holds.'
+      )
+    )
+  );
 }
 
 export function renderLodging(): HTMLElement {
@@ -547,12 +623,22 @@ export function renderLodging(): HTMLElement {
     h('li', { class: 'source-pill source-pill--warn' }, 'Photos partly representative')
   );
 
-  // Added 2026-05-19. Updated for site rework — Path B is primary, Path A is
-  // the locked fallback, both lean on the Marblemount cluster as the west base.
+  // Reframed 2026-05-21 — lodging is now BOOKED (see renderBookedStays above).
+  // The path-shape comparison below is kept for context (which trailheads each
+  // path reaches) but it is no longer a lodging decision surface.
   const splitCallout = h(
-    'div',
-    { class: 'lodging-split-callout' },
-    h('h3', { class: 'lodging-split-callout__title' }, 'Two locked shapes · same west base'),
+    'details',
+    { class: 'disclosure lodging-split-callout' },
+    h(
+      'summary',
+      { class: 'disclosure__summary' },
+      'How we got here · the Marblemount-cluster comparison (pre-booking)'
+    ),
+    h(
+      'p',
+      { class: 'disclosure__lede' },
+      'Lodging is booked (above). The picks and the two path-shapes below are the research that led there — kept for the record, not a live choice. NB: the booked house sits ~40 min farther west than the Marblemount cluster these were graded against, so drive-times here run short.'
+    ),
     h(
       'ol',
       { class: 'lodging-split-callout__list' },
@@ -574,11 +660,6 @@ export function renderLodging(): HTMLElement {
         h('strong', {}, 'Path A (locked fallback) — 4 nights in Marblemount cluster:'),
         ' one cabin all trip in Marblemount / Concrete / Rockport. Engages automatically if WA-20 stays closed.'
       )
-    ),
-    h(
-      'p',
-      { class: 'lodging-split-callout__note' },
-      'Both shapes share the same west base — what differs is whether we add an east-side stretch. Picks below are graded against the Path B 2+2 by default; the Path B picks also work for Path A by extending the west stay.'
     )
   );
   // Lodging Owner pass (2026-05-17): page-level disclaimer absorbs the
@@ -628,18 +709,39 @@ export function renderLodging(): HTMLElement {
     }
   });
 
-  const wrap = section(
-    'lodging',
-    'Lodging',
-    h('ul', { class: 'gist' }),
+  // The full comparison apparatus (chip filters, shortlist, tabs, panels) is
+  // now history — lodging is booked (see renderBookedStays). Demote it behind
+  // one expander. querySelector in renderBody still reaches these elements
+  // regardless of the <details> nesting, so all wiring keeps working.
+  const comparisonApparatus = h(
+    'details',
+    { class: 'disclosure lodging-comparison' },
+    h(
+      'summary',
+      { class: 'disclosure__summary' },
+      'Browse the full Marblemount-cluster comparison (pre-booking research)'
+    ),
+    h(
+      'p',
+      { class: 'disclosure__lede' },
+      'Kept for the record. The booked house is ~40 min west of this cluster, so the per-card drive-times below run short for the actual stay.'
+    ),
     sourceStrip,
     sourceNote,
-    splitCallout,
     chipBar,
     shortlistContainer,
     trustBanner,
     tabs,
-    h('div', { class: 'lodging-panels' }),
+    h('div', { class: 'lodging-panels' })
+  );
+
+  const wrap = section(
+    'lodging',
+    'Lodging',
+    h('ul', { class: 'gist' }),
+    renderBookedStays(),
+    splitCallout,
+    comparisonApparatus,
     shortlistFab
   );
 

@@ -52,15 +52,14 @@ const DECISIONS: DecisionRow[] = [
   },
   {
     label: 'Flights',
-    state: 'United Main Cabin · leaning Option 2 nonstop (~$799) over Option 1 1-stop (~$656). Both options sent to Erin · awaiting her pick.',
-    sub: 'Erin May 18 11:07pm — "Yes we could do United. They fly into SEA. That\'s looking much cheaper." Allison sent both flight options via WhatsApp May 19.',
-    tone: 'in-progress',
-    holder: 'Erin',
+    state: 'BOOKED · United Economy EWR⇄SEA · out UA1330 Sun Aug 16 (7:59 AM → 11:03 AM) · return UA2017 Thu Aug 20 redeye (10:58 PM → lands EWR 7:10 AM Fri).',
+    sub: 'Booked May 20, 2026. Erin — "BOOKED IT." Allison conf IXMH2Z (seats 37A / 31D); Erin booked matching seats separately.',
+    tone: 'decided',
   },
   {
     label: 'Lodging',
-    state: 'Book 1 location, 4 nights, refundable in the Marblemount cluster (Path A coverage). Optional swap to east-side nights 3-4 if WA-20 confirms June 25.',
-    sub: 'Erin May 18 11:43pm — "the Marble Mount side, just because in case that road doesn\'t open up in time…within an hour driving range." 4 Allison-verified picks live, narrowing to one today.',
+    state: 'BOOKED · two west-side Airbnbs held for the same dates (Arlington + Sedro-Woolley Lakeside Cabin). Open: confirm which is primary, cancel the backup; whole-house vs shared on the Sedro-Woolley one.',
+    sub: 'Both west of WA-20 (work even if the road stays closed), ~40 min farther west than the Marblemount cluster. Sedro-Woolley address: 27024 Minkler Rd (Erin, May 19).',
     tone: 'in-progress',
     holder: 'Allison',
   },
@@ -72,7 +71,7 @@ const DECISIONS: DecisionRow[] = [
   },
 ];
 
-const LAST_SYNC = 'May 19, 2026 afternoon';
+const LAST_SYNC = 'May 21, 2026 — flights + lodging booked';
 
 function renderRow(row: DecisionRow): HTMLElement {
   return h(
