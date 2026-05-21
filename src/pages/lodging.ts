@@ -1,8 +1,9 @@
 /**
- * lodging.ts — full lodging deep-dive page.
+ * lodging.ts — lodging page.
  *
- * West + East tabs, all 2-bed cabins, splurge/not-fit/basic in disclosures.
- * Filters automatically to the active path if one is selected.
+ * Leads with the three BOOKED stays (all kept until Allison + Erin pick one).
+ * The old West/East comparison + search guide sit below as a collapsed
+ * reference layer.
  */
 
 import '../styles/main.css';
@@ -14,14 +15,10 @@ import { renderPageCtas } from '../sections/page-ctas';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'lodging',
-    title: 'Marblemount cluster — west-side base',
-    verifiedOn: '2026-05-19 (needs-match audit — refundable chip optional, not default)',
-    // Hero lede updated 2026-05-19 PM (needs-match audit): the "refundable
-    // filter ON by default" claim was hiding all 18 listings (no entry is
-    // tagged 'yes' yet — Allison's research today). Now the refundable
-    // preference is named as preference; the chip is opt-in once data lands.
+    title: 'Where we\'re staying — booked',
+    verifiedOn: '2026-05-21 (lodging booked — three reservations held)',
     lede:
-      'Erin\'s May 18 call — "the Marble Mount side… within an hour driving range." Default base = the Marblemount / Concrete / Rockport cluster. Path A keeps all 4 nights here. Path B splits 2 nights west + 2 nights east (Winthrop / Mazama). Refundable preferred where available — tap the ✓ Free cancellation chip to narrow once Allison\'s shortlist lands. Dates: Sun Aug 16 → Thu Aug 20, 2026.',
+      'Booked. Three Airbnbs are reserved for Aug 16 → 20, all on the west side: Arlington (Allison) plus two in Sedro-Woolley — the "Lakeside Cabin w/ Dock" (Allison) and the cheaper "Edwards House Retreat" (Erin). All held for now — Allison + Erin pick one and cancel the rest before the free-cancellation windows close.',
     imageHero: {
       // Re-re-swapped May 17, 2026 (8:13 AM IDT) — prior URL loaded fine but
       // depicted a tropical beach resort, not PNW. Switching to the Diablo
