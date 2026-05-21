@@ -12,7 +12,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderWa20Status } from '../sections/wa20-status';
 import { renderPageCtas } from '../sections/page-ctas';
 import { WA20_PAGE_META } from '../data/wa20-status';
@@ -37,7 +37,6 @@ function mount(): void {
   });
 
   main.append(renderWa20Status(), renderPageCtas('wa20-status'));
-  attachNotesToAllSections(main);
 }
 
 mount();

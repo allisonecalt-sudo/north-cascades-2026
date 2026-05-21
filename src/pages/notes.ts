@@ -7,7 +7,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderNotesSummary } from '../sections/notes-summary';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -19,7 +19,6 @@ function mount(): void {
   });
 
   main.append(renderNotesSummary(), renderPageCtas('notes'));
-  attachNotesToAllSections(main);
 }
 
 mount();

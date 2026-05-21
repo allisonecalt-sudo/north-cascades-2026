@@ -11,7 +11,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderHowTo } from '../sections/how-to';
 import { renderPageCtas } from '../sections/page-ctas';
 import { HOW_TO_PAGE_META } from '../data/how-to';
@@ -36,7 +36,6 @@ function mount(): void {
   });
 
   main.append(renderHowTo(), renderPageCtas('how-to'));
-  attachNotesToAllSections(main);
 }
 
 mount();

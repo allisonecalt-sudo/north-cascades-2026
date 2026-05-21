@@ -6,7 +6,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderForErin } from '../sections/for-erin';
 import { renderTowns } from '../sections/towns';
 import { renderPageCtas } from '../sections/page-ctas';
@@ -26,7 +26,6 @@ function mount(): void {
   });
 
   main.append(renderForErin(), renderTowns(), renderPageCtas('for-erin'));
-  attachNotesToAllSections(main);
 }
 
 mount();

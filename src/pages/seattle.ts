@@ -5,7 +5,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderSeattle } from '../sections/seattle';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -25,7 +25,6 @@ function mount(): void {
   });
 
   main.append(renderSeattle(), renderPageCtas('seattle'));
-  attachNotesToAllSections(main);
 }
 
 mount();

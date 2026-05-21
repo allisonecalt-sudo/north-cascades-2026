@@ -9,7 +9,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderPreTrip } from '../sections/pre-trip';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -28,7 +28,6 @@ function mount(): void {
   });
 
   main.append(renderPreTrip(), renderPageCtas('pre-trip'));
-  attachNotesToAllSections(main);
 }
 
 mount();

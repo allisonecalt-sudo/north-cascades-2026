@@ -8,7 +8,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderRestaurants } from '../sections/restaurants';
 import { renderBring } from '../sections/bring';
 import { renderDecisions } from '../sections/decisions';
@@ -27,7 +27,6 @@ function mount(): void {
     renderDecisions(),
     renderPageCtas('details')
   );
-  attachNotesToAllSections(main);
 }
 
 mount();

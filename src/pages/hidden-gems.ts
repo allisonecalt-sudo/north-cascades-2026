@@ -8,7 +8,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderHiddenGems } from '../sections/hidden-gems';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -31,7 +31,6 @@ function mount(): void {
   });
 
   main.append(renderHiddenGems(), renderPageCtas('hidden-gems'));
-  attachNotesToAllSections(main);
 }
 
 mount();

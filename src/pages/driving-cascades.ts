@@ -7,7 +7,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderDrivingCascades } from '../sections/driving-cascades';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -26,7 +26,6 @@ function mount(): void {
   });
 
   main.append(renderDrivingCascades(), renderPageCtas('driving-cascades'));
-  attachNotesToAllSections(main);
 }
 
 mount();

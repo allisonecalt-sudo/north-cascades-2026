@@ -11,7 +11,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderTowns } from '../sections/towns';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -34,7 +34,6 @@ function mount(): void {
   });
 
   main.append(renderTowns(), renderPageCtas('towns'));
-  attachNotesToAllSections(main);
 }
 
 mount();

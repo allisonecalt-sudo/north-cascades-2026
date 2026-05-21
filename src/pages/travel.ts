@@ -7,7 +7,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderFlights } from '../sections/flights';
 import { renderLogistics } from '../sections/logistics';
 import { renderPageCtas } from '../sections/page-ctas';
@@ -52,7 +52,6 @@ function mount(): void {
     renderLogistics(),
     renderPageCtas('travel')
   );
-  attachNotesToAllSections(main);
 }
 
 mount();

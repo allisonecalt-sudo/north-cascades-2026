@@ -7,7 +7,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderLodging, renderLodgingSearchGuide } from '../sections/lodging';
 import { renderCoolSleepingPlaces } from '../sections/cool-sleeping-places';
 import { renderPageCtas } from '../sections/page-ctas';
@@ -41,7 +41,6 @@ function mount(): void {
     renderLodgingSearchGuide(),
     renderPageCtas('lodging')
   );
-  attachNotesToAllSections(main);
 }
 
 mount();

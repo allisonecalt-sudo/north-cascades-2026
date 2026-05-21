@@ -41,12 +41,7 @@
 import { TRIP } from './data/trip';
 import { CLOSURE_ALERT } from './data/closure';
 import { h } from './dom';
-import { initNotesModal, attachNotesButton, refreshBadges } from './sections/notes-button';
-import { initGlobalFab } from './sections/global-fab';
-import { initPicksFab } from './sections/picks-fab';
 import { attachBackToTop } from './sections/back-to-top';
-import { showWelcomePopup } from './sections/welcome-popup';
-import { initSearchOverlay } from './sections/search-overlay';
 
 export type PageId =
   | 'home'
@@ -183,35 +178,23 @@ const NAV_BUCKETS: readonly NavBucket[] = [
 ];
 
 /**
- * Flat lookup — bucket ID for any page, plus an entry-or-synthetic-entry per
- * page (flat buckets synthesise a 1-entry record so breadcrumb rendering can
- * stay uniform across both kinds).
+ * Flat lookup — bucket ID for any page. Drives nav active-state (desktop +
+ * mobile). The breadcrumb + cross-promo (which also read a per-page entry map)
+ * were removed in the 2026-05-21 chrome strip, so only the bucket map remains.
  */
 const PAGE_TO_BUCKET = new Map<PageId, BucketId>();
-const PAGE_TO_ENTRY = new Map<PageId, NavEntry>();
 for (const bucket of NAV_BUCKETS) {
   if (bucket.kind === 'flat') {
     PAGE_TO_BUCKET.set(bucket.pageId, bucket.id);
-    PAGE_TO_ENTRY.set(bucket.pageId, {
-      id: bucket.pageId,
-      href: bucket.href,
-      label: bucket.label,
-    });
   } else {
     for (const entry of bucket.entries) {
       PAGE_TO_BUCKET.set(entry.id, bucket.id);
-      PAGE_TO_ENTRY.set(entry.id, entry);
     }
   }
 }
-/**
- * Home is always reachable via the brand pill and isn't listed as its own nav
- * item in the hybrid IA. Tag it with a synthetic 'home' bucket so the
- * breadcrumb logic still has a record (the breadcrumb is suppressed on home
- * anyway, but other code paths read PAGE_TO_BUCKET defensively).
- */
-PAGE_TO_BUCKET.set('home', 'stay'); // placeholder — home doesn't show a breadcrumb
-PAGE_TO_ENTRY.set('home', { id: 'home', href: './', label: 'Home' });
+// Home is reachable via the brand pill; tag it with a placeholder bucket so the
+// nav active-state logic reads PAGE_TO_BUCKET defensively without a miss.
+PAGE_TO_BUCKET.set('home', 'stay');
 
 interface ShellOptions {
   pageId: PageId;
@@ -250,53 +233,6 @@ interface ShellOptions {
     ctaHref?: string;
   };
 }
-
-/**
- * CROSS_PROMO — per-page "Related →" strip (added 2026-05-17, plan item #9).
- *
- * Each page maps to 3 sibling pages chosen for circulation: the bottom-of-page
- * exit is wasted real estate on a multi-page site. Path-filter state survives
- * navigation (NAV uses normal <a href> links), so cross-promo isn't dead-ending,
- * it's continuing the same filtered view.
- *
- * Chosen by hand, not algorithmic — each trio answers "if a reader finished
- * THIS page, what's the most useful next page?" Examples:
- *   - lodging → hikes/costs/map (what's nearby, what does it cost, where is it)
- *   - hikes → lodging/activities/viewpoints (where to sleep near them,
- *     non-hiking peer days, drive-up alternatives)
- *   - travel → rental/driving-cascades/costs (the transit chain)
- */
-// Declutter pass (2026-05-21): targets are restricted to pages still in the
-// nav (home, lodging, hikes, map, costs, for-erin, travel, rental, seattle,
-// food, pre-trip) so cross-promo never dead-links to a de-surfaced page.
-// De-surfaced source pages keep an entry (still URL-reachable) but point only
-// at in-nav siblings.
-const CROSS_PROMO: Record<PageId, readonly PageId[]> = {
-  home: ['lodging', 'hikes', 'map'],
-  lodging: ['hikes', 'costs', 'map'],
-  hikes: ['lodging', 'map', 'costs'],
-  activities: ['hikes', 'lodging', 'map'],
-  viewpoints: ['hikes', 'map', 'lodging'],
-  lakes: ['hikes', 'map', 'lodging'],
-  'hidden-gems': ['hikes', 'map', 'lodging'],
-  towns: ['lodging', 'seattle', 'map'],
-  'top-sunsets': ['lodging', 'map', 'hikes'],
-  travel: ['rental', 'seattle', 'costs'],
-  rental: ['travel', 'seattle', 'costs'],
-  'driving-cascades': ['travel', 'rental', 'map'],
-  costs: ['lodging', 'rental', 'hikes'],
-  'pre-trip': ['costs', 'lodging', 'travel'],
-  seattle: ['travel', 'food', 'lodging'],
-  'for-erin': ['home', 'lodging', 'hikes'],
-  details: ['home', 'lodging', 'costs'],
-  food: ['lodging', 'seattle', 'pre-trip'],
-  notes: ['home', 'lodging', 'for-erin'],
-  'how-to': ['lodging', 'map', 'costs'],
-  'wa20-status': ['travel', 'map', 'pre-trip'],
-  'weather-plan-c': ['pre-trip', 'hikes', 'map'],
-  map: ['lodging', 'hikes', 'costs'],
-  search: ['home', 'lodging', 'hikes'],
-};
 
 function buildNav(activeId: PageId): HTMLElement {
   const activeBucket = PAGE_TO_BUCKET.get(activeId);
@@ -557,41 +493,6 @@ function mobileFlatDesc(id: BucketId): string {
   }
 }
 
-/**
- * Breadcrumb — low-contrast line.
- *
- * For dropdown-bucket pages: [Home › Bucket › Page] (e.g. Home › Do › Hikes).
- * For flat-bucket pages (Stay, Costs, For Erin): [Home › Page] — skipping
- * the redundant bucket layer because the bucket IS the page.
- * Suppressed on the home page (the hero already orients).
- */
-function buildBreadcrumb(activeId: PageId): HTMLElement | null {
-  if (activeId === 'home') return null;
-  const bucketId = PAGE_TO_BUCKET.get(activeId);
-  const entry = PAGE_TO_ENTRY.get(activeId);
-  if (!bucketId || !entry) return null;
-  const bucket = NAV_BUCKETS.find((b) => b.id === bucketId);
-  if (!bucket) return null;
-  const children: Array<HTMLElement | null> = [
-    h('a', { class: 'breadcrumb__link', href: './' }, 'Home'),
-    h('span', { class: 'breadcrumb__sep', 'aria-hidden': 'true' }, '›'),
-  ];
-  if (bucket.kind === 'dropdown') {
-    children.push(
-      h('span', { class: 'breadcrumb__bucket' }, bucket.label),
-      h('span', { class: 'breadcrumb__sep', 'aria-hidden': 'true' }, '›')
-    );
-  }
-  children.push(
-    h('span', { class: 'breadcrumb__current', 'aria-current': 'page' }, entry.label)
-  );
-  return h(
-    'nav',
-    { class: 'breadcrumb', 'aria-label': 'Breadcrumb' },
-    ...children
-  );
-}
-
 function buildClosureBanner(): HTMLElement {
   return h(
     'details',
@@ -745,7 +646,7 @@ function buildImageHero(opts: ShellOptions): HTMLElement {
  */
 const LAST_SYNC = 'May 19, 2026';
 
-function buildFooter(pageId: PageId, verifiedOn: string | undefined): HTMLElement {
+function buildFooter(verifiedOn: string | undefined): HTMLElement {
   // Per-page verification date (plan item #8, 2026-05-17). Falls back to the
   // site-wide TRIP.researchedOn when a page doesn't pass its own date.
   const verifyDate = verifiedOn ?? TRIP.researchedOn;
@@ -756,7 +657,6 @@ function buildFooter(pageId: PageId, verifiedOn: string | undefined): HTMLElemen
       'div',
       { class: 'site-footer__inner' },
       h('a', { href: './', class: 'site-footer__back' }, '← Back to home'),
-      buildCrossPromo(pageId),
       h(
         'p',
         { class: 'site-footer__verified' },
@@ -777,78 +677,36 @@ function buildFooter(pageId: PageId, verifiedOn: string | undefined): HTMLElemen
 }
 
 /**
- * buildCrossPromo — "Related → A · B · C" strip (plan item #9, 2026-05-17).
- * Renders 3 sibling-page text links separated by middle dots. Returns null
- * placeholder if the current page has no entry (defensive — every PageId is
- * mapped in CROSS_PROMO above, but TypeScript can't prove a future page won't
- * slip through).
- */
-function buildCrossPromo(pageId: PageId): HTMLElement {
-  const related = CROSS_PROMO[pageId] ?? [];
-  if (related.length === 0) {
-    return h('p', { class: 'site-footer__cross-promo', hidden: true });
-  }
-  const children: Array<HTMLElement | Text> = [
-    h('span', { class: 'site-footer__cross-promo-label' }, 'Related → '),
-  ];
-  related.forEach((relId, idx) => {
-    const entry = PAGE_TO_ENTRY.get(relId);
-    if (!entry) return;
-    if (idx > 0) {
-      children.push(h('span', { class: 'site-footer__cross-promo-sep', 'aria-hidden': 'true' }, ' · '));
-    }
-    children.push(
-      h(
-        'a',
-        { class: 'site-footer__cross-promo-link', href: entry.href },
-        entry.label
-      )
-    );
-  });
-  return h('p', { class: 'site-footer__cross-promo' }, ...children);
-}
-
-/**
  * Mount the shell into <body>, return the <main> element to fill with the
  * page's actual content.
  *
- * Order: nav → breadcrumb → page-header (or hero) → main → footer.
- * Also mounts the global notes modal + back-to-top button + the mobile
- * slide-over nav panel (sits at the end of body, toggled by the hamburger).
+ * Order: nav → page-header (or hero) → main → footer.
+ * Also mounts a single unobtrusive back-to-top button + the mobile slide-over
+ * nav panel (sits at the end of body, toggled by the hamburger).
+ *
+ * Chrome strip (2026-05-21): the welcome popup, ⌘K search overlay, per-section
+ * notes modal + 💬 buttons, the notes/picks FABs, the breadcrumb, and the
+ * cross-promo footer strip were all removed to match the calm budget-dashboard
+ * feel — no popups, no floating buttons, no search.
  */
 export function mountPageShell(opts: ShellOptions): HTMLElement {
   const body = document.body;
   // Skip-link is in index.html already, leave it alone.
   const main = h('main', { class: 'page-main', id: 'page-main' });
   const header = buildPageHeader(opts);
-  const breadcrumb = buildBreadcrumb(opts.pageId);
   const fragments: (HTMLElement | null)[] = [
     buildNav(opts.pageId),
-    breadcrumb,
     header,
     main,
-    buildFooter(opts.pageId, opts.verifiedOn),
+    buildFooter(opts.verifiedOn),
     buildMobileNav(opts.pageId),
   ];
   for (const el of fragments) {
     if (el) body.appendChild(el);
   }
 
-  initNotesModal();
-  initGlobalFab();
-  // Unified ✓ Picks FAB — viewpoints / lakes / towns / hidden gems / sunsets.
-  // Mounted on every page; stays hidden until at least one shortlist
-  // registered on this page has at least one pick.
-  initPicksFab();
-  // Cmd/Ctrl + / search overlay — mounts on every page that does not opt out
-  // via `data-search-skip`. Cmd+K stays bound to the notes widget.
-  initSearchOverlay();
-  void refreshBadges();
   attachBackToTop();
   attachNavBehavior(body);
-  // First-visit explainer popup (Erin's intro to the 💬 mechanic).
-  // Self-suppresses via localStorage after one show.
-  showWelcomePopup();
 
   return main;
 }
@@ -1030,19 +888,4 @@ function attachNavBehavior(body: HTMLElement): void {
       first.focus();
     }
   });
-}
-
-/**
- * After all sections are appended to <main>, call this to wire each section
- * with its 💬 notes button. Skips meta sections like the bottom CTA strip.
- */
-const NO_NOTES_SECTIONS = new Set(['next']);
-
-export function attachNotesToAllSections(main: HTMLElement): void {
-  const sections = main.querySelectorAll<HTMLElement>('section[id]');
-  sections.forEach((sec) => {
-    if (NO_NOTES_SECTIONS.has(sec.id)) return;
-    attachNotesButton(sec);
-  });
-  void refreshBadges();
 }

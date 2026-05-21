@@ -5,7 +5,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderHikes } from '../sections/hikes';
 import { renderViewpoints } from '../sections/viewpoints';
 import { renderSky } from '../sections/sky';
@@ -27,7 +27,6 @@ function mount(): void {
   });
 
   main.append(renderHikes(), renderViewpoints(), renderSky(), renderPageCtas('hikes'));
-  attachNotesToAllSections(main);
 }
 
 mount();

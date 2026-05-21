@@ -12,7 +12,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderRental } from '../sections/rental';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -32,7 +32,6 @@ function mount(): void {
   });
 
   main.append(renderRental(), renderPageCtas('rental'));
-  attachNotesToAllSections(main);
 }
 
 mount();

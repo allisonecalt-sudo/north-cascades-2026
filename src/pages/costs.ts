@@ -6,7 +6,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderCosts } from '../sections/costs';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -26,7 +26,6 @@ function mount(): void {
   });
 
   main.append(renderCosts(), renderPageCtas('costs'));
-  attachNotesToAllSections(main);
 }
 
 mount();

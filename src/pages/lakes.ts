@@ -14,7 +14,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderLakes } from '../sections/lakes';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -36,7 +36,6 @@ function mount(): void {
   });
 
   main.append(renderLakes(), renderPageCtas('lakes'));
-  attachNotesToAllSections(main);
 }
 
 mount();

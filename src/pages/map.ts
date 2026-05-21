@@ -8,7 +8,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderMap } from '../sections/map';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -28,7 +28,6 @@ function mount(): void {
   });
 
   main.append(renderMap({ tall: true, pageId: 'map' }), renderPageCtas('map'));
-  attachNotesToAllSections(main);
 }
 
 mount();

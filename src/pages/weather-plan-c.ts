@@ -12,7 +12,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderWeatherPlanC } from '../sections/weather-plan-c';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -37,7 +37,6 @@ function mount(): void {
   });
 
   main.append(renderWeatherPlanC(), renderPageCtas('weather-plan-c'));
-  attachNotesToAllSections(main);
 }
 
 mount();

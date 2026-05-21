@@ -17,7 +17,7 @@
  */
 
 import '../styles/main.css';
-import { mountPageShell, attachNotesToAllSections } from '../page-shell';
+import { mountPageShell } from '../page-shell';
 import { renderViewpointsGallery } from '../sections/viewpoints';
 import { renderPageCtas } from '../sections/page-ctas';
 
@@ -39,7 +39,6 @@ function mount(): void {
   });
 
   main.append(renderViewpointsGallery(), renderPageCtas('viewpoints'));
-  attachNotesToAllSections(main);
 }
 
 mount();
