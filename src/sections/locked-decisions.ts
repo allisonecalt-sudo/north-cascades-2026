@@ -59,16 +59,23 @@ const LOCKED: LockedRow[] = [
     attribution: 'Erin · WhatsApp May 18, 11:43pm VN',
   },
   {
+    label: 'Lodging — booked',
+    state:
+      'House booked at 27024 Minkler Rd, Sedro-Woolley, WA 98284 — west of the Marblemount cluster (~40 min to the park entrance). Still to confirm: whole-house vs. shared with other guests.',
+    quote: '"Address to the house:  27024 Minkler Rd, Sedro-Woolley, WA 98284, USA"',
+    attribution: 'Erin · WhatsApp May 19, 2026',
+  },
+  {
     label: 'Origin airports',
     state: 'Both depart NYC area. Allison: EWR primary, JFK secondary, LGA acceptable. Erin: EWR (NJ-based).',
     attribution: 'Confirmed May 19, 2026 — Allison handles her TLV→NYC leg on a separate ticket; the joint booking starts at NYC.',
   },
   {
-    label: 'Airline preference',
-    state: 'United is the main carrier — both have loyalty + Allison has a travel credit',
-    quote:
-      '"Yes we could do United. They fly into SEA. That\'s looking much cheaper."',
-    attribution: 'Erin · WhatsApp May 18, 11:07pm',
+    label: 'Flights — booked',
+    state:
+      'Booked May 20, 2026 on the agreed United → SEA routing. Erin booked her seats (standard economy); Allison booked the matching itinerary.',
+    quote: '"BOOKED IT"',
+    attribution: 'Erin · WhatsApp May 20, 2026',
   },
   {
     label: 'Refundable',
