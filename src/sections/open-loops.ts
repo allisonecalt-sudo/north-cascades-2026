@@ -33,18 +33,10 @@ interface OpenLoop {
 
 const OPEN: OpenLoop[] = [
   {
-    label: 'Which booked house is primary',
-    state: 'TWO Airbnbs are booked for the same dates (Aug 16–20): Arlington (host Brandi, 6 guests, conf HMKXHM8AW5) and Sedro-Woolley "Lakeside Cabin" (host Jackie, 4 guests, conf HMA4W2E22N). One is the keeper, one a backup — confirm primary, then cancel the other.',
-    holder: 'Allison',
-    eta: 'Decide + cancel the backup',
-  },
-  {
-    label: 'Whole-house vs shared (Sedro-Woolley)',
-    state: 'Unresolved whether the Sedro-Woolley Lakeside Cabin is the whole place or shared with other guests.',
+    label: 'Which booked house to keep',
+    state: 'THREE Airbnbs are reserved for the same dates (Aug 16–20): Arlington (host Brandi, conf HMKXHM8AW5, Allison booked), Sedro-Woolley "Lakeside Cabin" (host Jackie, conf HMA4W2E22N, Allison booked), and Sedro-Woolley "Edwards House Retreat" ($493/4 nights, 4.99★, Erin booked). All kept for now — pick one, then cancel the other two before the free-cancellation windows close.',
     holder: 'Allison + Erin',
-    eta: 'Confirm with host Jackie',
-    quote: '"will the other people be there?" / "I thought it was the whole place."',
-    attribution: 'Erin / Allison · WhatsApp, May 19',
+    eta: 'Decide + cancel the other two',
   },
   {
     label: 'WA-20 reopen',
@@ -63,12 +55,8 @@ interface NextActionRow {
 
 const NEXT_ACTIONS: NextActionRow[] = [
   {
-    holder: 'Allison',
-    action: 'Confirm which booked house is primary (Arlington vs Sedro-Woolley Lakeside Cabin) and cancel the backup reservation — both are held for the same Aug 16–20 dates.',
-  },
-  {
     holder: 'Allison + Erin',
-    action: 'Confirm with host Jackie whether the Sedro-Woolley Lakeside Cabin is the whole house or shared, before deciding which to keep.',
+    action: 'Pick one of the three booked houses (Arlington / Sedro-Woolley Lakeside Cabin / Sedro-Woolley Edwards House) and cancel the other two — all three are held for the same Aug 16–20 dates, so decide before the free-cancellation windows close.',
   },
 ];
 

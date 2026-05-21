@@ -47,8 +47,6 @@ import { initPicksFab } from './sections/picks-fab';
 import { attachBackToTop } from './sections/back-to-top';
 import { showWelcomePopup } from './sections/welcome-popup';
 import { initSearchOverlay } from './sections/search-overlay';
-import { getSelectedPath, setSelectedPath, subscribeSelectedPath } from './state/path';
-import { TRIP_PATHS } from './data/paths';
 
 export type PageId =
   | 'home'
@@ -84,7 +82,7 @@ interface NavEntry {
   desc?: string;
 }
 
-type BucketId = 'stay' | 'how-to' | 'do' | 'get-there' | 'costs' | 'for-erin' | 'more';
+type BucketId = 'stay' | 'hikes' | 'map' | 'costs' | 'for-erin' | 'more';
 
 /**
  * NavBucket — either:
@@ -114,30 +112,25 @@ type NavBucket =
     };
 
 /**
- * Hybrid 3-flat + 3-dropdown nav structure (added 2026-05-17 PM).
+ * Lean 5-flat + 1-dropdown nav (declutter pass, 2026-05-21).
  *
- * Replaces the all-dropdown 4-bucket nav shipped earlier same day at f5a8b37
- * (Plan / Explore / Logistics / Talk).
+ * Replaces the hybrid 3-flat + 3-dropdown nav (NAV_STRATEGY_2026-05-17.md). The
+ * trip is booked, so the comparison-era IA (How to / Do / Get there buckets,
+ * 13 linked pages) was over-built for a 4-night trip with one companion.
+ * Allison: "trim everything that seems trimmable — we don't need it to be
+ * overwhelming."
  *
- * Story arc reads left-to-right as the booking sequence:
- *   Stay → Do → Get there → Costs → For Erin → More
+ * Flat spine — one tap each:
+ *   Stay (lodging) · Hikes · Map · Costs · For Erin
+ * Plus ONE "More" dropdown for the still-useful secondary pages:
+ *   Travel (flights) · Rental · Seattle · Groceries · Pre-trip
  *
- * Why hybrid (per NAV_STRATEGY_2026-05-17.md):
- *   - Stay (lodging) is the highest-traffic decision. Flat = one tap.
- *   - Costs is its own anchor — Allison touches repeatedly. Flat.
- *   - For Erin is the WHOLE POINT of the site (she reacts). Flat = obvious.
- *   - Do groups things-to-do-each-day (Hikes / Viewpoints / Lakes / Activities
- *     / Hidden gems / Towns) — coherent "what fills the day" bucket.
- *   - Get there groups transit chain (Travel / Rental / Driving / Seattle).
- *   - More holds admin + reference (Pre-trip / Groceries / Top sunsets /
- *     Details / Notes). Naming "More" instead of "Talk" so 1-item dropdowns
- *     are no longer wasteful.
+ * De-surfaced (files KEPT, reachable by URL, just not linked in nav):
+ *   Viewpoints, Lakes, Activities, Hidden gems, Top sunsets, Towns, How-to,
+ *   Weather Plan C, Details, Notes, Driving, WA-20-status. Per Allison's
+ *   "don't disappear → archive nicely → pullable when needed."
  *
- * Towns is in Do (not Get there) because Erin "happy to visit towns if
- * interesting" — they fill the day, they're not pure transit context.
- *
- * Sunsets stays linkable from lodging cards (page kept), but demoted to More
- * because Allison clarified "not a big sunset trip."
+ * The PageId union stays intact so those pages still build + are URL-reachable.
  */
 const NAV_BUCKETS: readonly NavBucket[] = [
   {
@@ -148,43 +141,18 @@ const NAV_BUCKETS: readonly NavBucket[] = [
     href: 'lodging.html',
   },
   {
-    // "How to" is the master decision-tree surface (Allison 2026-05-17:
-    // *"this one should be giving possible paths — how to do the trip"*).
-    // Slotted flat between Stay and Do because it IS the spine — the
-    // LAY-IT-OUT page that walks through the realistic ways to do the
-    // trip. Stay → How to → Do reads as the planning sequence: "I know
-    // where I'll sleep, now show me the realistic ways to organize the
-    // 5 days, then I can browse what to do each day."
     kind: 'flat',
-    id: 'how-to',
-    label: 'How to',
-    pageId: 'how-to',
-    href: 'how-to.html',
+    id: 'hikes',
+    label: 'Hikes',
+    pageId: 'hikes',
+    href: 'hikes.html',
   },
   {
-    kind: 'dropdown',
-    id: 'do',
-    label: 'Do',
-    entries: [
-      { id: 'map', href: 'map.html', label: 'Map', desc: 'Path-aware interactive map' },
-      { id: 'hikes', href: 'hikes.html', label: 'Hikes', desc: 'Signatures + alternates' },
-      { id: 'viewpoints', href: 'viewpoints.html', label: 'Viewpoints', desc: 'Drive-up postcards' },
-      { id: 'lakes', href: 'lakes.html', label: 'Lakes', desc: 'Water swaps + rentals' },
-      { id: 'activities', href: 'activities.html', label: 'Activities', desc: 'Non-hiking ways to spend a day' },
-      { id: 'hidden-gems', href: 'hidden-gems.html', label: 'Hidden gems', desc: '12 lesser-known spots' },
-      { id: 'towns', href: 'towns.html', label: 'Towns', desc: 'Marblemount → Winthrop corridor' },
-    ],
-  },
-  {
-    kind: 'dropdown',
-    id: 'get-there',
-    label: 'Get there',
-    entries: [
-      { id: 'travel', href: 'travel.html', label: 'Travel', desc: 'Flights + routings' },
-      { id: 'rental', href: 'rental.html', label: 'Rental', desc: 'Car: automatic, all-in price' },
-      { id: 'driving-cascades', href: 'driving-cascades.html', label: 'Driving', desc: 'WA-20 + Cascade River Rd' },
-      { id: 'seattle', href: 'seattle.html', label: 'Seattle', desc: 'Day 1 + Day 5 anchor' },
-    ],
+    kind: 'flat',
+    id: 'map',
+    label: 'Map',
+    pageId: 'map',
+    href: 'map.html',
   },
   {
     kind: 'flat',
@@ -205,12 +173,11 @@ const NAV_BUCKETS: readonly NavBucket[] = [
     id: 'more',
     label: 'More',
     entries: [
-      { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip', desc: 'Book-by dates + verifications' },
+      { id: 'travel', href: 'travel.html', label: 'Travel', desc: 'Flights + routings' },
+      { id: 'rental', href: 'rental.html', label: 'Rental', desc: 'Car: automatic, all-in price' },
+      { id: 'seattle', href: 'seattle.html', label: 'Seattle', desc: 'Day 1 + Day 5 anchor' },
       { id: 'food', href: 'food.html', label: 'Groceries', desc: 'Buy + cook the whole trip' },
-      { id: 'weather-plan-c', href: 'weather-plan-c.html', label: 'Weather Plan C', desc: 'Smoke + bad-air swaps' },
-      { id: 'top-sunsets', href: 'top-sunsets.html', label: 'Top sunsets', desc: 'Sunset perks per lodging' },
-      { id: 'details', href: 'details.html', label: 'Details', desc: 'Restaurants + bring list + decisions' },
-      { id: 'notes', href: 'notes.html', label: 'Notes', desc: 'Comments + change log' },
+      { id: 'pre-trip', href: 'pre-trip.html', label: 'Pre-trip', desc: 'Book-by dates + verifications' },
     ],
   },
 ];
@@ -299,30 +266,35 @@ interface ShellOptions {
  *     non-hiking peer days, drive-up alternatives)
  *   - travel → rental/driving-cascades/costs (the transit chain)
  */
+// Declutter pass (2026-05-21): targets are restricted to pages still in the
+// nav (home, lodging, hikes, map, costs, for-erin, travel, rental, seattle,
+// food, pre-trip) so cross-promo never dead-links to a de-surfaced page.
+// De-surfaced source pages keep an entry (still URL-reachable) but point only
+// at in-nav siblings.
 const CROSS_PROMO: Record<PageId, readonly PageId[]> = {
   home: ['lodging', 'hikes', 'map'],
   lodging: ['hikes', 'costs', 'map'],
-  hikes: ['lodging', 'activities', 'viewpoints'],
-  activities: ['hikes', 'lakes', 'viewpoints'],
-  viewpoints: ['hikes', 'map', 'top-sunsets'],
-  lakes: ['activities', 'viewpoints', 'hidden-gems'],
-  'hidden-gems': ['hikes', 'viewpoints', 'lakes'],
-  towns: ['lodging', 'seattle', 'driving-cascades'],
-  'top-sunsets': ['lodging', 'viewpoints', 'lakes'],
-  travel: ['rental', 'driving-cascades', 'costs'],
-  rental: ['travel', 'driving-cascades', 'costs'],
-  'driving-cascades': ['travel', 'rental', 'wa20-status'],
-  costs: ['lodging', 'rental', 'how-to'],
-  'pre-trip': ['costs', 'wa20-status', 'weather-plan-c'],
-  seattle: ['towns', 'food', 'lodging'],
-  'for-erin': ['home', 'how-to', 'notes'],
-  details: ['home', 'lodging', 'notes'],
+  hikes: ['lodging', 'map', 'costs'],
+  activities: ['hikes', 'lodging', 'map'],
+  viewpoints: ['hikes', 'map', 'lodging'],
+  lakes: ['hikes', 'map', 'lodging'],
+  'hidden-gems': ['hikes', 'map', 'lodging'],
+  towns: ['lodging', 'seattle', 'map'],
+  'top-sunsets': ['lodging', 'map', 'hikes'],
+  travel: ['rental', 'seattle', 'costs'],
+  rental: ['travel', 'seattle', 'costs'],
+  'driving-cascades': ['travel', 'rental', 'map'],
+  costs: ['lodging', 'rental', 'hikes'],
+  'pre-trip': ['costs', 'lodging', 'travel'],
+  seattle: ['travel', 'food', 'lodging'],
+  'for-erin': ['home', 'lodging', 'hikes'],
+  details: ['home', 'lodging', 'costs'],
   food: ['lodging', 'seattle', 'pre-trip'],
   notes: ['home', 'lodging', 'for-erin'],
   'how-to': ['lodging', 'map', 'costs'],
-  'wa20-status': ['driving-cascades', 'how-to', 'pre-trip'],
-  'weather-plan-c': ['pre-trip', 'hikes', 'wa20-status'],
-  map: ['lodging', 'how-to', 'hikes'],
+  'wa20-status': ['travel', 'map', 'pre-trip'],
+  'weather-plan-c': ['pre-trip', 'hikes', 'map'],
+  map: ['lodging', 'hikes', 'costs'],
   search: ['home', 'lodging', 'hikes'],
 };
 
@@ -503,7 +475,7 @@ function buildMobileNav(activeId: PageId): HTMLElement {
           h(
             'span',
             { class: 'site-nav__mobile-desc' },
-            'Three paths + the trip at a glance'
+            'The trip at a glance'
           )
         ),
         ...NAV_BUCKETS.map((bucket) => buildMobileBucket(bucket, activeId, activeBucket))
@@ -571,9 +543,11 @@ function buildMobileBucket(
 function mobileFlatDesc(id: BucketId): string {
   switch (id) {
     case 'stay':
-      return 'Where to sleep, per path';
-    case 'how-to':
-      return 'The 6 realistic ways to do this trip';
+      return 'The booked stays + where to sleep';
+    case 'hikes':
+      return 'Signatures + alternates';
+    case 'map':
+      return 'Where everything is';
     case 'costs':
       return 'Budget ranges + breakdown';
     case 'for-erin':
@@ -701,7 +675,6 @@ function buildPageHeader(opts: ShellOptions): HTMLElement | null {
       h('p', { class: 'page-header__eyebrow' }, `${TRIP.travelers} · ${TRIP.dates}`),
       h('h1', { class: 'page-header__title' }, opts.title),
       opts.lede ? h('p', { class: 'page-header__lede' }, opts.lede) : null,
-      buildPathIndicator(),
       opts.showClosure ? buildClosureBanner() : null
     )
   );
@@ -753,60 +726,16 @@ function buildImageHero(opts: ShellOptions): HTMLElement {
       ),
       h('span', { class: 'image-hero__credit' }, hero.credit)
     ),
-    // Path indicator + closure banner ride in a tinted band BELOW the photo
-    // so the hero stays cinematic. Band always renders so the path indicator
-    // can appear later (via subscription) without re-mounting the shell.
-    h(
-      'div',
-      { class: 'image-hero-band' },
-      h(
-        'div',
-        { class: 'image-hero-band__inner' },
-        buildPathIndicator(),
-        opts.showClosure ? buildClosureBanner() : null
-      )
-    )
+    // Closure banner rides in a tinted band BELOW the photo so the hero stays
+    // cinematic. Only renders when showClosure is set (home page).
+    opts.showClosure
+      ? h(
+          'div',
+          { class: 'image-hero-band' },
+          h('div', { class: 'image-hero-band__inner' }, buildClosureBanner())
+        )
+      : null
   );
-}
-
-/**
- * Path indicator — shows the active path on every page so users always know
- * what they're filtered to. Tiny pill with the path letter + name, plus a
- * "Clear" link that drops back to compare-all.
- */
-function buildPathIndicator(): HTMLElement {
-  const wrap = h('div', { class: 'page-header__path-indicator', hidden: true });
-  const refresh = (): void => {
-    const current = getSelectedPath();
-    if (!current) {
-      wrap.hidden = true;
-      return;
-    }
-    const path = TRIP_PATHS.find((p) => p.id === current);
-    const label = path ? path.name.replace(`Path ${current} · `, '') : current;
-    wrap.hidden = false;
-    wrap.replaceChildren(
-      h('span', { class: 'page-header__path-pill' }, `Path ${current} · ${label}`),
-      h(
-        'button',
-        {
-          type: 'button',
-          class: 'page-header__path-clear',
-          'data-action': 'clear-path',
-        },
-        'Show all'
-      )
-    );
-  };
-  refresh();
-  subscribeSelectedPath(refresh);
-  wrap.addEventListener('click', (e) => {
-    const target = e.target;
-    if (!(target instanceof HTMLElement)) return;
-    if (target.dataset['action'] !== 'clear-path') return;
-    setSelectedPath(null);
-  });
-  return wrap;
 }
 
 /**

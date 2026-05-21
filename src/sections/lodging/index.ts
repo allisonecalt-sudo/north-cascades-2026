@@ -468,12 +468,12 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
         'li',
         { class: 'gist__item' },
         h('strong', {}, 'Lodging is booked.'),
-        ' Two Airbnbs are confirmed for Aug 16–20 (Arlington + Sedro-Woolley) — one is the keeper, one a backup to cancel. See the booked-stays cards above.'
+        ' Three Airbnbs are reserved for Aug 16–20 (Arlington + two in Sedro-Woolley) — all kept for now until Allison + Erin pick one and cancel the rest. See the booked-stays cards above.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        'Both booked houses sit WEST of the WA-20 corridor — accessible even if the highway stays closed — and ~40 min farther west than the Marblemount cluster the comparison below was built around.'
+        'All three booked stays sit WEST of the WA-20 corridor — accessible even if the highway stays closed — and ~40 min farther west than the Marblemount cluster the comparison below was built around.'
       ),
       h(
         'li',
@@ -510,6 +510,30 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
 
 /** One booked-stay card. */
 function renderBookedStayCard(stay: BookedStay): HTMLElement {
+  const facts: HTMLElement[] = [];
+  if (stay.host) {
+    facts.push(h('dt', {}, 'Host'), h('dd', {}, stay.host));
+  }
+  if (stay.guests) {
+    facts.push(h('dt', {}, 'Sleeps'), h('dd', {}, `${stay.guests} guests`));
+  }
+  if (stay.layout) {
+    facts.push(h('dt', {}, 'Layout'), h('dd', {}, stay.layout));
+  }
+  if (stay.price) {
+    facts.push(h('dt', {}, 'Price'), h('dd', {}, stay.price));
+  }
+  if (stay.rating) {
+    facts.push(h('dt', {}, 'Rating'), h('dd', {}, stay.rating));
+  }
+  facts.push(
+    h('dt', {}, 'Booked by'),
+    h('dd', {}, stay.bookedBy)
+  );
+  facts.push(
+    h('dt', {}, 'Confirmation'),
+    h('dd', {}, stay.conf ?? '—')
+  );
   return h(
     'article',
     { class: 'card booked-stay-card', 'aria-label': `Booked: ${stay.name}` },
@@ -520,25 +544,21 @@ function renderBookedStayCard(stay: BookedStay): HTMLElement {
       h('h4', { class: 'card__title' }, stay.name)
     ),
     h('p', { class: 'booked-stay-card__place' }, stay.place),
+    stay.unitType ? h('p', { class: 'booked-stay-card__addr' }, stay.unitType) : null,
     stay.address ? h('p', { class: 'booked-stay-card__addr' }, stay.address) : null,
-    h(
-      'dl',
-      { class: 'card__facts' },
-      h('dt', {}, 'Host'),
-      h('dd', {}, stay.host),
-      h('dt', {}, 'Sleeps'),
-      h('dd', {}, `${stay.guests} guests`),
-      h('dt', {}, 'Confirmation'),
-      h('dd', {}, stay.conf)
-    ),
+    h('dl', { class: 'card__facts' }, ...facts),
+    stay.freeCancellation
+      ? h('p', { class: 'booked-stay-card__feature' }, '✓ Free cancellation')
+      : null,
     stay.feature ? h('p', { class: 'booked-stay-card__feature' }, stay.feature) : null,
     stay.source ? h('p', { class: 'booked-stay-card__source' }, stay.source) : null
   );
 }
 
-/** Booked-stays block — leads the Lodging section now that two Airbnbs are
- *  confirmed for the same dates. Honest flag: one is keeper, one is backup,
- *  not yet resolved; the Sedro-Woolley whole-house question is also open. */
+/** Booked-stays block — leads the Lodging section now that three Airbnbs are
+ *  reserved for the same dates. All three are kept on purpose (Allison May 21):
+ *  she + Erin haven't picked yet. Decide before the free-cancellation windows
+ *  close. Allison booked two; Erin booked Edwards House (the cheaper one). */
 function renderBookedStays(): HTMLElement {
   return h(
     'div',
@@ -547,10 +567,10 @@ function renderBookedStays(): HTMLElement {
     h(
       'p',
       { class: 'booked-stays__warning', role: 'note' },
-      h('strong', {}, '⚠ Two reservations, same dates. '),
-      'Both Airbnbs below are confirmed for the identical nights (Aug 16–20). ',
-      h('strong', {}, 'One needs to be confirmed as primary and the other canceled'),
-      ' — not yet resolved.'
+      h('strong', {}, 'Three reservations, same dates — all kept for now. '),
+      'All three Airbnbs below hold the identical nights (Aug 16–20). Allison booked two; Erin booked the cheaper one (Edwards House). ',
+      h('strong', {}, 'Allison + Erin haven\'t picked yet'),
+      ' — decide before the free-cancellation windows close, then cancel the other two.'
     ),
     h(
       'div',
@@ -563,20 +583,20 @@ function renderBookedStays(): HTMLElement {
       h(
         'li',
         {},
-        h('strong', {}, 'Open · whole-house vs shared: '),
-        'the Sedro-Woolley listing\'s whole-place-vs-shared status is unresolved (Erin asked "will the other people be there?"; Allison: "I thought it was the whole place").'
+        h('strong', {}, 'Location: '),
+        'all three (Arlington + the two Sedro-Woolley stays) are WEST of the WA-20 corridor — accessible even if the highway stays closed — but ~40 min farther west than the old Marblemount-cluster plan. Sedro-Woolley is ≈ 1 hr 15 to Marblemount-area trailheads.'
       ),
       h(
         'li',
         {},
-        h('strong', {}, 'Location: '),
-        'both Arlington and Sedro-Woolley are WEST of the WA-20 corridor — accessible even if the highway stays closed — but ~40 min farther west than the old Marblemount-cluster plan. Sedro-Woolley is ≈ 1 hr 15 to Marblemount-area trailheads.'
+        h('strong', {}, 'Address note: '),
+        'Erin shared "27024 Minkler Rd, Sedro-Woolley, WA 98284" as "the house" — it\'s not confirmed which Sedro-Woolley listing that address belongs to.'
       ),
       h(
         'li',
         {},
         h('strong', {}, 'Kosher / kitchen: '),
-        'both are full-house Airbnbs with kitchens — the cook-in-from-Va\'ad-groceries plan still holds.'
+        'the cook-in-from-Va\'ad-groceries plan still holds across the options.'
       )
     )
   );

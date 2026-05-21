@@ -23,11 +23,11 @@ export const OPEN_DECISIONS: OpenDecision[] = [
   },
   {
     id: 'lodging-primary',
-    question: 'Which booked house is primary (cancel the backup)',
+    question: 'Which booked house to keep (cancel the other two)',
     options:
-      'Arlington (host Brandi, 6 guests, conf HMKXHM8AW5) · Sedro-Woolley "Lakeside Cabin w/ Dock & Boats" (host Jackie, 4 guests, conf HMA4W2E22N)',
-    targetBy: 'Soon — both held for the same Aug 16–20 dates; confirm one, cancel the other.',
-    rec: 'Both are BOOKED for identical dates. Also unresolved: whether the Sedro-Woolley cabin is whole-house or shared (confirm with host Jackie).',
+      'Arlington (host Brandi, 6 guests, conf HMKXHM8AW5, Allison booked) · Sedro-Woolley "Lakeside Cabin w/ Dock & Boats" (host Jackie, 4 guests, conf HMA4W2E22N, Allison booked) · Sedro-Woolley "Edwards House Retreat" ($493/4 nights, 4.99★, free cancellation, Erin booked)',
+    targetBy: 'Before the free-cancellation windows close — all three held for the same Aug 16–20 dates; pick one, cancel the other two.',
+    rec: 'All three are BOOKED for identical dates and kept on purpose until Allison + Erin pick. The Edwards House is the cheaper option.',
   },
   {
     id: 'rental-car',

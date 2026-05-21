@@ -42,9 +42,9 @@ interface Milestone {
 // recent and label it "past".
 const MILESTONES: Milestone[] = [
   {
-    label: 'Confirm primary house · cancel backup',
+    label: 'Pick one booked house · cancel the other two',
     date: new Date('2026-06-01T00:00:00-07:00'),
-    detail: 'Two Airbnbs booked for the same dates (Arlington + Sedro-Woolley). Confirm the keeper, cancel the other, settle the whole-house question.',
+    detail: 'Three Airbnbs booked for the same dates (Arlington + two in Sedro-Woolley). Pick one, cancel the other two before the free-cancellation windows close.',
   },
   {
     label: 'WSDOT reopen target',

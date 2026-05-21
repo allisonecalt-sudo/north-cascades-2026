@@ -58,8 +58,8 @@ const DECISIONS: DecisionRow[] = [
   },
   {
     label: 'Lodging',
-    state: 'BOOKED · two west-side Airbnbs held for the same dates (Arlington + Sedro-Woolley Lakeside Cabin). Open: confirm which is primary, cancel the backup; whole-house vs shared on the Sedro-Woolley one.',
-    sub: 'Both west of WA-20 (work even if the road stays closed), ~40 min farther west than the Marblemount cluster. Sedro-Woolley address: 27024 Minkler Rd (Erin, May 19).',
+    state: 'BOOKED · three west-side Airbnbs held for the same dates (Arlington + two in Sedro-Woolley, incl. Edwards House). All kept for now. Open: pick one, cancel the other two before the free-cancellation windows close.',
+    sub: 'All west of WA-20 (work even if the road stays closed), ~40 min farther west than the Marblemount cluster. Erin shared 27024 Minkler Rd as the address (May 19) — unconfirmed which listing.',
     tone: 'in-progress',
     holder: 'Allison',
   },

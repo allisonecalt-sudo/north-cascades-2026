@@ -97,11 +97,11 @@ export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
   // NICE-TO-HAVE — per-day swaps + treats
   // ──────────────────────────────────────────────────────────────
   {
-    id: 'whole-house-check',
+    id: 'which-booked-house',
     priority: 'nice',
-    question: 'Sedro-Woolley cabin — whole house or shared? Worth a quick check with Jackie.',
+    question: 'Which of the three booked houses do we keep?',
     context:
-      'Lodging is booked (two houses held for the same dates — see Lodging). One open thread: whether the Sedro-Woolley Lakeside Cabin is the whole place or shared with other guests. Erin asked "will the other people be there?"; Allison thought it was the whole place. A quick host message would settle it before we cancel the backup.',
+      'Lodging is booked — three houses held for the same dates (Arlington + two Sedro-Woolley stays; Allison booked two, Erin booked Edwards House). All kept for now. We pick one and cancel the other two before the free-cancellation windows close. No rush, just don\'t let the windows lapse.',
   },
   // `flight-time` removed 2026-05-19 PM needs-match audit — Erin's actively
   // researching the exact United fare tonight per home-page open-loop, so the

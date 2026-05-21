@@ -52,9 +52,9 @@ const LOCKED: LockedRow[] = [
     attribution: 'Erin · WhatsApp May 18, 4:57am',
   },
   {
-    label: 'Lodging — BOOKED (2 held, same dates)',
+    label: 'Lodging — BOOKED (3 held, same dates)',
     state:
-      'Two Airbnbs booked for Aug 16–20: Arlington (host Brandi, 6 guests, conf HMKXHM8AW5) and Sedro-Woolley "Lakeside Cabin w/ Dock, Boats & Stunning Views" (27024 Minkler Rd, host Jackie, 4 guests, conf HMA4W2E22N). Both west of the WA-20 corridor, ~40 min farther west than the Marblemount cluster. STILL OPEN: confirm which is primary + cancel the backup; whole-house vs. shared on the Sedro-Woolley one.',
+      'Three Airbnbs reserved for Aug 16–20, all kept for now: Arlington (host Brandi, 6 guests, conf HMKXHM8AW5, Allison booked) · Sedro-Woolley "Lakeside Cabin w/ Dock, Boats & Stunning Views" (host Jackie, 4 guests, conf HMA4W2E22N, Allison booked) · Sedro-Woolley "Edwards House Retreat" ($493/4 nights, 4.99★, free cancellation, Erin booked). All west of the WA-20 corridor, ~40 min farther west than the Marblemount cluster. Erin shared "27024 Minkler Rd, Sedro-Woolley" as the address — unconfirmed which Sedro-Woolley listing it is. STILL OPEN: Allison + Erin pick one, cancel the other two before the free-cancellation windows close.',
     quote: '"Address to the house:  27024 Minkler Rd, Sedro-Woolley, WA 98284, USA"',
     attribution: 'Erin · WhatsApp May 19, 2026',
   },
@@ -107,7 +107,7 @@ export function renderLockedDecisions(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'The decisions we already made — sourced from WhatsApp + Google Doc, quoted verbatim. The path-picker below is a deep dive into the alternates, not a re-do.'
+      'The decisions we already made — sourced from WhatsApp + Google Doc, quoted verbatim.'
     ),
     h(
       'ul',

@@ -23,13 +23,15 @@
 
 /**
  * BOOKED stays — the trip flipped from "compare" to "booked" (May 19–20,
- * 2026). TWO Airbnbs are confirmed for the SAME dates (Aug 16–20); one is the
- * keeper, one a backup, and that is NOT yet resolved. Source:
+ * 2026). THREE Airbnbs are reserved for the SAME dates (Aug 16–20). Allison
+ * booked two on her account; Erin booked the cheaper one on hers. Per Allison
+ * (May 21): keep all THREE for now — she + Erin haven't picked. Decide before
+ * the free-cancellation windows close. Source:
  * `projects/north-cascades-2026/BOOKED.md` (Gmail confs + Erin WhatsApp).
  *
- * Both sit WEST of the WA-20 corridor (accessible even if the highway stays
- * closed), but ~40 min farther west than the old Marblemount-cluster plan —
- * Sedro-Woolley is ≈ 1 hr 15 to Marblemount-area trailheads.
+ * All three sit WEST of the WA-20 corridor (accessible even if the highway
+ * stays closed), but ~40 min farther west than the old Marblemount-cluster
+ * plan — Sedro-Woolley is ≈ 1 hr 15 to Marblemount-area trailheads.
  */
 export interface BookedStay {
   name: string;
@@ -37,10 +39,22 @@ export interface BookedStay {
   place: string;
   /** Full street address if known. */
   address?: string;
-  host: string;
-  guests: number;
-  /** Airbnb confirmation code. */
-  conf: string;
+  host?: string;
+  guests?: number;
+  /** Airbnb confirmation code. Omitted when not captured (e.g. Erin's account). */
+  conf?: string;
+  /** Who booked it — "Allison" / "Erin". */
+  bookedBy: 'Allison' | 'Erin';
+  /** Price string if known, e.g. "$493 for 4 nights". */
+  price?: string;
+  /** Star rating / review profile line, e.g. "4.99★ (94 reviews) · Guest favorite". */
+  rating?: string;
+  /** Listing type line, e.g. "Rooms in Sedro-Woolley (private rooms in a house)". */
+  unitType?: string;
+  /** Beds / bedrooms / baths line. */
+  layout?: string;
+  /** True if the listing has free cancellation. */
+  freeCancellation?: boolean;
   /** Notable feature line. */
   feature?: string;
   /** Provenance — who sent / found it. */
@@ -54,16 +68,29 @@ export const BOOKED_STAYS: BookedStay[] = [
     host: 'Brandi',
     guests: 6,
     conf: 'HMKXHM8AW5',
+    bookedBy: 'Allison',
   },
   {
     name: 'Lakeside Cabin w/ Dock, Boats & Stunning Views',
     place: 'Sedro-Woolley, WA',
-    address: '27024 Minkler Rd, Sedro-Woolley, WA 98284',
     host: 'Jackie',
     guests: 4,
     conf: 'HMA4W2E22N',
+    bookedBy: 'Allison',
     feature: 'Lakefront with private dock + boats. Host actively engaged.',
-    source: 'The one Erin sent (WhatsApp, May 19).',
+  },
+  {
+    name: 'Edwards House Retreat',
+    place: 'Sedro-Woolley, WA',
+    bookedBy: 'Erin',
+    price: '$493 for 4 nights',
+    rating: '4.99★ (94 reviews) · Guest favorite',
+    unitType: 'Rooms in Sedro-Woolley (private rooms in a house)',
+    layout: '2 bedrooms · 2 beds · 1 bath',
+    freeCancellation: true,
+    feature: 'The cheaper option. Free cancellation.',
+    source:
+      'Booked on Erin\'s account (no conf code captured). Allison flagged it: "This is so cheap" (WhatsApp, May 19).',
   },
 ];
 

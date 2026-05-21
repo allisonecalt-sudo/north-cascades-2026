@@ -443,7 +443,7 @@ interface PageRow {
 }
 
 const PAGE_ROWS: PageRow[] = [
-  { id: 'home', name: 'Home', url: './', blurb: 'Three paths + the trip at a glance.', tags: ['home', 'landing', 'paths'], weight: 90 },
+  { id: 'home', name: 'Home', url: './', blurb: 'The booked trip at a glance — locked decisions, open loops, map, itinerary.', tags: ['home', 'landing'], weight: 90 },
   { id: 'lodging', name: 'Where we sleep', url: 'lodging.html', blurb: 'All cabins, West + East, with 2-bed + kitchen filtering.', tags: ['lodging', 'cabins', 'sleep', 'stay'], weight: 88 },
   { id: 'hikes', name: 'Hikes', url: 'hikes.html', blurb: 'Easy to ambitious — Cascade Pass, Maple Pass, Blue Lake, hidden gems.', tags: ['hikes', 'trails', 'walk'], weight: 86 },
   { id: 'viewpoints', name: 'Viewpoints', url: 'viewpoints.html', blurb: 'Drive-up postcards along WA-20 + Mt. Baker corridor.', tags: ['viewpoints', 'overlooks', 'drive-up'], weight: 78 },
