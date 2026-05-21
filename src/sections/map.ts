@@ -751,7 +751,7 @@ function buildContextStrip(): HTMLElement {
   const sync = (): void => {
     const cur = getSelectedPath();
     if (!cur) {
-      strip.innerHTML = `<span class="map-context-strip__hint">\u{1F446} <strong>Pick a path</strong> to draw the actual drive route and badges show "in your path."</span>`;
+      strip.innerHTML = `<span class="map-context-strip__hint">\u{1F446} Tap a <strong>route chip</strong> to preview that drive across the corridor.</span>`;
       strip.classList.add('map-context-strip--hint');
       strip.classList.remove('map-context-strip--path');
       return;
@@ -859,7 +859,7 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
 
   const gistItems = opts.gist ?? [
     'Every lodging, trailhead, viewpoint, sunset spot, and water option pinned. Toggle layers in the top-right control. The red dashed line is the WA-20 closure (MP 130 → MP 156, WSDOT target reopen Jul 4).',
-    'Pick a path to draw the actual drive route, color-matched. Numbered "Nights" badges float above the recommended cabin for each base.',
+    'Tap a route chip to draw that drive, color-matched. Numbered "Nights" badges float above the recommended cabin for each base.',
     'Click any pin to open a drawer with photos, the facts, drive matrix, and similar places nearby.',
   ];
 

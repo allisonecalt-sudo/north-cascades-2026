@@ -1,13 +1,12 @@
 /**
- * stat-row.ts — 4-up glanceable stat tiles above the path picker.
+ * stat-row.ts — 4-up glanceable stat tiles in the home hero.
  *
- * Austria-lifted pattern. Reads in 5 seconds, gives the shape of the trip
- * before the path picker forces a decision: "5 days · 4 nights · 2 cabins ·
- * 2 paths." Pulls from `TRIP_PATHS` so anything we change in the data file
- * flows here.
+ * Austria-lifted pattern. Reads in 5 seconds, gives the shape of the trip:
+ * "5 days · 4 nights · 3 stays booked · 2 travelers." Updated 2026-05-21 after
+ * flights + lodging were booked and the path-comparison machinery was retired
+ * (was "2 cabins · 2 paths").
  */
 
-import { TRIP_PATHS } from '../data/paths';
 import { h } from '../dom';
 
 interface Stat {
@@ -16,20 +15,16 @@ interface Stat {
 }
 
 /**
- * Build the 4-stat row. Numbers are stable across paths — every path is 5
- * days / 4 nights, every path uses 2 bases (Path A keeps one west base and
- * has a Mt. Baker side trip option; Path B does 2 west + 2 east), and the
- * path count comes from TRIP_PATHS.length (2 as of May 19, 2026 — Path C
- * removed).
+ * Build the 4-stat row. All fixed now that the trip is booked: 5 days / 4
+ * nights, 3 Airbnbs held for the same dates (Arlington + 2 in Sedro-Woolley),
+ * 2 travelers (Allison + Erin).
  */
 export function renderStatRow(): HTMLElement {
   const stats: Stat[] = [
     { num: '5', label: 'Days' },
     { num: '4', label: 'Nights' },
-    // "Scenic bases" was Allison's planning vocab — Erin would say "cabins."
-    // Microcopy fix per 2026-05-19 PM needs-match audit (Erin gap doc #13).
-    { num: '2', label: 'Cabins' },
-    { num: String(TRIP_PATHS.length), label: 'Paths' },
+    { num: '3', label: 'Stays booked' },
+    { num: '2', label: 'Travelers' },
   ];
   return h(
     'ul',

@@ -79,7 +79,7 @@ function renderBody(container: HTMLElement, selectedId: string | null): void {
         { class: 'gist__item' },
         path
           ? `${path.name} — ${path.lodgingShape}. Back to the cabin by 7-8 PM.`
-          : 'Default five-day shape. Pick a path above to see the per-path itinerary. Back to the cabin by 7-8 PM.'
+          : 'Default five-day shape, based off the booked west-side house. Back to the cabin by 7-8 PM.'
       )
     );
   }
