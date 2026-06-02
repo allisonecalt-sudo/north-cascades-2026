@@ -56,11 +56,11 @@ export interface Wa20Status {
 }
 
 export const WA20_STATUS: Wa20Status = {
-  state: 'closed',
-  headline: 'CLOSED through the park',
-  range: 'MP 130 (Colonial Creek) → MP 156 (Porcupine Creek)',
-  asOfLabel: 'May 17, 2026',
-  asOfIso: '2026-05-17',
+  state: 'partial',
+  headline: 'Reopening June 25 — open for the Aug trip',
+  range: 'Work zone MP 134 (Ross Dam) → MP 156 (Porcupine Creek); Diablo Lake reopened from the west',
+  asOfLabel: 'May 30, 2026',
+  asOfIso: '2026-05-30',
   detail: CLOSURE_ALERT.detail,
   target: CLOSURE_ALERT.target,
 };
@@ -70,7 +70,7 @@ export const WA20_STATUS: Wa20Status = {
 // ====================================================================
 
 export const WA20_TLDR: readonly string[] = [
-  'Both trip paths still work. Path A (west-side anchor) is the locked fallback if the road stays closed; Path B (split) adds Stevens Pass on the connector day if WA-20 reopens partially.',
+'WA-20 is on track to fully reopen June 25 — ~7 weeks before the Aug 16–20 trip — so plan on the full Diablo Lake → Washington Pass corridor being OPEN. The contingency below only matters if that reopen unexpectedly slips: Path A (west-side anchor) is the fallback; Path B (split) adds Stevens Pass on the connector day.',
   'Sahale Arm + Cascade Pass are reachable from the WEST (Cascade River Rd, separate access). Maple Pass + Cutthroat Pass + Blue Lake are reachable from the EAST (Mazama → Rainy Pass). The losses are mid-corridor: Diablo Lake Overlook, Thunder Knob, Ross Lake water-taxi, Diablo kayak launch at Colonial Creek.',
   'If you need to drive west-to-east (or back) and WA-20 is still closed: Stevens Pass (US-2) adds ~4 hours one-way. Plan to do it once, not as a daily commute.',
 ];

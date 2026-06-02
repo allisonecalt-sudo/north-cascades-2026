@@ -548,7 +548,13 @@ function renderBookedStayCard(stay: BookedStay): HTMLElement {
     stay.address ? h('p', { class: 'booked-stay-card__addr' }, stay.address) : null,
     h('dl', { class: 'card__facts' }, ...facts),
     stay.freeCancellation
-      ? h('p', { class: 'booked-stay-card__feature' }, '✓ Free cancellation')
+      ? h(
+          'p',
+          { class: 'booked-stay-card__feature' },
+          stay.freeCancelUntil
+            ? `✓ Free cancellation until ${stay.freeCancelUntil}`
+            : '✓ Free cancellation'
+        )
       : null,
     stay.feature ? h('p', { class: 'booked-stay-card__feature' }, stay.feature) : null,
     stay.source ? h('p', { class: 'booked-stay-card__source' }, stay.source) : null
@@ -567,10 +573,10 @@ function renderBookedStays(): HTMLElement {
     h(
       'p',
       { class: 'booked-stays__warning', role: 'note' },
-      h('strong', {}, 'Three reservations, same dates — all kept for now. '),
-      'All three Airbnbs below hold the identical nights (Aug 16–20). Allison booked two; Erin booked the cheaper one (Edwards House). ',
+      h('strong', {}, 'Four reservations, same dates — all kept for now. '),
+      'All four Airbnbs below hold the identical nights (Aug 16–20). Allison booked two (Sedro-Woolley + Arlington); Erin booked two cheaper Sedro-Woolley options (Edwards House + The Carriage House). ',
       h('strong', {}, 'Allison + Erin haven\'t picked yet'),
-      ' — decide before the free-cancellation windows close, then cancel the other two.'
+      ' — decide before each free-cancellation window closes, then cancel the rest.'
     ),
     h(
       'div',

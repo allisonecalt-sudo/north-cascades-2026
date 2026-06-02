@@ -23,11 +23,12 @@
 
 /**
  * BOOKED stays — the trip flipped from "compare" to "booked" (May 19–20,
- * 2026). THREE Airbnbs are reserved for the SAME dates (Aug 16–20). Allison
- * booked two on her account; Erin booked the cheaper one on hers. Per Allison
- * (May 21): keep all THREE for now — she + Erin haven't picked. Decide before
- * the free-cancellation windows close. Source:
- * `projects/north-cascades-2026/BOOKED.md` (Gmail confs + Erin WhatsApp).
+ * 2026). FOUR Airbnbs are reserved for the SAME dates (Aug 16–20): Allison
+ * booked two on her account (Sedro-Woolley + Arlington); Erin booked two
+ * cheaper Sedro-Woolley options on hers. Per Allison (Jun 2): keep all FOUR
+ * for now — she + Erin haven't picked. Decide before each free-cancellation
+ * window closes. Source: `projects/north-cascades-2026/BOOKED.md` (Gmail
+ * confs + Erin WhatsApp) + listing screenshots Jun 2.
  *
  * All three sit WEST of the WA-20 corridor (accessible even if the highway
  * stays closed), but ~40 min farther west than the old Marblemount-cluster
@@ -55,6 +56,8 @@ export interface BookedStay {
   layout?: string;
   /** True if the listing has free cancellation. */
   freeCancellation?: boolean;
+  /** Free-cancellation deadline, e.g. "Aug 11". */
+  freeCancelUntil?: string;
   /** Notable feature line. */
   feature?: string;
   /** Provenance — who sent / found it. */
@@ -63,12 +66,18 @@ export interface BookedStay {
 
 export const BOOKED_STAYS: BookedStay[] = [
   {
-    name: 'Arlington Airbnb',
+    name: 'Jade River Haven (Arlington)',
     place: 'Arlington, WA',
     host: 'Brandi',
     guests: 6,
     conf: 'HMKXHM8AW5',
     bookedBy: 'Allison',
+    price: '$1,125.87 for 4 nights',
+    layout: 'Sleeps 6 · brand-new build · gas fireplace',
+    freeCancellation: true,
+    freeCancelUntil: 'Aug 15',
+    feature:
+      '500 ft of private river front + forest. Newer/nicer interior. Off Hwy-530 — ~30-40 min farther from the SR-20 / Diablo Lake corridor than the Sedro-Woolley options.',
   },
   {
     name: 'Lakeside Cabin w/ Dock, Boats & Stunning Views',
@@ -77,20 +86,40 @@ export const BOOKED_STAYS: BookedStay[] = [
     guests: 4,
     conf: 'HMA4W2E22N',
     bookedBy: 'Allison',
-    feature: 'Lakefront with private dock + boats. Host actively engaged.',
+    price: '$1,193.32 for 4 nights',
+    freeCancellation: true,
+    freeCancelUntil: 'Aug 11',
+    feature:
+      'Lakefront with private dock + boats (fish/swim). On SR-20 — closest of the holds to Diablo Lake / the North Cascades Highway. Host actively engaged.',
   },
   {
     name: 'Edwards House Retreat',
     place: 'Sedro-Woolley, WA',
     bookedBy: 'Erin',
-    price: '$493 for 4 nights',
+    price: '$493 for 4 nights (verify — looks low)',
     rating: '4.99★ (94 reviews) · Guest favorite',
     unitType: 'Rooms in Sedro-Woolley (private rooms in a house)',
     layout: '2 bedrooms · 2 beds · 1 bath',
     freeCancellation: true,
-    feature: 'The cheaper option. Free cancellation.',
+    feature: 'The cheapest hold. Free cancellation.',
     source:
-      'Booked on Erin\'s account (no conf code captured). Allison flagged it: "This is so cheap" (WhatsApp, May 19).',
+      'Booked on Erin\'s account (no conf code captured). Allison flagged it: "This is so cheap" (WhatsApp, May 19). Price to re-verify.',
+  },
+  {
+    name: 'The Carriage House',
+    place: 'Sedro-Woolley, WA',
+    host: 'Amy',
+    guests: 4,
+    bookedBy: 'Erin',
+    price: '~₪2,482 (confirm: that figure was a Sep 6–10 / 1-guest listing view, not the Aug 16–20 / 2-guest booking)',
+    rating: '5.0★ (12 reviews) · Guest favorite · Top 10% of homes',
+    unitType: 'Entire guesthouse',
+    layout: '2 bedrooms · 2 beds · 1 bath · sleeps 4',
+    freeCancellation: true,
+    freeCancelUntil: 'Aug 23',
+    feature:
+      'Full kitchen + dishwasher + washer/dryer + AC. Self check-in. Rails-to-Trails directly behind the property (hiking/biking from the door).',
+    source: 'Booked on Erin\'s account (cancelable). Listing pasted by Allison, Jun 2.',
   },
 ];
 
