@@ -14,6 +14,7 @@
 import '../styles/main.css';
 import { mountPageShell } from '../page-shell';
 import { renderWa20Status } from '../sections/wa20-status';
+import { renderDrivingCascades } from '../sections/driving-cascades';
 import { renderHowTo } from '../sections/how-to';
 import { renderPageCtas } from '../sections/page-ctas';
 import { WA20_PAGE_META } from '../data/wa20-status';
@@ -37,10 +38,17 @@ function mount(): void {
     },
   });
 
-  // Consolidation (2026-06-02): the standalone "How to do this trip" page was
-  // retired; its decision-tree section (id="how-to") now lives here so the Plan-B
-  // path picker survives on a live page. Inbound how-to.html links point here.
-  main.append(renderWa20Status(), renderHowTo(), renderPageCtas('wa20-status'));
+  // Consolidation (2026-06-02): the standalone "How to do this trip" and
+  // "Driving in the Cascades" pages were retired; their sections (id="how-to",
+  // id="driving-cascades") now live here so the Plan-B path picker + driving/
+  // closure context survive on a live page. Inbound how-to.html +
+  // driving-cascades.html links point here.
+  main.append(
+    renderWa20Status(),
+    renderDrivingCascades(),
+    renderHowTo(),
+    renderPageCtas('wa20-status')
+  );
 }
 
 mount();

@@ -32,7 +32,7 @@ const NEXT: Record<PageId, Cta[]> = {
   ],
   viewpoints: [
     { href: 'hikes.html', label: 'Hikes →' },
-    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
     { href: 'activities.html', label: 'Activities →' },
   ],
   activities: [
@@ -83,36 +83,31 @@ const NEXT: Record<PageId, Cta[]> = {
   'top-sunsets': [
     { href: 'lodging.html', label: 'Lodging →' },
     { href: 'hikes.html', label: 'Hikes →' },
-    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
   ],
   'pre-trip': [
     { href: 'costs.html', label: 'Costs →' },
     { href: 'lodging.html', label: 'Lodging →' },
     { href: 'pre-trip.html#bring', label: 'Bring list →' },
   ],
-  'driving-cascades': [
-    { href: 'rental.html', label: 'Rental →' },
-    { href: 'travel.html', label: 'Travel →' },
-    { href: 'lodging.html', label: 'Lodging →' },
-  ],
   'hidden-gems': [
     { href: 'hikes.html', label: 'Hikes →' },
     { href: 'lodging.html', label: 'Lodging →' },
-    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
   ],
   towns: [
     { href: 'lodging.html', label: 'Lodging →' },
     { href: 'activities.html', label: 'Activities →' },
-    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
   ],
   map: [
     { href: 'lodging.html', label: 'Lodging →' },
     { href: 'hikes.html', label: 'Hikes →' },
-    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
   ],
   'weather-plan-c': [
     { href: 'pre-trip.html', label: 'Pre-trip →' },
-    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
     { href: 'hikes.html', label: 'Hikes →' },
   ],
   // Placeholder for search-overlay (parallel agent owns its mapping).
@@ -122,7 +117,7 @@ const NEXT: Record<PageId, Cta[]> = {
     { href: 'hikes.html', label: 'Hikes →' },
   ],
   'wa20-status': [
-    { href: 'driving-cascades.html', label: 'Driving →' },
+    { href: 'lodging.html', label: 'Lodging →' },
     { href: 'pre-trip.html', label: 'Pre-trip →' },
     { href: './', label: 'Home →' },
   ],

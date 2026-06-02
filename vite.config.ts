@@ -36,7 +36,6 @@ export default defineConfig(({ command }) => ({
         costs: here('costs.html'),
         topSunsets: here('top-sunsets.html'),
         preTrip: here('pre-trip.html'),
-        drivingCascades: here('driving-cascades.html'),
         hiddenGems: here('hidden-gems.html'),
         map: here('map.html'),
         weatherPlanC: here('weather-plan-c.html'),

@@ -456,7 +456,7 @@ const PAGE_ROWS: PageRow[] = [
   { id: 'seattle', name: 'Seattle', url: 'seattle.html', blurb: 'Day 1 + Day 5 anchor — Pike Place, Kerry Park, kosher stops.', tags: ['seattle', 'sea', 'layover'], weight: 70 },
   { id: 'travel', name: 'Travel', url: 'travel.html', blurb: 'Flights, routings, primary + 6 collapsed alternates.', tags: ['travel', 'flights', 'airfare'], weight: 72 },
   { id: 'rental', name: 'Rental car', url: 'rental.html', blurb: 'Automatic, gas/hybrid, all-in insurance pricing.', tags: ['rental', 'car', 'auto'], weight: 65 },
-  { id: 'driving-cascades', name: 'Driving the Cascades', url: 'driving-cascades.html', blurb: 'WA-20 mile-by-mile + Cascade River Rd dirt section.', tags: ['driving', 'wa-20', 'cascade-river-rd'], weight: 65 },
+  { id: 'driving-cascades', name: 'Driving the Cascades', url: 'wa20-status.html#driving-cascades', blurb: 'WA-20 mile-by-mile + Cascade River Rd dirt section.', tags: ['driving', 'wa-20', 'cascade-river-rd'], weight: 65 },
   { id: 'costs', name: 'Costs', url: 'costs.html', blurb: 'Budget ranges + breakdown per path.', tags: ['costs', 'budget', 'money'], weight: 80 },
   { id: 'pre-trip', name: 'Pre-trip', url: 'pre-trip.html', blurb: 'Book-by dates + verification timeline.', tags: ['pre-trip', 'verify', 'book-by'], weight: 60 },
   { id: 'for-erin', name: 'For Erin', url: 'for-erin.html', blurb: 'Open decisions to weigh in on.', tags: ['erin', 'decisions', 'feedback'], weight: 75 },

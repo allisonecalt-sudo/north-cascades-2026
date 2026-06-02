@@ -60,7 +60,6 @@ export type PageId =
   | 'costs'
   | 'top-sunsets'
   | 'pre-trip'
-  | 'driving-cascades'
   | 'hidden-gems'
   | 'map'
   | 'weather-plan-c'

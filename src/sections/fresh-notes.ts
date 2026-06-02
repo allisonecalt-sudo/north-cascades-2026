@@ -54,7 +54,7 @@ const SECTION_TO_PAGE: Record<string, string> = {
   costs: 'costs.html',
   'top-sunsets': 'top-sunsets.html',
   'pre-trip': 'pre-trip.html',
-  'driving-cascades': 'driving-cascades.html',
+  'driving-cascades': 'wa20-status.html#driving-cascades',
   'weather-plan-c': 'weather-plan-c.html',
   'how-to': 'wa20-status.html#how-to',
 };

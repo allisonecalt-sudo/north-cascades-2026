@@ -238,7 +238,7 @@ function buildTier(
         note: `${PATH_MILES[pathId]} mi @ ~${mpg} mpg · WA gas $5.78/gal (AAA May 19, 2026 — Skagit County $5.67, Whatcom $5.73)`,
         amount: fuelCost,
         flex: 'flexible',
-        sourceHref: 'driving-cascades.html',
+        sourceHref: 'wa20-status.html#driving-cascades',
         sourceLabel: 'See driving notes →',
       },
       {
