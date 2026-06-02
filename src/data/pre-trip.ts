@@ -191,11 +191,11 @@ export const MILESTONES: Milestone[] = [
       {
         id: 'switch-plan-if-closed',
         label: 'If STILL closed → switch to Plan B (Path D west-only or Path E east-only via Stevens)',
-        hint: 'Walk through /how-to.html — picks the swap that keeps both lodgings usable.',
+        hint: 'Walk through the Plan-B path picker on wa20-status.html — picks the swap that keeps both lodgings usable.',
       },
     ],
     link: { label: 'WA-20 deep dive', url: 'wa20-status.html' },
-    secondaryLink: { label: 'How-to (Plan B paths)', url: 'how-to.html' },
+    secondaryLink: { label: 'How-to (Plan B paths)', url: 'wa20-status.html#how-to' },
   },
   {
     id: 'recheck-site',
@@ -497,7 +497,7 @@ export const MILESTONES: Milestone[] = [
         label: 'Screenshot Day-1 itinerary + grocery stop address',
       },
     ],
-    link: { label: 'Day-by-day itinerary', url: 'how-to.html' },
+    link: { label: 'Day-by-day itinerary', url: 'index.html' },
   },
 ];
 

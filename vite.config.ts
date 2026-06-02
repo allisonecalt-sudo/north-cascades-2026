@@ -43,7 +43,6 @@ export default defineConfig(({ command }) => ({
         weatherPlanC: here('weather-plan-c.html'),
         search: here('search.html'),
         wa20Status: here('wa20-status.html'),
-        howTo: here('how-to.html'),
       },
     },
   },

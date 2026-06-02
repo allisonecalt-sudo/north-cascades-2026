@@ -56,7 +56,7 @@ const SECTION_TO_PAGE: Record<string, string> = {
   'pre-trip': 'pre-trip.html',
   'driving-cascades': 'driving-cascades.html',
   'weather-plan-c': 'weather-plan-c.html',
-  'how-to': 'how-to.html',
+  'how-to': 'wa20-status.html#how-to',
 };
 
 const SECTION_LABEL: Record<string, string> = {

@@ -66,8 +66,7 @@ export type PageId =
   | 'map'
   | 'weather-plan-c'
   | 'search'
-  | 'wa20-status'
-  | 'how-to';
+  | 'wa20-status';
 
 interface NavEntry {
   id: PageId;

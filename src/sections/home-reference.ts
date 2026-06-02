@@ -62,7 +62,7 @@ const REF_LINKS: readonly RefLink[] = [
   },
   {
     label: 'How to do this trip',
-    href: 'how-to.html',
+    href: 'wa20-status.html#how-to',
     desc: 'The 6 realistic ways to organize the 5 days.',
   },
 ];
