@@ -28,7 +28,7 @@ const NEXT: Record<PageId, Cta[]> = {
   hikes: [
     { href: 'things-to-do.html#viewpoints', label: 'Viewpoints →' },
     { href: 'things-to-do.html#activities', label: 'Activities →' },
-    { href: 'towns.html', label: 'Towns →' },
+    { href: 'for-erin.html#towns', label: 'Towns →' },
   ],
   'things-to-do': [
     { href: 'hikes.html', label: 'Hikes →' },
@@ -78,11 +78,6 @@ const NEXT: Record<PageId, Cta[]> = {
   'hidden-gems': [
     { href: 'hikes.html', label: 'Hikes →' },
     { href: 'lodging.html', label: 'Lodging →' },
-    { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
-  ],
-  towns: [
-    { href: 'lodging.html', label: 'Lodging →' },
-    { href: 'things-to-do.html#activities', label: 'Activities →' },
     { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
   ],
   map: [

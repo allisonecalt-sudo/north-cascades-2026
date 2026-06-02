@@ -590,19 +590,19 @@ function renderBookedStays(): HTMLElement {
         'li',
         {},
         h('strong', {}, 'Location: '),
-        'all three (Arlington + the two Sedro-Woolley stays) are WEST of the WA-20 corridor — accessible even if the highway stays closed — but ~40 min farther west than the old Marblemount-cluster plan. Sedro-Woolley is ≈ 1 hr 15 to Marblemount-area trailheads.'
+        'all three sit WEST of the WA-20 closure — reachable even if the highway stays shut — but ~40 min farther west than the old Marblemount plan (≈ 1 hr 15 to the trailheads).'
       ),
       h(
         'li',
         {},
-        h('strong', {}, 'Address note: '),
-        'Erin shared "27024 Minkler Rd, Sedro-Woolley, WA 98284" as "the house" — it\'s not confirmed which Sedro-Woolley listing that address belongs to.'
+        h('strong', {}, 'Address: '),
+        'Erin shared "27024 Minkler Rd, Sedro-Woolley" — not yet confirmed which listing it belongs to.'
       ),
       h(
         'li',
         {},
-        h('strong', {}, 'Kosher / kitchen: '),
-        'the cook-in-from-Va\'ad-groceries plan still holds across the options.'
+        h('strong', {}, 'Kosher: '),
+        'cook-in-from-Va\'ad-groceries plan holds across all three.'
       )
     )
   );

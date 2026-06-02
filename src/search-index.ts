@@ -290,7 +290,7 @@ function indexTowns(): SearchEntry[] {
       kind: 'town',
       description: oneLine(`${t.tagline} · ${t.whyStop}`),
       region: t.side === 'west' ? 'West side · WA-20 corridor' : 'East side · Methow Valley',
-      deepLinkUrl: `towns.html#${t.id}`,
+      deepLinkUrl: `for-erin.html#towns`,
       tags,
       weight: t.walkability === 'high' ? 65 : 50,
     };
@@ -451,7 +451,7 @@ const PAGE_ROWS: PageRow[] = [
   { id: 'lakes', name: 'Lakes & water', url: 'things-to-do.html#lakes', blurb: 'Diablo, Ross, Patterson, Pearrygin — paddle, swim, ferry.', tags: ['lakes', 'water', 'swim', 'kayak'], weight: 76 },
   { id: 'activities', name: 'Activities', url: 'things-to-do.html#activities', blurb: 'Non-hiking ways to spend a day — kayak, bike, wildlife, towns.', tags: ['activities', 'kayak', 'paddle'], weight: 70 },
   { id: 'hidden-gems', name: 'Hidden gems', url: 'hidden-gems.html', blurb: 'Lesser-known viewpoints, lookouts, and trails.', tags: ['hidden-gems', 'lesser-known'], weight: 70 },
-  { id: 'towns', name: 'Towns', url: 'towns.html', blurb: 'Marblemount → Newhalem → Concrete → Mazama → Winthrop.', tags: ['towns', 'corridor'], weight: 68 },
+  { id: 'towns', name: 'Towns', url: 'for-erin.html#towns', blurb: 'Marblemount → Newhalem → Concrete → Mazama → Winthrop.', tags: ['towns', 'corridor'], weight: 68 },
   { id: 'top-sunsets', name: 'Top sunsets', url: 'things-to-do.html#top-sunsets', blurb: 'Best sunset spots per path — porch, drive-up, walkable.', tags: ['sunset', 'golden-hour'], weight: 66 },
   { id: 'food', name: 'Groceries & food', url: 'food.html', blurb: 'Kosher grocery run + cook-in strategy.', tags: ['food', 'groceries', 'kosher', 'kitchen'], weight: 60 },
   { id: 'seattle', name: 'Seattle', url: 'seattle.html', blurb: 'Day 1 + Day 5 anchor — Pike Place, Kerry Park, kosher stops.', tags: ['seattle', 'sea', 'layover'], weight: 70 },

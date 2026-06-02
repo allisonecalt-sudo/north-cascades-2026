@@ -48,7 +48,7 @@ const SECTION_TO_PAGE: Record<string, string> = {
   logistics: 'pre-trip.html',
   decisions: 'pre-trip.html#decisions',
   'for-erin': 'for-erin.html',
-  towns: 'towns.html',
+  towns: 'for-erin.html#towns',
   'hidden-gems': 'hidden-gems.html',
   lakes: 'things-to-do.html#lakes',
   costs: 'costs.html',

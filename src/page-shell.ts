@@ -48,7 +48,6 @@ export type PageId =
   | 'lodging'
   | 'hikes'
   | 'things-to-do'
-  | 'towns'
   | 'travel'
   | 'rental'
   | 'food'
