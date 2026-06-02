@@ -214,195 +214,88 @@ const TOWNS: MapLocation[] = [
 // ====================================================================
 const LODGING_PHOTO_FALLBACK_WEST =
   'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=420&q=70';
-const LODGING_PHOTO_FALLBACK_EAST =
-  'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=420&q=70';
 
+// Lodging pins reflect the THREE BOOKED Airbnbs only (Aug 16–20, 2026) — the
+// comparison-phase cabins (Marblemount/Concrete west + Winthrop/Mazama east)
+// were removed Jun 2, 2026 once the trip flipped to booked. All three booked
+// stays are west of the WA-20 corridor, so there is no east-side lodging now.
+// Coords: Carriage House geocoded from 27024 Minkler Rd (precise); Lakeside at
+// Sedro-Woolley town center (exact lakefront address not captured); Jade River
+// at Arlington town center (exact riverfront address not captured).
 const LODGING_WEST: MapLocation[] = [
   {
-    id: 'lodging-rhody-house',
+    id: 'lodging-lakeside-cabin',
     type: 'lodging-west',
-    name: 'The Rhody House',
-    context: 'Marblemount · 2BR cabin rental',
-    lat: 48.5325,
-    lng: -121.4439,
-    pathAssoc: 'west',
+    name: 'Lakeside Cabin w/ Dock, Boats & Views',
+    context: 'Sedro-Woolley · BOOKED (Allison) · lakefront + private dock',
+    lat: 48.505,
+    lng: -122.2351,
+    pathAssoc: 'both',
+    anchor: '#lodging',
+    photo: { src: LODGING_PHOTO_FALLBACK_WEST, alt: 'Lakefront cabin with a dock.' },
+    meta: {
+      lodging: {
+        beds: 'Sleeps 4 · bed config to verify',
+        priceTier: '$1,193 · 4 nts (booked · conf HMA4W2E22N)',
+        drive: [
+          { to: 'Cascade Pass', minutes: 105, miles: 68 },
+          { to: 'Diablo Lake', minutes: 95, miles: 75 },
+          { to: 'Newhalem', minutes: 70, miles: 55 },
+          { to: 'Grocery', minutes: 6, miles: 2 },
+        ],
+      },
+    },
+  },
+  {
+    id: 'lodging-carriage-house',
+    type: 'lodging-west',
+    name: 'The Carriage House',
+    context: 'Sedro-Woolley · BOOKED (Erin) · Rails-to-Trails behind',
+    lat: 48.5238,
+    lng: -122.1608,
+    pathAssoc: 'both',
+    anchor: '#lodging',
+    photo: { src: LODGING_PHOTO_FALLBACK_WEST, alt: 'Guesthouse with a full kitchen.' },
+    meta: {
+      lodging: {
+        beds: '2 BR · 2 beds · sleeps 4',
+        priceTier: 'Erin booked · Aug price unverified',
+        kitchen: 'Full kitchen + W/D + AC',
+        drive: [
+          { to: 'Cascade Pass', minutes: 90, miles: 58 },
+          { to: 'Diablo Lake', minutes: 80, miles: 65 },
+          { to: 'Newhalem', minutes: 58, miles: 48 },
+          { to: 'Grocery', minutes: 12, miles: 7 },
+        ],
+      },
+    },
+  },
+  {
+    id: 'lodging-jade-river',
+    type: 'lodging-west',
+    name: 'Jade River Haven',
+    context: 'Arlington · BOOKED (Allison) · riverfront farmhouse',
+    lat: 48.1897,
+    lng: -122.1289,
+    pathAssoc: 'both',
     anchor: '#lodging',
     photo: {
-      src: 'https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&w=420&q=70',
-      alt: 'Modern A-frame style cabin in the woods.',
+      src: 'https://a0.muscache.com/im/pictures/hosting/Hosting-1612643467359015764/original/62b7adf0-d552-40ad-9cfc-b330ca7f7d20.jpeg',
+      alt: 'Jade River Haven — riverfront farmhouse near North Cascades.',
     },
     meta: {
       lodging: {
-        beds: '1 queen + 1 queen · 2 BR',
-        priceTier: '$190-260',
+        beds: '1 king + 1 queen + bunks · sleeps 6',
+        priceTier: '$1,126 · 4 nts (booked · conf HMKXHM8AW5)',
         kitchen: 'Full kitchen',
         drive: [
-          { to: 'Cascade Pass', minutes: 50, miles: 23 },
-          { to: 'Diablo Lake', minutes: 28, miles: 16 },
-          { to: 'Newhalem', minutes: 18, miles: 8 },
+          { to: 'Cascade Pass', minutes: 135, miles: 78 },
+          { to: 'Diablo Lake', minutes: 120, miles: 85 },
+          { to: 'Newhalem', minutes: 100, miles: 70 },
+          { to: 'Grocery', minutes: 8, miles: 3 },
         ],
-        bookUrl: 'https://www.airbnb.com/marblemount-wa/stays',
-      },
-    },
-  },
-  {
-    id: 'lodging-nc-hideaway',
-    type: 'lodging-west',
-    name: 'NC Hideaway',
-    context: 'Concrete · 2BR cabin · woods-set',
-    lat: 48.5396,
-    lng: -121.7575,
-    pathAssoc: 'west',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_WEST, alt: 'Wooded cabin retreat.' },
-    meta: {
-      lodging: {
-        beds: '1 queen + 1 queen · 2 BR',
-        priceTier: '$200-280',
-        kitchen: 'Full kitchen',
-        drive: [
-          { to: 'Cascade Pass', minutes: 85, miles: 42 },
-          { to: 'Diablo Lake', minutes: 55, miles: 32 },
-          { to: 'Grocery', minutes: 10, miles: 5 },
-        ],
-        bookUrl: 'https://www.airbnb.com/rooms/724602112999024219?check_in=2026-08-16&check_out=2026-08-20&adults=2',
-      },
-    },
-  },
-  {
-    id: 'lodging-nc-riverside',
-    type: 'lodging-west',
-    name: 'NC Riverside Retreat',
-    context: 'Concrete · Skagit River cabin + hot tub',
-    lat: 48.5388,
-    lng: -121.7521,
-    pathAssoc: 'west',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_WEST, alt: 'Riverside cabin deck.' },
-    meta: {
-      lodging: {
-        beds: '1 queen + 1 queen · 2 BR',
-        priceTier: '$250-350',
-        kitchen: 'Full kitchen',
-        drive: [
-          { to: 'Cascade Pass', minutes: 85, miles: 42 },
-          { to: 'Diablo Lake', minutes: 55, miles: 32 },
-          { to: 'Newhalem', minutes: 45, miles: 26 },
-        ],
-        bookUrl: 'https://www.airbnb.com/rooms/1159630003390456641?check_in=2026-08-16&check_out=2026-08-20&adults=2',
-      },
-    },
-  },
-  {
-    id: 'lodging-glacier-peak',
-    type: 'lodging-west',
-    name: 'Glacier Peak Resort & Winery',
-    context: 'Rockport · cabins + winery',
-    lat: 48.4882,
-    lng: -121.5803,
-    pathAssoc: 'west',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_WEST, alt: 'Resort cabins among evergreens.' },
-    meta: {
-      lodging: {
-        beds: 'Cabin configs vary · verify 2-bed at booking',
-        priceTier: '$150-220',
-        kitchen: 'Kitchenette',
-        drive: [
-          { to: 'Cascade Pass', minutes: 70, miles: 35 },
-          { to: 'Diablo Lake', minutes: 50, miles: 27 },
-        ],
-        bookUrl: 'https://glacierpeakresortandwinery.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-ovenells',
-    type: 'lodging-west',
-    name: "Ovenell's Heritage Inn",
-    context: 'Concrete · log cabins on 580-acre ranch',
-    lat: 48.5354,
-    lng: -121.7836,
-    pathAssoc: 'west',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_WEST, alt: 'Log cabin on a ranch.' },
-    meta: {
-      lodging: {
-        beds: '2BR cabins: 1 queen + 1 queen · verify per cabin',
-        priceTier: '$200-330',
-        kitchen: 'Full kitchen',
-        drive: [
-          { to: 'Cascade Pass', minutes: 85, miles: 42 },
-          { to: 'Diablo Lake', minutes: 55, miles: 32 },
-        ],
-        bookUrl: 'https://www.ovenells-inn.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-cascade-river-house',
-    type: 'lodging-west',
-    name: 'Cascade River House',
-    context: 'Marblemount · whole-house · splurge tier',
-    lat: 48.5099,
-    lng: -121.3892,
-    pathAssoc: 'west',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_WEST, alt: 'Riverside vacation home.' },
-    meta: {
-      lodging: {
-        beds: 'Multi-bed · whole-house · verify config',
-        priceTier: '$350-500',
-        kitchen: 'Full kitchen',
-        drive: [
-          { to: 'Cascade Pass', minutes: 40, miles: 17 },
-          { to: 'Diablo Lake', minutes: 30, miles: 18 },
-        ],
-        bookUrl: 'https://www.cascaderiverhouse.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-buffalo-run',
-    type: 'lodging-west',
-    name: 'Buffalo Run Inn',
-    context: 'Marblemount · historic inn',
-    lat: 48.5319,
-    lng: -121.4421,
-    pathAssoc: 'west',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_WEST, alt: 'Historic Western inn.' },
-    meta: {
-      lodging: {
-        beds: 'Rooms vary · verify 2-bed configuration',
-        priceTier: '$130-180',
-        drive: [
-          { to: 'Cascade Pass', minutes: 50, miles: 23 },
-          { to: 'Newhalem', minutes: 18, miles: 8 },
-        ],
-        bookUrl: 'https://www.booking.com/searchresults.html?ss=Buffalo+Run+Inn+Marblemount',
-      },
-    },
-  },
-  {
-    id: 'lodging-nc-inn',
-    type: 'lodging-west',
-    name: 'North Cascades Inn',
-    context: 'Marblemount · restored lodge',
-    lat: 48.5322,
-    lng: -121.4413,
-    pathAssoc: 'west',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_WEST, alt: 'Restored mountain inn.' },
-    meta: {
-      lodging: {
-        beds: 'Rooms vary · verify 2-bed configuration',
-        priceTier: '$135-180',
-        drive: [
-          { to: 'Cascade Pass', minutes: 50, miles: 23 },
-          { to: 'Newhalem', minutes: 18, miles: 8 },
-        ],
-        bookUrl: 'https://northcascadesinn.com/',
+        bookUrl:
+          'https://www.airbnb.com/rooms/1612643467359015764?check_in=2026-08-16&check_out=2026-08-20&adults=2',
       },
     },
   },
@@ -411,235 +304,7 @@ const LODGING_WEST: MapLocation[] = [
 // ====================================================================
 // Lodging — East side
 // ====================================================================
-const LODGING_EAST: MapLocation[] = [
-  {
-    id: 'lodging-methow-river',
-    type: 'lodging-east',
-    name: 'Methow River Lodge & Cabins',
-    context: 'Winthrop · cabins on the Methow',
-    lat: 48.4767,
-    lng: -120.1846,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'Riverside cabins.' },
-    meta: {
-      lodging: {
-        beds: '2 queens typical · verify per cabin',
-        priceTier: '$200-250',
-        kitchen: 'Kitchenette',
-        drive: [
-          { to: 'Maple Pass', minutes: 50, miles: 30 },
-          { to: 'WA Pass', minutes: 40, miles: 26 },
-        ],
-        bookUrl: 'https://methowriverlodge.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-rivers-edge',
-    type: 'lodging-east',
-    name: "River's Edge Resort",
-    context: 'Winthrop · riverside chalets',
-    lat: 48.4762,
-    lng: -120.1862,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'Riverside chalets.' },
-    meta: {
-      lodging: {
-        beds: 'Chalets vary · verify 2-bed at booking',
-        priceTier: '$210-310',
-        kitchen: 'Kitchenette',
-        drive: [
-          { to: 'Maple Pass', minutes: 50, miles: 30 },
-          { to: 'WA Pass', minutes: 40, miles: 26 },
-        ],
-        bookUrl: 'https://riversedgeresort.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-freestone',
-    type: 'lodging-east',
-    name: 'Freestone Inn',
-    context: 'Mazama · lake-front cabins',
-    lat: 48.5915,
-    lng: -120.4019,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'Lake-front cabin at dusk.' },
-    meta: {
-      lodging: {
-        beds: '2BR cabins available · verify per cabin',
-        priceTier: '$300+',
-        kitchen: 'Kitchenette',
-        drive: [
-          { to: 'Maple Pass', minutes: 25, miles: 14 },
-          { to: 'WA Pass', minutes: 18, miles: 11 },
-        ],
-        bookUrl: 'https://www.freestoneinn.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-chewuch',
-    type: 'lodging-east',
-    name: 'Chewuch Inn & Cabins',
-    context: 'Winthrop · B&B + cabins',
-    lat: 48.4798,
-    lng: -120.1839,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'B&B-style mountain inn.' },
-    meta: {
-      lodging: {
-        beds: 'Cabins: 2 beds typical · B&B rooms vary',
-        priceTier: '$160-260',
-        drive: [
-          { to: 'Maple Pass', minutes: 50, miles: 30 },
-          { to: 'WA Pass', minutes: 40, miles: 26 },
-        ],
-        bookUrl: 'https://chewuchinn.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-inn-at-mazama',
-    type: 'lodging-east',
-    name: 'The Inn at Mazama',
-    context: 'Mazama · lodge + cabins',
-    lat: 48.5926,
-    lng: -120.4071,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'Lodge with mountain backdrop.' },
-    meta: {
-      lodging: {
-        beds: 'Cabins: 2 queens typical · rooms vary',
-        priceTier: '$200-375',
-        kitchen: 'Kitchenette',
-        drive: [
-          { to: 'Maple Pass', minutes: 25, miles: 14 },
-          { to: 'WA Pass', minutes: 18, miles: 11 },
-        ],
-        bookUrl: 'https://www.innmazama.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-spring-creek-ranch',
-    type: 'lodging-east',
-    name: 'Spring Creek Ranch',
-    context: 'Winthrop · 3 cabins on 60 acres',
-    lat: 48.487,
-    lng: -120.207,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'Ranch cabins on open acreage.' },
-    meta: {
-      lodging: {
-        beds: '2BR cabin configs · verify per cabin',
-        priceTier: '$220-340',
-        kitchen: 'Full kitchen',
-        drive: [
-          { to: 'Maple Pass', minutes: 50, miles: 30 },
-          { to: 'Sun Mtn', minutes: 12, miles: 6 },
-        ],
-        bookUrl: 'https://springcreekwinthrop.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-sun-mountain',
-    type: 'lodging-east',
-    name: 'Sun Mountain Lodge',
-    context: 'Winthrop · ridge resort + Patterson Lake cabins',
-    lat: 48.4263,
-    lng: -120.2378,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'Mountain resort lodge with sweeping views.' },
-    meta: {
-      lodging: {
-        beds: 'Cabins: 2BR available · rooms vary',
-        priceTier: '$400+',
-        kitchen: 'Cabins: full · rooms: none',
-        drive: [
-          { to: 'Maple Pass', minutes: 55, miles: 35 },
-          { to: 'WA Pass', minutes: 50, miles: 32 },
-        ],
-        bookUrl: 'https://sunmountainlodge.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-rolling-huts',
-    type: 'lodging-east',
-    name: 'Rolling Huts',
-    context: 'Winthrop · modern glamping',
-    lat: 48.5089,
-    lng: -120.2098,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'Modern glamping huts on a meadow.' },
-    meta: {
-      lodging: {
-        beds: '1 queen + sofa-sleeper · NOT 2 separate beds — verify fit',
-        priceTier: '$145-200',
-        kitchen: 'Kitchenette',
-        drive: [
-          { to: 'Maple Pass', minutes: 45, miles: 28 },
-          { to: 'Sun Mtn', minutes: 12, miles: 6 },
-        ],
-        bookUrl: 'https://rollinghuts.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-rio-vista',
-    type: 'lodging-east',
-    name: 'Hotel Rio Vista',
-    context: 'Winthrop · boutique riverside',
-    lat: 48.4768,
-    lng: -120.1852,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'Boutique riverside hotel.' },
-    meta: {
-      lodging: {
-        beds: 'Rooms: 1 king or 2 queens · verify',
-        priceTier: '$170-260',
-        drive: [
-          { to: 'Maple Pass', minutes: 50, miles: 30 },
-          { to: 'WA Pass', minutes: 40, miles: 26 },
-        ],
-        bookUrl: 'https://www.hotelriovista.com/',
-      },
-    },
-  },
-  {
-    id: 'lodging-mt-gardner',
-    type: 'lodging-east',
-    name: 'Mt. Gardner Inn',
-    context: 'Winthrop · mid-tier inn',
-    lat: 48.4716,
-    lng: -120.1864,
-    pathAssoc: 'east',
-    anchor: '#lodging',
-    photo: { src: LODGING_PHOTO_FALLBACK_EAST, alt: 'Mid-tier inn at the edge of town.' },
-    meta: {
-      lodging: {
-        beds: 'Rooms: 2 queens typical · verify',
-        priceTier: '$149-353',
-        drive: [
-          { to: 'Maple Pass', minutes: 50, miles: 30 },
-          { to: 'WA Pass', minutes: 40, miles: 26 },
-        ],
-        bookUrl: 'https://www.mtgardnerinn.com/',
-      },
-    },
-  },
-];
+const LODGING_EAST: MapLocation[] = [];
 
 // ====================================================================
 // Cool sleeping places (subset — only ones with sensible coords)
@@ -1500,16 +1165,13 @@ export const TRIP_ROUTES: Record<'A' | 'B', TripRoute> = {
     nights: [
       {
         lodgingIdCandidates: [
-          'lodging-cascade-river-house',
-          'lodging-rhody-house',
-          'lodging-nc-hideaway',
-          'lodging-nc-riverside',
-          'lodging-ovenells',
-          'lodging-glacier-peak',
+          'lodging-lakeside-cabin',
+          'lodging-carriage-house',
+          'lodging-jade-river',
         ],
-        fallbackCoord: [48.5316, -121.4448],
+        fallbackCoord: [48.505, -122.2351],
         label: 'Nights 1-4',
-        townLabel: 'Marblemount (west base)',
+        townLabel: 'Sedro-Woolley (west base)',
       },
     ],
     segments: [

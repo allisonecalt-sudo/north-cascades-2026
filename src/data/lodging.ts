@@ -47,7 +47,7 @@ export interface BookedStay {
   conf?: string;
   /** Who booked it — "Allison" / "Erin". */
   bookedBy: 'Allison' | 'Erin';
-  /** Price string if known, e.g. "$493 for 4 nights". */
+  /** Price string if known, e.g. "$1,125.87 for 4 nights". */
   price?: string;
   /** Star rating / review profile line, e.g. "4.99★ (94 reviews) · Guest favorite". */
   rating?: string;
@@ -99,7 +99,7 @@ export const BOOKED_STAYS: BookedStay[] = [
     host: 'Amy',
     guests: 4,
     bookedBy: 'Erin',
-    price: '~₪2,482 (confirm: that figure was a Sep 6–10 / 1-guest listing view, not the Aug 16–20 / 2-guest booking)',
+    price: 'Aug 16–20 price not yet captured (booked on Erin\'s account)',
     rating: '5.0★ (12 reviews) · Guest favorite · Top 10% of homes',
     unitType: 'Entire guesthouse',
     layout: '2 bedrooms · 2 beds · 1 bath · sleeps 4',
