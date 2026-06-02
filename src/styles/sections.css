@@ -2893,3 +2893,41 @@ a.not-fit-list__name:focus {
   color: var(--c-forest-800, #1f3b2a);
   outline: none;
 }
+
+/* Things to Do — collapsible section groups (2026-06-02). Each merged section
+   (activities/lakes/sunsets/viewpoints) is wrapped in a <details> so the page
+   isn't a long wall; the page JS opens the right group on deep-link/anchor. */
+.ttd-group {
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md, 8px);
+  margin: var(--sp-3) 0;
+  background: var(--c-warm-50, #fffdf7);
+}
+.ttd-group__summary {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--c-forest-800, #1f3b2a);
+  list-style: none;
+}
+.ttd-group__summary::-webkit-details-marker {
+  display: none;
+}
+.ttd-group__summary::after {
+  content: '▾';
+  margin-left: auto;
+  font-weight: 400;
+  color: var(--c-ink-500);
+}
+.ttd-group[open] .ttd-group__summary::after {
+  content: '▴';
+}
+/* The summary is the group header — suppress the wrapped section's own h2 to
+   avoid a double heading. */
+.ttd-group > section > h2:first-child {
+  display: none;
+}
