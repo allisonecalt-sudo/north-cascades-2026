@@ -459,7 +459,7 @@ export const MILESTONES: Milestone[] = [
         label: 'Packaged kosher pantry items to bring through US security',
       },
     ],
-    link: { label: 'Bring list (details)', url: 'details.html#bring' },
+    link: { label: 'Bring list', url: 'pre-trip.html#bring' },
   },
 
   // ── Phase 5: day-of ──

@@ -46,8 +46,8 @@ const REF_LINKS: readonly RefLink[] = [
     desc: 'Open decisions Allison wants Erin to weigh in on.',
   },
   {
-    label: 'Details',
-    href: 'details.html',
+    label: 'Bring list + decisions',
+    href: 'pre-trip.html#bring',
     desc: 'Bring list, decisions log, anything else.',
   },
   {

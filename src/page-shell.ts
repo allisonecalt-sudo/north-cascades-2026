@@ -56,7 +56,6 @@ export type PageId =
   | 'food'
   | 'seattle'
   | 'for-erin'
-  | 'details'
   | 'notes'
   | 'costs'
   | 'top-sunsets'

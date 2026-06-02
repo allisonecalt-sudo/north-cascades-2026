@@ -11,6 +11,8 @@
 import '../styles/main.css';
 import { mountPageShell } from '../page-shell';
 import { renderPreTrip } from '../sections/pre-trip';
+import { renderBring } from '../sections/bring';
+import { renderDecisions } from '../sections/decisions';
 import { renderPageCtas } from '../sections/page-ctas';
 
 function mount(): void {
@@ -27,7 +29,15 @@ function mount(): void {
     },
   });
 
-  main.append(renderPreTrip(), renderPageCtas('pre-trip'));
+  // Consolidation (2026-06-02): the standalone "Details" page was retired; its
+  // bring list (id="bring") + decisions log (id="decisions") now live here.
+  // Inbound details.html#bring links point to pre-trip.html#bring.
+  main.append(
+    renderPreTrip(),
+    renderBring(),
+    renderDecisions(),
+    renderPageCtas('pre-trip')
+  );
 }
 
 mount();

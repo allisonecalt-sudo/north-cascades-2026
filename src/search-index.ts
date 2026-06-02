@@ -460,7 +460,7 @@ const PAGE_ROWS: PageRow[] = [
   { id: 'costs', name: 'Costs', url: 'costs.html', blurb: 'Budget ranges + breakdown per path.', tags: ['costs', 'budget', 'money'], weight: 80 },
   { id: 'pre-trip', name: 'Pre-trip', url: 'pre-trip.html', blurb: 'Book-by dates + verification timeline.', tags: ['pre-trip', 'verify', 'book-by'], weight: 60 },
   { id: 'for-erin', name: 'For Erin', url: 'for-erin.html', blurb: 'Open decisions to weigh in on.', tags: ['erin', 'decisions', 'feedback'], weight: 75 },
-  { id: 'details', name: 'Details', url: 'details.html', blurb: 'Restaurants + bring list + decision log.', tags: ['details', 'bring', 'restaurants'], weight: 55 },
+  { id: 'details', name: 'Bring list + decisions', url: 'pre-trip.html#bring', blurb: 'Bring list + decision log (restaurants now on Groceries).', tags: ['details', 'bring', 'decisions'], weight: 55 },
   { id: 'notes', name: 'Notes', url: 'notes.html', blurb: 'Every 💬 note across the site, one feed.', tags: ['notes', 'comments', 'feedback'], weight: 55 },
   { id: 'map', name: 'Map', url: 'map.html', blurb: 'Interactive map of every lodging + trailhead + viewpoint.', tags: ['map', 'leaflet', 'pins'], weight: 75 },
   { id: 'search', name: 'Search', url: 'search.html', blurb: 'Search every place + page on the site.', tags: ['search', 'find', 'lookup'], weight: 50 },

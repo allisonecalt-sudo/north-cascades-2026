@@ -45,12 +45,12 @@ const SECTION_LABELS: Record<string, { label: string; page: string }> = {
   rental: { label: 'Rental car', page: 'rental.html' },
   restaurants: { label: 'Restaurants', page: 'food.html' },
   food: { label: 'Food + kosher strategy', page: 'food.html' },
-  bring: { label: 'Bring (packing list)', page: 'food.html' },
+  bring: { label: 'Bring (packing list)', page: 'pre-trip.html#bring' },
   seattle: { label: 'Seattle', page: 'seattle.html' },
   viewpoints: { label: 'Viewpoints', page: 'hikes.html' },
   sky: { label: 'Sky · sunset · stargazing', page: 'hikes.html' },
-  logistics: { label: 'Logistics', page: 'details.html' },
-  decisions: { label: 'Open decisions', page: 'details.html' },
+  logistics: { label: 'Logistics', page: 'pre-trip.html' },
+  decisions: { label: 'Open decisions', page: 'pre-trip.html#decisions' },
   'for-erin': { label: 'For Erin', page: 'for-erin.html' },
 };
 

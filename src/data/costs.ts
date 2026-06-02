@@ -229,8 +229,8 @@ function buildTier(
               : '+ Diablo Lake lunch tour ($50/pp × 2) + Patterson kayak rental + Sun Mountain extras',
         amount: activities,
         flex: 'flexible',
-        sourceHref: 'details.html',
-        sourceLabel: 'See trip details on Details →',
+        sourceHref: 'pre-trip.html',
+        sourceLabel: 'See trip details on Pre-trip →',
       },
       {
         key: 'fuel',

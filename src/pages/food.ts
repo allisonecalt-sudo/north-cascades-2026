@@ -8,6 +8,7 @@
 import '../styles/main.css';
 import { mountPageShell } from '../page-shell';
 import { renderFood } from '../sections/food';
+import { renderRestaurants } from '../sections/restaurants';
 import { renderPageCtas } from '../sections/page-ctas';
 
 function mount(): void {
@@ -25,7 +26,9 @@ function mount(): void {
     },
   });
 
-  main.append(renderFood(), renderPageCtas('food'));
+  // Consolidation (2026-06-02): the standalone "Details" page was retired; its
+  // restaurants section (id="restaurants") now lives here alongside groceries.
+  main.append(renderFood(), renderRestaurants(), renderPageCtas('food'));
 }
 
 mount();

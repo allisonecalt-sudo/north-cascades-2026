@@ -32,7 +32,6 @@ export default defineConfig(({ command }) => ({
         food: here('food.html'),
         seattle: here('seattle.html'),
         forErin: here('for-erin.html'),
-        details: here('details.html'),
         notes: here('notes.html'),
         costs: here('costs.html'),
         topSunsets: here('top-sunsets.html'),
