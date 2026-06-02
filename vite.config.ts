@@ -6,8 +6,15 @@ import { fileURLToPath, URL } from 'url';
 // is a separate Rollup input so Vite emits a working dist for each.
 const here = (p: string): string => fileURLToPath(new URL(p, import.meta.url));
 
+// `vite preview` serves the production build, so it must use the production base
+// (/north-cascades-2026/) — otherwise the built HTML's /north-cascades-2026/...
+// asset URLs 404 (served as the HTML fallback) and no module ever executes.
+// `command` is 'serve' for both `vite` (dev) and `vite preview`, so detect
+// preview via argv. Dev stays at '/'.
+const isPreview = process.argv.includes('preview');
+
 export default defineConfig(({ command }) => ({
-  base: command === 'build' ? '/north-cascades-2026/' : '/',
+  base: command === 'build' || isPreview ? '/north-cascades-2026/' : '/',
   build: {
     outDir: 'dist',
     sourcemap: false,

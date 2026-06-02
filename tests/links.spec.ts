@@ -10,10 +10,10 @@ import { PAGES, PAGE_SET, targetFile } from './_helpers';
  * Runs on desktop only (link graph is viewport-independent; no need to double).
  */
 test.describe('internal link integrity', () => {
-  test.skip(({ }, testInfo) => testInfo.project.name !== 'desktop', 'link graph is viewport-independent');
-
   for (const page of PAGES) {
-    test(`no dangling internal links on ${page}`, async ({ page: pw }) => {
+    test(`no dangling internal links on ${page}`, async ({ page: pw }, testInfo) => {
+      // link graph is viewport-independent — only run on desktop.
+      test.skip(testInfo.project.name !== 'desktop', 'link graph is viewport-independent');
       await pw.goto(page, { waitUntil: 'networkidle' });
       const hrefs = await pw.$$eval('a[href]', (as) =>
         as.map((a) => a.getAttribute('href') || '')

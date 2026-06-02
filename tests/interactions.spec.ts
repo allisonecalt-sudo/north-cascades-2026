@@ -12,20 +12,30 @@ test.describe('interactions', () => {
     const burger = page.locator('.site-nav__hamburger');
     await expect(burger).toBeVisible();
     await burger.click();
-    await expect(page.locator('.site-nav__mobile-link').first()).toBeVisible();
+    // The slide-over pins flat spine links (.site-nav__mobile-flat) at the top;
+    // dropdown-bucket links (.site-nav__mobile-link) sit inside collapsed
+    // <details> and only show when their bucket is expanded. Assert the panel
+    // opened via the always-visible flat links.
+    await expect(page.locator('.site-nav__mobile-flat').first()).toBeVisible();
   });
 
   test('lodging filter chips toggle + are ≥44px tall', async ({ page }, testInfo) => {
     await page.goto('lodging.html', { waitUntil: 'networkidle' });
+    // Lodging is booked, so the comparison apparatus (incl. the chip filters) is
+    // demoted behind a <details> disclosure. Expand it before exercising chips.
+    await page.locator('.lodging-comparison > .disclosure__summary').click();
     const chip = page.locator('.chip').first();
     await expect(chip).toBeVisible();
     if (testInfo.project.name === 'mobile') {
       const box = await chip.boundingBox();
       expect(box!.height, 'chip tap target').toBeGreaterThanOrEqual(44);
     }
+    // Clicking a chip flips its active state — the active-chip count changes,
+    // which proves the filter is wired up (some chips, e.g. "Verified picks
+    // only", start active, so assert a delta rather than a fixed count).
+    const before = await page.locator('.chip--active').count();
     await chip.click();
-    // a chip becoming active proves the filter wired up (class may land on it or a sibling)
-    await expect(page.locator('.chip--active')).toHaveCount(1);
+    await expect.poll(() => page.locator('.chip--active').count()).not.toBe(before);
   });
 
   test('costs tier toggle present + ≥44px', async ({ page }, testInfo) => {
