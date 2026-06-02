@@ -23,11 +23,11 @@ export const OPEN_DECISIONS: OpenDecision[] = [
   },
   {
     id: 'lodging-primary',
-    question: 'Which booked house to keep (cancel the other three)',
+    question: 'Which booked house to keep (cancel the other two)',
     options:
-      'Sedro-Woolley "Lakeside Cabin w/ Dock & Boats" ($1,193.32/4nt, host Jackie, conf HMA4W2E22N, Allison — on SR-20, closest to Diablo Lake) · Arlington "Jade River Haven" ($1,125.87/4nt, host Brandi, conf HMKXHM8AW5, Allison — newer/riverfront, ~30-40 min farther from the park) · Sedro-Woolley "Edwards House Retreat" ($493/4nt, 4.99★, Erin — cheapest, verify price) · Sedro-Woolley "The Carriage House" (host Amy, 5.0★/12, full kitchen+W/D+AC, Erin — confirm Aug price)',
-    targetBy: 'Before each free-cancellation window closes (Lakeside Aug 11 · Arlington Aug 15 · Carriage House Aug 23) — all four held for the same Aug 16–20 dates; pick one, cancel the rest.',
-    rec: 'Four holds (3 Sedro-Woolley + 1 Arlington), all kept on purpose until Allison + Erin pick. Erin\'s two Sedro options are the cheaper ones (Edwards House cheapest). Sedro-Woolley sits on SR-20 closest to the Diablo Lake corridor; Arlington is newer but farther. Sedro-vs-Arlington still being weighed.',
+      'Sedro-Woolley "Lakeside Cabin w/ Dock & Boats" ($1,193.32/4nt, host Jackie, conf HMA4W2E22N, Allison — on SR-20, closest to Diablo Lake) · Arlington "Jade River Haven" ($1,125.87/4nt, host Brandi, conf HMKXHM8AW5, Allison — newer/riverfront, ~30-40 min farther from the park) · Sedro-Woolley "The Carriage House" (host Amy, 5.0★/12, full kitchen+W/D+AC, Erin — confirm Aug price)',
+    targetBy: 'Before each free-cancellation window closes (Lakeside Aug 11 · Arlington Aug 15 · Carriage House Aug 23) — all three held for the same Aug 16–20 dates; pick one, cancel the rest.',
+    rec: 'Three holds (2 Sedro-Woolley + 1 Arlington), all kept on purpose until Allison + Erin pick. Sedro-Woolley sits on SR-20 closest to the Diablo Lake corridor; Arlington is newer but farther. Sedro-vs-Arlington still being weighed.',
   },
   {
     id: 'rental-car',

@@ -34,7 +34,7 @@ interface OpenLoop {
 const OPEN: OpenLoop[] = [
   {
     label: 'Which booked house to keep',
-    state: 'THREE Airbnbs are reserved for the same dates (Aug 16–20): Arlington (host Brandi, conf HMKXHM8AW5, Allison booked), Sedro-Woolley "Lakeside Cabin" (host Jackie, conf HMA4W2E22N, Allison booked), and Sedro-Woolley "Edwards House Retreat" ($493/4 nights, 4.99★, Erin booked). All kept for now — pick one, then cancel the other two before the free-cancellation windows close.',
+    state: 'THREE Airbnbs are reserved for the same dates (Aug 16–20): Arlington (host Brandi, conf HMKXHM8AW5, Allison booked), Sedro-Woolley "Lakeside Cabin" (host Jackie, conf HMA4W2E22N, Allison booked), and Sedro-Woolley "The Carriage House" (host Amy, 5.0★/12, Erin booked). All kept for now — pick one, then cancel the other two before the free-cancellation windows close.',
     holder: 'Allison + Erin',
     eta: 'Decide + cancel the other two',
   },
@@ -56,7 +56,7 @@ interface NextActionRow {
 const NEXT_ACTIONS: NextActionRow[] = [
   {
     holder: 'Allison + Erin',
-    action: 'Pick one of the three booked houses (Arlington / Sedro-Woolley Lakeside Cabin / Sedro-Woolley Edwards House) and cancel the other two — all three are held for the same Aug 16–20 dates, so decide before the free-cancellation windows close.',
+    action: 'Pick one of the three booked houses (Arlington / Sedro-Woolley Lakeside Cabin / Sedro-Woolley Carriage House) and cancel the other two — all three are held for the same Aug 16–20 dates, so decide before the free-cancellation windows close.',
   },
 ];
 

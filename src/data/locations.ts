@@ -1022,7 +1022,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     lng: -120.6531,
     pathAssoc: 'east',
     anchor: '#top-sunsets',
-    externalAnchor: 'top-sunsets.html#washington-pass',
+    externalAnchor: 'things-to-do.html#washington-pass',
     photo: {
       src: 'https://images.unsplash.com/photo-1490604001847-b712b0c2f967?auto=format&fit=crop&w=420&q=70',
       alt: 'Mountain spires lit by golden-hour sunset.',
@@ -1044,7 +1044,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     lng: -120.247,
     pathAssoc: 'east',
     anchor: '#top-sunsets',
-    externalAnchor: 'top-sunsets.html#sun-mountain',
+    externalAnchor: 'things-to-do.html#sun-mountain',
     photo: {
       // Patterson Lake from below Sun Mountain Lodge — canonical from data/viewpoints.ts sun-mountain-viewpoint.
       src: 'https://commons.wikimedia.org/wiki/Special:FilePath/PattersonLake_Winthrop.jpg?width=420',
@@ -1068,7 +1068,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     lng: -121.7836,
     pathAssoc: 'west',
     anchor: '#top-sunsets',
-    externalAnchor: 'top-sunsets.html#ovenells',
+    externalAnchor: 'things-to-do.html#ovenells',
     photo: {
       src: 'https://images.unsplash.com/photo-1500964757637-c85e8a162699?auto=format&fit=crop&w=420&q=70',
       alt: 'Open ranch pasture at sunset under distant mountain.',
@@ -1091,7 +1091,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     lng: -121.0911,
     pathAssoc: 'both',
     anchor: '#top-sunsets',
-    externalAnchor: 'top-sunsets.html#diablo',
+    externalAnchor: 'things-to-do.html#diablo',
     photo: {
       // Alternate Diablo Lake angle from data/lakes.ts diablo-lake entry (distinct from view-diablo).
       src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Diablo_Lake_(Washington_State).jpg?width=420',
@@ -1114,7 +1114,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     lng: -120.247,
     pathAssoc: 'east',
     anchor: '#top-sunsets',
-    externalAnchor: 'top-sunsets.html#patterson',
+    externalAnchor: 'things-to-do.html#patterson',
     photo: {
       src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=420&q=70',
       alt: 'Calm lake at sunset with reflected ridge.',
@@ -1136,7 +1136,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     lng: -120.156,
     pathAssoc: 'east',
     anchor: '#top-sunsets',
-    externalAnchor: 'top-sunsets.html#pearrygin',
+    externalAnchor: 'things-to-do.html#pearrygin',
     photo: {
       // Place-specific Pearrygin Lake photo (Wikimedia Commons — alt angle from cool-pearrygin-cabins).
       src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pearrygin_Lake,_Washington_(9864223215).jpg?width=420',
@@ -1159,7 +1159,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     lng: -120.404,
     pathAssoc: 'east',
     anchor: '#top-sunsets',
-    externalAnchor: 'top-sunsets.html#freestone',
+    externalAnchor: 'things-to-do.html#freestone',
     photo: {
       src: 'https://images.unsplash.com/photo-1487014679447-9f8336841d58?auto=format&fit=crop&w=420&q=70',
       alt: 'Alpine lake-front cabin at sunset.',

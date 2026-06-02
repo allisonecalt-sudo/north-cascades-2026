@@ -26,23 +26,13 @@ const NEXT: Record<PageId, Cta[]> = {
     { href: 'rental.html', label: 'Rental →' },
   ],
   hikes: [
-    { href: 'viewpoints.html', label: 'Viewpoints →' },
-    { href: 'activities.html', label: 'Activities →' },
+    { href: 'things-to-do.html#viewpoints', label: 'Viewpoints →' },
+    { href: 'things-to-do.html#activities', label: 'Activities →' },
     { href: 'towns.html', label: 'Towns →' },
   ],
-  viewpoints: [
+  'things-to-do': [
     { href: 'hikes.html', label: 'Hikes →' },
     { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
-    { href: 'activities.html', label: 'Activities →' },
-  ],
-  activities: [
-    { href: 'lakes.html', label: 'Lakes & water →' },
-    { href: 'hikes.html', label: 'Hikes →' },
-    { href: 'towns.html', label: 'Towns →' },
-  ],
-  lakes: [
-    { href: 'activities.html', label: 'Activities →' },
-    { href: 'hikes.html', label: 'Hikes →' },
     { href: 'lodging.html', label: 'Lodging →' },
   ],
   travel: [
@@ -80,11 +70,6 @@ const NEXT: Record<PageId, Cta[]> = {
     { href: 'rental.html', label: 'Rental →' },
     { href: 'pre-trip.html', label: 'Pre-trip →' },
   ],
-  'top-sunsets': [
-    { href: 'lodging.html', label: 'Lodging →' },
-    { href: 'hikes.html', label: 'Hikes →' },
-    { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
-  ],
   'pre-trip': [
     { href: 'costs.html', label: 'Costs →' },
     { href: 'lodging.html', label: 'Lodging →' },
@@ -97,7 +82,7 @@ const NEXT: Record<PageId, Cta[]> = {
   ],
   towns: [
     { href: 'lodging.html', label: 'Lodging →' },
-    { href: 'activities.html', label: 'Activities →' },
+    { href: 'things-to-do.html#activities', label: 'Activities →' },
     { href: 'wa20-status.html#driving-cascades', label: 'Driving →' },
   ],
   map: [

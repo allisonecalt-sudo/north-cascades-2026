@@ -368,9 +368,9 @@ function closeDrawer(): void {
 const ANCHOR_TO_PAGE: Record<string, string> = {
   '#lodging': 'lodging.html',
   '#hikes': 'hikes.html',
-  '#viewpoints': 'viewpoints.html',
-  '#top-sunsets': 'top-sunsets.html',
-  '#activities': 'activities.html',
+  '#viewpoints': 'things-to-do.html#viewpoints',
+  '#top-sunsets': 'things-to-do.html#top-sunsets',
+  '#activities': 'things-to-do.html#activities',
   '#cool-sleeping': 'lodging.html#cool-sleeping',
   '#flights': 'travel.html#flights',
   '#seattle': 'seattle.html',

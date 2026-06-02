@@ -58,7 +58,7 @@ const DECISIONS: DecisionRow[] = [
   },
   {
     label: 'Lodging',
-    state: 'BOOKED · three west-side Airbnbs held for the same dates (Arlington + two in Sedro-Woolley, incl. Edwards House). All kept for now. Open: pick one, cancel the other two before the free-cancellation windows close.',
+    state: 'BOOKED · three west-side Airbnbs held for the same dates (Arlington + two in Sedro-Woolley: Lakeside Cabin + The Carriage House). All kept for now. Open: pick one, cancel the other two before the free-cancellation windows close.',
     sub: 'All west of WA-20 (work even if the road stays closed), ~40 min farther west than the Marblemount cluster. Erin shared 27024 Minkler Rd as the address (May 19) — unconfirmed which listing.',
     tone: 'in-progress',
     holder: 'Allison',

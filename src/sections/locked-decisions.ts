@@ -54,7 +54,7 @@ const LOCKED: LockedRow[] = [
   {
     label: 'Lodging — BOOKED (3 held, same dates)',
     state:
-      'Three Airbnbs reserved for Aug 16–20, all kept for now: Arlington (host Brandi, 6 guests, conf HMKXHM8AW5, Allison booked) · Sedro-Woolley "Lakeside Cabin w/ Dock, Boats & Stunning Views" (host Jackie, 4 guests, conf HMA4W2E22N, Allison booked) · Sedro-Woolley "Edwards House Retreat" ($493/4 nights, 4.99★, free cancellation, Erin booked). All west of the WA-20 corridor, ~40 min farther west than the Marblemount cluster. Erin shared "27024 Minkler Rd, Sedro-Woolley" as the address — unconfirmed which Sedro-Woolley listing it is. STILL OPEN: Allison + Erin pick one, cancel the other two before the free-cancellation windows close.',
+      'Three Airbnbs reserved for Aug 16–20, all kept for now: Arlington (host Brandi, 6 guests, conf HMKXHM8AW5, Allison booked) · Sedro-Woolley "Lakeside Cabin w/ Dock, Boats & Stunning Views" (host Jackie, 4 guests, conf HMA4W2E22N, Allison booked) · Sedro-Woolley "The Carriage House" (host Amy, 5.0★/12, full kitchen + W/D + AC, Erin booked). All west of the WA-20 corridor, ~40 min farther west than the Marblemount cluster. Erin shared "27024 Minkler Rd, Sedro-Woolley" as the address — unconfirmed which Sedro-Woolley listing it is. STILL OPEN: Allison + Erin pick one, cancel the other two before the free-cancellation windows close.',
     quote: '"Address to the house:  27024 Minkler Rd, Sedro-Woolley, WA 98284, USA"',
     attribution: 'Erin · WhatsApp May 19, 2026',
   },

@@ -247,10 +247,10 @@ const IMPACT_LABEL: Record<Wa20Impact, string> = {
 
 const SOURCE_PAGE: Record<AffectedItem['source'], string> = {
   hikes: 'hikes.html',
-  lakes: 'lakes.html',
-  activities: 'activities.html',
+  lakes: 'things-to-do.html#lakes',
+  activities: 'things-to-do.html#activities',
   'hidden-gems': 'hidden-gems.html',
-  viewpoints: 'viewpoints.html',
+  viewpoints: 'things-to-do.html#viewpoints',
 };
 
 const SOURCE_LABEL: Record<AffectedItem['source'], string> = {

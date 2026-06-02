@@ -47,9 +47,7 @@ export type PageId =
   | 'home'
   | 'lodging'
   | 'hikes'
-  | 'viewpoints'
-  | 'activities'
-  | 'lakes'
+  | 'things-to-do'
   | 'towns'
   | 'travel'
   | 'rental'
@@ -58,7 +56,6 @@ export type PageId =
   | 'for-erin'
   | 'notes'
   | 'costs'
-  | 'top-sunsets'
   | 'pre-trip'
   | 'hidden-gems'
   | 'map'
@@ -165,6 +162,7 @@ const NAV_BUCKETS: readonly NavBucket[] = [
     id: 'more',
     label: 'More',
     entries: [
+      { id: 'things-to-do', href: 'things-to-do.html', label: 'Things to Do', desc: 'Activities, lakes, viewpoints, sunsets' },
       { id: 'travel', href: 'travel.html', label: 'Travel', desc: 'Flights + routings' },
       { id: 'rental', href: 'rental.html', label: 'Rental', desc: 'Car: automatic, all-in price' },
       { id: 'seattle', href: 'seattle.html', label: 'Seattle', desc: 'Day 1 + Day 5 anchor' },

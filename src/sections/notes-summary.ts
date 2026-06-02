@@ -40,7 +40,7 @@ const SECTION_LABELS: Record<string, { label: string; page: string }> = {
   lodging: { label: 'Lodging', page: 'lodging.html' },
   'cool-sleeping-places': { label: 'Cool sleeping places', page: 'lodging.html' },
   hikes: { label: 'Hikes', page: 'hikes.html' },
-  activities: { label: 'Activities', page: 'activities.html' },
+  activities: { label: 'Activities', page: 'things-to-do.html#activities' },
   flights: { label: 'Flights', page: 'travel.html' },
   rental: { label: 'Rental car', page: 'rental.html' },
   restaurants: { label: 'Restaurants', page: 'food.html' },

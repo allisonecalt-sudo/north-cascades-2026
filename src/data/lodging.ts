@@ -23,12 +23,13 @@
 
 /**
  * BOOKED stays — the trip flipped from "compare" to "booked" (May 19–20,
- * 2026). FOUR Airbnbs are reserved for the SAME dates (Aug 16–20): Allison
- * booked two on her account (Sedro-Woolley + Arlington); Erin booked two
- * cheaper Sedro-Woolley options on hers. Per Allison (Jun 2): keep all FOUR
- * for now — she + Erin haven't picked. Decide before each free-cancellation
- * window closes. Source: `projects/north-cascades-2026/BOOKED.md` (Gmail
- * confs + Erin WhatsApp) + listing screenshots Jun 2.
+ * 2026). THREE Airbnbs are reserved for the SAME dates (Aug 16–20): Allison
+ * booked two on her account (Sedro-Woolley Lakeside + Arlington); Erin booked
+ * The Carriage House (Sedro-Woolley) on hers. Per Allison (Jun 2): keep all
+ * three for now — she + Erin haven't picked. Decide before each free-
+ * cancellation window closes. Source: `projects/north-cascades-2026/BOOKED.md`
+ * (Gmail confs + Erin WhatsApp) + listing screenshots Jun 2.
+ * (Edwards House Retreat removed Jun 2 — never actually booked.)
  *
  * All three sit WEST of the WA-20 corridor (accessible even if the highway
  * stays closed), but ~40 min farther west than the old Marblemount-cluster
@@ -91,19 +92,6 @@ export const BOOKED_STAYS: BookedStay[] = [
     freeCancelUntil: 'Aug 11',
     feature:
       'Lakefront with private dock + boats (fish/swim). On SR-20 — closest of the holds to Diablo Lake / the North Cascades Highway. Host actively engaged.',
-  },
-  {
-    name: 'Edwards House Retreat',
-    place: 'Sedro-Woolley, WA',
-    bookedBy: 'Erin',
-    price: '$493 for 4 nights (verify — looks low)',
-    rating: '4.99★ (94 reviews) · Guest favorite',
-    unitType: 'Rooms in Sedro-Woolley (private rooms in a house)',
-    layout: '2 bedrooms · 2 beds · 1 bath',
-    freeCancellation: true,
-    feature: 'The cheapest hold. Free cancellation.',
-    source:
-      'Booked on Erin\'s account (no conf code captured). Allison flagged it: "This is so cheap" (WhatsApp, May 19). Price to re-verify.',
   },
   {
     name: 'The Carriage House',

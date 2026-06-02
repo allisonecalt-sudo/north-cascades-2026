@@ -564,7 +564,7 @@ function renderBookedStayCard(stay: BookedStay): HTMLElement {
 /** Booked-stays block — leads the Lodging section now that three Airbnbs are
  *  reserved for the same dates. All three are kept on purpose (Allison May 21):
  *  she + Erin haven't picked yet. Decide before the free-cancellation windows
- *  close. Allison booked two; Erin booked Edwards House (the cheaper one). */
+ *  close. Allison booked two; Erin booked The Carriage House. */
 function renderBookedStays(): HTMLElement {
   return h(
     'div',
@@ -573,8 +573,8 @@ function renderBookedStays(): HTMLElement {
     h(
       'p',
       { class: 'booked-stays__warning', role: 'note' },
-      h('strong', {}, 'Four reservations, same dates — all kept for now. '),
-      'All four Airbnbs below hold the identical nights (Aug 16–20). Allison booked two (Sedro-Woolley + Arlington); Erin booked two cheaper Sedro-Woolley options (Edwards House + The Carriage House). ',
+      h('strong', {}, 'Three reservations, same dates — all kept for now. '),
+      'All three Airbnbs below hold the identical nights (Aug 16–20). Allison booked two (Sedro-Woolley Lakeside + Arlington); Erin booked The Carriage House (Sedro-Woolley). ',
       h('strong', {}, 'Allison + Erin haven\'t picked yet'),
       ' — decide before each free-cancellation window closes, then cancel the rest.'
     ),

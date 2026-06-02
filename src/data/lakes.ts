@@ -157,7 +157,7 @@ export const LAKES: Lake[] = [
       'The August-perfect swim destination. 1,186-acre state park, 11,000 ft of waterfront, sandy beach with a roped-off swim area and a floating swim raft. Picnic tables, restrooms with changing rooms, lifeguarded day-use beach in peak season. Lake warms to 70-72 °F in August — actually pleasant, not the gasp-cold of glacial lakes. Also has a 5.3-mile Rex Derr loop trail if a walk first sounds right. Two state-park cabins on the lake (book FAR ahead — see Cool sleeping). If you only do one water thing on this trip, do this.',
     sourceUrl: 'https://parks.wa.gov/find-parks/state-parks/pearrygin-lake-state-park',
     sourceLabel: 'WA State Parks · Pearrygin',
-    activityAnchor: 'activities.html#pearrygin-swim',
+    activityAnchor: 'things-to-do.html#pearrygin-swim',
     sleepAnchor: 'for-erin.html#cool-sleeping',
     verifiedAsOf: 'May 17, 2026',
     photos: [
@@ -214,7 +214,7 @@ export const LAKES: Lake[] = [
       "The signature North Cascades photo. Glacier-flour suspended in the meltwater scatters blue+green light, hence the unreal turquoise. From the MP 132 overlook: 20-30 min stop, easy postcard hit. From Colonial Creek launch (MP 130): paddle out onto the lake with 7,000-ft walls on every side. No on-lake rentals — pre-2026 Ross Lake Resort had a Diablo tie-in but that's gone; North Cascade Kayaks in Rockport is the current path (rent there, self-haul to the launch). Water sits ~45 °F all summer — feet only. The lake is what makes a Path-A or Path-B day complete.",
     sourceUrl: 'https://www.nps.gov/noca/learn/nature/index.htm',
     sourceLabel: 'NPS · North Cascades nature',
-    activityAnchor: 'activities.html#diablo-kayak',
+    activityAnchor: 'things-to-do.html#diablo-kayak',
     verifiedAsOf: 'May 17, 2026',
     video: {
       youtubeId: 'w_WGUL8Scsw',
@@ -286,7 +286,7 @@ export const LAKES: Lake[] = [
       "Worth the choreography if you want to BE ON Ross Lake, not just look at it from the overlook. The only outfitter with on-water rentals in the entire NC corridor. Get there by hiking the 1-mile trail down from Diablo Dam (or take the NPS shuttle when running), then water-taxi north up the lake — drop off at one of the camps and paddle back, or rent a kayak/canoe right at the resort. Fly fishing is the other reason locals come (rainbow + cutthroat). Resort itself is rustic — floating cabins with no road access, see Cool sleeping if the lottery comes through.",
     sourceUrl: 'https://www.rosslakeresort.com/equipment-rentals',
     sourceLabel: 'Ross Lake Resort',
-    activityAnchor: 'activities.html#ross-lake-watertaxi',
+    activityAnchor: 'things-to-do.html#ross-lake-watertaxi',
     sleepAnchor: 'for-erin.html#cool-sleeping',
     verifiedAsOf: 'May 17, 2026',
     photos: [
@@ -347,7 +347,7 @@ export const LAKES: Lake[] = [
       'Sub-alpine reservoir on the Sun Mountain Lodge property. Calm water, mountain backdrop, easy beginner paddling — exactly the rest-day water option for the east leg of Path B. Marina is open to the public, not guests-only. Patterson is also the most photographed reflection on the east side outside Pearrygin. Sun Mountain Patterson Lake Cabins (Cool sleeping) put you steps from the dock.',
     sourceUrl: 'https://sunmountainlodge.com/adventure/water-activities/',
     sourceLabel: 'Sun Mountain Lodge',
-    activityAnchor: 'activities.html#patterson-kayak',
+    activityAnchor: 'things-to-do.html#patterson-kayak',
     sleepAnchor: 'lodging.html#lodging-sun-mountain',
     verifiedAsOf: 'May 17, 2026',
     video: {
@@ -409,7 +409,7 @@ export const LAKES: Lake[] = [
       'Boat-only village at the head of 50-mile-long Lake Chelan, inside the North Cascades NRA. Stehekin is the legend — the bakery, the red school bus, the Stehekin Valley road, the Rainbow Falls hike from the landing. But: this is a 3-hour drive south to Chelan, then a 4-hour boat each way. On a 4-night trip with hikes already committed, this almost always falls off the plan. Listed for completeness in case a hike day collapses and you want a "real boat day" instead.',
     sourceUrl: 'https://ladyofthelake.com/boat-schedules/',
     sourceLabel: 'Lady of the Lake',
-    activityAnchor: 'activities.html#lake-chelan-stehekin',
+    activityAnchor: 'things-to-do.html#lake-chelan-stehekin',
     sleepAnchor: 'for-erin.html#cool-sleeping',
     verifiedAsOf: 'May 17, 2026',
     photos: [
@@ -474,7 +474,7 @@ export const LAKES: Lake[] = [
       'The Methow runs warm by PNW standards (mid-60s °F August), and the gentle gradient through Winthrop makes for an easy float on a hot afternoon. Bring or rent a tube. Pack the picnic to the riverside parks on Riverside Ave. Wade at the gravel-bar edges, do not swim out into the current. Pairs naturally with a Winthrop boardwalk afternoon or an Old Schoolhouse Brewery dinner on the deck. Note: water levels drop through August — earlier in the month is fuller.',
     sourceUrl: 'https://methowtrails.org/',
     sourceLabel: 'Methow Trails · Methow Valley',
-    activityAnchor: 'activities.html#methow-trail',
+    activityAnchor: 'things-to-do.html#methow-trail',
     verifiedAsOf: 'May 17, 2026',
     photos: [
       {

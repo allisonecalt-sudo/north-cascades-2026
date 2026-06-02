@@ -18,7 +18,7 @@ function mount(): void {
     title: 'Where we\'re staying — booked',
     verifiedOn: '2026-05-21 (lodging booked — three reservations held)',
     lede:
-      'Booked. Three Airbnbs are reserved for Aug 16 → 20, all on the west side: Arlington (Allison) plus two in Sedro-Woolley — the "Lakeside Cabin w/ Dock" (Allison) and the cheaper "Edwards House Retreat" (Erin). All held for now — Allison + Erin pick one and cancel the rest before the free-cancellation windows close.',
+      'Booked. Three Airbnbs are reserved for Aug 16 → 20, all on the west side: Arlington (Allison) plus two in Sedro-Woolley — the "Lakeside Cabin w/ Dock" (Allison) and "The Carriage House" (Erin). All held for now — pick one and cancel the rest before the free-cancellation windows close.',
     imageHero: {
       // Re-re-swapped May 17, 2026 (8:13 AM IDT) — prior URL loaded fine but
       // depicted a tropical beach resort, not PNW. Switching to the Diablo
