@@ -139,16 +139,20 @@ export function renderShortlistPanel(): HTMLElement {
           ? h('a', { href: l.bookingUrl, rel: 'noopener', target: '_blank' }, l.name)
           : document.createTextNode(l.name)
       ),
-      h('td', {}, l.beds),
+      h('td', { 'data-label': 'Beds' }, l.beds),
       h(
         'td',
-        {},
+        { 'data-label': 'Kitchen' },
         l.kitchen === 'full' ? 'Full' : l.kitchen === 'kitchenette' ? 'Kitchenette' : 'None'
       ),
-      h('td', {}, NATURE_LABELS[l.natureTag]),
-      h('td', {}, l.pricePerNight),
-      h('td', {}, fourNight),
-      h('td', {}, l.sunset?.worth === 'yes' ? '⭐' : l.sunset?.worth === 'maybe' ? '~' : '—'),
+      h('td', { 'data-label': 'Setting' }, NATURE_LABELS[l.natureTag]),
+      h('td', { 'data-label': '$/night' }, l.pricePerNight),
+      h('td', { 'data-label': '4-nt est.' }, fourNight),
+      h(
+        'td',
+        { 'data-label': 'Sunset' },
+        l.sunset?.worth === 'yes' ? '⭐' : l.sunset?.worth === 'maybe' ? '~' : '—'
+      ),
       h('td', { class: 'shortlist-actions' }, removeBtn)
     );
   });

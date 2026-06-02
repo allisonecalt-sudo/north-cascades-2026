@@ -1557,12 +1557,15 @@
 
 .lcarousel__dot {
   appearance: none;
+  box-sizing: content-box;
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.55);
+  background-clip: content-box;
   border: none;
-  padding: 0;
+  /* 8px padding around a 7px dot → ~23px hit area, dot stays visually small */
+  padding: 8px;
   cursor: pointer;
   transition:
     background 0.12s ease,
@@ -1807,6 +1810,59 @@
   border-collapse: collapse;
   font-size: 0.82rem;
   min-width: 600px;
+}
+
+/* Mobile: the 8-column compare table can't fit a phone — stack each row as a
+   labelled card instead of forcing horizontal scroll. */
+@media (max-width: 540px) {
+  .shortlist-table-wrap {
+    overflow-x: visible;
+  }
+  .shortlist-table {
+    min-width: 0;
+  }
+  .shortlist-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .shortlist-table tbody tr {
+    display: block;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-md, 8px);
+    padding: 0.4rem 0.6rem;
+    margin-bottom: var(--sp-2);
+  }
+  .shortlist-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    align-items: baseline;
+    border-bottom: 1px solid var(--c-line);
+    padding: 0.4rem 0;
+    text-align: right;
+  }
+  .shortlist-table tbody td:last-child {
+    border-bottom: 0;
+  }
+  .shortlist-table tbody td[data-label]::before {
+    content: attr(data-label);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--c-ink-500);
+    text-align: left;
+  }
+  .shortlist-table .shortlist-name {
+    font-size: 0.95rem;
+    text-align: left;
+  }
+  .shortlist-table .shortlist-actions {
+    justify-content: flex-end;
+  }
 }
 
 .shortlist-table thead th {
