@@ -107,7 +107,7 @@ export interface MapLocation {
   pathAssoc: PathAssoc;
   /** Optional same-page anchor (#lodging) so the popup deep-links. */
   anchor?: string;
-  /** Optional external page (e.g. for-erin.html#sleeping-X). */
+  /** Optional external page (e.g. lodging.html#cool-sleeping-places). */
   externalAnchor?: string;
   /** Optional hero photo for the popup. */
   photo?: MapPhoto;
@@ -319,7 +319,7 @@ const COOL_SLEEPING: MapLocation[] = [
     lng: -121.0682,
     pathAssoc: 'both',
     anchor: '#cool-sleeping',
-    externalAnchor: 'for-erin.html#cool-sleeping',
+    externalAnchor: 'lodging.html#cool-sleeping-places',
     photo: {
       // Canonical Ross Lake summer photo from data/lakes.ts ross-lake entry.
       src: 'https://commons.wikimedia.org/wiki/Special:FilePath/North_Cascades_-_Ross_Lake_-_2017_8_29.jpg?width=420',
@@ -344,7 +344,7 @@ const COOL_SLEEPING: MapLocation[] = [
     lng: -120.6708,
     pathAssoc: 'both',
     anchor: '#cool-sleeping',
-    externalAnchor: 'for-erin.html#cool-sleeping',
+    externalAnchor: 'lodging.html#cool-sleeping-places',
     photo: {
       // Canonical Stehekin/Lake Chelan photo from data/lakes.ts lake-chelan entry.
       src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Stehekin_Chelan.JPG?width=420',
@@ -369,7 +369,7 @@ const COOL_SLEEPING: MapLocation[] = [
     lng: -121.114,
     pathAssoc: 'both',
     anchor: '#cool-sleeping',
-    externalAnchor: 'for-erin.html#cool-sleeping',
+    externalAnchor: 'lodging.html#cool-sleeping-places',
     photo: {
       // Diablo Lake shore — the ELC is on the Diablo shoreline. Distinct angle from view-diablo.
       src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Diablo_Lake_with_Pinnacle_Peak.jpg?width=420',
@@ -394,7 +394,7 @@ const COOL_SLEEPING: MapLocation[] = [
     lng: -120.1656,
     pathAssoc: 'east',
     anchor: '#cool-sleeping',
-    externalAnchor: 'for-erin.html#cool-sleeping',
+    externalAnchor: 'lodging.html#cool-sleeping-places',
     photo: {
       // Canonical Pearrygin photo from data/lakes.ts pearrygin entry.
       src: 'https://commons.wikimedia.org/wiki/Special:FilePath/Pearrygin_Lake_State_Park.jpg?width=420',
@@ -419,7 +419,7 @@ const COOL_SLEEPING: MapLocation[] = [
     lng: -121.7635,
     pathAssoc: 'west',
     anchor: '#cool-sleeping',
-    externalAnchor: 'for-erin.html#cool-sleeping',
+    externalAnchor: 'lodging.html#cool-sleeping-places',
     photo: {
       src: 'img/unsplash-1488462237308-ecaa28b729d7.jpg',
       alt: 'Elevated treehouse in a dense forest.',
@@ -443,7 +443,7 @@ const COOL_SLEEPING: MapLocation[] = [
     lng: -120.4912,
     pathAssoc: 'east',
     anchor: '#cool-sleeping',
-    externalAnchor: 'for-erin.html#cool-sleeping',
+    externalAnchor: 'lodging.html#cool-sleeping-places',
     photo: {
       src: 'img/unsplash-1510798831971-661eb04b3739.jpg',
       alt: 'Rustic forest cabin with wood stove.',

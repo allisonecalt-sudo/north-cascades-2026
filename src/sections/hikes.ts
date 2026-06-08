@@ -226,18 +226,15 @@ function renderHikePills(hike: Hike): HTMLElement {
   if (hike.dogsAllowed === true) items.push(pill('card__pill', '🐕 Dogs OK'));
   if (hike.dogsAllowed === false) items.push(pill('card__pill', '🚫 No dogs'));
 
-  // WA-20 closure-dependency pill — matches viewpoints convention.
+  // WA-20 closure-dependency pill — ONE signal per card. Only surface the
+  // red "needs WA-20" warning where it matters; "reachable" is the default,
+  // so no positive pill (cuts a redundant chip from every west-side card).
   if (hike.needsWa20Through === true) {
     items.push(pill('card__pill card__pill--bad', '↻ Needs WA-20 through'));
-  } else if (hike.needsWa20Through === false) {
-    items.push(pill('card__pill card__pill--good', '✓ Reachable w/o WA-20 through'));
   }
 
   if (hike.verifiedAsOf) {
     items.push(pill('card__pill card__pill--good', `✅ Verified ${hike.verifiedAsOf}`));
-  }
-  if (hike.status) {
-    items.push(pill('card__pill card__pill--bad', `⛔ ${hike.status.label}`));
   }
   if (hike.video) {
     items.push(
@@ -704,18 +701,17 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
         'li',
         { class: 'gist__item' },
         path
-          ? `${path.name} — in-path hikes lead. Others stay visible as day-of swap options.`
-          : 'Options at different levels — beautiful nature, easy → moderate is the sweet spot.'
+          ? `${path.name} — in-path hikes lead; others stay visible as day-of swaps.`
+          : 'Easy → moderate is the sweet spot. No must-dos — pick by energy on the day.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        h('strong', {}, 'Filter chips above narrow the list.'),
+        h('strong', {}, 'Filter chips narrow the list.'),
         ' Tap ',
         h('strong', {}, '✓ Pick'),
-        ' on cards to build a shortlist · compare appears below.'
-      ),
-      h('li', { class: 'gist__item' }, 'No must-dos — pick by energy on the day.')
+        ' to build a shortlist.'
+      )
     );
   }
 

@@ -137,8 +137,7 @@ function renderWatchSources(): HTMLElement {
     h(
       'p',
       { class: 'weather-plan-c__watch-lede' },
-      'Bookmark these BEFORE the trip — once you’re on WA-20 with no cell ' +
-        'service, you can’t research from scratch.'
+      'Bookmark BEFORE the trip — no cell service on WA-20.'
     ),
     h(
       'ul',
@@ -198,8 +197,7 @@ function renderHistory(): HTMLElement {
     h(
       'p',
       { class: 'weather-plan-c__history-lede' },
-      'Recent NC August fire seasons — rough pattern, not a forecast. Rows marked ' +
-        '[verify] still need a research-pass against fire archives + AirNow historical data.'
+      'Recent NC August fire seasons — rough pattern, not a forecast. [verify] rows still need a research-pass.'
     ),
     h(
       'ul',
@@ -274,32 +272,14 @@ export function renderWeatherPlanC(): HTMLElement {
 
     // 3. Trigger ladder
     h('h3', { class: 'weather-plan-c__h3' }, 'Trigger ladder — when to swap'),
-    h(
-      'p',
-      { class: 'weather-plan-c__h3-sub' },
-      'AQI bands map to physical feel + recommended swap. Pre-populated defaults — ' +
-        'Allison overrides per-trip per-traveler.'
-    ),
     renderTriggerLadder(),
 
     // 4. Plan-C swaps grid
     h('h3', { class: 'weather-plan-c__h3' }, 'Per-day swaps'),
-    h(
-      'p',
-      { class: 'weather-plan-c__h3-sub' },
-      'Each row is a category of day. Find the one that matches today’s plan, ' +
-        'check the AQI, swap if the band crosses the trigger.'
-    ),
     renderSwapsGrid(),
 
     // 5. Indoor refuges
     h('h3', { class: 'weather-plan-c__h3' }, 'Indoor refuges'),
-    h(
-      'p',
-      { class: 'weather-plan-c__h3-sub' },
-      'Places to escape the smoke. NPS Visitor Center is the standout — HVAC, free, exhibits. ' +
-        'Verify hours before trip in the July sweep.'
-    ),
     renderRefuges(),
 
     // 6. Watch sources

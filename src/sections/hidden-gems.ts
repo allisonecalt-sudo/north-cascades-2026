@@ -126,9 +126,8 @@ function renderGemPills(gem: HiddenGem): HTMLElement {
   if (gem.needsWa20Through === true) {
     items.push(pill('card__pill card__pill--bad', '↻ Needs WA-20 through'));
   } else if (gem.needsWa20Through === false) {
-    items.push(pill('card__pill card__pill--good', '✓ Reachable w/o WA-20 through'));
+    items.push(pill('card__pill card__pill--good', '✓ No WA-20 through'));
   }
-  items.push(pill('card__pill card__pill--good', `✅ Verified ${gem.verifiedAsOf}`));
   if (gem.status) {
     items.push(pill('card__pill card__pill--bad', `⛔ ${gem.status.label}`));
   }
@@ -178,7 +177,7 @@ function renderGemSources(gem: HiddenGem): HTMLElement {
   return h(
     'p',
     { class: 'card__source' },
-    'Trust signals: ',
+    'Sources: ',
     ...gem.sources.flatMap((src, i) => {
       const link = h(
         'a',
@@ -225,14 +224,14 @@ function renderGemCard(gem: HiddenGem): HTMLElement {
     h(
       'p',
       { class: 'card__note' },
-      h('strong', {}, 'Why this is hidden: '),
+      h('strong', {}, 'Why it\'s hidden: '),
       gem.whyHidden
     ),
     h(
-      'p',
-      { class: 'card__note' },
-      h('strong', {}, 'Trip fit: '),
-      gem.tripFit
+      'details',
+      { class: 'gem-card__tripfit' },
+      h('summary', {}, 'Trip fit'),
+      h('p', { class: 'card__note' }, gem.tripFit)
     ),
     h('h4', { class: 'subsection__title gem-card__subhead' }, 'Drive from each base'),
     renderDriveMatrix(gem),
@@ -366,7 +365,7 @@ function renderChipBar(): HTMLElement {
     h(
       'div',
       { class: 'chip-bar__head' },
-      h('p', { class: 'chip-bar__lede' }, 'Tap chips to narrow. Empty = show all.'),
+      h('p', { class: 'chip-bar__lede' }, 'Tap to narrow.'),
       showingPill
     ),
     h('div', { class: 'chip-bar__groups' }, ...groups),
@@ -453,24 +452,12 @@ export function renderHiddenGems(): HTMLElement {
       h(
         'li',
         { class: 'gist__item' },
-        h('strong', {}, 'Beyond the curated 6-8 NPS hikes. '),
-        "These are lesser-known viewpoints, lookouts, and lakes that locals love — but most North Cascades trip blogs skip. The 'wow per drive-minute' filter."
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        'Each card spells out ',
-        h('strong', {}, 'WHY this is hidden'),
-        ' vs the marquee picks — so the trade is honest, not hyped.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        'Exploratory — not the locked plan. Pick from here for a flex day or a Plan-B swap.'
+        h('strong', {}, 'Beyond the marquee NPS hikes. '),
+        "Lesser-known spots locals love — the 'wow per drive-minute' filter. Pick for a flex day or Plan-B swap."
       )
     ),
     renderSectionSources({
-      label: 'Trust signals — research-backed sources',
+      label: 'Sources',
       sources: [
         { name: 'Washington Trails Association (WTA)', url: 'https://www.wta.org/' },
         { name: 'AllTrails · North Cascades NP', url: 'https://www.alltrails.com/parks/us/washington/north-cascades-national-park' },
@@ -491,14 +478,6 @@ export function renderHiddenGems(): HTMLElement {
     updateChipBar(chipBar);
     renderBody(wrap);
   });
-
-  wrap.append(
-    h(
-      'p',
-      { class: 'costs-fineprint__verified' },
-      h('span', { class: 'badge badge--good' }, `Verified May 17, 2026 · ${HIDDEN_GEMS.length} gems researched`)
-    )
-  );
 
   return wrap;
 }

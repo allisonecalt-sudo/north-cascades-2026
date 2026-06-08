@@ -151,17 +151,6 @@ const RENTAL_FILTER_LABEL: Record<LakeRental, string> = {
   none: '🎒 BYO',
 };
 
-function baseEmoji(b: LakeBase): string {
-  if (b === 'west') return '🌲';
-  if (b === 'east') return '☀';
-  return '↔';
-}
-function baseLabel(b: LakeBase): string {
-  if (b === 'west') return 'West side';
-  if (b === 'east') return 'East side';
-  return 'Either side';
-}
-
 // ====================================================================
 // CARD PARTS
 // ====================================================================
@@ -170,6 +159,8 @@ function renderLakePills(lake: Lake): HTMLElement {
   const items: HTMLElement[] = [];
   const pill = (cls: string, text: string): HTMLElement => h('li', { class: cls }, text);
 
+  // Trimmed to the 3 that drive the decision (swim / rental / fee) — boat ramp,
+  // parking, kid + side are all filter chips, so repeating them as pills was noise.
   const swimClass =
     lake.swim === 'yes'
       ? 'card__pill card__pill--good'
@@ -183,18 +174,11 @@ function renderLakePills(lake: Lake): HTMLElement {
   items.push(pill(rentalClass, RENTAL_LABEL[lake.rental]));
 
   items.push(pill('card__pill', `💲 ${lake.fee}`));
-  if (lake.boatRamp) items.push(pill('card__pill', '🛥 Boat ramp'));
-  items.push(pill('card__pill', `🅿 ${lake.parking}`));
-  if (lake.kidFriendly) items.push(pill('card__pill', '👶 Kid-friendly'));
-  items.push(pill('card__pill', `${baseEmoji(lake.base)} ${baseLabel(lake.base)}`));
 
   if (lake.needsWa20Through === true) {
     items.push(pill('card__pill card__pill--bad', '↻ Needs WA-20 through'));
-  } else if (lake.needsWa20Through === false) {
-    items.push(pill('card__pill card__pill--good', '✓ Reachable w/o WA-20 through'));
   }
 
-  items.push(pill('card__pill card__pill--good', `✅ Verified ${lake.verifiedAsOf}`));
   if (lake.video) {
     items.push(
       renderVideoPill({
@@ -578,7 +562,7 @@ export function renderLakes(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'Six lakes + the Methow River — each one a destination card with photos, the rental concession to actually call, drive-time from every base, and the honest swim story (Pearrygin warm, Diablo glacier-cold). Filter by swim, rental availability, or side.'
+      'Six lakes + the Methow River — the rental to call, drive-time from each base, the honest swim story.'
     ),
     renderSectionSources({
       label: 'Operator hours + fees verified at',

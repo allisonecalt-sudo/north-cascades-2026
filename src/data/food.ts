@@ -1,18 +1,11 @@
 /**
- * Food approach — short, flexible.
- *
- * Both travelers keep kosher but are flexible about it: hechsher-certified
- * packaged goods from any major supermarket cover the corridor, kitchens
- * are a bonus rather than a requirement. One short paragraph, no
- * Chabad-emergency rigging, no kosher-pilgrimage routing.
- *
- * Updated 2026-05-19 with verified $ ranges from pricing.ts.
+ * Food approach — short, flexible. Both keep kosher; packaged hechsher goods
+ * from any major supermarket cover the corridor. $ ranges verified 2026-05-19.
  */
 
 export const FOOD_APPROACH = {
   headline: 'Self-cater the easy way',
-  body:
-    'Both travelers keep kosher, but it is flexible. Plan: grab hechsher-certified packaged goods (TJ\'s, QFC, Whole Foods, Safeway) on the way in, supplement at Marblemount Country Store or Mazama Store along the route. Kitchens at lodging are a nice-to-have, not a requirement — a fridge + microwave covers most meals. Eating out in the corridor towns is limited regardless of kosher, so the default is cabin breakfasts and packed trail lunches anyway. If a kosher sit-down stop sounds good on the Day-5 SEA return, QFC Mercer Island has a Va\'ad-certified deli counter.',
+  body: 'Both keep kosher. Stock packaged hechsher goods on the way in; top up along the route.',
 } as const;
 
 /** Concrete dollar plan — added 2026-05-19 so the food page carries real $. */
@@ -31,27 +24,27 @@ export const FOOD_BUDGET = {
   restaurantsMid: 75,
   restaurantsHigh: 120,
   note:
-    'Per person, 5 days. Built from $75-120/person/week US grocery norms (BLS 2026) + ~30-50% kosher-certified premium. Restaurants are NOT central — budget for 1-2 sit-downs max. Verified 2026-05-19.',
+    'Per person, 5 days. Built from $75-120/person/week US grocery norms (BLS 2026) + ~30-50% kosher premium. Restaurants NOT central — budget 1-2 sit-downs max.',
   shoppingPlan: [
     {
-      where: 'Seattle Day 1 — Va\'ad-certified stock-up',
+      where: 'Seattle Day 1 — Va\'ad stock-up (the big haul)',
       cost: '~$180 (for 2)',
-      detail: 'QFC U-Village (2746 NE 45th St) for OU/Star-K/Kof-K packaged items, Trader Joe\'s for hechsher cheese/bread/snacks. PCC View Ridge has Va\'ad bulk if needed. This is the big haul.',
+      detail: 'QFC U-Village (2746 NE 45th St) for OU/Star-K/Kof-K packaged items; Trader Joe\'s for hechsher cheese/bread/snacks. PCC View Ridge has Va\'ad bulk.',
     },
     {
       where: 'Pantry opener kit',
       cost: '~$25',
-      detail: 'Salt, pepper, oil, sugar, dish soap, paper towels. Vacation rentals don\'t reliably stock basics — buy small in Seattle.',
+      detail: 'Salt, pepper, oil, sugar, dish soap, paper towels — rentals don\'t reliably stock basics.',
     },
     {
-      where: 'Marblemount Country Store + Mazama Store',
+      where: 'Marblemount + Mazama stores',
       cost: '~$60 mid-trip top-up',
-      detail: 'Bread, fruit, snacks, milk. Small selection, no Va\'ad oversight — staples only, rely on the Seattle haul for the rest.',
+      detail: 'Bread, fruit, snacks, milk. Staples only, no Va\'ad oversight.',
     },
     {
       where: 'Day-5 return (optional)',
       cost: '~$30-50 if kosher deli',
-      detail: 'QFC Mercer Island Va\'ad-certified deli counter — only if you want a sit-down kosher meal before SEA flight.',
+      detail: 'QFC Mercer Island Va\'ad deli counter — only for a sit-down meal before the SEA flight.',
     },
   ],
   restaurantPicks: [

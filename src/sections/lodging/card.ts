@@ -577,7 +577,16 @@ export function renderLodgingCard(lodging: Lodging, inPath: boolean): HTMLElemen
     ),
     renderPriceDetail(lodging),
     renderDriveMatrix(lodging),
-    h('p', { class: 'card__note' }, lodging.notes),
+    // Full per-property notes (which cabin to book, cancellation terms, naming
+    // drift, kosher caveats) tucked behind a disclosure — preserved verbatim,
+    // but off the default scan. Most of it repeats the page-level "call to
+    // verify Aug 16-20" disclaimer; the property-specific bits stay one tap away.
+    h(
+      'details',
+      { class: 'card__note-details' },
+      h('summary', {}, 'Booking notes + which unit to ask for'),
+      h('p', { class: 'card__note' }, lodging.notes)
+    ),
     lodging.bookingUrl
       ? h(
           'p',

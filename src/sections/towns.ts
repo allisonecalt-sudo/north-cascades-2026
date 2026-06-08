@@ -117,45 +117,6 @@ function renderDriveMatrix(town: Town): HTMLElement {
   );
 }
 
-function renderShopsBlock(town: Town): HTMLElement | null {
-  if (town.shops.length === 0) return null;
-  return h(
-    'div',
-    { class: 'town-card__shops' },
-    h('p', { class: 'town-card__shops-label' }, 'Shops + character'),
-    h(
-      'ul',
-      { class: 'town-card__shops-list' },
-      ...town.shops.map((s) => h('li', { class: 'town-card__shops-item' }, s))
-    )
-  );
-}
-
-function renderParkingSeason(town: Town): HTMLElement {
-  return h(
-    'div',
-    { class: 'town-card__meta-row' },
-    h(
-      'p',
-      { class: 'town-card__meta-item' },
-      h('strong', {}, '🅿 Parking: '),
-      town.parking
-    ),
-    h(
-      'p',
-      { class: 'town-card__meta-item' },
-      h('strong', {}, '📅 Best season: '),
-      town.bestSeason
-    ),
-    h(
-      'p',
-      { class: 'town-card__meta-item' },
-      h('strong', {}, '🚶 Walking: '),
-      town.walkabilityNote
-    )
-  );
-}
-
 // =============================================================================
 // CARD
 // =============================================================================
@@ -186,14 +147,7 @@ function renderTownCard(town: Town): HTMLElement {
       ),
       renderTownPills(town),
       h('p', { class: 'town-card__why' }, town.whyStop),
-      h(
-        'ul',
-        { class: 'town-card__bullets' },
-        ...town.bullets.map((b) => h('li', { class: 'town-card__bullet' }, b))
-      ),
       renderDriveMatrix(town),
-      renderShopsBlock(town),
-      renderParkingSeason(town),
       h(
         'p',
         { class: 'town-card__practical' },
@@ -243,7 +197,7 @@ export function renderTowns(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'Five corridor stops worth a walk — character, shops, boardwalks, where the cabins cluster. Restaurants intentionally not listed (kosher self-cater is the food plan — see the Groceries page). These are vibe stops between hikes.'
+      'Five corridor stops worth a walk between hikes. No restaurants listed — kosher self-cater is the food plan.'
     ),
     grid
   );

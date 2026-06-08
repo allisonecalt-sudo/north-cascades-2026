@@ -8,8 +8,7 @@ export function renderDecisions(): HTMLElement {
     h(
       'ul',
       { class: 'gist' },
-      h('li', { class: 'gist__item' }, 'Things still to pick. None are urgent yet — most can wait until the WSDOT road-status check in early July.'),
-      h('li', { class: 'gist__item' }, 'Where there\'s a clear external fact (e.g. a closed property), it\'s flagged. Otherwise: pick what fits.')
+      h('li', { class: 'gist__item' }, 'Still to pick. Most can wait for the early-July WSDOT check.')
     ),
     h(
       'ul',

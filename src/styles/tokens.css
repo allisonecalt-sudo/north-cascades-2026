@@ -30,36 +30,38 @@
   --c-bad-border: #c4393a;
   --c-bad-ink: #6d1a1b;
 
-  /* Typography */
+  /* Typography — modern system font stack, slightly larger base for easy
+   * reading on a 390px phone. Bumped 2026-06-08 (sleek/simpler pass). */
   --font-stack:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
-  --fs-xs: 0.75rem;
-  --fs-sm: 0.875rem;
-  --fs-base: 1rem;
-  --fs-lg: 1.125rem;
-  --fs-xl: 1.375rem;
-  --fs-2xl: 1.75rem;
-  --fs-3xl: 2.25rem;
-  --fs-display: clamp(2rem, 7vw, 3rem);
+    'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-base: 1.0625rem;
+  --fs-lg: 1.1875rem;
+  --fs-xl: 1.4375rem;
+  --fs-2xl: 1.875rem;
+  --fs-3xl: 2.375rem;
+  --fs-display: clamp(2.1rem, 7vw, 3.1rem);
 
-  /* Spacing */
+  /* Spacing — a touch more air at the larger steps (sleek/whitespace pass). */
   --sp-1: 0.25rem;
   --sp-2: 0.5rem;
   --sp-3: 0.75rem;
-  --sp-4: 1rem;
-  --sp-5: 1.5rem;
-  --sp-6: 2rem;
-  --sp-7: 3rem;
-  --sp-8: 4rem;
+  --sp-4: 1.125rem;
+  --sp-5: 1.75rem;
+  --sp-6: 2.5rem;
+  --sp-7: 3.5rem;
+  --sp-8: 4.5rem;
 
-  /* Radii + shadows */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --shadow-sm: 0 1px 2px rgba(15, 42, 34, 0.06), 0 1px 3px rgba(15, 42, 34, 0.05);
-  --shadow-md: 0 4px 12px rgba(15, 42, 34, 0.08), 0 2px 4px rgba(15, 42, 34, 0.05);
-  --shadow-lg: 0 12px 32px rgba(15, 42, 34, 0.12), 0 4px 8px rgba(15, 42, 34, 0.06);
+  /* Radii + shadows — softer corners + subtler, more diffuse shadows = calmer,
+   * more modern. Bumped 2026-06-08. */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 2px rgba(15, 42, 34, 0.04), 0 2px 6px rgba(15, 42, 34, 0.05);
+  --shadow-md: 0 6px 18px rgba(15, 42, 34, 0.07), 0 2px 5px rgba(15, 42, 34, 0.04);
+  --shadow-lg: 0 18px 44px rgba(15, 42, 34, 0.1), 0 6px 12px rgba(15, 42, 34, 0.05);
 
   /* Layout */
   --max-w: 880px;

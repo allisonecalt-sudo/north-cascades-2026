@@ -2815,8 +2815,8 @@ body.site-nav__mobile-open {
   flex-direction: column;
   background: var(--c-warm-50);
   border: 1px solid var(--c-line);
-  border-radius: 16px;
-  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  padding: 1.6rem 1.6rem 1.4rem;
   box-shadow: var(--shadow-sm);
   transition:
     transform 0.18s ease,

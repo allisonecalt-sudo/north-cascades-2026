@@ -70,9 +70,9 @@ export const WA20_STATUS: Wa20Status = {
 // ====================================================================
 
 export const WA20_TLDR: readonly string[] = [
-'WA-20 is on track to fully reopen June 25 — ~7 weeks before the Aug 16–20 trip — so plan on the full Diablo Lake → Washington Pass corridor being OPEN. The contingency below only matters if that reopen unexpectedly slips: Path A (west-side anchor) is the fallback; Path B (split) adds Stevens Pass on the connector day.',
-  'Sahale Arm + Cascade Pass are reachable from the WEST (Cascade River Rd, separate access). Maple Pass + Cutthroat Pass + Blue Lake are reachable from the EAST (Mazama → Rainy Pass). The losses are mid-corridor: Diablo Lake Overlook, Thunder Knob, Ross Lake water-taxi, Diablo kayak launch at Colonial Creek.',
-  'If you need to drive west-to-east (or back) and WA-20 is still closed: Stevens Pass (US-2) adds ~4 hours one-way. Plan to do it once, not as a daily commute.',
+  'On track to fully reopen June 25 — ~7 weeks before the Aug 16–20 trip. Plan on the full corridor OPEN; contingency below only matters if that slips.',
+  'Lost mid-corridor while closed: Diablo Lake Overlook, Thunder Knob, Ross Lake water-taxi, Diablo kayak.',
+  'If it stays closed and you need west↔east: Stevens Pass (US-2) adds ~4 hrs one-way. Do it once, not daily.',
 ];
 
 // ====================================================================
@@ -352,31 +352,31 @@ export const WA20_CONTINGENCY: readonly ContingencyOption[] = [
     title: 'Stevens Pass (US-2) detour — west↔east connector',
     tone: 'warn',
     tldr:
-      'Drop down through Wenatchee. Adds ~4 hours one-way vs the open-WA-20 version. Plan to do it ONCE on the connector day, not as a daily commute.',
+      'Adds ~4 hrs one-way vs an open WA-20. Do it ONCE on the connector day, not as a daily commute.',
     body: [
-      'Route: Marblemount → I-5 south → US-2 east over Stevens Pass → Wenatchee → US-97 north → SR-153 → Twisp → Winthrop. ~285 mi total.',
-      'Drive time: ~5.5 hrs in normal traffic vs ~1 hr 45 min via an open WA-20 (Marblemount → Mazama).',
-      'Stevens Pass historically always open mid-August. Confirm via WSDOT live page same week.',
-      'Gas: fill at Marblemount on the way out (then again Wenatchee). Stevens Pass corridor itself is well-served, US-97 north is fine.',
-      'No alternative open road through the park itself. The next federal pass north is Hwy 3 in Canada — not a usable detour.',
+      'Route: Marblemount → I-5 S → US-2 E over Stevens Pass → Wenatchee → US-97 N → SR-153 → Twisp → Winthrop. ~285 mi.',
+      'Drive: ~5.5 hrs vs ~1 hr 45 min via open WA-20.',
+      'Stevens Pass historically always open mid-August. Confirm via WSDOT same week.',
+      'Gas: fill at Marblemount, then Wenatchee.',
+      'No other open road through the park. Next pass north is Hwy 3 in Canada — not usable.',
     ],
     whenToSwitch:
-      'Path B (split: 2 nights west + 2 nights east). Build the day-3 transition around Stevens Pass and pad the schedule for the longer drive.',
+      'Path B (2 nights west + 2 nights east). Build the day-3 transition around Stevens Pass.',
   },
   {
     id: 'west-only',
     title: 'West-side-only plan (Path A staying)',
     tone: 'info',
     tldr:
-      'Anchor 4 nights west (Marblemount/Rockport). Cascade Pass + Sahale Arm + Newhalem-area + Park Butte + Picture Lake (Mt. Baker corridor). Lose Maple Pass + Methow Valley.',
+      'Anchor 4 nights west (Marblemount/Rockport). Cascade Pass, Sahale Arm, Newhalem, Park Butte, Mt. Baker corridor. Lose Maple Pass + Methow Valley.',
     body: [
-      'Cascade River Rd to Cascade Pass TH uses a separate access from Marblemount — no WA-20 mid-corridor required. NPS reopens it late June / early July most years; confirm before the trip.',
-      'Mt. Baker corridor (WA-542): Heliotrope Ridge, Picture Lake, Bagley Lakes, Artist Point. Day-trips out of Marblemount add ~2 hr each way but the destinations are world-class.',
-      'Park Butte (via Baker Lake Rd, off WA-20 west of closure) reachable from the west.',
-      'What you lose: Maple Pass, Cutthroat Pass, Methow Valley charm (Winthrop), Diablo Lake direct view (the iconic overlook is mid-corridor).',
+      'Cascade River Rd to Cascade Pass TH — separate access, no WA-20 mid-corridor needed. NPS reopens late June / early July most years; confirm.',
+      'Mt. Baker corridor (WA-542): Heliotrope Ridge, Picture Lake, Artist Point. ~2 hr each way from Marblemount.',
+      'Park Butte (via Baker Lake Rd, west of closure) — reachable from the west.',
+      'Lose: Maple Pass, Cutthroat Pass, Winthrop, Diablo Lake overlook.',
     ],
     whenToSwitch:
-      'Path A locked: WA-20 still closed by booking week (early July) OR fire/smoke flares Aug 1-15 and the east side is the smoke-pocket that day.',
+      'WA-20 still closed by booking week (early July), OR east-side smoke flares Aug 1-15.',
   },
 ];
 
@@ -403,7 +403,7 @@ export const WA20_TIMELINE: readonly TimelineEvent[] = [
     iso: '2025-12-15',
     headline: 'Atmospheric-river washouts (MP 142-148)',
     body:
-      'A series of atmospheric-river storms wiped out 1,000+ feet of pavement between MP 142 and MP 148. Damage assessed as more severe than any single weather event since WSDOT began tracking in 1972.',
+      'Storms wiped out 1,000+ ft of pavement between MP 142 and MP 148 — worse than any single weather event since WSDOT began tracking in 1972.',
     tone: 'bad',
   },
   {
@@ -411,7 +411,7 @@ export const WA20_TIMELINE: readonly TimelineEvent[] = [
     iso: '2026-03-15',
     headline: 'Rockslide at MP 131 (~4,000 cu yd)',
     body:
-      'A second blow: a large rockslide deposited roughly 4,000 cubic yards of debris on the highway near Colonial Creek, compounding the December damage. WSDOT confirmed the corridor would not reopen for Memorial Day.',
+      '~4,000 cu yd of debris near Colonial Creek, compounding the December damage. WSDOT confirmed no Memorial Day reopen.',
     tone: 'bad',
   },
   {
@@ -419,7 +419,7 @@ export const WA20_TIMELINE: readonly TimelineEvent[] = [
     iso: '2026-04-30',
     headline: 'East section reopens to Porcupine Creek (MP 156.8)',
     body:
-      'WSDOT reopened the east portion of WA-20 as far as Porcupine Creek turnaround, restoring access from Mazama side up to the closure boundary. The 26-mile mid-corridor (MP 130 → MP 156) remained closed.',
+      'East WA-20 reopened to Porcupine Creek turnaround — Mazama-side access up to the closure boundary. The 26-mi mid-corridor (MP 130 → MP 156) stayed closed.',
     tone: 'info',
   },
   {
@@ -427,7 +427,7 @@ export const WA20_TIMELINE: readonly TimelineEvent[] = [
     iso: '2026-05-05',
     headline: 'First emergency contract starts (slope stabilization, MP 131)',
     body:
-      'WSDOT activated its first emergency contract: slope stabilization and debris removal at the MP 131 rockslide site. Work expected to take weeks given terrain.',
+      'WSDOT activated its first emergency contract: slope stabilization + debris removal at the MP 131 rockslide site.',
     tone: 'warn',
   },
   {
@@ -435,7 +435,7 @@ export const WA20_TIMELINE: readonly TimelineEvent[] = [
     iso: '2026-05-13',
     headline: 'Second emergency contract starts (washout repairs)',
     body:
-      'A second emergency contract activated, focused on the December washout zone between MP 142 and MP 148. Both contracts run in parallel.',
+      'Second contract activated on the December washout zone (MP 142-148). Both contracts run in parallel.',
     tone: 'warn',
   },
   {
@@ -443,7 +443,7 @@ export const WA20_TIMELINE: readonly TimelineEvent[] = [
     iso: '2026-05-17',
     headline: 'Status today — still closed; target pulled forward to June 25',
     body:
-      'WSDOT\'s working target moved from July 4 to June 25, 2026 following the May 13 second emergency contract start ("a goal, not a promise"). Re-check WSDOT live page weekly through June. NPS road-conditions page still reads older April/May framing — it has not been re-updated since May 6. Verified 2026-05-17.',
+      'WSDOT\'s target moved from July 4 to June 25, 2026 after the May 13 contract start ("a goal, not a promise"). Re-check WSDOT weekly through June. Verified 2026-05-17.',
     tone: 'warn',
   },
 ];
@@ -455,7 +455,7 @@ export const WA20_TIMELINE: readonly TimelineEvent[] = [
 export const WA20_PAGE_META = {
   /** Short page lede shown under the title in the image hero. */
   lede:
-    'The deep dive behind the home-page banner. Sources, phone numbers, affected destinations, contingency routing, and history — everything you\'d want before locking the week or hitting the road.',
+    'Sources, phone numbers, affected destinations, contingency routing, and history — before you lock the week.',
   /** Researched on — feeds the section-sources strip. */
   asOf: 'May 17, 2026',
 } as const;

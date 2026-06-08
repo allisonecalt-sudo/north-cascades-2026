@@ -46,6 +46,16 @@ function formatPriceRange(low: number, high: number): string {
   return `${fmt(low)}–${fmt(high)}`;
 }
 
+/** Wrap a render in a collapsed <details> so secondary depth is tucked away. */
+function collapsed(summaryText: string, body: HTMLElement): HTMLElement {
+  return h(
+    'details',
+    { class: 'disclosure' },
+    h('summary', { class: 'disclosure__summary' }, summaryText),
+    body
+  );
+}
+
 // ────────────────────────────────────────────────────────────
 // TLDR strip — top of section, picks the headline + 2 alts.
 // ────────────────────────────────────────────────────────────
@@ -106,11 +116,6 @@ function renderTldr(): HTMLElement {
         '$462–$700 — host-dependent, no on-site counter, watch mileage caps.'
       )
     ),
-    h(
-      'p',
-      { class: 'rental-tldr__verified' },
-      'All quotes verified via Costco Travel + Turo live search on May 16, 2026. Re-quote within 7 days of booking — rental rates drift weekly.'
-    )
   );
 }
 
@@ -319,7 +324,7 @@ function renderCompareTable(): HTMLElement {
     h(
       'p',
       { class: 'rental-compare__note' },
-      'Sortable — tap a column header. Default sort: price ascending. All prices verified May 16, 2026; re-quote within 7 days of booking.'
+      'Sortable — tap a column header. Default sort: price ascending.'
     )
   );
 }
@@ -384,50 +389,50 @@ function renderWhereToBook(): HTMLElement {
       name: 'Costco Travel',
       url: 'https://www.costcotravel.com/Rental-Cars',
       bestFor: 'TOP PICK — primary booking entry',
-      why: '10–25% under brand-direct on the same Alamo / Enterprise / Avis / Budget fleet. Free additional driver included. No prepay, free cancel until pickup. Executive members earn 2% reward.',
-      tradeoff: 'Costco Gold Star membership ($65/yr) required. Quote URLs are session-bound — bookmark the search form, not the result.',
+      why: '10–25% under brand-direct, free 2nd driver, no prepay, free cancel until pickup.',
+      tradeoff: 'Costco Gold Star ($65/yr) required; quote URLs session-bound.',
     },
     {
       name: 'AutoSlash',
       url: 'https://www.autoslash.com/',
       bestFor: 'Price-drop monitoring after booking',
-      why: 'Free. Plug in your existing reservation and it emails you when the price drops so you can re-book at the lower rate. Also surfaces one-way drop-fee differences between brands.',
-      tradeoff: 'You re-book manually when alerted (NOT auto-rebook — common misconception). Aggregator-style search not as deep as direct brand sites.',
+      why: 'Free — emails you when your reservation price drops to re-book.',
+      tradeoff: 'Manual re-book (not auto); search less deep than brand-direct.',
     },
     {
       name: 'Kayak / cars',
       url: 'https://www.kayak.com/cars',
       bestFor: 'Cross-brand price compare in one view',
-      why: 'Fast snapshot across Hertz / Avis / Budget / Enterprise / Alamo / National / Dollar / Thrifty for the same dates. Useful as a sanity check against the Costco quote.',
-      tradeoff: 'Booking via Kayak adds an extra reservation layer — for the actual book, go to the brand-direct or Costco link.',
+      why: 'Fast snapshot across all majors — sanity-check the Costco quote.',
+      tradeoff: 'Book on the brand-direct or Costco link, not via Kayak.',
     },
     {
       name: 'Turo',
       url: 'https://turo.com/us/en/search?location=Seattle-Tacoma%20International%20Airport%20%28SEA%29&startDate=08%2F16%2F2026&startTime=12%3A00&endDate=08%2F20%2F2026&endTime=12%3A00',
       bestFor: 'Cheapest absolute, with risk',
-      why: 'Peer-to-peer. Live SEA search May 16 returned Toyota Corolla $262, Mazda CX-50 $274, Mercedes GLC $283 — all 5-day pre-tax pre-protection. Some hosts explicitly allow gravel forest roads (read each listing).',
-      tradeoff: 'No on-site counter. Host cancellation risk — filter for All-Star Host + 4.9+ rating. Mileage caps (often 200/day). Insurance interactions complex (Turo Premier vs credit-card CDW vs personal policy).',
+      why: 'Peer-to-peer — Corolla $262 / CX-50 $274 / GLC $283 (5-day pre-protection); some hosts allow gravel.',
+      tradeoff: 'No counter, host-cancel risk, mileage caps (~200/day), complex insurance.',
     },
     {
       name: 'Hertz / Avis / Budget / Enterprise / Alamo / National (brand-direct)',
       url: 'https://www.hertz.com',
       bestFor: 'Loyalty-status holders + corporate codes',
-      why: 'If either Allison or Erin has elite status (Hertz Gold, Avis Preferred, National Emerald), the points-earn + skip-the-counter shortcut can outweigh Costco\'s 10–25% headline discount. Same fleet either way.',
-      tradeoff: 'Published rates run $70–150 higher than the Costco equivalent. Pay-or-not-pay-CDW upsell is more aggressive at the counter than on Costco-fulfilled bookings.',
+      why: 'Elite status (Gold/Preferred/Emerald) points + skip-counter can beat Costco.',
+      tradeoff: 'Rates $70–150 higher; counter CDW upsell more aggressive.',
     },
     {
       name: 'Priceline / Hotwire (opaque)',
       url: 'https://www.priceline.com/drive/',
       bestFor: 'Last-resort cheapest if nothing else works',
-      why: 'Opaque-bidding can land 30–40% under retail — but you don\'t see the brand until after you pay.',
-      tradeoff: 'Non-refundable. No free 2nd driver. CDW upsell at the counter. Skip unless Costco + Turo both unavailable.',
+      why: 'Opaque-bidding can land 30–40% under retail.',
+      tradeoff: 'Non-refundable, no free 2nd driver, brand unknown until paid.',
     },
     {
       name: 'AAA / Sam\'s Club discounts',
       url: 'https://www.hertz.com/rentacar/discount-rates/',
       bestFor: 'Stacking with a Hertz/Avis brand booking',
-      why: 'AAA gets ~10% off Hertz published rate + free additional driver at Hertz specifically. Sam\'s Club ~15% off Avis/Budget. Check if either Allison or Erin is a member.',
-      tradeoff: 'Discount usually does NOT stack on top of a Costco rate — pick the lower of the two paths.',
+      why: 'AAA ~10% off Hertz; Sam\'s Club ~15% off Avis/Budget.',
+      tradeoff: 'Does not stack on a Costco rate — pick the lower path.',
     },
   ];
 
@@ -438,7 +443,7 @@ function renderWhereToBook(): HTMLElement {
     h(
       'p',
       { class: 'rental-wheretobook__intro' },
-      'Cross-shop strategy: get a Costco quote (top pick), pull a Kayak snapshot to sanity-check it, then drop the confirmation into AutoSlash so you get a re-book alert if the price drifts. Turo only if you want the cheapest absolute and accept the host risk.'
+      'Costco quote → Kayak sanity-check → AutoSlash price alert. Turo for cheapest-with-risk.'
     ),
     h(
       'ol',
@@ -528,11 +533,6 @@ function renderBestPractice(): HTMLElement {
     { class: 'rental-bestpx' },
     h('h3', { class: 'rental-bestpx__title' }, '10 best-practice obsessions'),
     h(
-      'p',
-      { class: 'rental-bestpx__intro' },
-      'Each item earns its line — the "why" tells you what it saves or buys. Skip none for the trip; skim now, screenshot before pickup.'
-    ),
-    h(
       'ol',
       { class: 'rental-bestpx__list' },
       ...items.map((item) =>
@@ -562,11 +562,6 @@ function renderChecklist(): HTMLElement {
     'div',
     { class: 'rental-checklist' },
     h('h3', { class: 'rental-checklist__title' }, 'At-pickup checklist'),
-    h(
-      'p',
-      { class: 'rental-checklist__intro' },
-      'Photograph the whole pickup flow. 10 minutes at the counter saves hours of dispute on return.'
-    ),
     h(
       'ul',
       { class: 'rental-checklist__list' },
@@ -608,7 +603,7 @@ function renderQuotedPrice(option: RentalOption): HTMLElement {
     h(
       'p',
       { class: 'rental-card__price-note' },
-      'Headline includes CDW/LDW + supplemental liability. PAI not included (usually skip).'
+      'PAI not included (usually skip).'
     )
   );
 }
@@ -756,7 +751,7 @@ export function renderRental(): HTMLElement {
       'p',
       { class: 'section__lede rental__hard-rules' },
       h('strong', {}, 'Hard rules: '),
-      'automatic, gas or hybrid, prices include full insurance (CDW/LDW + SLI). Quotes verified May 16, 2026; research log updated May 17.'
+      'automatic, gas or hybrid, all-in prices (CDW/LDW + SLI). Quotes verified May 16, 2026 — re-quote within 7 days of booking.'
     ),
     // Source-citation strip — Austria pattern, applied to rental quotes.
     h(
@@ -767,8 +762,8 @@ export function renderRental(): HTMLElement {
       h('li', { class: 'source-pill source-pill--warn' }, 'BLI / one-way · range, re-quote')
     ),
     renderTldr(),
-    renderMatrix(),
     renderCompareTable(),
+    collapsed('Best-for-X decision matrix', renderMatrix()),
     h(
       'details',
       { class: 'disclosure rental__unpaved-disclosure' },
@@ -780,7 +775,7 @@ export function renderRental(): HTMLElement {
       h(
         'p',
         { class: 'disclosure__lede' },
-        'All major US rental brands (Hertz, Avis, Enterprise, Budget, Alamo, National) restrict driving on unpaved roads. The final ~13 mi to the Cascade Pass trailhead is NPS-maintained gravel — sedan-passable in August, routinely driven by tourists — but technically a contract violation that can void CDW. ',
+        'All major US brands restrict unpaved roads. The final ~13 mi to Cascade Pass is NPS-maintained gravel — sedan-passable in August but technically a contract violation that can void CDW. ',
         h(
           'a',
           {
@@ -790,15 +785,14 @@ export function renderRental(): HTMLElement {
           },
           'NPS road status →'
         ),
-        ' Mitigations: premium-credit-card primary CDW (Chase Sapphire Reserve, Amex Platinum) covers where rental contract does not; some Turo hosts explicitly allow gravel forest roads.'
+        ' Mitigation: premium-card primary CDW (Chase Sapphire Reserve / Amex Platinum) or a Turo host that allows gravel.'
       ),
       h(
         'p',
         { class: 'disclosure__lede' },
-        h('strong', {}, 'NPS official vehicle guidance (verified May 19, 2026): '),
-        'NPS does not require AWD or high-clearance as a baseline — a standard passenger car is acceptable in good conditions. The published caveat: ',
-        h('em', {}, '"At times, ruts and washouts are impassable without a high clearance vehicle."'),
-        ' Practical rule — check the NPS road-conditions page in the 48 hr before Day 2; if a Pacific storm rolled through, take the SUV class. Vehicles longer than 22 ft or wider than 8 ft are prohibited past milepost 18 (irrelevant for sedan/SUV — only blocks oversize trucks/RVs).'
+        'NPS: a standard passenger car is fine in good conditions, but ',
+        h('em', {}, '"ruts and washouts are at times impassable without high clearance."'),
+        ' Check the NPS road page 48 hr before Day 2; take the SUV class if a storm rolled through.'
       )
     ),
     h('h3', { class: 'section__subtitle' }, 'Lead picks — verified live quotes'),
@@ -812,16 +806,11 @@ export function renderRental(): HTMLElement {
             { class: 'disclosure__summary' },
             `Less common shapes — mid-size SUV, Standard Elite, Turo, BLI base, open-jaw (${alt.length})`
           ),
-          h(
-            'p',
-            { class: 'disclosure__lede' },
-            'Different vehicle classes, pickup locations, or rental shapes. Same hard rules apply — automatic, gas or hybrid, all-in pricing.'
-          ),
           h('div', { class: 'card-grid' }, ...alt.map(renderCard))
         )
       : null,
-    renderWhereToBook(),
-    renderBestPractice(),
+    collapsed('Where to book — 7 sources compared', renderWhereToBook()),
+    collapsed('10 booking best-practices', renderBestPractice()),
     renderChecklist()
   );
 

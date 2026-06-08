@@ -114,40 +114,21 @@ const COST_LABEL: Record<ActivityCost, string> = {
   high: '💲💲💲 High',
 };
 
-function sideEmoji(side: Activity['side']): string {
-  if (side === 'west') return '🌲';
-  if (side === 'east') return '☀';
-  return '↔';
-}
-
-function sideLabel(side: Activity['side']): string {
-  if (side === 'west') return 'West side';
-  if (side === 'east') return 'East side';
-  return 'Either side';
-}
-
 function renderActivityPills(act: Activity): HTMLElement {
   const items: (HTMLElement | null)[] = [];
   const pill = (cls: string, text: string): HTMLElement => h('li', { class: cls }, text);
 
+  // Trimmed to the 3 at-a-glance facts that matter (kind / time / cost) — side,
+  // drive, equipment, kid + rentals all live as filter chips and in the card
+  // text, so repeating them as pills was noise.
   items.push(pill('card__pill', CATEGORY_LABEL[categoryOf(act)]));
   items.push(pill('card__pill', `⏱ ${act.time}`));
   items.push(pill('card__pill', COST_LABEL[act.costTier]));
-  items.push(pill('card__pill', `${sideEmoji(act.side)} ${sideLabel(act.side)}`));
-  if (act.driveFromBase) items.push(pill('card__pill', `🚗 ${act.driveFromBase}`));
-  if (act.equipment) items.push(pill('card__pill', `🎒 ${act.equipment}`));
-  if (act.rentalsOnSite) items.push(pill('card__pill card__pill--good', '✅ Rentals on-site'));
-  if (act.kidFriendly) items.push(pill('card__pill', '👶 Kid-friendly'));
 
   if (act.needsWa20Through === true) {
     items.push(pill('card__pill card__pill--bad', '↻ Needs WA-20 through'));
-  } else if (act.needsWa20Through === false) {
-    items.push(pill('card__pill card__pill--good', '✓ Reachable w/o WA-20 through'));
   }
 
-  if (act.verifiedAsOf) {
-    items.push(pill('card__pill card__pill--good', `✅ Verified ${act.verifiedAsOf}`));
-  }
   if (act.video) {
     items.push(
       renderVideoPill({
@@ -437,8 +418,7 @@ function renderBody(wrap: HTMLElement): void {
     {
       key: 'water',
       title: 'Water + lakes',
-      lede:
-        'Kayaks, swimming holes, boat tours. Two real on-water rental options in the corridor (Sun Mountain + Ross Lake Resort) plus self-launch + swim spots. Diablo Lake itself has no on-lake rentals — bring or haul.',
+      lede: 'Kayaks, swim spots, boat tours. On-water rentals: Sun Mountain + Ross Lake Resort.',
       items: water,
     },
     { key: 'town', title: 'Side towns + biking', lede: null, items: town },
@@ -500,7 +480,7 @@ export function renderActivities(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'Non-hike options for rest days or evenings — paddle, swim, bike, side-town walks. Not "must-do." Menu items to choose from on the day.'
+      'Non-hike options for rest days or evenings — paddle, swim, bike, town walks. Pick from the menu, not "must-do."'
     ),
     renderSectionSources({
       label: 'Operator hours + prices verified at',

@@ -21,7 +21,7 @@ function mount(): void {
     pageId: 'rental',
     title: 'Rental car',
     verifiedOn: '2026-05-17 (Costco SEA Compact SUV top pick)',
-    lede: 'Automatic, gas or hybrid, all-in pricing (CDW/LDW + SLI bundled). Top pick + decision matrix + sortable comparison + 10 best-practice obsessions + at-pickup checklist. Quotes verified May 16, 2026; research log refreshed May 17.',
+    lede: 'Top pick: Costco SEA Compact SUV — $716–$875 all-in for 5 days. Free cancel until pickup, so book now and re-shop.',
     imageHero: {
       src: 'img/unsplash-1469854523086-cc02fe5d8800.jpg',
       alt: 'Compact SUV on an empty mountain highway',

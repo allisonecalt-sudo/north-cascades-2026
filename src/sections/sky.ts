@@ -80,7 +80,7 @@ export function renderSky(): HTMLElement {
       h(
         'p',
         { class: 'section__lede' },
-        'Worth a deliberate visit at golden hour if your cabin isn\'t west-facing. (Stay through dusk = stargazing too.)'
+        'Golden-hour stops if your cabin isn\'t west-facing. Stay through dusk = stars too.'
       ),
       h(
         'ul',
@@ -105,11 +105,7 @@ export function renderSky(): HTMLElement {
         { class: 'disclosure__summary' },
         `Stars-only spots (Methow Valley + Hart's Pass) — ${DARK_SKY_SPOTS.length}`
       ),
-      h(
-        'p',
-        { class: 'disclosure__lede' },
-        'For dedicated stargazing. Sunset spots above also work for stars — stay past dusk.'
-      ),
+      h('p', { class: 'disclosure__lede' }, 'For dedicated stargazing.'),
       h(
         'ul',
         { class: 'sky-spots__list' },

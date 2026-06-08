@@ -172,7 +172,7 @@ function buildTier(
       {
         key: 'flights',
         label: 'Flights',
-        note: `2 × NYC↔SEA nonstop · ~$${flightPp}/person · independent of each other`,
+        note: `2 × NYC↔SEA nonstop · ~$${flightPp}/person`,
         amount: flightPp * 2,
         flex: 'locked',
         sourceHref: 'travel.html',
@@ -183,10 +183,10 @@ function buildTier(
         label: 'Rental car',
         note:
           tier === 'low'
-            ? 'Compact sedan (Corolla/Versa) all-in, Costco verified May 16'
+            ? 'Compact sedan (Corolla/Versa), all-in'
             : tier === 'mid'
-              ? 'Compact SUV or hybrid sedan all-in (CDW+SLI bundled)'
-              : 'Standard Elite SUV (Audi Q3 / Cadillac XT4) all-in',
+              ? 'Compact SUV or hybrid sedan, all-in'
+              : 'Standard Elite SUV (Audi Q3 / Cadillac XT4)',
         amount: rental,
         flex: 'locked',
         sourceHref: 'rental.html',
@@ -197,8 +197,8 @@ function buildTier(
         label: 'Lodging',
         note:
           (pathId === 'A'
-            ? '4 nights, one west cabin · '
-            : '2 west + 2 east, mid-trip move · ') + lodgingAnchor,
+            ? '4 nights, one cabin · '
+            : '2 west + 2 east · ') + lodgingAnchor,
         amount: lodgingTotal,
         flex: 'locked',
         sourceHref: 'lodging.html',
@@ -209,10 +209,10 @@ function buildTier(
         label: 'Food + treats',
         note:
           tier === 'low'
-            ? 'Kosher groceries + cabin cooking, minimal eat-out · ~$110/person trip groceries + minimal restaurants'
+            ? 'Kosher groceries (~$110/pp) + cabin cooking'
             : tier === 'mid'
-              ? 'Groceries ($160/pp) + 1-2 sit-down treat dinners ($75/pp) + coffees/ice cream'
-              : 'Premium kosher grocery haul + Arrowleaf Bistro nicer dinner + Sun Mountain drink + ice cream',
+              ? 'Groceries ($160/pp) + 1-2 treat dinners ($75/pp)'
+              : 'Premium grocery haul + Arrowleaf Bistro dinner + extras',
         amount: food,
         flex: 'flexible',
         sourceHref: 'food.html',
@@ -235,7 +235,7 @@ function buildTier(
       {
         key: 'fuel',
         label: 'Fuel',
-        note: `${PATH_MILES[pathId]} mi @ ~${mpg} mpg · WA gas $5.78/gal (AAA May 19, 2026 — Skagit County $5.67, Whatcom $5.73)`,
+        note: `${PATH_MILES[pathId]} mi @ ~${mpg} mpg · WA gas $5.78/gal`,
         amount: fuelCost,
         flex: 'flexible',
         sourceHref: 'wa20-status.html#driving-cascades',
@@ -244,7 +244,7 @@ function buildTier(
       {
         key: 'contingency',
         label: 'Contingency (10%)',
-        note: 'Buffer for price drift, gear, parking, unplanned ice cream',
+        note: 'Buffer for price drift, gear, parking',
         amount: contingency,
         flex: 'flexible',
         sourceHref: 'notes.html',

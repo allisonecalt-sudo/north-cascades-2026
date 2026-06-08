@@ -1,9 +1,16 @@
 /**
  * lodging.ts — lodging page.
  *
- * Leads with the three BOOKED stays (all kept until Allison + Erin pick one).
- * The old West/East comparison + search guide sit below as a collapsed
- * reference layer.
+ * ONE job: compare the three BOOKED stays and pick one (all kept until Allison
+ * + Erin decide). The booked-stay cards lead. Everything below them is a
+ * reference layer, in decreasing relevance:
+ *   1. renderLodging()            — the 3 booked stays (the decision) + the
+ *                                   pre-booking comparison, already collapsed.
+ *   2. renderCoolSleepingPlaces() — inspiration catalog (mostly not bookable
+ *                                   for these dates). Browse-only, not a pick.
+ *   3. renderLodgingSearchGuide() — "how to search" playbook. Reference only.
+ * Cuts/links so each fact is said once; deadlines live on the cards, not the
+ * lede.
  */
 
 import '../styles/main.css';
@@ -15,10 +22,12 @@ import { renderPageCtas } from '../sections/page-ctas';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'lodging',
-    title: 'Where we\'re staying — booked',
+    title: '3 booked stays — pick one',
     verifiedOn: '2026-05-21 (lodging booked — three reservations held)',
-    lede:
-      'Booked. Three Airbnbs are reserved for Aug 16 → 20, all on the west side: Arlington (Allison) plus two in Sedro-Woolley — the "Lakeside Cabin w/ Dock" (Allison) and "The Carriage House" (Erin). All held for now — pick one and cancel the rest before the free-cancellation windows close.',
+    // Lede states the page's ONE job; it does NOT repeat the cards. The
+    // free-cancellation deadlines + "cancel the rest" detail already live in
+    // the booked-stays warning banner and on each card — say it once there.
+    lede: 'All three hold the same dates. Compare below, then keep one.',
     imageHero: {
       // Re-re-swapped May 17, 2026 (8:13 AM IDT) — prior URL loaded fine but
       // depicted a tropical beach resort, not PNW. Switching to the Diablo
@@ -27,7 +36,8 @@ function mount(): void {
       src: 'img/diablo-lake-washington-state.jpg',
       alt: 'Diablo Lake turquoise water with surrounding North Cascades peaks',
       credit: 'Photo: Wikimedia · CC',
-      ctaLabel: 'See the cabins',
+      // The page's single primary action: jump to the 3 booked-stay cards.
+      ctaLabel: 'Compare the 3 stays',
       ctaHref: '#lodging',
     },
   });

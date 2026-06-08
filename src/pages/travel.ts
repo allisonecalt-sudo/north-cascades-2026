@@ -14,14 +14,16 @@ import { renderPageCtas } from '../sections/page-ctas';
 import { h, section } from '../dom';
 
 function renderRentalPointer(): HTMLElement {
-  // Tiny pointer so Travel readers know the rental deep-dive moved.
+  // Tiny pointer so Travel readers know the rental deep-dive has its own page.
+  // Keep it to one line + link — the specs (automatic, fuel, quotes, gravel
+  // notes) live on rental.html; repeating them here is duplicate content.
   return section(
     'rental-pointer',
     'Rental car',
     h(
       'p',
       { class: 'section__lede' },
-      'Moved to its own page — automatic, gas or hybrid, verified all-in quotes, Cascade River Rd gravel notes.'
+      'Car has its own page — quotes, fuel choice, and the Cascade River Rd gravel notes.'
     ),
     h(
       'a',
@@ -35,13 +37,13 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'travel',
     title: 'Flights and logistics',
-    lede: 'Real flight options + travel-day logistics. Rental car lives on its own page.',
+    lede: 'Flights are booked: United, EWR ⇄ SEA. Travel-day logistics below; rental car has its own page.',
     imageHero: {
       // Unsplash — wing-over-clouds banner. Brand-neutral aviation aesthetic.
       src: 'img/unsplash-1436491865332-7a61a109cc05.jpg',
       alt: 'Airplane wing over a layer of clouds at altitude',
       credit: 'Photo: Ross Parmly / Unsplash',
-      ctaLabel: 'See the flights',
+      ctaLabel: 'See the booked flights',
       ctaHref: '#flights',
     },
   });

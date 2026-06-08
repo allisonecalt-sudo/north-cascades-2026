@@ -97,8 +97,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: true,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Calm sub-alpine lake, mountain backdrop, easy beginner paddling. Walk-up rentals at the lodge marina — call ahead in peak August (509-996-2211). Solid rest-day option for the east-side leg of Path B.',
+    description: 'Calm alpine lake, walk-up rentals at the lodge marina.',
     sourceUrl: 'https://sunmountainlodge.com/adventure/water-activities/',
     sourceLabel: 'Sun Mountain Lodge',
     category: 'water',
@@ -128,8 +127,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: false,
     rentalsOnSite: false,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      "No rentals on Diablo Lake itself — pre-2026 there was a Ross Lake Resort tie-in, but the on-lake rental option is North Cascade Kayaks in Rockport (self-haul) plus a Colonial Creek launch. Turquoise glacier-flour water, ringed by 7,000-ft walls. The launch lot fills by 9-10 am in August — start early.",
+    description: 'Paddle turquoise glacier water under 7,000-ft walls. Haul kayak from Rockport — no on-lake rentals.',
     sourceUrl: 'https://northcascadekayaks.com/',
     sourceLabel: 'North Cascade Kayaks',
     category: 'water',
@@ -180,8 +178,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: true,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'The only outfit with on-water rentals in the corridor. Reach the resort by hiking the 1-mile trail down from Diablo Dam (or NPS shuttle when running), then water-taxi 8 am-7 pm on demand. Worth the choreography if you want to be ON Ross Lake, not just look at it. Portage service June 11 - Oct 31 in 2026.',
+    description: 'The only on-water rentals in the corridor — hike 1 mi to the dam, water-taxi, paddle a wild lake.',
     sourceUrl: 'https://www.rosslakeresort.com/equipment-rentals',
     sourceLabel: 'Ross Lake Resort',
     category: 'water',
@@ -219,8 +216,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: false,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Warm-water swimming lake (unusual in the PNW). Sandy beach, swimming raft, picnic tables, 11,000 ft of waterfront. Easy after-hike cool-off in the 85 F Methow afternoons. 1,186-acre state park — also has a 5.3-mi Rex Derr loop trail if you want a walk first.',
+    description: 'Rare warm swim lake — sandy beach + raft, 5 min from Winthrop. The easy after-hike cool-off.',
     sourceUrl: 'https://parks.wa.gov/find-parks/state-parks/pearrygin-lake-state-park',
     sourceLabel: 'WA State Parks',
     category: 'water',
@@ -250,8 +246,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: false,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      "Large reservoir under Mt. Baker with a real sandy swim beach at Horseshoe Cove. Cold but not glacial like Diablo — actually swimmable. Bring-your-own kayak crowd; rentals are scarce locally. Day-use season mid-May through September. Good Path-A backup if Cascade Pass weather turns.",
+    description: 'Sandy swim beach under Mt. Baker — cold but swimmable. Good west-side backup if Cascade Pass weather turns.',
     sourceUrl: 'https://www.fs.usda.gov/recarea/mbs/recarea/?recid=17856',
     sourceLabel: 'Mt. Baker-Snoqualmie NF',
     category: 'water',
@@ -289,8 +284,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: false,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Boat-only village at the head of 50-mile-long Lake Chelan, inside North Cascades NRA. Stehekin is famous (the bakery, the red school bus, the Stehekin valley). But: this is a 3-hr drive south to Chelan, then a 4-hr boat each way. Worth flagging — almost certainly cut from this 5-day trip, but if Day-4 turns into "we want a real boat day" this is it.',
+    description: 'Boat-only village at the head of 50-mi Lake Chelan. Almost certainly cut — a full day each way.',
     sourceUrl: 'https://ladyofthelake.com/boat-schedules/',
     sourceLabel: 'Lady of the Lake',
     category: 'water',
@@ -328,8 +322,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: false,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      "Not a swim destination — the Skagit runs hard and glacially cold. But it's a beautiful river-walk + lunch spot a few minutes from the Marblemount lodging cluster. Wading at the gravel-bar edges is fine on a warm day. Don't swim out into the current.",
+    description: 'Riverside picnic + lunch by the Marblemount lodging cluster. Wade gravel-bar edges only — runs hard and cold.',
     sourceUrl: 'https://www.nps.gov/noca/planyourvisit/boating-and-fishing.htm',
     sourceLabel: 'NPS · Skagit paddling',
     category: 'water',
@@ -361,8 +354,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: true,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Paved + gravel community trail along the river. Easy ride for a relaxed afternoon. Methow Cycle & Sport rents on Riverside Ave.',
+    description: 'Easy paved river trail — afternoon ride. Rentals on Riverside Ave.',
     category: 'town',
     sourceUrl: 'https://methowcyclesport.com/',
     sourceLabel: 'Methow Cycle & Sport',
@@ -400,8 +392,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: false,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Marmots + pikas reliable on Cascade Pass + Maple Pass meadows mid-day. Mountain goats sometimes visible on Cascade Pass ridge across the valley (binoculars help). Black bears occasional on Cascade River Rd at dawn. Mule deer common in Methow Valley at dusk.',
+    description: 'Marmots + goats on the Cascade Pass meadows; bears on Cascade River Rd at dawn; deer in the Methow at dusk.',
     category: 'wildlife',
     sourceUrl: 'https://www.nps.gov/noca/learn/nature/animals.htm',
     sourceLabel: 'NPS · Wildlife',
@@ -431,8 +422,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: false,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Bavarian alpine-village theme — touristy in a knowing way. Worth a stop for a stretch + walk if returning via US-2 / Stevens Pass. No kosher restaurants here — pack snacks or pick up at the bakery (note: packaged hechsher only).',
+    description: 'Bavarian-themed village — a stretch + walk if returning via US-2. Packaged hechsher only, no kosher restaurants.',
     category: 'town',
     sourceUrl: 'https://leavenworth.org/',
     sourceLabel: 'Leavenworth.org',
@@ -462,8 +452,7 @@ export const ACTIVITIES: Activity[] = [
     kidFriendly: true,
     rentalsOnSite: false,
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Quieter, more local feel than Winthrop. Confluence Gallery + Twisp River Pub area + Methow Valley Riverbank trail. Worth it if Winthrop feels too tourist-cute.',
+    description: 'Quieter + more local than Winthrop — galleries, river pub, riverbank trail.',
     category: 'town',
     sourceUrl: 'https://twispwa.com/',
     sourceLabel: 'Twisp town site',
@@ -487,17 +476,15 @@ export interface RuledOut {
 
 export const RULED_OUT: RuledOut[] = [
   {
-    what: 'Hot springs (Goldmyer, Baker, Sol Duc, etc.)',
-    why:
-      'Goldmyer is permit-only + 6 mi hike-in (overkill). Baker Hot Springs is closed/unmaintained. Sol Duc is 4+ hr drive from the corridor. No reasonable hot springs from this trip — not worth the detour. (Confirmed May 16, 2026.)',
+    what: 'Hot springs (Goldmyer, Baker, Sol Duc)',
+    why: 'None reachable — permit-only + hike-in, closed, or 4+ hr away.',
   },
   {
     what: 'Sahale Arm + Cutthroat Pass extensions',
-    why:
-      'Ruled out by the brief — too hard. Listed in Hikes under "Ambitious add-ons" if energy + early start coincide, but not in any path itinerary.',
+    why: 'Too hard for the brief — see Hikes "Ambitious add-ons."',
   },
   {
     what: 'Museums',
-    why: 'Ruled out by the brief. Shafer exterior is the closest the trip gets to one.',
+    why: 'Ruled out by the brief.',
   },
 ];

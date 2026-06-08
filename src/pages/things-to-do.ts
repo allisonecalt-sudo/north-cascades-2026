@@ -22,15 +22,52 @@ import { renderActivities } from '../sections/activities';
 import { renderLakes } from '../sections/lakes';
 import { renderTopSunsets } from '../sections/top-sunsets';
 import { renderViewpointsGallery } from '../sections/viewpoints';
+import { renderTowns } from '../sections/towns';
 import { renderPageCtas } from '../sections/page-ctas';
+import { ACTIVITIES } from '../data/activities';
+import { LAKES } from '../data/lakes';
+import { TOP_SUNSETS } from '../data/top-sunsets';
+import { VIEWPOINT_DESTINATIONS } from '../data/viewpoints';
+import { TOWNS } from '../data/towns';
 
 /** Wrap a merged section in a collapsible group so the page isn't a long wall.
+ *  The summary is a tap-to-open menu row: label + live count + one-line scope,
+ *  so she can pick a category without expanding all four. Count is read from the
+ *  data at runtime — never hardcoded, never stale.
  *  The section keeps its own id/anchors inside; openHashTarget() expands the
  *  right group when a deep link (#activities, #lakes, #sunset-2, …) is followed. */
-function group(label: string, el: HTMLElement, open = false): HTMLElement {
-  const attrs: Record<string, string> = { class: 'ttd-group' };
-  if (open) attrs.open = '';
-  return h('details', attrs, h('summary', { class: 'ttd-group__summary' }, label), el);
+function group(label: string, count: number, hint: string, el: HTMLElement): HTMLElement {
+  // Inline styling keeps the summary legible without a shared-CSS edit; the
+  // .ttd-group__{label,count,hint} classes are also emitted so the styles can be
+  // lifted into sections.css later (see returned note).
+  return h(
+    'details',
+    { class: 'ttd-group' },
+    h(
+      'summary',
+      { class: 'ttd-group__summary' },
+      h('span', { class: 'ttd-group__label' }, label),
+      h(
+        'span',
+        {
+          class: 'ttd-group__count',
+          style:
+            'margin-left: 0.55rem; font-weight: 600; font-size: 0.82rem; padding: 0.05rem 0.5rem; border-radius: 999px; background: rgba(31,59,42,0.08); color: var(--c-ink-500, #4a5650);',
+        },
+        String(count)
+      ),
+      h(
+        'span',
+        {
+          class: 'ttd-group__hint',
+          style:
+            'margin-left: 0.7rem; font-weight: 400; font-size: 0.86rem; color: var(--c-ink-500, #6a7570); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;',
+        },
+        hint
+      )
+    ),
+    el
+  );
 }
 
 /** Open whichever collapsible group contains the current hash target. */
@@ -48,7 +85,7 @@ function mount(): void {
     pageId: 'things-to-do',
     title: 'Things to Do',
     verifiedOn: '2026-05-17',
-    lede: 'Activities, lakes & water, viewpoints, and sunsets — everything beyond the hikes, in one place. Tap a group to open it; pick by energy on the day.',
+    lede: 'Everything beyond the hikes. Tap a group to open it — pick by energy on the day.',
     imageHero: {
       // Diablo Lake — turquoise summer water, proven Wikimedia URL reused from
       // the retired activities/viewpoints pages.
@@ -61,10 +98,11 @@ function mount(): void {
   });
 
   main.append(
-    group('Activities', renderActivities(), true),
-    group('Lakes & water', renderLakes()),
-    group('Top sunsets', renderTopSunsets()),
-    group('Viewpoints', renderViewpointsGallery()),
+    group('Activities', ACTIVITIES.length, 'Paddle, swim, bike, side towns', renderActivities()),
+    group('Lakes & water', LAKES.length, 'Swim story + rentals + drive times', renderLakes()),
+    group('Top sunsets', TOP_SUNSETS.length, 'Ranked spots — Allison’s window', renderTopSunsets()),
+    group('Viewpoints', VIEWPOINT_DESTINATIONS.length, 'Drive-up postcard stops', renderViewpointsGallery()),
+    group('Towns', TOWNS.length, 'Corridor stops + groceries', renderTowns()),
     renderPageCtas('things-to-do')
   );
 

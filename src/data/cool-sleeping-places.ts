@@ -98,15 +98,11 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Ross Lake · in North Cascades National Park',
     locationTier: 'in-park',
     access: 'boat-in',
-    beds: '2BR cabins available (1 queen + 1 queen typical) — verify per cabin',
-    bedrooms: '15 floating cabins · studio, 1-BR, 2-BR, and 3-BR configurations',
-    priceRange: '~$290/night (sleeps 2) up to ~$495/night (sleeps 9)',
-    natureView:
-      'Cabins literally float on Ross Lake — pinned to the shoreline, surrounded by water + Cascade peaks. No road access at all.',
-    sunsetNote:
-      'Lake faces west toward the Cascade ridge — sunset is the property\'s defining feature in reviews. Floating deck = sunset over the water from your front door.',
-    whyCool:
-      'The only floating-cabin resort in NPS-managed waters. Built 1952. Reached by Diablo Lake water taxi + truck portage. Easily the most distinctive sleeping place in the park — Erin will want to see it even if logistics rule it out.',
+    beds: '2BR cabins (1 queen + 1 queen typical) — verify per cabin',
+    bedrooms: '15 floating cabins · studio to 3-BR',
+    priceRange: '~$290-495/night',
+    natureView: 'Cabins float on Ross Lake; no road access.',
+    whyCool: 'The only floating-cabin resort in NPS waters — reached by water taxi.',
     reviews: {
       score: '4.8/5',
       count: '~120 reviews',
@@ -115,7 +111,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'lottery',
     bookingNote:
-      'LOTTERY-BASED. 60% reservable 1 year in advance upon prior-guest checkout; 40% via website lottery list (opens Jan 1 each year for that year). 2026 lottery already opened — for Aug 16-20, 2026 try the cancellation list or last-minute first-come-first-serve. Call (206) 386-4437 to ask.',
+      'Lottery-based (2026 lottery already opened). For Aug 16-20: cancellation list or call (206) 386-4437.',
     bookingUrl: 'https://www.rosslakeresort.com/stay',
     sourceUrl: 'https://www.rosslakeresort.com/',
     sourceName: 'rosslakeresort.com',
@@ -134,15 +130,12 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Stehekin · head of Lake Chelan · in North Cascades National Park',
     locationTier: 'in-park',
     access: 'shuttle/boat-in',
-    beds: '4 spacious cabins with private decks · 2-bed configurations in larger cabins (sleeps 3-6)',
-    bedrooms: '1-BR + 2-BR cabins available · 7 units total have full kitchens',
-    priceRange: '~$200-340/night per the 2026 rate sheet (cabins on the higher end)',
-    natureView:
-      'Lake Chelan at its northern head — 50-mile-long fjord-style alpine lake, surrounded by NCNP and Glacier Peak Wilderness on all sides. Wildly isolated.',
-    sunsetNote:
-      'Property faces south down the lake — sunset light travels the length of Lake Chelan from the western ridgeline. Notable from the lodge dock + cabin decks.',
+    beds: '2-bed configs in larger cabins (sleeps 3-6)',
+    bedrooms: '1-BR + 2-BR cabins · 7 units have full kitchens',
+    priceRange: '~$200-340/night',
+    natureView: 'Northern head of 50-mile Lake Chelan; wildly isolated.',
     whyCool:
-      'Stehekin has no road in. You arrive by Lady of the Lake ferry from Chelan (~4 hours), seaplane, or a multi-day hike from Cascade Pass. Once there, getting around is a shuttle bus + walking. It\'s the most isolated lodging in the contiguous US.',
+      'No road in — ~4-hr ferry, seaplane, or multi-day hike. Most isolated lodging in the lower 48.',
     reviews: {
       score: '4.4/5',
       count: '~210 reviews',
@@ -151,7 +144,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'open-bookable',
     bookingNote:
-      'Real online booking available. Logistics: would require a Lake Chelan ferry day each direction — likely doesn\'t fit the Aug 16-20 5-day plan unless you cut Cascade Pass.',
+      'Online booking. A ferry day each direction likely won\'t fit the 5-day plan.',
     bookingUrl: 'https://lodgeatstehekin.com/accommodations/',
     sourceUrl: 'https://lodgeatstehekin.com/accommodations/',
     sourceName: 'lodgeatstehekin.com',
@@ -163,15 +156,12 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Stehekin · 9 mi up-valley · in North Cascades National Park',
     locationTier: 'in-park',
     access: 'shuttle/boat-in',
-    beds: 'Tent-cabin sleeps 2-4 (1 queen + bunks) · Ranch cabin sleeps 4 (queen + bunk room)',
-    bedrooms: 'Cabins range 1-BR with sleeping loft to multi-room',
-    priceRange: '~$240-340/night per person including all meals + in-valley transit',
-    natureView:
-      'Working ranch in a glacial valley surrounded by NCNP wilderness. Horse pasture, mountain river, dirt roads, no cell signal.',
-    sunsetNote:
-      'Open valley setting with western ridgeline — pasture-edge sunsets are part of the property\'s identity.',
+    beds: 'Tent-cabin sleeps 2-4 (queen + bunks) · Ranch cabin sleeps 4',
+    bedrooms: '1-BR with loft to multi-room',
+    priceRange: '~$240-340/night per person, all meals + transit included',
+    natureView: 'Working ranch in a glacial valley; no cell signal.',
     whyCool:
-      'All-inclusive meals + transport in the most isolated valley in the lower 48. Closer experience to a Patagonian estancia than a Washington vacation rental.',
+      'All-inclusive meals + transport in the lower 48\'s most isolated valley.',
     reviews: {
       score: '4.7/5',
       count: '~95 reviews',
@@ -180,7 +170,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'phone-or-form',
     bookingNote:
-      'Reservation form on the Stehekin community site. Reach by Lady of the Lake → ranch shuttle. Same logistics constraint as the Lodge — likely a Stehekin-only trip, not a side-quest.',
+      'Form on stehekin.com; reach by ferry → ranch shuttle. Same ferry constraint as the Lodge.',
     bookingUrl: 'https://stehekin.com/lodging/',
     sourceUrl: 'https://stehekin.com/lodging/',
     sourceName: 'stehekin.com',
@@ -192,15 +182,12 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Diablo Lake · inside North Cascades National Park',
     locationTier: 'in-park',
     access: 'drive-in',
-    beds: 'Quad-occupancy rooms: 4 twin beds (2 bunk beds) per room — book a whole room for 2 = 2 beds, 2 unused',
-    bedrooms: 'Eco-lodge guest rooms — book one of the three eco-lodges',
-    priceRange: '~$165-225/night per person (Base Camp package, includes meals + activities)',
-    natureView:
-      'Award-winning eco-campus on the WOODED SHORE of Diablo Lake. Three eco-lodges + dining hall + dock + amphitheater + composting center. Operated jointly by NPS + City of Seattle.',
-    sunsetNote:
-      'Diablo Lake itself = the turquoise jewel of WA-20. Dock-side sunsets over the lake are the literal point of the campus.',
+    beds: '4 twin beds per room (2 bunks) — book a room for 2',
+    bedrooms: 'Eco-lodge guest rooms',
+    priceRange: '~$165-225/night per person (Base Camp pkg, meals + activities)',
+    natureView: 'Eco-campus on the wooded shore of Diablo Lake.',
     whyCool:
-      'The only lodging actually INSIDE the park. Architect-designed sustainable buildings on the lake. Base Camp package includes 3 meals + naturalist-guided activities, so it\'s more "summer camp for adults" than hotel. Aug 16-20 likely overlaps a Base Camp session — they sell whole-package weekends.',
+      'The only lodging actually INSIDE the park. "Summer camp for adults" — meals + guided activities, not a hotel.',
     reviews: {
       score: '4.6/5',
       count: '~85 reviews',
@@ -209,7 +196,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'phone-or-form',
     bookingNote:
-      'Programs sell as multi-night Base Camp packages. Check the 2026 calendar for Aug 16-20 availability — if no overlapping session, group lodging may still be bookable for the dates. Email info@ncascades.org.',
+      'Multi-night Base Camp packages. Check the 2026 calendar; email info@ncascades.org.',
     bookingUrl: 'https://ncascades.org/signup/programs/base-camp',
     sourceUrl: 'https://ncascades.org/discover/learning-center',
     sourceName: 'ncascades.org',
@@ -227,15 +214,12 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Winthrop · 10 min north · WA State Park',
     locationTier: 'around-park',
     access: 'drive-in',
-    beds: '1 full-size bed + 1 twin trundle bed (sleeps 4) — meets 2-bed rule',
-    bedrooms: 'Studio cabin (16×16 ft) · half bath inside, full showers nearby',
+    beds: '1 full + 1 twin trundle (sleeps 4)',
+    bedrooms: 'Studio cabin · half bath inside, showers nearby',
     priceRange: '~$79-104/night',
-    natureView:
-      'Lakeside on Pearrygin Lake in the Methow Valley, "near the swim beach under the shade of willow and ash trees." Discover Pass required, state-park setting.',
-    sunsetNote:
-      'Pearrygin Lake is oriented east-west — open western sky over the water from the boat launch + dock + cabin area. Already listed as a sunset spot for non-guests.',
+    natureView: 'Lakeside on Pearrygin Lake; swim beach + boat launch out the door.',
     whyCool:
-      'The only state-park cabin lodging in the corridor. Two cabins total (C1, C2) — books up months ahead. Full lake access + swim beach + boat launch right out the door. Methow Valley dark-sky community certification.',
+      'Only state-park cabins in the corridor. Two cabins total — dark-sky certified.',
     reviews: {
       score: '4.5/5',
       count: '~290 reviews (campground overall)',
@@ -244,7 +228,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'check-availability',
     bookingNote:
-      'Reservable Apr 25 - Oct 29. Call (888) 226-7688 or book online via Washington State Parks. Two cabins only — likely booked far ahead for August weekends. WORTH CHECKING.',
+      'Reservable Apr 25 - Oct 29 via Washington State Parks or (888) 226-7688. Two cabins only — books far ahead.',
     bookingUrl: 'https://parks.wa.gov/find-parks/state-parks/pearrygin-lake-state-park/pearrygin-lake-cabins',
     sourceUrl: 'https://parks.wa.gov/find-parks/state-parks/pearrygin-lake-state-park/pearrygin-lake-cabins',
     sourceName: 'parks.wa.gov',
@@ -256,13 +240,12 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Index · ~2.5 hr from Marblemount · US Hwy 2 corridor',
     locationTier: 'around-park',
     access: 'hike-in',
-    beds: 'Sleeps 4 (1 double bed + bench/floor space, BYO bedding)',
-    bedrooms: 'Single-room lookout cabin (NOT 2 separate bedrooms)',
+    beds: '1 double + bench/floor space, BYO bedding (sleeps 4)',
+    bedrooms: 'Single-room lookout cabin',
     priceRange: '$75/night flat',
-    natureView:
-      '67-ft tower lookout at 1,700 ft. 360° view of Mount Index, Mount Persis, Bridal Veil Falls, the Skykomish Valley.',
+    natureView: '67-ft tower lookout; 360° view of Mount Index + Skykomish Valley.',
     whyCool:
-      'Recreation.gov-bookable historic USFS fire lookout. Hike-in is a moderate 1.3 mi / 850 ft to the base, then climb the tower stairs to the rental cab. The closest bookable lookout to North Cascades that consistently has availability.',
+      'Recreation.gov-bookable fire lookout. Moderate 1.3 mi / 850 ft hike-in. Closest bookable lookout to North Cascades.',
     reviews: {
       score: '4.7/5',
       count: '~140 reviews',
@@ -271,13 +254,13 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'check-availability',
     bookingNote:
-      'Books 6 months ahead at 7am Pacific via Recreation.gov. Aug 16-20 window opens Feb 16-20, 2026 — likely ALREADY GONE by May 2026 unless someone cancels. Check the live calendar.',
+      'Books 6 months ahead via Recreation.gov. Aug 16-20 likely gone unless someone cancels.',
     bookingUrl: 'https://www.recreation.gov/camping/campgrounds/269838',
     sourceUrl: 'https://www.recreation.gov/camping/campgrounds/269838',
     sourceName: 'Recreation.gov',
     meetsBedRule: false,
     notFitReason:
-      'Single-room cabin with 1 double bed — sleeps 4 but only 1 actual bed (rest is floor / bench space with BYO bedding). LISTED AS INSPIRATION ONLY — the lookout experience is distinct, but the bed configuration is technically NOT a fit per the standing rule.',
+      'Single-room cabin, 1 double bed (rest floor/bench, BYO). Doesn\'t meet the 2-bed rule.',
   },
   {
     id: 'hidden-lake-lookout',
@@ -285,13 +268,12 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Marblemount · 30 min east · at NPS boundary',
     locationTier: 'around-park',
     access: 'hike-in',
-    beds: 'Cabin floor space — BYO sleeping bag + pad',
+    beds: 'Floor space — BYO sleeping bag + pad',
     bedrooms: 'Single-room lookout · not bedded',
     priceRange: '$15-25/night suggested donation',
-    natureView:
-      '~7,000 ft perch with 360° view of Boston, Sahale, Snowking, Glacier, Eldorado, Torment, Forbidden peaks. One of the most distinguished lookout views in Washington.',
+    natureView: '~7,000 ft perch; one of WA\'s most distinguished lookout views.',
     whyCool:
-      'Retired 1931 fire lookout maintained by Friends of Hidden Lake Lookout. First-come-first-served, no booking system, all year. The 9-mile RT / 3,400 ft hike is the gating logistics — strenuous, single-day-only access for a non-hiker pair.',
+      'Retired 1931 fire lookout, FCFS. Strenuous 9-mi RT / 3,400 ft hike-in is the gating logistics.',
     reviews: {
       score: '4.9/5',
       count: '~80 trip reports',
@@ -300,13 +282,13 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'phone-or-form',
     bookingNote:
-      'NO BOOKING. FCFS means anyone arriving can claim it. 9 mi / 3,400 ft strenuous hike-in disqualifies under "practical-not-extreme" — listed as inspiration only. [Note 2026-05-17: fohll.org host not responding — direct site may be down. WTA write-up is the live source.]',
+      'No booking — FCFS. 9 mi / 3,400 ft hike-in disqualifies under "practical-not-extreme."',
     bookingUrl: 'https://www.wta.org/news/magazine/features/what-you-need-to-know-about-spending-the-night-in-a-fire-lookout',
     sourceUrl: 'https://www.wta.org/news/magazine/features/what-you-need-to-know-about-spending-the-night-in-a-fire-lookout',
     sourceName: 'WTA (fohll.org host down 2026-05-17)',
     meetsBedRule: false,
     notFitReason:
-      'Floor-space only (BYO bag + pad), NO beds. Strenuous 9 mi RT / 3,400 ft hike-in. Listed for the distinctive experience, NOT as a real option for this trip.',
+      'Floor-space only, no beds. Strenuous 9 mi / 3,400 ft hike-in.',
   },
 
   // ============================================================
@@ -318,15 +300,12 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Concrete, WA · ~25 min west of Marblemount',
     locationTier: 'quirky',
     access: 'drive-in',
-    beds: '3 beds total · 2 bedrooms (queen + queen typical, verify per listing)',
+    beds: '3 beds · 2 bedrooms (queen + queen typical)',
     bedrooms: '2 bedrooms',
-    priceRange: '~$220-310/night (similar Concrete treehouses on Airbnb)',
-    natureView:
-      'Treehouse perched in forest canopy near Concrete. Wraparound deck, trees on all sides, dense Pacific NW forest setting.',
-    sunsetNote:
-      'Forest canopy filters direct sunset light — golden-hour light comes through the trees, atmospheric rather than open-sky.',
+    priceRange: '~$220-310/night',
+    natureView: 'Elevated treehouse in dense PNW forest canopy near Concrete.',
     whyCool:
-      'Actual elevated treehouse with 2BR + 3 beds — meets the bed rule cleanly. Distinctly a "this isn\'t a cabin" experience. Lots of Concrete-area Airbnb treehouses score 4.9+.',
+      'Actual elevated treehouse, 2BR + 3 beds — meets the bed rule cleanly.',
     reviews: {
       score: '4.9/5',
       count: '~80+ reviews on similar Concrete listings',
@@ -335,7 +314,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'check-availability',
     bookingNote:
-      'Search "treehouse Concrete WA" on Airbnb for Aug 16-20. Multiple 2BR options exist — pick the one with two real bedrooms and stable date availability.',
+      'Search "treehouse Concrete WA" on Airbnb. Pick one with two real bedrooms.',
     bookingUrl: 'https://www.airbnb.com/rooms/619805721232504402?check_in=2026-08-16&check_out=2026-08-20&adults=2',
     sourceUrl: 'https://www.airbnb.com/s/concrete--wa/homes?refinement_paths%5B%5D=%2Fhomes&search_type=filter_change&adults=2&zoom_level=14',
     sourceName: 'Airbnb · Concrete WA treehouses',
@@ -347,15 +326,12 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Winthrop · 10 min south · lakeside in the grove',
     locationTier: 'quirky',
     access: 'drive-in',
-    beds: '2BR cabins: 1 queen + 1 queen Murphy (verify per cabin) · multiple configurations sleep 2-11',
-    bedrooms: '1-BR + 2-BR cabins (16 cabins total)',
-    priceRange: '~$400+/night Aug peak (cabin tier; main lodge $270+)',
-    natureView:
-      'Cottonwood grove on Patterson Lake — lakefront beach, common lawn, private covered porches. 1,500 acres of trails outside the door.',
-    sunsetNote:
-      'Main lodge sits at 3,000 ft on an open ridgetop with 360° views — reviewers consistently call out sunset from the lodge hot tub + patio. Even Patterson cabin guests drive the 5 min up to the ridge at golden hour.',
+    beds: '2BR cabins: 1 queen + 1 queen Murphy (verify per cabin)',
+    bedrooms: '1-BR + 2-BR cabins',
+    priceRange: '~$400+/night Aug peak (main lodge $270+)',
+    natureView: 'Cottonwood grove on Patterson Lake; 1,500 acres of trails out the door.',
     whyCool:
-      'Lakeside cabin grove with full kitchens + gas fireplaces + porches — Sun Mountain\'s adult-summer-camp version. The cabins are distinct enough from the main lodge to warrant their own category, and the ridge sunset is the trip\'s sunset jackpot.',
+      'Lakeside cabin grove, full kitchens. The ridge sunset (5 min up) is the trip\'s sunset jackpot.',
     reviews: {
       score: '4.6/5',
       count: '~1,400 reviews (property overall)',
@@ -364,7 +340,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'open-bookable',
     bookingNote:
-      'Real online booking via the property site or major OTAs. Already listed in the main lodging.ts as a splurge tier — this card surfaces it specifically as a "cool" pick because the cottonwood grove + ridge-sunset combination is unusual.',
+      'Online booking via the property site or OTAs.',
     bookingUrl: 'https://sunmountainlodge.com/',
     sourceUrl: 'https://sunmountainlodge.com/',
     sourceName: 'sunmountainlodge.com',
@@ -377,14 +353,11 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     locationTier: 'quirky',
     access: 'drive-in',
     beds: 'River House cabin: 1 queen + 1 queen (2BR) · smaller cabins vary',
-    bedrooms: '6 private cabins · 1-BR + 2-BR configs',
+    bedrooms: '6 private cabins · 1-BR + 2-BR',
     priceRange: '~$165-260/night',
-    natureView:
-      'Tucked into the woods 6 mi past Mazama — at the foot of the North Cascades, in deep Methow Valley forest. Rustic interiors, wood stoves, full kitchens.',
-    sunsetNote:
-      'Deep forest setting filters direct sunset — atmospheric, not panoramic. The proximity to the ridge gives early-evening alpenglow on the surrounding peaks.',
+    natureView: 'Deep Methow Valley forest 6 mi past Mazama; wood stoves + full kitchens.',
     whyCool:
-      'Oldest resort in the Methow Valley. Six private cabins with wood stoves + full kitchens. The "this is what Methow was before the boom" vibe — a working operation, not a styled retreat.',
+      'Oldest resort in the Methow Valley. Six private cabins — a working operation, not a styled retreat.',
     reviews: {
       score: '4.5/5',
       count: '~130 reviews',
@@ -393,7 +366,7 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'phone-or-form',
     bookingNote:
-      'Book direct via lostriverresort.com or call (509) 996-2537. Book a 2BR cabin specifically (River House is the largest). Likely available for Aug 16-20 with some lead time. [URL refreshed 2026-05-17 — direct site is more reliable than methowreservations.com which 403s.]',
+      'Book direct via lostriverresort.com or (509) 996-2537. Ask for the 2BR River House.',
     bookingUrl: 'https://www.lostriverresort.com/',
     sourceUrl: 'https://www.lostriverresort.com/',
     sourceName: 'lostriverresort.com',
@@ -405,13 +378,12 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     region: 'Republic, WA · ~3 hr east of Winthrop',
     locationTier: 'quirky',
     access: 'drive-in',
-    beds: 'Log lodge: 15 rooms (1 queen or 1 king each — single-room config) · separate cabins (verify config)',
-    bedrooms: 'Lodge rooms = single · standalone cabins may have 2-BR configs',
-    priceRange: '~$140-260/night all-inclusive (meals + horseback riding included)',
-    natureView:
-      '1,600-acre working ranch + 30,000 leased acres for summer grazing. Massive open pasture, 70+ horses, no neighbors in any direction.',
+    beds: 'Log lodge: 15 single-bed rooms · separate cabins (verify config)',
+    bedrooms: 'Lodge rooms = single · cabins may have 2-BR',
+    priceRange: '~$140-260/night all-inclusive (meals + riding)',
+    natureView: '1,600-acre working ranch; 70+ horses, no neighbors.',
     whyCool:
-      'Family-run since 1961. All-inclusive: lodging + 3 meals + horseback riding + kayaking + fishing. Closer to Yellowstone dude-ranch vibe than to Methow Valley. Only catch — 3 hr east of Winthrop puts it OUTSIDE the trip corridor unless you anchor a whole leg here.',
+      'Family-run since 1961. All-inclusive lodging + meals + horseback + kayaking. But 3 hr east of Winthrop — outside the corridor.',
     reviews: {
       score: '4.6/5',
       count: '~110 reviews',
@@ -420,13 +392,13 @@ export const COOL_SLEEPING_PLACES: CoolSleepingPlace[] = [
     },
     bookingStatus: 'phone-or-form',
     bookingNote:
-      'Call (509) 775-3511. Lodge rooms are single-bed (not a fit); ask about a 2-bedroom cabin specifically. 3-hour drive each way from Winthrop = whole-trip detour, not a side-trip.',
+      'Call (509) 775-3511; ask about a 2BR cabin (lodge rooms single-bed). 3 hr each way = whole-trip detour.',
     bookingUrl: 'http://www.kdiamondk.com/',
     sourceUrl: 'http://www.kdiamondk.com/',
     sourceName: 'kdiamondk.com',
     meetsBedRule: false,
     notFitReason:
-      'Lodge rooms are 15 single-bed configurations (king or queen, no second bed). Standalone cabin configurations may meet the rule — ASK at booking. Distance from Winthrop (~3 hr each way) makes this a whole-trip pivot, not a side-quest.',
+      'Lodge rooms single-bed; cabins may fit — ask at booking. ~3 hr each way from Winthrop.',
   },
 ];
 

@@ -30,8 +30,7 @@ export const VIEWPOINTS: Viewpoint[] = [
   {
     milepost: 132,
     name: 'Diablo Lake Overlook',
-    description:
-      'Large parking, restrooms, interpretive shelter. The glacier-flour turquoise lake from above — the signature North Cascades view.',
+    description: 'The signature North Cascades view — turquoise lake from above. Parking, restrooms.',
     timeNeeded: '20-30 min',
     featured: true,
     photo: {
@@ -46,8 +45,7 @@ export const VIEWPOINTS: Viewpoint[] = [
   {
     milepost: 162,
     name: 'Washington Pass Overlook',
-    description:
-      '400-ft paved trail to a ledge view of Liberty Bell, Early Winters Spires, and Kangaroo Ridge. Fully accessible.',
+    description: 'Paved 400-ft trail to a ledge over Liberty Bell + Early Winters Spires. Accessible.',
     timeNeeded: '20 min',
     featured: true,
     photo: {
@@ -114,28 +112,25 @@ export const BAKER_VIEWPOINTS: BakerViewpoint[] = [
   {
     name: 'Picture Lake',
     where: 'WA-542 end · Heather Meadows · ~1 hr east of Bellingham',
-    description:
-      'Maybe the most-photographed scene in Washington — Mt. Shuksan mirrored in the lake. Easy 0.5 mi paved loop around the water. Iconic at sunrise + sunset.',
+    description: 'Mt. Shuksan mirrored in the lake — 0.5 mi paved loop. Iconic at sunrise.',
     timeNeeded: '30-45 min',
   },
   {
     name: 'Artist Point',
     where: 'End of WA-542 · ~5 min past Picture Lake',
-    description:
-      'Drive-up panorama of Mt. Baker + Mt. Shuksan. Multiple short walks from the parking area. Road closes by snow late October; mid-August always open.',
+    description: 'Drive-up panorama of Mt. Baker + Mt. Shuksan, with short walks from the lot.',
     timeNeeded: '30-60 min',
   },
   {
     name: 'Heather Meadows',
     where: 'WA-542 · ~10 min before Artist Point',
-    description:
-      'Wildflower meadows in August, easy walking trails, alpine tarns. Pair with Chain Lakes hike (6-7 mi loop, see Hikes).',
+    description: 'August wildflower meadows, easy trails, alpine tarns.',
     timeNeeded: '1-2 hrs',
   },
 ];
 
 export const BAKER_NOTE =
-  'These are off WA-20 — they sit on the Mt. Baker corridor (WA-542) east of Bellingham. Best fit: Path A (west-side anchor) Day 4 swap-in, OR a Day 1 detour from BLI before driving to Marblemount.';
+  'Mt. Baker corridor (WA-542) east of Bellingham — a Day-1 detour from BLI or a west-side anchor day.';
 
 // ===========================================================================
 // Viewpoint destinations — rich page data (May 17, 2026 buildout)
@@ -243,10 +238,9 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     milepost: 132,
     restrooms: true,
     ada: true,
-    lede:
-      'The signature North Cascades view — turquoise glacier-flour water from above. The classic postcard photo you have probably already seen.',
+    lede: 'The signature North Cascades view — turquoise glacier-flour water from above.',
     driveFromMarblemount: '~50 min',
-    driveFromWinthrop: '~70 min (when WA-20 is open through)',
+    driveFromWinthrop: '~70 min',
     photos: [
       {
         src: 'img/diablo-lake-from-overlook-03.jpg',
@@ -276,8 +270,6 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     sourceUrl: 'https://www.nps.gov/noca/planyourvisit/things2do.htm',
     sourceLabel: 'NPS · Things to Do (incl. Diablo Lake Overlook)',
     verifiedAsOf: 'May 17, 2026',
-    caveat:
-      'Requires WA-20 through the closure zone — re-check WSDOT before counting on it (see closure banner).',
     video: {
       youtubeId: 'TzW6nDSOFZc',
       title: 'Diablo Lake Overlook · North Cascades National Park',
@@ -298,9 +290,8 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     milepost: 162,
     restrooms: true,
     ada: true,
-    lede:
-      'Granite spires of Liberty Bell + Early Winters Spires + Kangaroo Ridge dropping into the WA-20 hairpin below. Sunset alpenglow on the spires is the moment.',
-    driveFromMarblemount: '~1 hr 45 min (when WA-20 is open through)',
+    lede: 'Granite spires — Liberty Bell, Early Winters Spires, Kangaroo Ridge — over the WA-20 hairpin.',
+    driveFromMarblemount: '~1 hr 45 min',
     driveFromWinthrop: '~40 min',
     photos: [
       {
@@ -350,10 +341,9 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     timeNeeded: '30-45 min',
     restrooms: true,
     ada: true,
-    lede:
-      'Mt. Shuksan mirror-reflects in a tiny tarn — said to be one of the most-photographed scenes in America. The "calendar cover" angle is from the wooden boardwalk on the loop\'s north side.',
-    driveFromMarblemount: '~2 hr (via WA-9 north then WA-542 east)',
-    driveFromWinthrop: '~5 hr (requires south via I-90 + I-5 — Day-1-from-BLI only)',
+    lede: 'Mt. Shuksan mirrored in a tarn — one of the most-photographed scenes in America.',
+    driveFromMarblemount: '~2 hr (via WA-9 + WA-542)',
+    driveFromWinthrop: '~5 hr (Day-1-from-BLI only)',
     photos: [
       {
         src: 'img/mountshuksanpicturelake.jpg',
@@ -383,8 +373,7 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/picture-lake',
     sourceLabel: 'WTA · Picture Lake',
     verifiedAsOf: 'May 17, 2026',
-    caveat:
-      'Mt. Baker Hwy (WA-542) — separate corridor from WA-20. Only realistic as a Day-1 detour from BLI or on a west-side anchor day.',
+    caveat: 'WA-542 corridor — Day-1 detour from BLI or a west-side anchor day.',
     video: {
       youtubeId: 'EJk9xfzvfLg',
       title: "Mount Shuksan · Washington's Most Photographed Mountain · Picture Lake & Artist Point",
@@ -404,8 +393,7 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     timeNeeded: '30-60 min',
     restrooms: true,
     ada: false,
-    lede:
-      '360° drive-up alpine panorama — Mt. Baker, Mt. Shuksan, Table Mountain, the Coleman Glacier. Plenty of paved-to-easy short walks from the lot if you want to wander.',
+    lede: '360° drive-up alpine panorama — Mt. Baker, Mt. Shuksan, Table Mountain, Coleman Glacier.',
     driveFromMarblemount: '~2 hr 10 min (via WA-9 + WA-542)',
     driveFromWinthrop: '~5 hr (Day-1-from-BLI only)',
     photos: [
@@ -437,8 +425,7 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     sourceUrl: 'https://www.fs.usda.gov/recarea/mbs/recarea/?recid=17828',
     sourceLabel: 'USFS · Mt. Baker Wilderness',
     verifiedAsOf: 'May 17, 2026',
-    caveat:
-      'WA-542 only — separate corridor from WA-20. Northwest Forest Pass required ($5/day or covered by America the Beautiful).',
+    caveat: 'WA-542 corridor. NW Forest Pass required ($5/day or America the Beautiful).',
     video: {
       youtubeId: '_UdFgQxL1S4',
       title: 'Hiking Near Mount Baker & Mount Shuksan · Artist Point & Picture Lake',
@@ -459,10 +446,9 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     milepost: 120,
     restrooms: true,
     ada: true,
-    lede:
-      'Walk the iconic wood-and-cable suspension bridge over the Skagit, then drift through a short interpretive loop of old-growth Western red cedar. Easy add-on to any Newhalem stop.',
+    lede: 'Suspension bridge over the Skagit + a short old-growth cedar loop.',
     driveFromMarblemount: '~20 min',
-    driveFromWinthrop: '~2 hr (when WA-20 is open through)',
+    driveFromWinthrop: '~2 hr',
     photos: [
       {
         src: wmPhoto('Suspension_bridge_at_Newhalem,_WA.jpg'),
@@ -504,10 +490,9 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     milepost: 119,
     restrooms: false,
     ada: false,
-    lede:
-      'Quick roadside pull-off looking up at Pyramid + Pinnacle Peaks rising above Goodell Creek. The "I drove past it and had to stop" view that anchors the Newhalem approach.',
+    lede: 'Quick roadside pull-off under Pyramid + Pinnacle Peaks.',
     driveFromMarblemount: '~20 min',
-    driveFromWinthrop: '~2 hr (when WA-20 is open through)',
+    driveFromWinthrop: '~2 hr',
     photos: [
       {
         src: wmPhoto('Pyramid_and_Pinnacle_Peaks,_North_Cascades.jpg'),
@@ -542,9 +527,8 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     milepost: 167,
     restrooms: false,
     ada: false,
-    lede:
-      'Drive-up portion of the Cutthroat corridor — the same big-granite backdrop the Cutthroat Pass hike earns, but seen from WA-20 pullouts a few minutes east of Washington Pass.',
-    driveFromMarblemount: '~1 hr 50 min (when WA-20 is open through)',
+    lede: 'Big-granite Cutthroat backdrop from WA-20 pullouts — no hike needed.',
+    driveFromMarblemount: '~1 hr 50 min',
     driveFromWinthrop: '~35 min',
     photos: [
       {
@@ -565,8 +549,7 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
       },
     ],
     verifiedAsOf: 'May 17, 2026',
-    caveat:
-      'Not a labeled NPS overlook — informal pullouts. If full, the Washington Pass Overlook lot (MP 162) gives the same orientation 5 min west.',
+    caveat: 'Informal pullouts, not a labeled overlook. If full, Washington Pass Overlook is 5 min west.',
   },
   {
     id: 'sun-mountain-viewpoint',
@@ -581,9 +564,8 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     timeNeeded: '20-30 min',
     restrooms: true,
     ada: true,
-    lede:
-      'Ridge-top patio at 3,000 ft with a 360° sweep — west to the Cascades, south down the Methow Valley. Open to non-guests; can pair with a coffee or lunch stop at the lodge.',
-    driveFromMarblemount: '~3 hr (via WA-20 when open through)',
+    lede: 'Ridge-top patio at 3,000 ft — 360° sweep over the Cascades + Methow. Non-guests welcome for lunch.',
+    driveFromMarblemount: '~3 hr',
     driveFromWinthrop: '~15 min',
     photos: [
       {
@@ -598,8 +580,7 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     sourceUrl: 'https://sunmountainlodge.com/',
     sourceLabel: 'Sun Mountain Lodge',
     verifiedAsOf: 'May 17, 2026',
-    caveat:
-      'Already listed on the lodging page as a stay option — this is the non-guest stop. Sunset perk is the lodge\'s big draw.',
+    caveat: 'Also a lodging option — this is the non-guest stop. Sunset is the big draw.',
   },
 ];
 

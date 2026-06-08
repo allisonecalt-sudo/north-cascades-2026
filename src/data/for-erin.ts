@@ -37,21 +37,21 @@ export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
     priority: 'must',
     question: 'What\'s the hike ceiling — what feels GOOD and what feels TOO MUCH?',
     context:
-      "Erin's real comfort zone, not the should-say version. Examples to react to: Thunder Knob (3.6 mi · 635 ft) easy · Blue Lake (4.4 mi · 1,050 ft) moderate · Maple Pass Loop (7.2 mi · 2,020 ft) hard but stunning · Cascade Pass (7 mi · 1,800 ft) signature but climby · Sahale Arm (12 mi · 4,000 ft) full-day-killer. Where does Erin tap out? Where does she say \"absolutely\"?",
+      "React to these: Thunder Knob (3.6 mi · 635 ft) easy · Blue Lake (4.4 mi · 1,050 ft) moderate · Maple Pass Loop (7.2 mi · 2,020 ft) hard but stunning · Cascade Pass (7 mi · 1,800 ft) signature but climby · Sahale Arm (12 mi · 4,000 ft) full-day-killer. Where do you tap out? Where's it an \"absolutely\"?",
   },
   {
     id: 'wants-overall',
     priority: 'must',
     question: 'What does Erin actually want from this trip?',
     context:
-      "Open-ended on purpose. Examples: \"recharge\" / \"big views\" / \"sleep in late\" / \"earn the dinner\" / \"see one thing I'll never forget\" / \"slow & cozy\" / \"hike-heavy\" / \"photo-heavy\" / \"talk about life by the fire\" / \"low-stakes, no FOMO.\" Whatever orients the trip in Erin's head — Allison wants to know so the site can stop showing options that don't fit.",
+      "Pick what fits: recharge / big views / sleep in late / earn the dinner / one unforgettable thing / slow & cozy / hike-heavy / photo-heavy / talk by the fire / low-stakes, no FOMO.",
   },
   {
     id: 'must-skip-or-must-do',
     priority: 'must',
     question: 'Anything that\'s a HARD YES or HARD NO?',
     context:
-      "Hard yes = the one thing Erin would be sad to miss. Hard no = the dealbreaker (e.g. \"no 4 AM starts,\" \"no all-day driving,\" \"no caves,\" \"no exposed ridges\"). Either kind helps Allison plan the right shape.",
+      "Hard yes = the one thing you'd be sad to miss. Hard no = the dealbreaker (no 4 AM starts, no all-day driving, no exposed ridges).",
   },
 
   // ──────────────────────────────────────────────────────────────
@@ -62,35 +62,35 @@ export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
     priority: 'shape',
     question: 'Early-start mornings or slow mornings + later afternoons?',
     context:
-      "Early start (6-7 AM out the door) gets the empty trailhead + best alpenglow but you're toast by 4 PM. Slow morning (9-10 AM out) is more vacation-feeling but the popular trailheads can be full. Pick a default — Allison can flex per day.",
+      "Early (6-7 AM out): empty trailhead + alpenglow, done by 4 PM. Slow (9-10 AM out): more vacation-feeling, trailheads can fill. Pick a default — flexes per day.",
   },
   {
     id: 'rest-day-want',
     priority: 'shape',
     question: 'Want at least one full rest day?',
     context:
-      "Should Allison BAKE IN a rest day on either Path A or B, or is Erin up for active every day with the option to bail morning-of?",
+      'Bake in a rest day, or active every day with the option to bail morning-of?',
   },
   {
     id: 'town-day',
     priority: 'shape',
     question: 'Town day in Winthrop or Mazama — yes please, or skip?',
     context:
-      "Both are walkable. Winthrop has the Old-West boardwalk + a few shops. Mazama is tiny + scenic (one general store, one bakery). Most paths can fit a half-day; full town day means one less hike. Erin's call.",
+      'Winthrop = Old-West boardwalk + shops. Mazama = tiny + scenic. Half-day fits most paths; a full town day = one less hike.',
   },
   {
     id: 'swim',
     priority: 'shape',
     question: 'Want a swim day at Pearrygin Lake?',
     context:
-      "Pearrygin (east, 5 min from Winthrop) is the warm-water swim story for mid-August. Sandy beach, $10 day-use. Most NC lakes are glacier-cold (no swim). If Erin wants a real swim afternoon, Allison will build in 2-3 hrs there. Hard pass = totally fine, the trip just goes hike-only.",
+      "Pearrygin (5 min from Winthrop) is the one warm-water swim — sandy beach, $10 day-use. Most NC lakes are glacier-cold. Want it? Allison builds in 2-3 hrs.",
   },
   {
     id: 'maple-blue',
     priority: 'shape',
     question: 'Maple Pass Loop (7.2 mi · 2,020 ft) vs Blue Lake (4.4 mi · 1,050 ft)?',
     context:
-      "Both are east-side, both gorgeous. Maple Pass is the harder/longer wow; Blue Lake is the shorter alpine-lake postcard. Erin can decide morning-of based on energy — flagging so it's not a surprise. (Falls under the hike-ceiling answer above.)",
+      'Both east-side. Maple Pass = harder/longer wow; Blue Lake = shorter alpine-lake postcard. Decide morning-of by energy.',
   },
 
   // ──────────────────────────────────────────────────────────────
@@ -101,7 +101,7 @@ export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
     priority: 'nice',
     question: 'Which of the three booked houses do we keep?',
     context:
-      'Lodging is booked — three houses held for the same dates (Arlington + two Sedro-Woolley stays; Allison booked two, Erin booked The Carriage House). All kept for now. We pick one and cancel the other two before the free-cancellation windows close. No rush, just don\'t let the windows lapse.',
+      'Three houses held for the same dates (Arlington + two Sedro-Woolley). Pick one, cancel two before the free-cancel windows close.',
   },
   // `flight-time` removed 2026-05-19 PM needs-match audit — Erin's actively
   // researching the exact United fare tonight per home-page open-loop, so the
@@ -112,13 +112,13 @@ export const QUESTIONS_FOR_ERIN: QuestionForErin[] = [
     priority: 'nice',
     question: 'Leavenworth lunch stop on the Day-5 drive back, or skip for I-90 speed?',
     context:
-      'US-2 / Stevens Pass scenic route is +30 min over I-90 but includes Leavenworth (Bavarian theme, walkable). Or take I-90 straight to SEA. Affects only Day 5.',
+      'US-2 / Stevens Pass is +30 min over I-90 but adds Leavenworth (Bavarian, walkable). Affects only Day 5.',
   },
   {
     id: 'kosher-stock',
     priority: 'nice',
     question: 'Stock up at Seattle Kosher (online) before the trip, or just supermarket on the way?',
     context:
-      "Seattle Kosher delivers / has pickup with Va'ad-certified prepared meals. Useful if a nicer cabin dinner sounds good one night. Otherwise standard supermarket packaged goods cover everything.",
+      "Seattle Kosher = Va'ad-certified prepared meals (delivery/pickup) for a nicer cabin dinner. Otherwise supermarket packaged goods.",
   },
 ];

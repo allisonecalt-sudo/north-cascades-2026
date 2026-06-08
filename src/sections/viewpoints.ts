@@ -208,7 +208,7 @@ function renderVpPills(v: ViewpointDestination): HTMLElement {
   items.push(pill('card__pill', `⏱ ${v.timeNeeded}`));
   if (v.restrooms) items.push(pill('card__pill', '🚻 Restrooms'));
   if (v.ada) items.push(pill('card__pill', '♿ Paved / ADA'));
-  if (v.milepost !== undefined) items.push(pill('card__pill', `📍 MP ${v.milepost}`));
+  // Milepost is already in the `where` subtitle — no separate pill (dedup).
   items.push(pill('card__pill card__pill--good', `✅ Verified ${v.verifiedAsOf}`));
   if (v.video) {
     items.push(
@@ -267,7 +267,6 @@ function renderVpCard(v: ViewpointDestination): HTMLElement {
         'div',
         { class: 'card__badges' },
         badge(corridor, 'info'),
-        v.effort === 'drive-up' ? badge('Drive-up', 'good') : null,
         pickBtn
       )
     ),
@@ -537,18 +536,13 @@ export function renderViewpointsGallery(): HTMLElement {
       h(
         'li',
         { class: 'gist__item' },
-        'The drive-up moments — distinct from hikes. Reach by car or a sub-10-minute walk from the lot.'
+        'Drive-up moments — reach by car or a sub-10-minute walk. Drive times from both bases on every card.'
       ),
       h(
         'li',
         { class: 'gist__item' },
-        h('strong', {}, 'Filter chips below narrow the list.'),
-        ' Corridor split matters: WA-20 stops need the through-route open · Mt. Baker (WA-542) is a separate detour · Methow Valley sits east of the closure.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        'Drive times from both bases on every card so you can budget the day.'
+        h('strong', {}, 'Filter chips below narrow by corridor.'),
+        ' WA-20 stops need the through-route open; Mt. Baker (WA-542) + Methow are independent.'
       )
     ),
     renderSectionSources({

@@ -13,9 +13,9 @@ import { renderPageCtas } from '../sections/page-ctas';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'costs',
-    title: 'Budget — totals, splits, trims',
-    verifiedOn: '2026-05-17',
-    lede: 'Five-second read. Big totals, per-person shares, what is locked vs flexible, and concrete trim moves. USD, all-in, 2 travelers.',
+    title: 'Budget',
+    verifiedOn: '2026-05-19 (pricing sweep)',
+    lede: 'All-in for 2 · USD. Pick a path + tier for your per-person share.',
     imageHero: {
       src: 'img/diablo-lake-washington-state.jpg',
       alt: 'Diablo Lake with turquoise glacier-flour water and surrounding peaks',

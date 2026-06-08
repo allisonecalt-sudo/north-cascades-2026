@@ -320,7 +320,7 @@ export function renderPreTrip(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      `10 date-anchored milestones across 5 phases. ${totalSubitems} concrete subtasks total. Tick anything off — state is saved to this device and survives reloads.`
+      `${totalSubitems} subtasks. Soonest due: flights, Mon Jun 1.`
     ),
     renderSectionSources({
       label: 'Built from',

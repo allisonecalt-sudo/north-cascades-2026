@@ -1,23 +1,7 @@
 /**
- * Flights — rewritten 2026-05-19 around the NYC + United reality.
- *
- * Hierarchy (top → bottom):
- *   1. Gist — 3 bullets that read the decision state out loud
- *   2. Airport drive comparison — SEA vs BLI to Marblemount, one glance
- *   3. United credit callout — Allison-specific booking note
- *   4. Leading card — United EWR→SEA · RECOMMENDED
- *   5. Fallback card — Alaska EWR→BLI · FALLBACK
- *   6. Tertiary card — JFK/LGA airport flex
- *   7. Return-timing strip — all 3 options visible side-by-side with tradeoffs
- *   8. Archived routings disclosure — open-jaw + PDX/YVR/GEG, comparison only
- *   9. Booking tips disclosure
- *
- * What's REMOVED (vs prior version):
- *   - The 6-options-deep open-jaw stack is collapsed into a single "archived"
- *     disclosure with one-liners. These were the pre-decision research dump
- *     and aren't in the active plan after the May 18-19 thread.
- *   - The big arrival photo carousel is kept but moved below the leading card
- *     so card-comparison reads as the page-1 task, not the photo show.
+ * Flights — booked itinerary headline + collapsed pre-booking comparison.
+ * Booked card on top; alternates (cards, return-timing, archived routings,
+ * booking tips) live behind one disclosure.
  */
 
 import {
@@ -275,11 +259,7 @@ export function renderFlights(): HTMLElement {
     return section('flights', 'Flights', renderBookedFlights());
   }
 
-  // ─── How we got here / alternates considered ───
-  // The whole comparison apparatus (gist, recommendation cards, return-timing
-  // strip, archived routings, booking tips) is now history. Flights are
-  // BOOKED — see renderBookedFlights() above. Collapse it all behind one
-  // expander so the booked itinerary reads as the headline.
+  // Pre-booking comparison, collapsed behind one expander.
   const alternatesConsidered = h(
     'details',
     { class: 'disclosure' },
@@ -288,36 +268,6 @@ export function renderFlights(): HTMLElement {
       { class: 'disclosure__summary' },
       'How we got here · alternates considered (pre-booking research)'
     ),
-    h(
-      'p',
-      { class: 'disclosure__lede' },
-      'Flights are booked (above). Everything below is the comparison that led there — kept for the record, not a live decision.'
-    ),
-
-    // ─── 3-bullet gist — reads the (now-historical) decision state ───
-    h(
-      'ul',
-      { class: 'gist' },
-      h(
-        'li',
-        { class: 'gist__item' },
-        h('strong', {}, 'Both depart NYC.'),
-        ' Allison handles her TLV→NYC leg on a separate ticket; the joint booking starts at NYC. EWR primary, JFK/LGA acceptable.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        h('strong', {}, 'United Main Cabin — NOT Basic Economy.'),
-        ' Erin verified May 18 it\'s "much cheaper" on EWR→SEA. Allison has a United travel credit. Plan is Main Cabin (Basic gives up voucher coverage) — using United\'s e-credit voucher path for cancellation flex instead of paying for the refundable upgrade.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        h('strong', {}, 'Alaska EWR→BLI is the named fallback'),
-        ' — faster drive but steeper refundable premium. Use only if United pricing breaks.'
-      )
-    ),
-
     // ─── Airport drive comparison ───
     h(
       'div',
@@ -342,12 +292,6 @@ export function renderFlights(): HTMLElement {
       )
     ),
 
-    // ─── All driving on this trip (added 2026-05-19) ───
-    // Per-path rollups + collapsible per-segment table. Lives inside the
-    // flights section so the airport-compare and the full-trip drive view
-    // sit together as one "how much driving" surface.
-    renderDrivingRollup(),
-
     // ─── United credit callout (Allison-specific booking note) ───
     h(
       'aside',
@@ -356,16 +300,8 @@ export function renderFlights(): HTMLElement {
       h(
         'p',
         { class: 'united-credit-callout__body' },
-        'Allison has a United travel credit. Price logged in to united.com so the credit is visible pre-tax — Erin doing a logged-out search will see a higher number than what Allison actually pays. Book direct on united.com (NOT Expedia / Hopper / third-party) — credits only redeem there.'
+        'Book direct on united.com logged in — credit shows pre-tax. Not third-party.'
       )
-    ),
-
-    // ─── Two-travelers intro (sits directly above the flight cards) ───
-    h(
-      'p',
-      { class: 'flights-two-travelers-intro' },
-      h('strong', {}, 'Two travelers, two bookings. '),
-      'Allison and Erin book independently — same flights, different prices because Allison\'s United travel credit applies on her ticket. Each card below shows both views.'
     ),
 
     // ─── Leading card ───
@@ -383,11 +319,6 @@ export function renderFlights(): HTMLElement {
       { class: 'returns-strip-wrap' },
       h('h3', { class: 'returns-strip__title' }, 'Return flight timing'),
       h(
-        'p',
-        { class: 'returns-strip__lede' },
-        'Thu evening is the lead — keeps Day 5 alive as a real travel day. Thu redeye is the same flight shape but lands NJ Fri AM. Wed late-night kills Day 5 and only earns its keep on a deep fare deal.'
-      ),
-      h(
         'ul',
         { class: 'returns-strip' },
         ...FLIGHT_RETURN_OPTIONS.map(renderReturnRow)
@@ -402,11 +333,6 @@ export function renderFlights(): HTMLElement {
         'summary',
         { class: 'disclosure__summary' },
         `Archived routings · comparison only (${ARCHIVED_FLIGHT_SUMMARIES.length})`
-      ),
-      h(
-        'p',
-        { class: 'disclosure__lede' },
-        'These were the pre-decision research dump. Kept here so the tradeoff is visible, but none are in the active May 18-19 plan.'
       ),
       h(
         'ul',
@@ -453,7 +379,7 @@ export function renderFlights(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'Flights are booked — United Economy, EWR ⇄ SEA, both travelers on the same flights. The comparison that got us here is collapsed at the bottom.'
+      'Alternates considered are collapsed at the bottom.'
     ),
     renderBookedFlights(),
 

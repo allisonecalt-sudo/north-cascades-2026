@@ -55,6 +55,8 @@ export interface BookedStay {
   unitType?: string;
   /** Beds / bedrooms / baths line. */
   layout?: string;
+  /** Drive to the Marblemount-area trailheads — the deciding spec. */
+  driveToTrailheads?: string;
   /** True if the listing has free cancellation. */
   freeCancellation?: boolean;
   /** Free-cancellation deadline, e.g. "Aug 11". */
@@ -75,10 +77,10 @@ export const BOOKED_STAYS: BookedStay[] = [
     bookedBy: 'Allison',
     price: '$1,125.87 for 4 nights',
     layout: 'Sleeps 6 · brand-new build · gas fireplace',
+    driveToTrailheads: '~1 hr 30 (off Hwy-530, farthest of the three)',
     freeCancellation: true,
     freeCancelUntil: 'Aug 15',
-    feature:
-      '500 ft of private river front + forest. Newer/nicer interior. Off Hwy-530 — ~30-40 min farther from the SR-20 / Diablo Lake corridor than the Sedro-Woolley options.',
+    feature: '500 ft of private river front + forest. Newer/nicer interior.',
   },
   {
     name: 'Lakeside Cabin w/ Dock, Boats & Stunning Views',
@@ -88,10 +90,10 @@ export const BOOKED_STAYS: BookedStay[] = [
     conf: 'HMA4W2E22N',
     bookedBy: 'Allison',
     price: '$1,193.32 for 4 nights',
+    driveToTrailheads: '~1 hr 15 (on SR-20, closest of the three)',
     freeCancellation: true,
     freeCancelUntil: 'Aug 11',
-    feature:
-      'Lakefront with private dock + boats (fish/swim). On SR-20 — closest of the holds to Diablo Lake / the North Cascades Highway. Host actively engaged.',
+    feature: 'Lakefront with private dock + boats (fish/swim). Host actively engaged.',
   },
   {
     name: 'The Carriage House',
@@ -103,11 +105,12 @@ export const BOOKED_STAYS: BookedStay[] = [
     rating: '5.0★ (12 reviews) · Guest favorite · Top 10% of homes',
     unitType: 'Entire guesthouse',
     layout: '2 bedrooms · 2 beds · 1 bath · sleeps 4',
+    driveToTrailheads: '~1 hr 15 (Sedro-Woolley)',
     freeCancellation: true,
     freeCancelUntil: 'Aug 23',
     feature:
-      'Full kitchen + dishwasher + washer/dryer + AC. Self check-in. Rails-to-Trails directly behind the property (hiking/biking from the door).',
-    source: 'Booked on Erin\'s account (cancelable). Listing pasted by Allison, Jun 2.',
+      'Full kitchen + dishwasher + washer/dryer + AC. Rails-to-Trails behind the property.',
+    source: 'Booked on Erin\'s account (cancelable).',
   },
 ];
 

@@ -22,8 +22,8 @@ function mount(): void {
     title: 'Weather Plan C — smoke + bad-air swaps',
     verifiedOn: '2026-05-17',
     lede:
-      'August NC is mostly dry. Smoke is the real Plan C trigger — here’s the ' +
-      'ladder, the swaps, the refuges, and what to bookmark before you go.',
+      'August NC is mostly dry — rain is a non-event. Wildfire smoke is the real ' +
+      'Plan C trigger: when the AQI climbs, swap down a tier.',
     imageHero: {
       // Direct corridor match: Gorge Lake (on WA-20, west of Diablo) under
       // wildfire smoke from the 2023 Sourdough Fire — the exact scenario this

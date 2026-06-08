@@ -1,27 +1,26 @@
 /**
- * home.ts — landing page. Card-grid dashboard rebuild 2026-05-21.
+ * home.ts — landing page. Declutter pass 2026-06-08 (DESIGN-RULES Landing
+ * recipe: orient in 30s, ONE next step, facts not prose, launchpad not copy).
  *
- * Posture: the trip is BOOKED (flights + lodging). Allison asked for the home
- * page to feel like her favorite app — the budget dashboard: one page, one
- * scroll, a hero + a calm grid of bounded, emoji-titled cards. Each card is ONE
- * idea, scannable, with a few real facts pulled from the data files (no
- * fabrication), linking to its deep page where one exists.
- *
- * Replaces the stacked-prose stack (locked-decisions + open-loops + map +
- * itinerary rendered inline). Those long sections now live as compact cards
- * here, with links out to the deep pages for the full detail. The verbose
- * section renderers (renderLockedDecisions / renderOpenLoops / renderMap /
- * renderItinerary) are KEPT — they still render on their own deep pages — but
- * are too long for a calm card, so the cards below read the same underlying
- * facts in condensed form.
+ * Posture: the trip is BOOKED (flights + lodging). The home page is the budget-
+ * dashboard feel — hero + stat band + a calm grid of bounded, emoji-titled
+ * cards. Each card is ONE idea linking to its deep page; facts come straight
+ * from the data files (no fabrication).
  *
  * Card grid (after the image hero + stat band):
- *   ✈️ Flights · 🏠 Stays · 🥾 Hikes · 🗺️ Map · 💵 Costs · ⚠️ WA-20 ·
- *   ✓ What's locked · 📍 Still open · 💬 For Erin
+ *   👉 Next (the one open decision) · ✈️ Flights · 🏠 Stays · 🥾 Hikes ·
+ *   🗺️ Map · 💵 Costs
+ *
+ * Cut in the 2026-06-08 pass (said elsewhere on THIS page already):
+ *   - ⚠️ WA-20 card — the closure banner already rides in the hero band
+ *     (showClosure: true); the card repeated the same CLOSED + June 25 fact.
+ *   - ✓ What's locked card — dates/party already live in the hero eyebrow +
+ *     stat band; the path detail lives on For Erin.
+ *   - 📍 Still open + 💬 For Erin cards — three cards pointed at one decision;
+ *     collapsed into a single "Next" card (the page's one clear next step).
  *
  * Data sources (all real): data/flights.ts (BOOKED_FLIGHTS), data/lodging.ts
- * (BOOKED_STAYS), data/hikes.ts (HIKES), data/costs.ts (pathRange), data/
- * closure.ts (CLOSURE_ALERT). No comparison-era scaffolding.
+ * (BOOKED_STAYS), data/hikes.ts (HIKES), data/costs.ts (pathRange).
  */
 
 import '../styles/main.css';
@@ -31,7 +30,6 @@ import { BOOKED_FLIGHTS } from '../data/flights';
 import { BOOKED_STAYS } from '../data/lodging';
 import { HIKES, type Hike } from '../data/hikes';
 import { PATH_COSTS, pathRange } from '../data/costs';
-import { CLOSURE_ALERT } from '../data/closure';
 import { h } from '../dom';
 
 /** USD whole-dollar formatter for cost headlines. */
@@ -75,7 +73,7 @@ function factRow(label: string, value: HTMLElement | string): HTMLElement {
   );
 }
 
-/** A name + meta two-line item (used for stays, hikes, open loops). */
+/** A name + meta two-line item (used for stays + hikes). */
 function lineItem(name: string, meta: string): HTMLElement {
   return h(
     'div',
@@ -138,13 +136,6 @@ function staysCard(): HTMLElement {
     if (stay.rating) meta.push(stay.rating);
     body.push(lineItem(stay.name, meta.join(' · ')));
   }
-  body.push(
-    h(
-      'p',
-      { class: 'trip-card__note' },
-      'All held — pick one, cancel two before the free-cancellation windows close.'
-    )
-  );
   return card('🏠', `Stays — ${BOOKED_STAYS.length} booked`, body, {
     href: 'lodging.html',
     label: 'See the stays',
@@ -179,7 +170,7 @@ function mapCard(): HTMLElement {
       h(
         'p',
         { class: 'trip-card__lede' },
-        'The booked houses, trailheads, viewpoints, and the WA-20 corridor — on one interactive map.'
+        'Houses, trailheads, viewpoints, and the WA-20 corridor — one interactive map.'
       ),
     ],
     { href: 'map.html', label: 'Open the map' }
@@ -196,89 +187,30 @@ function costsCard(): HTMLElement {
     '💵',
     'Costs',
     [
+      h('p', { class: 'trip-card__big' }, mono(`${usd(low)} – ${usd(high)}`)),
       h(
         'p',
-        { class: 'trip-card__lede' },
-        'All-in trip total for the two of you (flights ×2 + car + house + food + fuel + 10% buffer).'
+        { class: 'trip-card__note' },
+        'All-in for both — flights ×2, car, house, food, fuel, +10%. Lean → Splurge.'
       ),
-      h('p', { class: 'trip-card__big' }, mono(`${usd(low)} – ${usd(high)}`)),
-      h('p', { class: 'trip-card__note' }, 'Lean → Splurge, across both routing options.'),
     ],
     { href: 'costs.html', label: 'Cost breakdown' }
   );
 }
 
-// ─── ⚠️ WA-20 ───
-function wa20Card(): HTMLElement {
-  return card('⚠️', 'WA-20 status', [
+// ─── 👉 Next — the one open decision (the page's single next step) ───
+function nextCard(): HTMLElement {
+  const body: Array<HTMLElement | string> = [
     h(
       'p',
       { class: 'trip-card__lede' },
-      'The North Cascades Highway through the park is currently CLOSED.'
-    ),
-    factRow('Target reopen', mono('June 25, 2026')),
-    h(
-      'p',
-      { class: 'trip-card__note' },
-      'WSDOT target — "a goal, not a promise." All three booked houses are west of the closure, so the trip works either way.'
-    ),
-    h(
-      'a',
-      {
-        class: 'trip-card__link',
-        href: CLOSURE_ALERT.liveStatusUrl,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-      },
-      'Live WSDOT status ↗'
-    ),
-  ]);
-}
-
-// ─── ✓ What's locked ───
-function lockedCard(): HTMLElement {
-  const rows: Array<[string, string]> = [
-    ['Dates', 'Sun Aug 16 → Thu Aug 20 (5 days, 4 nights)'],
-    ['Party', 'Allison + Erin — sharing a cabin, 2 beds always'],
-    ['Park', 'North Cascades National Park, WA'],
-    ['Path', 'Path B (both sides) if WA-20 reopens · Path A (west only) as fallback'],
-  ];
-  const body: Array<HTMLElement | string> = [
-    h('p', { class: 'trip-card__lede' }, 'The decisions already made.'),
-    ...rows.map(([label, value]) => factRow(label, value)),
-  ];
-  return card('✓', "What's locked", body, { href: 'for-erin.html', label: 'Open decisions' });
-}
-
-// ─── 📍 Still open ───
-function openCard(): HTMLElement {
-  const body: Array<HTMLElement | string> = [
-    lineItem(
-      'Which booked house to keep',
-      'Allison + Erin — pick one of three, cancel the other two before the cancellation windows close.'
-    ),
-    lineItem(
-      'WA-20 reopen',
-      'WSDOT — 3-day re-check window before the trip. West-side trip works regardless.'
+      'Three houses are held for the same dates. Pick one together, cancel the other two before the free-cancellation windows close.'
     ),
   ];
-  return card('📍', 'Still open', body);
-}
-
-// ─── 💬 For Erin ───
-function forErinCard(): HTMLElement {
-  return card(
-    '💬',
-    'For Erin',
-    [
-      h(
-        'p',
-        { class: 'trip-card__lede' },
-        'The open decisions to weigh in on, in one place — what to pick and what we still need from you.'
-      ),
-    ],
-    { href: 'for-erin.html', label: 'For Erin' }
-  );
+  return card('👉', 'Next: pick the house', body, {
+    href: 'for-erin.html',
+    label: 'Decide with Erin',
+  });
 }
 
 function mount(): void {
@@ -286,7 +218,7 @@ function mount(): void {
     pageId: 'home',
     title: 'North Cascades · Aug 16-20, 2026 · Allison + Erin',
     lede:
-      'The trip is booked — flights (United, EWR⇄SEA) and lodging (three west-side Airbnbs held for the same dates). What\'s left: pick one booked house and cancel the other two, and watch the WA-20 reopen.',
+      'Booked — flights (United, EWR⇄SEA) and three west-side Airbnbs. One thing left: pick one house, cancel two.',
     showClosure: true,
     imageHero: {
       // Cascade Pass / Sahale Arm — Pelton Peak + Yawning Glacier + Magic
@@ -294,7 +226,7 @@ function mount(): void {
       src: 'img/cascade-pass.jpg',
       alt: 'Pelton Peak, Yawning Glacier, and Magic Mountain seen from the Sahale Arm above Cascade Pass in North Cascades National Park',
       credit: 'Photo: Daniel Hershman / Wikimedia · CC BY 2.0',
-      ctaLabel: 'See the trip at a glance',
+      ctaLabel: 'Pick the house',
       ctaHref: '#trip-grid',
     },
   });
@@ -306,19 +238,17 @@ function mount(): void {
     h('div', { class: 'stat-band__inner' }, renderStatRow())
   );
 
-  // The calm card grid — one bounded idea per card.
+  // The calm card grid — one bounded idea per card. Next step leads; the rest
+  // are quiet launchpads to the deep pages.
   const grid = h(
     'section',
     { class: 'trip-grid', id: 'trip-grid', 'aria-label': 'The trip at a glance' },
+    nextCard(),
     flightsCard(),
     staysCard(),
     hikesCard(),
     mapCard(),
-    costsCard(),
-    wa20Card(),
-    lockedCard(),
-    openCard(),
-    forErinCard()
+    costsCard()
   );
 
   main.append(statBand, grid);

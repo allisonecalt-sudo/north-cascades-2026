@@ -109,9 +109,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'Yes — FR 1030 is steep narrow gravel, rough but passable for the rental',
     permit: 'nw-forest-pass',
     whyHidden:
-      "Same effort as Maple Pass for half the distance — but it's a West-side gem, so it doesn't make NPS-popular lists. Locals know it; trip-blog readers don't.",
+      'Maple Pass payoff for half the distance.',
     tripFit:
-      'Slots cleanly into a West-base day when Cascade Pass feels too long. Wildflower-streaked switchbacks open to Baker / Shuksan / Pickets / San Juans on a clear day.',
+      'West-base day when Cascade Pass feels too long. Wildflower switchbacks; views to Baker / Shuksan / Pickets / San Juans.',
     driveFromBases: [
       { from: 'Marblemount', text: '~25 min · 12 mi' },
       { from: 'Concrete', text: '~10 min · 5 mi' },
@@ -148,9 +148,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'Yes — FR 1540 (Sibley Creek Rd) high-clearance required; large washout ~2 mi up as of NPS May 6, 2026',
     permit: 'none',
     whyHidden:
-      "It's IG-famous for the lookout photo but the road + climb keep most visitors away. The lookout itself is volunteer-maintained, not in the NPS-recommended list.",
+      'IG-famous photo, but the rough road + 3,300 ft climb keep most away.',
     tripFit:
-      'A big-day option if both feel strong — same Cascade River Rd access as the Cascade Pass marquee. Pair with a Marblemount west-base; not feasible from East.',
+      'Big-day option — same Cascade River Rd as Cascade Pass. West-base only.',
     driveFromBases: [
       { from: 'Marblemount', text: '~40 min drive + FR 1540 last mile' },
       { from: 'Concrete', text: '~1 hr + FR 1540 last mile' },
@@ -175,7 +175,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       kind: 'closed',
       label: 'Access road currently CLOSED',
       detail:
-        'Sibley Creek / Hidden Lake Rd (FR 1540) has a large washout ~2 mi up the road per NPS road-conditions page (last updated May 6, 2026) — "vehicle access blocked, foot/bike OK." Trail is reachable on foot but adds 4-5 mi RT to an already 8.0 mi day. Check NPS + Mt. Baker-Snoqualmie NF road status before counting on it. May or may not reopen by Aug 16.',
+        'Sibley Creek / Hidden Lake Rd (FR 1540) has a large washout ~2 mi up per NPS road-conditions (updated May 6, 2026) — "vehicle access blocked, foot/bike OK." Reachable on foot, but adds 4-5 mi RT to an already 8.0 mi day. May or may not reopen by Aug 16.',
       asOf: 'May 17, 2026',
       sourceUrl: 'https://www.nps.gov/noca/planyourvisit/road-conditions.htm',
     },
@@ -195,9 +195,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'Yes — Baker Lake Rd paved; FR 13 last 4 mi is gravel, passable',
     permit: 'nw-forest-pass',
     whyHidden:
-      'Sits SW of the park boundary inside the Mt. Baker Wilderness — not a North Cascades NP trail and therefore omitted from most North Cascades trip lists. Locals call it the Baker face-shot.',
+      'Mt. Baker Wilderness, not NC NP. The Baker face-shot.',
     tripFit:
-      'Strong West-base alternate if WA-20 stays closed and the East side is off-limits. Historic 1932 lookout, in-your-face Mt. Baker. Long-ish drive (1 hr 15 min from Marblemount) earns the view.',
+      'Strong West-base alternate if WA-20 stays closed. Historic 1932 lookout, in-your-face Mt. Baker.',
     driveFromBases: [
       { from: 'Marblemount', text: '~1 hr 15 min · 35 mi' },
       { from: 'Concrete', text: '~1 hr · 27 mi' },
@@ -234,9 +234,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'No — paved-highway trailhead pull-off',
     permit: 'none',
     whyHidden:
-      "Sits at the same milepost band as Diablo + Newhalem but reads as 'just another forested trail' next to those marquee names — so trip lists skip it. Real payoff: a quiet pocket lake under Pyramid Peak.",
+      'Reads as "just another forested trail" — but it\'s a quiet pocket lake under Pyramid Peak.',
     tripFit:
-      "Low-energy day or rainy morning — short, no road logistics, on the way to / from any West-base lodging. Skip if you're chasing alpine; take if you want forest + reflection.",
+      'Low-energy or rainy morning — short, no road logistics. Forest + reflection, not alpine.',
     driveFromBases: [
       { from: 'Marblemount', text: '~15 min · 8 mi' },
       { from: 'Concrete', text: '~30 min · 18 mi' },
@@ -272,9 +272,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'No — paved walk from town parking',
     permit: 'none',
     whyHidden:
-      "It's literally inside Newhalem so it gets dismissed as 'a town walk' rather than a hike. The suspension bridge + old-growth cedar interpretive loop is genuinely beautiful and 5 min from your car.",
+      'Dismissed as "a town walk." Really: suspension bridge + old-growth cedar loop.',
     tripFit:
-      'Low-energy day, rainy morning, post-drive stretch. Pair with Ladder Creek Falls + Skagit General Store kosher snack-check for a complete low-effort Newhalem stop.',
+      'Low-energy / rainy / post-drive stretch. Pair with Ladder Creek Falls for a low-effort Newhalem stop.',
     driveFromBases: [
       { from: 'Marblemount', text: '~18 min · 9 mi' },
       { from: 'Concrete', text: '~30 min · 17 mi' },
@@ -315,9 +315,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'Yes — FR 39 currently closed at mile 1 (washouts)',
     permit: 'nw-forest-pass',
     whyHidden:
-      "Off the WA-20 corridor entirely — a Mt. Baker side trip. People doing 'the North Cascades' usually never hit it. Coleman Glacier overlook is on every climbers' photo reel.",
+      'A Mt. Baker side trip most NC visitors skip. Coleman Glacier overlook.',
     tripFit:
-      'Day-1 Bellingham detour material — only if road reopens AND you flew into BLI. Otherwise skip; the drive from Marblemount is 2+ hours each way for a 3-4 hour hike.',
+      'Day-1 Bellingham detour — only if road reopens AND you flew into BLI. From Marblemount 2+ hrs each way; skip.',
     driveFromBases: [
       { from: 'Bellingham (BLI)', text: '~1 hr 15 min · 50 mi (once road reopens)' },
       { from: 'Marblemount', text: '~2 hr each way — skip unless making a Bellingham loop' },
@@ -350,7 +350,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       kind: 'closed',
       label: 'Trailhead currently CLOSED',
       detail:
-        'Glacier Creek Rd (FR 39) closed at mile 1 due to washouts at miles 3.6 and 3.8 (WTA alert 3.20.26 — re-verified May 17, 2026 on WTA Heliotrope Ridge page, no new alert). Trail effectively inaccessible until road is repaired. May or may not reopen by Aug 16 — re-check WTA before counting on this one.',
+        'Glacier Creek Rd (FR 39) closed at mile 1 due to washouts at miles 3.6 and 3.8 (WTA alert 3.20.26, re-verified May 17, 2026). Trail inaccessible until the road is repaired. May or may not reopen by Aug 16.',
       asOf: 'May 17, 2026',
       sourceUrl: 'https://www.wta.org/go-hiking/hikes/heliotrope-ridge',
     },
@@ -374,9 +374,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'No — paved WA-20 pull-off',
     permit: 'nw-forest-pass',
     whyHidden:
-      "Sits next to Maple Pass + Blue Lake in everyone's lists, so trip blogs default to those. Cutthroat Lake alone (skipping the steep pass extension) is a gentle alpine lake walk most planners overlook.",
+      'Overshadowed by Maple Pass + Blue Lake. The lake alone is a gentle alpine walk.',
     tripFit:
-      "Easy East-base half-day from Mazama or Winthrop. Loop with a Washington Pass Overlook drive-by for the photo + dinner in Mazama. If you want more, the 10-mi Cutthroat Pass extension up the PCT is the marquee version.",
+      'Easy East-base half-day from Mazama / Winthrop. Loop with Washington Pass Overlook. For more: the Cutthroat Pass extension up the PCT.',
     driveFromBases: [
       { from: 'Mazama', text: '~15 min · 9 mi' },
       { from: 'Winthrop', text: '~30 min · 22 mi' },
@@ -412,9 +412,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'Yes — FR 5225 gravel, narrow last 3 mi, passable for rental',
     permit: 'nw-forest-pass',
     whyHidden:
-      "Methow locals' favorite quick lookout hike — staffed fire lookout above the valley — but tourists default to Maple Pass / Blue Lake. Half the distance for a 360° view across the whole Methow.",
+      'Methow locals\' quick lookout — staffed fire lookout, 360° view for half the distance of Maple Pass.',
     tripFit:
-      "Mazama-based half-day with a real summit payoff. Good morning hike before a Winthrop afternoon. Pair with the Mazama Store kosher snack run before the FR 5225 turnoff.",
+      'Mazama half-day with a summit payoff. Morning hike before a Winthrop afternoon.',
     driveFromBases: [
       { from: 'Mazama', text: '~30 min · 11 mi (incl. FR 5225)' },
       { from: 'Winthrop', text: '~45 min · 22 mi' },
@@ -459,9 +459,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'Yes — USFS 37 (11.5 mi) then USFS 39 to Freezeout Pass; degrades significantly with climb',
     permit: 'nw-forest-pass',
     whyHidden:
-      "Sits ~1 hr east of Winthrop in the Okanogan NF — almost no North Cascades trip lists include it. A wildflower-streaked 8,245 ft summit with Cascades-to-Pasayten panorama. Locals' summer go-to.",
+      'Okanogan NF, ~1 hr east of Winthrop. Wildflower 8,245 ft summit, Cascades-to-Pasayten panorama.',
     tripFit:
-      'East-base wildflower day for late-summer color. Access roads usually snow-free mid-June through September. Long drive earned by a true open-summit. Skip if forest-service road access has degraded — check WTA before going.',
+      'East-base wildflower day. Open summit earns the long drive. Skip if FS road access has degraded.',
     driveFromBases: [
       { from: 'Winthrop', text: '~1 hr 15 min via East Chewuch Rd + USFS 37/39' },
       { from: 'Mazama', text: '~1 hr 30 min · ~38 mi' },
@@ -505,9 +505,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'CLOSED at Monument Creek trailhead — Dec 2025 storm washout, no repair ETA. Foot/bike OK past the gate.',
     permit: 'nw-forest-pass',
     whyHidden:
-      "Tied for highest drivable point in WA but the road is the catch — exposed cliff-edge gravel. Was a 360° Pasayten + Cascades panorama for almost no effort; now compromised by both the road washout AND the historic lookout's collapse in winter 2025-26.",
+      'Tied for highest drivable point in WA — 360° Pasayten + Cascades for almost no effort. Now compromised: road washout AND the lookout collapsed winter 2025-26.',
     tripFit:
-      "RE-EVALUATE for Aug 16-20 — even when accessible, the lookout is gone (collapsed in winter 2025-26, confirmed by Forest Fire Lookout Association Mar 25, 2026). The summit panorama remains but the historic structure does not. Default: skip this trip; revisit when FS reopens road + decides on rebuild.",
+      'Default skip. Road closed; lookout gone (collapsed winter 2025-26, FFLA Mar 25 2026). Summit panorama remains. Revisit when FS reopens the road.',
     driveFromBases: [
       { from: 'Mazama', text: '~1 hr · 22 mi (gravel · slow)' },
       { from: 'Winthrop', text: '~1 hr 30 min · 35 mi' },
@@ -539,7 +539,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       kind: 'closed',
       label: 'ROAD CLOSED + LOOKOUT COLLAPSED',
       detail:
-        "Hart's Pass Road (FR 5400) is closed at the Monument Creek trailhead due to Dec 2025 storm washout — no repair ETA. AND the historic Slate Peak fire lookout (1924, National Historic Lookout Register 2000) collapsed in winter 2025-26 (Forest Fire Lookout Association announced Mar 25, 2026). The summit panorama remains but the structure is gone. Hike-in via the gate is still possible for the panorama, but this is no longer a casual drive-up + visit the lookout day.",
+        "Hart's Pass Road (FR 5400) closed at the Monument Creek trailhead — Dec 2025 storm washout, no repair ETA. AND the historic Slate Peak fire lookout (1924, National Historic Lookout Register 2000) collapsed winter 2025-26 (FFLA announced Mar 25, 2026). Summit panorama remains; the structure is gone. Hike-in via the gate still possible, but no longer a casual drive-up + lookout day.",
       asOf: 'May 17, 2026',
       sourceUrl: 'https://www.wta.org/go-hiking/hikes/harts-pass-and-slate-peak',
     },
@@ -559,9 +559,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'No — paved Rainy Pass trailhead',
     permit: 'nw-forest-pass',
     whyHidden:
-      "Maple Pass is the marquee; the Frisco Mountain ridge add-on is an off-trail scramble from Heather Pass that almost nobody does. Same trailhead, +1.5 hours, summit-of-the-day.",
+      'The Frisco ridge add-on is an off-trail scramble from Heather Pass almost nobody does. Same trailhead, +1.5 hrs.',
     tripFit:
-      "Only if both feel strong AND have a navigation comfort level (off-trail scramble). Solid for Allison if Erin is good with the marquee loop alone. Otherwise pick one or the other — don't try to do both as a casual day.",
+      'Only if both feel strong AND comfortable off-trail. Don\'t do both as a casual day.',
     driveFromBases: [
       { from: 'Mazama', text: '~25 min · 17 mi' },
       { from: 'Winthrop', text: '~50 min · 32 mi' },
@@ -608,9 +608,9 @@ export const HIDDEN_GEMS: HiddenGem[] = [
     roadAccessRequired: 'No — paved Cascade River Rd to trailhead',
     permit: 'recreation-gov',
     whyHidden:
-      "Listed on every 'top NC backpacking trip' list but the wilderness permit lottery + technical exposure (loose rock, glacier proximity) means few who plan a 5-day NC trip actually book it. Wow but expert-only.",
+      'On every "top NC backpacking" list, but permit lottery + technical exposure mean few book it. Expert-only.',
     tripFit:
-      "Not the plan. Listed here so the option is visible — if Erin can't go, this is the kind of solo overnight Allison could pivot to in a future trip. Permits via Recreation.gov ~6 months out.",
+      'Not the plan — listed so the option is visible. A future solo-overnight pivot.',
     driveFromBases: [
       { from: 'Marblemount', text: '~50 min · 23 mi' },
       { from: 'Mazama', text: 'WA-20 closed → not feasible' },
@@ -634,7 +634,7 @@ export const HIDDEN_GEMS: HiddenGem[] = [
       kind: 'caution',
       label: 'Expert-only · permit lottery',
       detail:
-        'Sahale Glacier Camp sits at 7,600 ft on loose moraine with glacier proximity. Requires solid scramble skills, glacier-travel awareness, and a wilderness permit booked via Recreation.gov lottery. Not the plan for this trip — listed as a wow-option for future-Allison.',
+        'Sahale Glacier Camp sits at 7,600 ft on loose moraine near glacier. Needs scramble skills, glacier-travel awareness, and a Recreation.gov lottery permit. Not the plan — a wow-option for future-Allison.',
       asOf: 'May 17, 2026',
     },
     verifiedAsOf: 'May 17, 2026',

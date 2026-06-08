@@ -307,7 +307,7 @@ function renderTrims(pathCost: PathCost, tier: Tier): HTMLElement {
     h(
       'p',
       { class: 'costs-trims__lede' },
-      'Concrete moves for Path ' + pathCost.pathId + ' · ' + TIER_LABEL[tier] + ' tier. Stack as needed.'
+      'Stack as needed.'
     ),
     h(
       'ul',
@@ -337,9 +337,9 @@ function renderSplitwise(pathCost: PathCost, tier: Tier): HTMLElement {
     h(
       'p',
       { class: 'costs-splitwise__lede' },
-      'Each of you owes roughly ',
+      'Roughly ',
       h('strong', {}, usd(pp)),
-      ' for Path ' + pathCost.pathId + ' / ' + TIER_LABEL[tier] + '. Drop a group in Splitwise and add the shared lines as you book them.'
+      ' each.'
     ),
     h(
       'ul',
@@ -376,7 +376,7 @@ function renderCompareStrip(
     h(
       'p',
       { class: 'costs-compare__lede' },
-      'No path picked yet — tap a card to lock it in. The breakdown below switches to whichever path is active.'
+      'Pick a path:'
     ),
     h(
       'div',
@@ -415,7 +415,7 @@ export function renderCosts(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      'Two paths, three tiers, two travelers. Big number = total. Per-person = your share after the 50/50 split (flights independent). Pick your path on any card; the breakdown below follows.'
+      'Tap a path card to see its full breakdown.'
     ),
     renderSectionSources({
       label: 'Sources',

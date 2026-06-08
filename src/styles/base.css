@@ -14,7 +14,7 @@ body {
   margin: 0;
   font-family: var(--font-stack);
   font-size: var(--fs-base);
-  line-height: 1.55;
+  line-height: 1.65;
   color: var(--c-ink-900);
   background: var(--c-warm-100);
   -webkit-font-smoothing: antialiased;
@@ -98,8 +98,8 @@ button {
 
 .section__title {
   font-size: var(--fs-2xl);
-  border-bottom: 2px solid var(--c-forest-500);
-  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--c-line);
+  padding-bottom: var(--sp-3);
 }
 
 .section__lede {

@@ -40,17 +40,17 @@ const GROUP_META: Record<
 > = {
   must: {
     label: '🚦 What Allison really needs from you',
-    lede: "These answers change the whole shape of the trip. Tap any one to open it — leave a 💬 note inline, or just text Allison.",
+    lede: 'These change the whole shape of the trip.',
     cls: 'for-erin__group--must',
   },
   shape: {
     label: '🧭 Helps shape the right trip',
-    lede: "Pace + day-type stuff. Not blockers, but answers here turn 'good plan' into 'right plan for you.'",
+    lede: 'Pace + day-type. Not blockers.',
     cls: 'for-erin__group--shape',
   },
   nice: {
     label: '🎁 Treats + per-day swaps',
-    lede: "Nice-to-haves. Skip if you don't have an instinct — Allison will pick sane defaults.",
+    lede: 'Skip any — Allison picks sane defaults.',
     cls: 'for-erin__group--nice',
   },
 };
@@ -171,7 +171,7 @@ export function renderForErin(): HTMLElement {
     h(
       'p',
       { class: 'section__lede' },
-      "Grouped by how much each answer changes the trip. Tap any question to open it — each one has its own 💬 note button. Or just text/email Allison — whichever's easier."
+      'Grouped by how much each answer changes the trip. Leave a 💬 note or text Allison.'
     ),
     mustAnchor,
     ...sections.filter((s): s is HTMLDivElement => s !== null)

@@ -1,15 +1,8 @@
 /**
- * Seattle add-on — conditional, all-optional.
+ * Seattle add-on — conditional, all-optional ("skip if you don't want it").
  *
- * Per Allison May 16: "give suggestions if worth it." Section opens with
- * "skip if you don't want it" framing. Itineraries are listed as scenarios,
- * no "Pick" badge — none is the answer.
- *
- * Filter behavior (added Pass 1, 2026-05-16): when a path is selected that
- * excludes Seattle (Path A), the whole content body collapses into a single
- * disclosure. The section title + one-line path note remain visible — but the
- * 1,855px of "section kept for reference" wall stops blocking scroll-flow when
- * the path explicitly skips Seattle. "Compare all" mode still shows everything.
+ * Path-aware: when the selected path excludes Seattle (Path A), the content body
+ * collapses into a single disclosure. "Compare all" mode still shows everything.
  */
 
 import {
@@ -22,7 +15,7 @@ import {
 } from '../data/seattle';
 import { getPathById } from '../data/paths';
 import { getSelectedPath, subscribeSelectedPath } from '../state/path';
-import { badge, h, section } from '../dom';
+import { h, section } from '../dom';
 import { renderPhotoCarousel, type CarouselPhoto } from './photo-carousel';
 
 function stopPhotos(stop: SeattleStop): CarouselPhoto[] {
@@ -43,15 +36,7 @@ function renderStopCard(stop: SeattleStop): HTMLElement {
     h(
       'header',
       { class: 'card__header' },
-      h('h3', { class: 'card__title' }, stop.name),
-      h(
-        'div',
-        { class: 'card__badges' },
-        badge(CATEGORY_LABELS[stop.category], 'info'),
-        stop.verifiedAsOf
-          ? h('span', { class: 'badge badge--good' }, `✅ Verified ${stop.verifiedAsOf}`)
-          : null
-      )
+      h('h3', { class: 'card__title' }, stop.name)
     ),
     h('p', { class: 'card__address' }, stop.address),
     h(
@@ -85,16 +70,14 @@ function renderPathNotice(selectedId: string | null): HTMLElement {
     return h(
       'ul',
       { class: 'gist' },
-      h('li', { class: 'gist__item' }, 'Day 5 has 4-6 hours between the drive in and the evening flight — natural fit for a stop if you want one.'),
-      h('li', { class: 'gist__item' }, 'No museums. Walkables + outdoorsy stops only.')
+      h('li', { class: 'gist__item' }, 'Optional add-on — skip it if you don\'t want it.')
     );
   }
   if (path.includeSeattle) {
     return h(
       'ul',
       { class: 'gist' },
-      h('li', { class: 'gist__item' }, `${path.name}: ${path.seattleNote}`),
-      h('li', { class: 'gist__item' }, 'No museums. Walkables + outdoorsy stops only.')
+      h('li', { class: 'gist__item' }, `${path.name}: ${path.seattleNote}`)
     );
   }
   // Path excludes Seattle — single calm sentence, no scenarios pile.
@@ -110,8 +93,47 @@ function renderPathNotice(selectedId: string | null): HTMLElement {
   );
 }
 
+/** Order categories present a clear west-to-outdoorsy reading flow. */
+const CATEGORY_ORDER: SeattleStop['category'][] = ['walkable', 'outdoorsy', 'food', 'lodging'];
+
+function renderKeyFacts(): HTMLElement {
+  const fact = (label: string, value: string): HTMLElement =>
+    h(
+      'li',
+      { class: 'mini-list__item' },
+      h('strong', { class: 'mini-list__label' }, label),
+      h('span', { class: 'mini-list__detail' }, value)
+    );
+  return h(
+    'ul',
+    { class: 'mini-list mini-list--key-facts' },
+    fact('Window', 'Day 5 ~4-6 hr OR Day 1 overnight'),
+    fact('From SEA', '~30 min to downtown'),
+    fact('Stops', 'Walkable + outdoorsy only — no museums')
+  );
+}
+
+function renderGroupedStops(): HTMLElement {
+  const groups = CATEGORY_ORDER.map((cat) => {
+    const stops = SEATTLE_STOPS.filter((s) => s.category === cat);
+    if (stops.length === 0) return null;
+    return h(
+      'div',
+      { class: 'seattle-group' },
+      h('h4', { class: 'seattle-group__title' }, CATEGORY_LABELS[cat]),
+      h('div', { class: 'card-grid' }, ...stops.map(renderStopCard))
+    );
+  });
+  return h(
+    'div',
+    { class: 'seattle-groups' },
+    ...groups.filter((g): g is HTMLDivElement => g !== null)
+  );
+}
+
 function renderFullContent(): HTMLElement[] {
   return [
+    renderKeyFacts(),
     h('h3', { class: 'subsection__title' }, 'When-it-fits scenarios'),
     h('div', { class: 'option-list' }, ...SEATTLE_ITINERARIES.map(renderItinerary)),
     h(
@@ -122,7 +144,7 @@ function renderFullContent(): HTMLElement[] {
         { class: 'disclosure__summary' },
         `Seattle stops + neighborhoods (${SEATTLE_STOPS.length})`
       ),
-      h('div', { class: 'card-grid' }, ...SEATTLE_STOPS.map(renderStopCard))
+      renderGroupedStops()
     ),
     h(
       'details',

@@ -1,29 +1,12 @@
 /**
- * Flights — NYC + United reality (full rewrite 2026-05-19).
- *
- * Posture: both Allison + Erin depart NYC area on the joint booking. Allison's
- * TLV→NYC long-haul is on a separate ticket — NOT in scope here. The May 18
- * WhatsApp thread + the May 19 corrections collapsed the routing question:
- *   - United EWR→SEA nonstop is the leading shape (Erin: "much cheaper" +
- *     Allison has a United travel credit + both have loyalty)
- *   - Alaska EWR→BLI stays as the fallback if United pricing breaks (faster
- *     drive but steep refundable premium)
- *   - JFK / LGA alternatives sit underneath as airport flex if EWR spikes
- *   - Cross-country open-jaw routings (BLI in / SEA out, etc.) and far-out
- *     alternates (PDX, YVR, GEG) are archived behind a single "comparison
- *     only" disclosure — these were the pre-decision research dump and are
- *     not in the active plan
- *
- * Voice rule: every recommendation card carries the verbatim Erin/Allison quote
- * that established the preference. Don't paraphrase the WhatsApp.
+ * Flights — booked itinerary + pre-booking comparison data.
+ * Both depart NYC (EWR primary); Allison's TLV→NYC long-haul is a separate
+ * ticket, out of scope. Booked Aug 16-20 on United EWR⇄SEA.
  */
 
 /**
- * BOOKED itinerary — the trip flipped from "compare" to "booked" on May 20,
- * 2026. Source: `projects/north-cascades-2026/BOOKED.md` (Gmail confirmation
- * emails + Erin WhatsApp thread). Everything below is verbatim from the
- * confirmation; the comparison cards lower in this file are now history
- * ("how we got here"), not a live decision.
+ * BOOKED itinerary. Source: `projects/north-cascades-2026/BOOKED.md`.
+ * Comparison data lower in this file is the pre-booking dump, not live.
  */
 export interface BookedFlightLeg {
   /** Out / Return. */
@@ -152,7 +135,7 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
     route: 'EWR → SEA → EWR · United',
     routeDiagram: 'EWR ──► SEA ──► EWR  (United nonstop)',
     costDelta:
-      'Erin verified May 18 11:07pm: "Yes we could do United. They fly into SEA. That\'s looking much cheaper." Allison May 18: "amazing and united ideal! If possible cuz I have this travel credit but not a must." Refundable preferred — Erin May 18 5:25am: "if we find something refundable we can book it as a backup."',
+      'Erin May 18: "Yes we could do United... That\'s looking much cheaper." Cheapest carrier on this route; Allison\'s United credit applies.',
     drivingHours:
       '~5.5-6 hr nonstop EWR↔SEA · ~2 hr 15 min drive SEA → Marblemount on Day 1 (~115 mi) · ~2-4 hr drive back on Day 5 depending on east-side base',
     pricing: {
@@ -200,8 +183,6 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
       'Refundable upgrade adds ~$150-300 vs non-refundable on United',
     ],
     leading: true,
-    leadingNote:
-      'Lock this when the United fare + refundable upgrade price the way Erin expects tonight. Allison: log into united.com so the travel credit is visible at checkout — credit applies pre-tax to the fare, so the displayed price will be lower for her than for Erin doing a logged-out search.',
   },
   {
     id: 'alaska-ewr-bli',
@@ -209,7 +190,7 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
     route: 'EWR → SEA → BLI · Alaska',
     routeDiagram: 'EWR ──► SEA ──► BLI  (Alaska, 1 stop)',
     costDelta:
-      'Use only if United pricing breaks. Higher base fare + Alaska\'s refundable upgrade is significantly steeper than United\'s — worse flex-tradeoff for the same Aug 16-20 booking-as-backup discipline.',
+      'Use only if United pricing breaks. Higher base fare + steeper refundable upgrade than United.',
     drivingHours:
       '~5.5-6 hr to SEA + ~30 min hop to BLI · ~1 hr 25 min drive BLI → Marblemount (~71 mi) · ~4 hr drive back to SEA on Day 5 if open-jaw',
     pricing: {
@@ -262,7 +243,7 @@ export const FLIGHT_OPTIONS: FlightOption[] = [
     route: 'JFK or LGA → SEA → JFK/LGA',
     routeDiagram: 'JFK/LGA ──► SEA ──► JFK/LGA',
     costDelta:
-      'Same airline preference (United) but a different NYC airport. Useful if EWR fares spike on the chosen travel dates. JFK has more carriers competing on this route; LGA is usable but tighter inventory.',
+      'Same airline (United), different NYC airport — useful if EWR fares spike. JFK has more competing carriers; LGA tighter inventory.',
     drivingHours:
       'JFK is ~5-6 hr nonstop on United / Alaska / Delta / JetBlue · LGA tighter inventory (cross-shop)',
     pricing: {
@@ -321,36 +302,32 @@ export const ARCHIVED_FLIGHT_SUMMARIES: FlightOptionSummary[] = [
   {
     id: 'bli-sea-openjaw',
     label: 'BLI in / SEA out (open-jaw)',
-    oneLiner:
-      'Originally framed as the "no-backtrack" option. Pays the BLI feeder + ~$100-250 one-way rental drop fee. Lost its edge once Erin chose the Marblemount cluster — both bases sit ~1 hr from each airport now, so the open-jaw premium isn\'t earning its keep.',
+    oneLiner: 'Lost its edge once both bases sit ~1 hr from each airport. Pays the BLI feeder + one-way drop fee.',
   },
   {
     id: 'sea-bli-reverse',
     label: 'SEA in / BLI out (reverse open-jaw)',
-    oneLiner:
-      'Pacing is worse — Cascade Pass falls on Day 4 (deeper in trip) instead of Day 2. Kept here only because the lodging math sometimes flips on a deep fare deal.',
+    oneLiner: 'Worse pacing — Cascade Pass falls Day 4 not Day 2.',
   },
   {
     id: 'bli-rt',
     label: 'BLI roundtrip (west-side only)',
-    oneLiner: 'Two BLI feeders. Only makes sense for a deliberately west-side-only Plan B — skips the east side entirely.',
+    oneLiner: 'Two BLI feeders. West-side-only Plan B; skips the east side.',
   },
   {
     id: 'geg',
     label: 'GEG (Spokane) into east side',
-    oneLiner:
-      'Lands east of the closure — Winthrop guaranteed even if WA-20 stays shut. Always +1 stopover from NYC; 3:45 drive on arrival. Only worth it if a Path B → east-side-only collapse happens late.',
+    oneLiner: 'Lands east of the closure — Winthrop guaranteed. +1 stopover, 3:45 drive on arrival.',
   },
   {
     id: 'pdx',
     label: 'PDX (Portland) southern alternate',
-    oneLiner: 'Nonstop JFK→PDX exists but adds ~3 hrs of driving north. Only worth it on a deep fare deal.',
+    oneLiner: 'Nonstop JFK→PDX but +~3 hr driving north. Deep-fare-deal only.',
   },
   {
     id: 'yvr',
     label: 'YVR (Vancouver, BC) northern alternate',
-    oneLiner:
-      'Closest landing to the park, but border + passport + rental cross-border rules add friction. Cross-shop only.',
+    oneLiner: 'Closest to the park but border + cross-border rental friction. Cross-shop only.',
   },
 ];
 
@@ -394,21 +371,19 @@ export const FLIGHT_RETURN_OPTIONS = [
   {
     id: 'thu-evening',
     label: 'Thu Aug 20 evening SEA departure · RECOMMENDED',
-    note:
-      'Sleep east-side Wed night, slow Thu morning, drive west, evening flight home. Redeye lands NJ Fri AM. Matches the "back by 7-8 PM, balanced pace" brief and keeps Day 5 alive as a real travel day. Baseline fare = the headline number on each card above.',
+    note: 'Keeps Day 5 alive as a real travel day. Baseline fare = the headline number on each card.',
     leading: true,
   },
   {
     id: 'thu-redeye',
     label: 'Thu Aug 20 redeye SEA → EWR/JFK',
-    note:
-      'Same shape as the evening option but a true overnight flight — lands NJ Fri AM. Useful if Allison is connecting onward to TLV Fri evening on her separate long-haul ticket. Typically ~$30/person cheaper than Thu evening.',
+    note: 'True overnight, lands NJ Fri AM. Useful for Allison\'s onward TLV connection. ~$30/person cheaper.',
     leading: false,
   },
   {
     id: 'wed-late',
     label: 'Wed Aug 19 late-night SEA departure',
-    note: 'Drive east-side base → SEA after dinner Wed (~4 hrs). Kills Day 5. Typically ~$60/person cheaper than Thu evening — only earns its keep on a real fare deal.',
+    note: 'Kills Day 5. ~$60/person cheaper — fare-deal only.',
     leading: false,
   },
 ];
@@ -420,43 +395,23 @@ export interface BookingTip {
 
 export const BOOKING_TIPS: BookingTip[] = [
   {
-    topic: 'Allison · booking steps',
-    detail:
-      'Log into united.com FIRST so the travel credit is visible pre-tax at checkout. Verify the credit amount + expiration before locking dates. NEVER book through Expedia / Hopper / Capital One Travel / any third-party — United credits only redeem on united.com direct. Same logic on JFK/LGA only if the fare is on United metal (not Delta / JetBlue / Alaska codeshare).',
-  },
-  {
-    topic: 'Erin · booking steps',
-    detail:
-      'Search united.com logged-out or with her own MileagePlus account. Book Main Cabin / Economy Flex per her refundable preference (she said May 18 5:25am: "if we find something refundable we can book it as a backup"). $1000+ refundable is acceptable to her. She can book before or after Allison — they don\'t have to share a PNR; they\'re booking the same flight independently.',
-  },
-  {
     topic: 'Cross-check the fare gap',
     detail:
-      'After both have priced the flight in their own session, compare. If Allison\'s logged-in price is significantly HIGHER than Erin\'s logged-out price, something is off — the credit may not be applying, or Allison may be looking at a different fare class. Pause + recheck before either of them clicks book.',
-  },
-  {
-    topic: 'United travel credit · how it works',
-    detail:
-      'Allison has a United travel credit — apply it at checkout. Price logged-in to united.com so the credit is visible pre-tax. Erin doing a logged-out search will see a higher number than what Allison actually pays. Credit amount + expiration date are unknown until she logs in — VERIFY first.',
+      'If Allison\'s logged-in price is HIGHER than Erin\'s logged-out price, the credit isn\'t applying or the fare class differs — pause + recheck before booking.',
   },
   {
     topic: 'Refundable fare class',
     detail:
-      'On United, Economy Flex adds ~$150/person over Main Cabin (Premium Cabin adds $250-400 more depending on route). Alaska\'s refundable upgrade runs ~$200/person — steeper than United\'s. Worth it while WA-20 status is unresolved — refundable = the booking-as-backup discipline Erin named May 18. Concrete: budget +$300 for the pair to keep flex.',
+      'United Economy Flex +~$150/person over Main Cabin (Alaska ~$200). Budget +$300 for the pair to keep flex while WA-20 is unresolved.',
   },
   {
     topic: 'When to book',
     detail:
-      'Peak August West-Coast flights typically stabilize 8-12 weeks out (~late May for Aug 16-20). Erin said May 7 "once we pick a place, we should make reservations" — booking-discipline aware. Don\'t wait past mid-June for non-refundable; refundable buys flex up to 24 hrs before.',
-  },
-  {
-    topic: 'Day-of-week strategy',
-    detail:
-      'Tuesday and Wednesday departures typically run 10-20% cheaper than Friday/Sunday for peak-summer SEA. Sun Aug 16 outbound + Thu Aug 20 return is decent — Sunday morning is busier than Tuesday, but Thursday return is favorable.',
+      'Peak-August fares stabilize ~8-12 weeks out. Don\'t wait past mid-June for non-refundable; refundable buys flex to 24 hrs before.',
   },
   {
     topic: 'Cross-shopping carriers',
     detail:
-      'Alaska, Delta, JetBlue, United all run nonstop JFK↔SEA. Delta + United also run EWR↔SEA. United is the active default for the credit + Erin\'s research, but cross-shop the same dates on Google Flights to confirm the gap is real before booking.',
+      'Alaska/Delta/JetBlue/United run nonstop JFK↔SEA; Delta + United also EWR↔SEA. Cross-shop the dates on Google Flights to confirm the gap before booking.',
   },
 ];

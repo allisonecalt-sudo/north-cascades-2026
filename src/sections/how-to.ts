@@ -47,12 +47,7 @@ function renderTldr(): HTMLElement {
     { class: 'how-to-tldr', 'aria-label': 'TLDR' },
     h('h3', { class: 'how-to-tldr__title' }, 'TLDR'),
     h('p', { class: 'how-to-tldr__line' }, HOW_TO_TLDR.open),
-    h('p', { class: 'how-to-tldr__line how-to-tldr__line--soft' }, HOW_TO_TLDR.closed),
-    h(
-      'p',
-      { class: 'how-to-tldr__hint' },
-      'Pick by answering questions below, scan the path cards, or compare them side-by-side.'
-    )
+    h('p', { class: 'how-to-tldr__line how-to-tldr__line--soft' }, HOW_TO_TLDR.closed)
   );
 }
 
@@ -428,13 +423,12 @@ function renderPathGrid(
 
 function renderComparison(): HTMLElement {
   const wrap = h(
-    'div',
+    'details',
     { class: 'how-to-compare' },
-    h('h3', { class: 'how-to-block-title' }, 'Side-by-side comparison'),
     h(
-      'p',
-      { class: 'how-to-block-lede' },
-      'All 5 paths at a glance. Scroll horizontally on mobile.'
+      'summary',
+      { class: 'how-to-compare__summary' },
+      `Compare all ${HOW_TO_PATHS.length} paths side-by-side`
     )
   );
 
@@ -503,40 +497,29 @@ function renderFootnotes(): HTMLElement {
   return h(
     'aside',
     { class: 'how-to-footnotes' },
-    h('h3', { class: 'how-to-footnotes__title' }, 'Going deeper'),
     h(
       'ul',
       { class: 'how-to-footnotes__list' },
-      h(
-        'li',
-        {},
-        h('a', { href: 'map.html' }, 'Map →'),
-        ' — see all paths plotted on the interactive map.'
-      ),
+      h('li', {}, h('a', { href: 'map.html' }, 'Map →'), ' — all paths plotted.'),
       h(
         'li',
         {},
         h('a', { href: 'lodging.html' }, 'Lodging →'),
-        ' — full property cards with photos, drive matrices, free-cancellation flags.'
+        ' — property cards + cancellation flags.'
       ),
       h(
         'li',
         {},
         h('a', { href: 'wa20-status.html' }, 'WA-20 status →'),
-        ' — source-by-source closure status, phone-check protocol, affected destinations, contingency routing.'
+        ' — closure + contingency routing.'
       ),
       h(
         'li',
         {},
         h('a', { href: 'weather-plan-c.html' }, 'Weather Plan C →'),
-        ' — smoke + bad-air swaps for any day.'
+        ' — smoke + bad-air swaps.'
       ),
-      h(
-        'li',
-        {},
-        h('a', { href: 'costs.html' }, 'Costs →'),
-        ' — flights + lodging + rental + food breakdown.'
-      )
+      h('li', {}, h('a', { href: 'costs.html' }, 'Costs →'), ' — full breakdown.')
     )
   );
 }
@@ -924,6 +907,25 @@ const HOW_TO_CSS = `
   line-height: 1.55;
 }
 
+.how-to-disclosure { margin: var(--sp-4, 16px) 0; }
+.how-to-disclosure__summary {
+  cursor: pointer;
+  font-size: 0.98rem;
+  font-weight: 600;
+  padding: var(--sp-2, 8px) 0;
+  color: var(--c-glacier-600, #356a87);
+}
+.how-to-disclosure[open] .how-to-disclosure__summary { margin-bottom: var(--sp-2, 8px); }
+
+.how-to-compare { margin: var(--sp-5, 24px) 0 var(--sp-2, 8px); }
+.how-to-compare__summary {
+  cursor: pointer;
+  font-size: var(--fs-lg, 1.15rem);
+  font-weight: 700;
+  padding: var(--sp-2, 8px) 0;
+  color: var(--c-glacier-600, #356a87);
+}
+.how-to-compare[open] .how-to-compare__summary { margin-bottom: var(--sp-3, 12px); }
 .how-to-compare__scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -1032,6 +1034,22 @@ export function renderHowTo(): HTMLElement {
     }
   };
 
+  // Picker + footnotes are secondary — tuck them behind collapsed <details>
+  // so the page leads with the TLDR + branch + path cards. The picker keeps
+  // its `.how-to-picker` class so refresh() can still replace it in-place.
+  const pickerDisclosure = h(
+    'details',
+    { class: 'how-to-disclosure' },
+    h('summary', { class: 'how-to-disclosure__summary' }, 'Filter paths by question'),
+    renderPicker(pickerState, refresh)
+  );
+  const footnotesDisclosure = h(
+    'details',
+    { class: 'how-to-disclosure' },
+    h('summary', { class: 'how-to-disclosure__summary' }, 'Going deeper — maps, lodging, costs'),
+    renderFootnotes()
+  );
+
   // Initial render of picker is built once; refresh rebuilds it in-place.
   const sectionEl = section(
     'how-to',
@@ -1039,10 +1057,10 @@ export function renderHowTo(): HTMLElement {
     h('p', { class: 'section__lede' }, HOW_TO_PAGE_META.lede),
     renderTldr(),
     renderWa20Branch(),
-    renderPicker(pickerState, refresh),
+    pickerDisclosure,
     grid,
     renderComparison(),
-    renderFootnotes()
+    footnotesDisclosure
   );
 
   // Initial path-grid render.

@@ -15,8 +15,8 @@ import { renderPageCtas } from '../sections/page-ctas';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'map',
-    title: 'Interactive map - pins + drives',
-    lede: 'Every lodging, trailhead, and viewpoint pinned. Tap a route chip to preview a drive across the corridor; click any pin for photos, drive times, and similar places.',
+    title: 'Where everything is',
+    lede: 'Every stay, trailhead, and viewpoint on one map.',
     imageHero: {
       // Diablo Lake — the corridor signature, turquoise glacier-flour.
       src: 'img/diablo-lake-washington-state.jpg',
@@ -27,7 +27,19 @@ function mount(): void {
     },
   });
 
-  main.append(renderMap({ tall: true, pageId: 'map' }), renderPageCtas('map'));
+  main.append(
+    renderMap({
+      tall: true,
+      pageId: 'map',
+      // One-line orientation only. The legend (bottom-right), layer toggles
+      // (top-right), and the context-strip hint already explain pins, layers,
+      // and route chips inside the map — so prose above it stays minimal. The
+      // WA-20 closure is drawn on the map and lives in full on wa20-status.html;
+      // don't repeat the June-25 detail here.
+      gist: ['Tap a route chip to draw a drive. Click any pin for details. Legend + layer toggles are on the map.'],
+    }),
+    renderPageCtas('map')
+  );
 }
 
 mount();

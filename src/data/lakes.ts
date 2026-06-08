@@ -128,7 +128,7 @@ export const LAKES: Lake[] = [
     needsWa20Through: false,
     name: 'Pearrygin Lake State Park',
     lede:
-      'The easy-swim story for mid-August — warm sandy-beach water 5 minutes from Winthrop. The PNW lake that doesn\'t feel like a PNW lake.',
+      'The easy-swim story for mid-August — warm sandy-beach water 5 minutes from Winthrop.',
     where: '561 Bear Creek Rd · ~5 min northeast of Winthrop',
     base: 'east',
     swim: 'yes',
@@ -139,7 +139,7 @@ export const LAKES: Lake[] = [
         name: 'Pearrygin Lake State Park',
         phone: '(509) 996-2370',
         url: 'https://parks.wa.gov/find-parks/state-parks/pearrygin-lake-state-park',
-        notes: 'No on-park rentals — bring inflatable or pick up at Winthrop shops. Park hours 6:30am-dusk daily. Heads-up for 2026: fishing dock removed for replacement (early-summer completion target). Burn Ban Level 1 may be in effect — designated fire pits only.',
+        notes: 'No on-park rentals — bring inflatable or pick up in Winthrop. Hours 6:30am-dusk.',
       },
     ],
     fee: '$10 day-use Discover Pass (or $45/yr) · watercraft launch $7/day',
@@ -151,14 +151,13 @@ export const LAKES: Lake[] = [
       { from: 'Mazama', minutes: '25 min' },
       { from: 'Marblemount (west)', minutes: '~3 hr — east-side only' },
     ],
-    bestWindow:
-      'Afternoon 2-6 pm (water warmest, Methow Valley peaks at 85 °F). Sunset over water if you stay till ~8:15 pm.',
+    bestWindow: 'Afternoon 2-6 pm (warmest). Sunset over water till ~8:15 pm.',
     description:
-      'The August-perfect swim destination. 1,186-acre state park, 11,000 ft of waterfront, sandy beach with a roped-off swim area and a floating swim raft. Picnic tables, restrooms with changing rooms, lifeguarded day-use beach in peak season. Lake warms to 70-72 °F in August — actually pleasant, not the gasp-cold of glacial lakes. Also has a 5.3-mile Rex Derr loop trail if a walk first sounds right. Two state-park cabins on the lake (book FAR ahead — see Cool sleeping). If you only do one water thing on this trip, do this.',
+      'The one water stop if you do only one. Roped swim area + raft, warms to 70-72 °F. Two state-park cabins on the lake (see Cool sleeping).',
     sourceUrl: 'https://parks.wa.gov/find-parks/state-parks/pearrygin-lake-state-park',
     sourceLabel: 'WA State Parks · Pearrygin',
     activityAnchor: 'things-to-do.html#pearrygin-swim',
-    sleepAnchor: 'for-erin.html#cool-sleeping',
+    sleepAnchor: 'lodging.html#cool-sleeping-places',
     verifiedAsOf: 'May 17, 2026',
     photos: [
       {
@@ -180,7 +179,7 @@ export const LAKES: Lake[] = [
     needsWa20Through: true,
     name: 'Diablo Lake',
     lede:
-      'The turquoise glacier-flour lake on the postcards. Stunning to look at and paddle on. NOT a swim lake — glacier-cold and dam-controlled.',
+      'The turquoise glacier-flour lake on the postcards — stunning to look at and paddle. NOT a swim lake.',
     where: 'WA-20 milepost 132 (overlook) · Colonial Creek launch at MP 130',
     base: 'west',
     swim: 'no',
@@ -191,12 +190,12 @@ export const LAKES: Lake[] = [
         name: 'North Cascade Kayaks (Rockport)',
         phone: '(360) 853-7777',
         url: 'https://northcascadekayaks.com/',
-        notes: '~30 min from Colonial Creek launch — pick up + self-haul to the lake.',
+        notes: '~30 min from the launch — pick up + self-haul.',
       },
       {
         name: 'Colonial Creek South Campground launch',
         url: 'https://www.nps.gov/noca/planyourvisit/boating-and-fishing.htm',
-        notes: 'Free launch — no on-lake outfitter. Lot fills by 9-10 am in August.',
+        notes: 'Free launch. Lot fills by 9-10 am in August.',
       },
     ],
     fee: 'Free overlook + free launch',
@@ -208,10 +207,9 @@ export const LAKES: Lake[] = [
       { from: 'Concrete (west)', minutes: '~55 min' },
       { from: 'Winthrop (east)', minutes: '~2.5 hr (when WA-20 open)' },
     ],
-    bestWindow:
-      'Mid-morning for the brightest turquoise. Sunset bouncing off the walls if WA-20 stays open through the closure.',
+    bestWindow: 'Mid-morning for the brightest turquoise.',
     description:
-      "The signature North Cascades photo. Glacier-flour suspended in the meltwater scatters blue+green light, hence the unreal turquoise. From the MP 132 overlook: 20-30 min stop, easy postcard hit. From Colonial Creek launch (MP 130): paddle out onto the lake with 7,000-ft walls on every side. No on-lake rentals — pre-2026 Ross Lake Resort had a Diablo tie-in but that's gone; North Cascade Kayaks in Rockport is the current path (rent there, self-haul to the launch). Water sits ~45 °F all summer — feet only. The lake is what makes a Path-A or Path-B day complete.",
+      'The signature North Cascades photo. MP 132 overlook = 20-30 min postcard stop; Colonial Creek launch = paddle under 7,000-ft walls.',
     sourceUrl: 'https://www.nps.gov/noca/learn/nature/index.htm',
     sourceLabel: 'NPS · North Cascades nature',
     activityAnchor: 'things-to-do.html#diablo-kayak',
@@ -257,7 +255,7 @@ export const LAKES: Lake[] = [
     needsWa20Through: true,
     name: 'Ross Lake',
     lede:
-      'The 23-mile-long wild reservoir north of Diablo. Only outfit with on-water rentals — Ross Lake Resort runs a water taxi + kayak fleet, but takes a hike-down + boat to reach.',
+      'The 23-mile-long wild reservoir north of Diablo. The only on-water rentals in the corridor — but takes a hike-down + boat to reach.',
     where: 'Trailhead: Diablo Dam end of Diablo Dam Rd · MP 134 then 1-mi descent',
     base: 'west',
     swim: 'cold-dip-only',
@@ -269,7 +267,7 @@ export const LAKES: Lake[] = [
         phone: '(206) 386-4437',
         url: 'https://www.rosslakeresort.com/equipment-rentals',
         notes:
-          '2026 rates (verified May 17): single kayak $90/day · double kayak $120/day · canoe $80/day · 14ft motorboat $190/day (9.9HP, fuel included, 700lb cap) · fly/spin rod $30/day. Open second Thursday in June through Oct 31. First-come / first-served, no priority for resort guests. Frequent high winds — arrive before 11am, return paddle harder due to southerlies. NO cell service on lake.',
+          '2026: single kayak $90/day · double $120 · canoe $80 · motorboat $190 · rod $30. First-come, first-served. Arrive before 11am (winds pick up). No cell service on the lake.',
       },
     ],
     fee: 'Free trail + free dock access (boats are paid above)',
@@ -280,14 +278,13 @@ export const LAKES: Lake[] = [
       { from: 'Marblemount (west)', minutes: '~1 hr to Diablo Dam trailhead' },
       { from: 'Concrete (west)', minutes: '~1 hr 30 min' },
     ],
-    bestWindow:
-      'Half-day or full-day on the lake (8 am-7 pm water-taxi window). Wind picks up afternoons — paddle morning, hike or fish PM.',
+    bestWindow: 'Paddle morning, hike or fish PM (water-taxi 8 am-7 pm).',
     description:
-      "Worth the choreography if you want to BE ON Ross Lake, not just look at it from the overlook. The only outfitter with on-water rentals in the entire NC corridor. Get there by hiking the 1-mile trail down from Diablo Dam (or take the NPS shuttle when running), then water-taxi north up the lake — drop off at one of the camps and paddle back, or rent a kayak/canoe right at the resort. Fly fishing is the other reason locals come (rainbow + cutthroat). Resort itself is rustic — floating cabins with no road access, see Cool sleeping if the lottery comes through.",
+      'Worth the choreography to BE on the lake. Hike 1 mi down from Diablo Dam, water-taxi north, paddle back. Fly fishing + floating cabins (see Cool sleeping).',
     sourceUrl: 'https://www.rosslakeresort.com/equipment-rentals',
     sourceLabel: 'Ross Lake Resort',
     activityAnchor: 'things-to-do.html#ross-lake-watertaxi',
-    sleepAnchor: 'for-erin.html#cool-sleeping',
+    sleepAnchor: 'lodging.html#cool-sleeping-places',
     verifiedAsOf: 'May 17, 2026',
     photos: [
       {
@@ -317,7 +314,7 @@ export const LAKES: Lake[] = [
     needsWa20Through: false,
     name: 'Patterson Lake',
     lede:
-      'The Sun Mountain Lodge lake — calm sub-alpine water, walk-up kayak/SUP/rowboat rentals at the marina. Warm enough to swim in August.',
+      'The Sun Mountain Lodge lake — calm sub-alpine water, walk-up rentals at the marina. Warm enough to swim in August.',
     where: 'Sun Mountain Lodge marina · 604 Patterson Lake Rd · ~15 min south of Winthrop',
     base: 'east',
     swim: 'yes',
@@ -328,8 +325,7 @@ export const LAKES: Lake[] = [
         name: 'Sun Mountain Lodge Marina',
         phone: '(509) 996-2211',
         url: 'https://sunmountainlodge.com/adventure/water-activities/',
-        notes:
-          'Kayak ~$30-50/hr · SUP, rowboat, pedalboat also available. Walk-up rentals — call ahead in peak August. Open to non-guests.',
+        notes: 'Kayak ~$30-50/hr · SUP, rowboat, pedalboat too. Walk-up, open to non-guests — call ahead in August.',
       },
     ],
     fee: 'Free if you stay at Sun Mountain · day-use fee at marina ($) for non-guests',
@@ -341,10 +337,9 @@ export const LAKES: Lake[] = [
       { from: 'Mazama', minutes: '~30 min' },
       { from: 'Marblemount (west)', minutes: '~3 hr — east-side only' },
     ],
-    bestWindow:
-      'Late morning calm for paddling. Sunset over the west shore (#5 on the sunset rank).',
+    bestWindow: 'Late-morning calm for paddling. Sunset over the west shore (#5 sunset rank).',
     description:
-      'Sub-alpine reservoir on the Sun Mountain Lodge property. Calm water, mountain backdrop, easy beginner paddling — exactly the rest-day water option for the east leg of Path B. Marina is open to the public, not guests-only. Patterson is also the most photographed reflection on the east side outside Pearrygin. Sun Mountain Patterson Lake Cabins (Cool sleeping) put you steps from the dock.',
+      'Easy beginner paddling on the Sun Mountain property — the east-side rest-day water option. Patterson Lake Cabins sit steps from the dock (Cool sleeping).',
     sourceUrl: 'https://sunmountainlodge.com/adventure/water-activities/',
     sourceLabel: 'Sun Mountain Lodge',
     activityAnchor: 'things-to-do.html#patterson-kayak',
@@ -375,7 +370,7 @@ export const LAKES: Lake[] = [
     needsWa20Through: false,
     name: 'Lake Chelan + Stehekin ferry',
     lede:
-      'The 50-mile fjord at the south edge of the park. Long day trip — drive Winthrop → Chelan (~3 hr) then ferry to Stehekin (4 hr each way). Worth flagging, almost certainly cut.',
+      'The 50-mile fjord at the south edge of the park. Winthrop → Chelan (~3 hr) then ferry to Stehekin (4 hr each way). Almost certainly cut.',
     where: 'Lady of the Lake terminal · 1418 W Woodin Ave · Chelan, WA',
     base: 'east',
     swim: 'yes',
@@ -386,13 +381,12 @@ export const LAKES: Lake[] = [
         name: 'Lady of the Lake (passenger ferry)',
         phone: '(509) 682-4584',
         url: 'https://ladyofthelake.com/boat-schedules/',
-        notes:
-          'Lady Liberty same-day RT ~$60-70/adult — verify on site. ~8 am depart, ~5 pm return (~6 hr layover in Stehekin).',
+        notes: 'Same-day RT ~$60-70/adult. ~8 am depart, ~5 pm return (~6 hr in Stehekin).',
       },
       {
         name: 'Stehekin Discovery Bikes + Buses',
         url: 'https://stehekin.com/lodging/',
-        notes: 'Red school bus to the Stehekin valley · bike rentals at the landing. (Previous stehekinvalley.com domain went DNS-dead May 2026 — confirm operator + 2026 hours by phone before counting on it. Verified 2026-05-17.)',
+        notes: 'Red bus + bike rentals at the landing. Confirm 2026 hours by phone.',
       },
     ],
     fee: 'Ferry RT $60-70/adult · no day-use fee for the lake itself',
@@ -403,14 +397,13 @@ export const LAKES: Lake[] = [
       { from: 'Winthrop', minutes: '~3 hr to Chelan ferry' },
       { from: 'Marblemount (west)', minutes: '~4 hr' },
     ],
-    bestWindow:
-      'Full-day commitment — only worth it if a Path-B east-side day frees up. Otherwise admire from the map.',
+    bestWindow: 'Full-day commitment — only if an east-side day frees up.',
     description:
-      'Boat-only village at the head of 50-mile-long Lake Chelan, inside the North Cascades NRA. Stehekin is the legend — the bakery, the red school bus, the Stehekin Valley road, the Rainbow Falls hike from the landing. But: this is a 3-hour drive south to Chelan, then a 4-hour boat each way. On a 4-night trip with hikes already committed, this almost always falls off the plan. Listed for completeness in case a hike day collapses and you want a "real boat day" instead.',
+      'Boat-only village at the head of Lake Chelan (bakery, red school bus, Rainbow Falls). Listed for completeness — only worth it if a hike day collapses.',
     sourceUrl: 'https://ladyofthelake.com/boat-schedules/',
     sourceLabel: 'Lady of the Lake',
     activityAnchor: 'things-to-do.html#lake-chelan-stehekin',
-    sleepAnchor: 'for-erin.html#cool-sleeping',
+    sleepAnchor: 'lodging.html#cool-sleeping-places',
     verifiedAsOf: 'May 17, 2026',
     photos: [
       {
@@ -440,7 +433,7 @@ export const LAKES: Lake[] = [
     needsWa20Through: false,
     name: 'Methow River',
     lede:
-      'The east-side river — not a lake, but the warmest moving water on the trip. Tube it on a hot August afternoon, picnic at the riverside parks, careful dip at gravel-bar edges.',
+      'The east-side river — the warmest moving water on the trip. Tube it on a hot August afternoon; careful dip at gravel-bar edges.',
     where: 'Mile-by-mile along WA-20 through Winthrop + Twisp · accesses at Riverside Ave + Methow River Trail',
     base: 'east',
     swim: 'cold-dip-only',
@@ -456,7 +449,7 @@ export const LAKES: Lake[] = [
       {
         name: 'Winthrop town shops',
         url: 'https://winthropwashington.com/',
-        notes: 'Town swim/picnic accesses along Riverside Ave + Methow River Trail.',
+        notes: 'Swim/picnic accesses along Riverside Ave + the river trail.',
       },
     ],
     fee: 'Free river access · paid town parking',
@@ -468,10 +461,9 @@ export const LAKES: Lake[] = [
       { from: 'Mazama', minutes: '~25 min' },
       { from: 'Marblemount (west)', minutes: '~3 hr — east-side only' },
     ],
-    bestWindow:
-      'Hot afternoon (PM 2-6) when the air hits 85 °F. River runs lower + warmer mid-August than June.',
+    bestWindow: 'Hot afternoon (2-6 pm). Runs lower + warmer mid-August than June.',
     description:
-      'The Methow runs warm by PNW standards (mid-60s °F August), and the gentle gradient through Winthrop makes for an easy float on a hot afternoon. Bring or rent a tube. Pack the picnic to the riverside parks on Riverside Ave. Wade at the gravel-bar edges, do not swim out into the current. Pairs naturally with a Winthrop boardwalk afternoon or an Old Schoolhouse Brewery dinner on the deck. Note: water levels drop through August — earlier in the month is fuller.',
+      'Warm by PNW standards (mid-60s °F), gentle through Winthrop — easy tube float on a hot afternoon. Picnic at the Riverside Ave parks.',
     sourceUrl: 'https://methowtrails.org/',
     sourceLabel: 'Methow Trails · Methow Valley',
     activityAnchor: 'things-to-do.html#methow-trail',
@@ -509,17 +501,14 @@ export interface LakeRuledOut {
 export const LAKES_RULED_OUT: LakeRuledOut[] = [
   {
     what: 'Baker Lake (swim + free launch)',
-    why:
-      'Surfaced on the Activities page (sandy swim beach at Horseshoe Cove, ~1 hr from Marblemount). Useful as a Path-A west-side rest-day option, but it\'s a Mt. Baker reservoir, not a North Cascades park lake — kept on Activities, not promoted here.',
+    why: 'A Mt. Baker reservoir, not a park lake — kept on Activities.',
   },
   {
     what: 'Wallace Falls / Lake 22 / Hidden Lake',
-    why:
-      'Hike-in alpine lakes — covered (or rule-outed) on the Hikes page, not as destination lakes. Listing them here would double-count and dilute the "drive-up + paddle + swim" filter.',
+    why: 'Hike-in alpine lakes — covered on the Hikes page.',
   },
   {
     what: 'Skagit River swim',
-    why:
-      'On Activities as a careful wading spot (Marblemount Boat Launch). Not a swim destination — the river runs hard and glacially cold. Kept narrow there, not promoted to lake-tier here.',
+    why: 'On Activities as a careful wading spot — not a swim destination.',
   },
 ];

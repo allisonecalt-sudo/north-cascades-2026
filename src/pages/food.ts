@@ -1,8 +1,12 @@
 /**
- * food.ts — kosher-decentered food strategy.
+ * food.ts — the canonical grocery + kosher reference for the trip.
  *
- * Cook from cabin, pick groceries before you drive in, treat-meal options
- * that don't compromise the keep-it-kosher default.
+ * Composes: renderFood() (kosher explainer + shopping plan + costs) and
+ * renderRestaurants() (kosher-only sit-down picks). The kosher explainer is
+ * stated ONCE here and nowhere else on the site — this page owns it.
+ *
+ * Page type = Reference: lede + hero CTA front-load the plan (buy in Seattle,
+ * cook from cabin) in scannable form; the section data carries the detail.
  */
 
 import '../styles/main.css';
@@ -15,13 +19,13 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'food',
     title: 'Groceries + kosher notes',
-    lede: 'Food is not a thing on this trip — both keep kosher, both cook. Grocery stop in Seattle, cook from the cabin, done. This page is just the reference.',
+    lede: 'Big stock-up in Seattle Day 1 · cook from the cabin · mid-trip top-ups en route.',
     imageHero: {
       // Unsplash — cabin kitchen with wood + warm light.
       src: 'img/unsplash-1556910103-1c02745aae4d.jpg',
       alt: 'Rustic kitchen counter with wood, ceramic, and warm window light',
       credit: 'Photo: Becca Tapert / Unsplash',
-      ctaLabel: 'See the plan',
+      ctaLabel: 'Shopping plan + costs',
       ctaHref: '#food',
     },
   });

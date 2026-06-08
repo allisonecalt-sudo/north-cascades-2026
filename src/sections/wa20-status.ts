@@ -66,7 +66,7 @@ function renderStatusPill(): HTMLElement {
     h(
       'p',
       { class: 'wa20-status-block__asof' },
-      'Site-author verified ',
+      'Verified ',
       h('strong', {}, WA20_STATUS.asOfLabel),
       ' — re-confirm by phone before booking week.'
     ),
@@ -105,12 +105,7 @@ function renderCorridorVideo(): HTMLElement {
   return h(
     'div',
     { class: 'wa20-corridor-video' },
-    h('h3', { class: 'wa20-block-title' }, 'What the corridor actually looks like'),
-    h(
-      'p',
-      { class: 'wa20-block-lede' },
-      'A short drive-through of SR-20 (filmed when the highway was open through). Shows the scale of the closure-affected mid-corridor + the kind of road experience you\'re budgeting for.'
-    ),
+    h('h3', { class: 'wa20-block-title' }, 'What the corridor looks like'),
     renderVideoEmbed({
       videoId: WA20_CORRIDOR_VIDEO.youtubeId,
       title: WA20_CORRIDOR_VIDEO.title,
@@ -129,11 +124,6 @@ function renderSources(): HTMLElement {
     'div',
     { class: 'wa20-sources' },
     h('h3', { class: 'wa20-block-title' }, 'Source-by-source status'),
-    h(
-      'p',
-      { class: 'wa20-block-lede' },
-      'Three sources, two different stories. WSDOT owns the road and is the authority — NPS road-conditions hasn\'t been re-updated since May 6 and is stale. Local news fills in the milestones.'
-    ),
     h(
       'div',
       { class: 'wa20-sources__grid' },
@@ -173,7 +163,6 @@ function renderSourceCard(src: (typeof WA20_SOURCES)[number]): HTMLElement {
       h('strong', {}, 'Last verified: '),
       src.lastVerified
     ),
-    h('p', { class: 'wa20-source-card__trust-note' }, src.trustNote),
     h(
       'p',
       { class: 'wa20-source-card__link' },
@@ -198,11 +187,11 @@ function renderPhoneProtocol(): HTMLElement {
     h(
       'p',
       { class: 'wa20-phone__lede' },
-      'Two windows to call: ',
-      h('strong', {}, 'booking week '),
-      '(before locking flights + lodging) and ',
-      h('strong', {}, 'morning-of '),
-      '(before driving the corridor — if WA-20 has reopened by August, conditions can still flip with smoke or new washouts).'
+      'Call twice: ',
+      h('strong', {}, 'booking week'),
+      ' and ',
+      h('strong', {}, 'morning-of'),
+      '.'
     ),
     h(
       'div',
@@ -275,13 +264,6 @@ function renderAffected(): HTMLElement {
     'div',
     { class: 'wa20-affected' },
     h('h3', { class: 'wa20-block-title' }, 'What\'s affected'),
-    h(
-      'p',
-      { class: 'wa20-block-lede' },
-      'Pulled from the curated hike / lake / activity / hidden-gem / viewpoint cards (anywhere tagged ',
-      h('code', {}, 'needsWa20Through'),
-      '). Click any name to jump to its full card.'
-    ),
     ...order
       .filter((imp) => (groups.get(imp)?.length ?? 0) > 0)
       .map((imp) => renderAffectedGroup(imp, groups.get(imp) ?? []))
@@ -333,11 +315,6 @@ function renderContingency(): HTMLElement {
     { class: 'wa20-contingency' },
     h('h3', { class: 'wa20-block-title' }, 'Contingency — if WA-20 stays closed'),
     h(
-      'p',
-      { class: 'wa20-block-lede' },
-      'Three plays: drive Stevens Pass on the connector day, anchor west, or anchor east. Each is workable; the call depends on what reopens (or doesn\'t) by booking week in early July.'
-    ),
-    h(
       'div',
       { class: 'wa20-contingency__grid' },
       ...WA20_CONTINGENCY.map(renderContingencyCard)
@@ -378,11 +355,6 @@ function renderTimeline(): HTMLElement {
     'div',
     { class: 'wa20-timeline' },
     h('h3', { class: 'wa20-block-title' }, 'Recent history — how we got here'),
-    h(
-      'p',
-      { class: 'wa20-block-lede' },
-      'Six events from December 2025 → today. The damage is unusual: both a washout and a rockslide in the same closure, in different spots along the corridor.'
-    ),
     h(
       'ol',
       { class: 'wa20-timeline__list' },

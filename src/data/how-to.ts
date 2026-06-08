@@ -506,13 +506,13 @@ export function matchesFilters(
 /** TLDR shown at top of the page. */
 export const HOW_TO_TLDR = {
   open:
-    'There are 2 realistic ways to do this if WA-20 opens by June 25. Path A anchors west (lowest risk, locked fallback), Path B splits both sides (the primary plan — most variety).',
+    'If WA-20 opens by June 25: Path B splits both sides (primary — most variety), Path A anchors west (the locked fallback).',
   closed:
-    'There are 2 realistic ways to do this if WA-20 stays closed. Path D anchors west (Cascade Pass + Mt. Baker). Path E anchors east via Stevens Pass (Maple Pass + Methow). Path F is the punt — last resort.',
+    'If WA-20 stays closed: Path D anchors west (Cascade Pass + Mt. Baker), Path E east via Stevens Pass (Maple Pass + Methow). Path F is the punt.',
 };
 
 export const HOW_TO_PAGE_META = {
   lede:
-    'Given the trip\'s constraints — 5 days, 2 travelers, kosher kitchen required, WA-20 mid-corridor under repair — these are the realistic ways to do it. Pick by answering a few questions, or scan the path cards.',
+    'The realistic ways to do this trip — 5 days, 2 travelers, kosher kitchen, WA-20 under repair. Answer a few questions, or scan the cards.',
   asOf: 'May 17, 2026',
 } as const;

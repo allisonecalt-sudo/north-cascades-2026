@@ -157,11 +157,13 @@ function renderGist(selectedId: string | null): HTMLElement {
       'li',
       { class: 'gist__item' },
       h('strong', {}, 'Kosher only. '),
-      'Corridor towns have no kosher restaurants — cabin meals from packaged hechsher goods are the default.'
+      'Corridor towns have none — cabin meals (see ',
+      h('a', { href: '#food' }, 'Kosher notes'),
+      ').'
     ),
     seattleExcluded
-      ? h('li', { class: 'gist__item' }, 'Seattle Va\'ad options sit collapsed below — this path skips Seattle.')
-      : h('li', { class: 'gist__item' }, 'Seattle Va\'ad-certified options listed for sit-down kosher meals on the Day-5 SEA leg or a pre/post-trip overnight.')
+      ? h('li', { class: 'gist__item' }, 'Seattle Va\'ad picks collapsed below — this path skips Seattle.')
+      : h('li', { class: 'gist__item' }, 'Seattle Va\'ad picks below for a Day-5 or overnight sit-down.')
   );
 }
 

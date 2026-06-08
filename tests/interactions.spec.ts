@@ -51,7 +51,7 @@ test.describe('interactions', () => {
   test('things-to-do groups collapse + a deep link opens the right one', async ({ page }) => {
     await page.goto('things-to-do.html', { waitUntil: 'networkidle' });
     const groups = page.locator('details.ttd-group');
-    expect(await groups.count(), 'collapsible groups').toBe(4);
+    expect(await groups.count(), 'collapsible groups').toBe(5);
     // Lakes starts collapsed; the #lakes section should be hidden until opened.
     await expect(page.locator('#lakes')).toBeHidden();
     // Following the deep link must reveal it (page JS opens the wrapping <details>).

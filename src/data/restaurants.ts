@@ -37,15 +37,11 @@ export const RESTAURANTS: RestaurantTown[] = [
   // ---------- Corridor towns — no kosher options ----------
   {
     town: 'Marblemount · Rockport · Concrete',
-    context:
-      'No kosher restaurants in these towns. Default to cabin meals — see Kosher notes section for the supermarket strategy.',
     noKosher: true,
     places: [],
   },
   {
     town: 'Winthrop · Mazama',
-    context:
-      'No kosher restaurants here. Default to cabin meals — see Kosher notes section for the supermarket strategy.',
     noKosher: true,
     places: [],
   },
@@ -54,7 +50,7 @@ export const RESTAURANTS: RestaurantTown[] = [
   {
     town: 'Seattle — kosher options',
     context:
-      'Va\'ad-certified sit-down + grocery options. The only kosher restaurants on the trip route — useful for a Day-5 stop or a pre/post-trip Seattle overnight.',
+      'The only kosher sit-down + grocery options on the route — Va\'ad-certified. For a Day-5 stop or a Seattle overnight.',
     places: [
       {
         name: 'QFC Mercer Island — kosher deli counter',

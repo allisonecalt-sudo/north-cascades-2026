@@ -219,7 +219,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
     ],
     pairsWith: 'SEA roundtrip flight (default for both paths).',
     tradeoff:
-      'Cheapest SUV class with verified live quote. Compact SUV is the right shape for 2 people + gear without overbuying. Costco bundles free second driver and runs 10-25% under brand-direct retail. Clearance fine for Cascade River Rd gravel in August — but see contract note about unpaved roads.',
+      'Cheapest SUV with a verified quote. Right shape for 2 + gear; clearance fine for Cascade River Rd gravel.',
   },
   {
     id: 'sea-rt-hybrid-sedan-costco',
@@ -275,7 +275,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
     ],
     pairsWith: 'SEA roundtrip flight (default for both paths).',
     tradeoff:
-      'Worth picking IF you prioritize fuel economy over clearance. Sedan-on-gravel works in August (drivers report doing it routinely) but adds 5-10 mph of careful driving on Cascade River Rd. Camry Hybrid is the most fuel-efficient class with a verified live quote.',
+      'Pick if you prioritize fuel economy over clearance. Sedan-on-gravel works in August, just slower. Only hybrid with a verified quote.',
   },
   {
     id: 'sea-rt-sedan',
@@ -335,7 +335,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
     ],
     pairsWith: 'Any path. Cheapest option that meets the brief.',
     tradeoff:
-      'Cheapest meets-brief. 2 checked + 2 carry-ons fit in a Corolla trunk if packed thoughtfully. Cascade River Rd is gravel-but-passable for a sedan in August — drivers report doing it routinely, just slow and tracking established tire lines. Sedan rental contract restriction on unpaved roads is the same as the SUVs.',
+      'Cheapest meets-brief. 4 bags fit a Corolla trunk if packed well. Gravel-passable for a sedan in August, just slow.',
   },
   {
     id: 'sea-rt-midsuv-gas',
@@ -391,7 +391,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
     ],
     pairsWith: 'Path B (both sides) — more gear, longer drive day if WA-20 closed and you reroute Stevens Pass.',
     tradeoff:
-      'Real quote shows mid-size SUV is only $27 more than Compact SUV at Costco — worth the upgrade for clearance + cargo if cost-delta is that small. Quote-captured pricing makes this the best value-for-room option.',
+      'Only $27 over the Compact SUV — worth the upgrade for clearance + cargo. Best value-for-room option.',
   },
   {
     id: 'sea-rt-standard-elite-suv',
@@ -446,7 +446,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
     ],
     pairsWith: 'Any path. The "nicer car" option.',
     tradeoff:
-      'Worth it if you want the Audi/Cadillac interior comfort or a 7-seater for spreading out. For 2 people, this is paying for premium feel not utility — Mid-size SUV at $543 gets you the same clearance + cargo for less.',
+      'Pays for premium feel, not utility — the Mid-size SUV gets the same clearance + cargo for less. 7-seater available.',
   },
   {
     id: 'turo-sea-suv',
@@ -502,7 +502,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
     ],
     pairsWith: 'SEA roundtrip flight.',
     tradeoff:
-      'Cheapest verified quotes captured ($262-283 pre-tax pre-protection). Read each host\'s "unpaved roads OK?" policy before booking — some Turo hosts explicitly allow gravel forest roads where major rentals do not. Watch mileage caps (trip math: 600-900 miles is OK but tight at 200/day cap) and host reliability.',
+      'Cheapest verified quotes ($262-283 pre-tax). Some hosts allow gravel where majors don\'t. Watch mileage caps + host reliability.',
   },
   {
     id: 'bli-rt-suv',
@@ -564,7 +564,7 @@ export const RENTAL_OPTIONS: RentalOption[] = [
     ],
     pairsWith: 'BLI roundtrip flight (Path B or C — east-side base only viable if WA-20 open).',
     tradeoff:
-      'Saves ~2 hr of Day-1 driving (BLI is ~90 mi closer to Marblemount than SEA). BUT: inventory thin, 15-25% pricier than SEA same-class, fewer flight options. Hybrid availability at BLI is limited. Only worth it if WA-20 is confirmed open by July AND a BLI flight pair makes sense.',
+      'Saves ~2 hr of Day-1 driving but inventory is thin + 15-25% pricier. Only if WA-20 confirmed open by July AND a BLI flight pair makes sense.',
   },
   {
     id: 'sea-bli-oneway',
@@ -624,6 +624,6 @@ export const RENTAL_OPTIONS: RentalOption[] = [
     ],
     pairsWith: 'Open-jaw flight (SEA in / BLI out). Path B or C only.',
     tradeoff:
-      'Saves Day-5 backtrack (~3 hr Marblemount → SEA). Premium $150-300 over SEA RT same-class. Worth it ONLY if WA-20 is confirmed open AND open-jaw flights price within ~$100 of roundtrip. AutoSlash is the right shop for this — it surfaces drop-fee differences between brands.',
+      'Saves the Day-5 backtrack but $150-300 premium over SEA RT. Only if WA-20 open AND open-jaw flights price within ~$100 of RT. Shop on AutoSlash.',
   },
 ];

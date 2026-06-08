@@ -468,17 +468,7 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
         'li',
         { class: 'gist__item' },
         h('strong', {}, 'Lodging is booked.'),
-        ' Three Airbnbs are reserved for Aug 16–20 (Arlington + two in Sedro-Woolley) — all kept for now until Allison + Erin pick one and cancel the rest. See the booked-stays cards above.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        'All three booked stays sit WEST of the WA-20 corridor — accessible even if the highway stays closed — and ~40 min farther west than the Marblemount cluster the comparison below was built around.'
-      ),
-      h(
-        'li',
-        { class: 'gist__item' },
-        'The filter/shortlist comparison below is pre-booking research, kept for the record.'
+        ' Three Airbnbs hold Aug 16–20 (cards above) — pick one, cancel two. The comparison below is pre-booking research, kept for the record.'
       )
     );
   }
@@ -508,32 +498,33 @@ function renderBody(wrap: HTMLElement, selectedId: string | null): void {
 // BOOKED STAYS — top-of-section reality (May 19-20, 2026)
 // ====================================================================
 
-/** One booked-stay card. */
+/**
+ * One booked-stay card. UNIFORM across all three: same spec rows, same order,
+ * "—" for missing values. Anchor specs lead (place · sleeps · $ · drive). The
+ * "price not captured" stays render that honestly — no invented numbers.
+ */
 function renderBookedStayCard(stay: BookedStay): HTMLElement {
-  const facts: HTMLElement[] = [];
-  if (stay.host) {
-    facts.push(h('dt', {}, 'Host'), h('dd', {}, stay.host));
-  }
-  if (stay.guests) {
-    facts.push(h('dt', {}, 'Sleeps'), h('dd', {}, `${stay.guests} guests`));
-  }
-  if (stay.layout) {
-    facts.push(h('dt', {}, 'Layout'), h('dd', {}, stay.layout));
-  }
-  if (stay.price) {
-    facts.push(h('dt', {}, 'Price'), h('dd', {}, stay.price));
-  }
-  if (stay.rating) {
-    facts.push(h('dt', {}, 'Rating'), h('dd', {}, stay.rating));
-  }
-  facts.push(
-    h('dt', {}, 'Booked by'),
-    h('dd', {}, stay.bookedBy)
-  );
-  facts.push(
-    h('dt', {}, 'Confirmation'),
-    h('dd', {}, stay.conf ?? '—')
-  );
+  // Same rows on every card, same order — the eye scans a column. Anchor
+  // specs lead (place · sleeps · $ · drive). "—" when a value is missing.
+  // Host / booked-by / conf moved off the visible card into a small <details>
+  // (booking-admin data — needed, but not what decides where to sleep).
+  const facts: HTMLElement[] = [
+    h('dt', {}, 'Place'), h('dd', {}, stay.place),
+    h('dt', {}, 'Sleeps'), h('dd', {}, stay.guests ? `${stay.guests} guests` : '—'),
+    h('dt', {}, '$ (4 nights)'), h('dd', {}, stay.price ?? '—'),
+    h('dt', {}, 'Drive to trailheads'), h('dd', {}, stay.driveToTrailheads ?? '—'),
+    h('dt', {}, 'Layout'), h('dd', {}, stay.layout ?? '—'),
+    h('dt', {}, 'Free cancel until'),
+    h('dd', {}, stay.freeCancellation ? (stay.freeCancelUntil ?? 'yes') : '—'),
+  ];
+  // Booking admin — preserved but tucked away. Rating lives here too (nice to
+  // have, not a decider for an already-booked stay).
+  const admin: HTMLElement[] = [
+    h('dt', {}, 'Booked by'), h('dd', {}, stay.bookedBy),
+    h('dt', {}, 'Host'), h('dd', {}, stay.host ?? '—'),
+    h('dt', {}, 'Confirmation'), h('dd', {}, stay.conf ?? '—'),
+    h('dt', {}, 'Rating'), h('dd', {}, stay.rating ?? '—'),
+  ];
   return h(
     'article',
     { class: 'card booked-stay-card', 'aria-label': `Booked: ${stay.name}` },
@@ -543,21 +534,15 @@ function renderBookedStayCard(stay: BookedStay): HTMLElement {
       h('span', { class: 'booked-stay-card__badge' }, '✅ Booked'),
       h('h4', { class: 'card__title' }, stay.name)
     ),
-    h('p', { class: 'booked-stay-card__place' }, stay.place),
-    stay.unitType ? h('p', { class: 'booked-stay-card__addr' }, stay.unitType) : null,
-    stay.address ? h('p', { class: 'booked-stay-card__addr' }, stay.address) : null,
     h('dl', { class: 'card__facts' }, ...facts),
-    stay.freeCancellation
-      ? h(
-          'p',
-          { class: 'booked-stay-card__feature' },
-          stay.freeCancelUntil
-            ? `✓ Free cancellation until ${stay.freeCancelUntil}`
-            : '✓ Free cancellation'
-        )
-      : null,
     stay.feature ? h('p', { class: 'booked-stay-card__feature' }, stay.feature) : null,
-    stay.source ? h('p', { class: 'booked-stay-card__source' }, stay.source) : null
+    h(
+      'details',
+      { class: 'booked-stay-card__admin' },
+      h('summary', {}, 'Booking details'),
+      h('dl', { class: 'card__facts' }, ...admin),
+      stay.source ? h('p', { class: 'booked-stay-card__source' }, stay.source) : null
+    )
   );
 }
 
@@ -573,10 +558,8 @@ function renderBookedStays(): HTMLElement {
     h(
       'p',
       { class: 'booked-stays__warning', role: 'note' },
-      h('strong', {}, 'Three reservations, same dates — all kept for now. '),
-      'All three Airbnbs below hold the identical nights (Aug 16–20). Allison booked two (Sedro-Woolley Lakeside + Arlington); Erin booked The Carriage House (Sedro-Woolley). ',
-      h('strong', {}, 'Allison + Erin haven\'t picked yet'),
-      ' — decide before each free-cancellation window closes, then cancel the rest.'
+      h('strong', {}, 'Three holds, same dates (Aug 16–20) — pick one, cancel two. '),
+      'Allison booked two; Erin booked The Carriage House. Decide before each free-cancel window closes.'
     ),
     h(
       'div',
@@ -584,26 +567,9 @@ function renderBookedStays(): HTMLElement {
       ...BOOKED_STAYS.map(renderBookedStayCard)
     ),
     h(
-      'ul',
+      'p',
       { class: 'booked-stays__notes' },
-      h(
-        'li',
-        {},
-        h('strong', {}, 'Location: '),
-        'all three sit WEST of the WA-20 closure — reachable even if the highway stays shut — but ~40 min farther west than the old Marblemount plan (≈ 1 hr 15 to the trailheads).'
-      ),
-      h(
-        'li',
-        {},
-        h('strong', {}, 'Address: '),
-        'Erin shared "27024 Minkler Rd, Sedro-Woolley" — not yet confirmed which listing it belongs to.'
-      ),
-      h(
-        'li',
-        {},
-        h('strong', {}, 'Kosher: '),
-        'cook-in-from-Va\'ad-groceries plan holds across all three.'
-      )
+      'All three sit west of the WA-20 closure (≈ 1 hr 15 to trailheads). Kosher cook-in holds at all three. Address Erin shared — "27024 Minkler Rd, Sedro-Woolley" — not yet matched to a listing.'
     )
   );
 }
@@ -663,7 +629,7 @@ export function renderLodging(): HTMLElement {
     h(
       'p',
       { class: 'disclosure__lede' },
-      'Lodging is booked (above). The picks and the two path-shapes below are the research that led there — kept for the record, not a live choice. NB: the booked house sits ~40 min farther west than the Marblemount cluster these were graded against, so drive-times here run short.'
+      'The two path-shapes the picks were graded against. Drive-times below run short — the booked house is ~40 min farther west.'
     ),
     h(
       'ol',
@@ -671,20 +637,14 @@ export function renderLodging(): HTMLElement {
       h(
         'li',
         {},
-        h('strong', {}, 'Path B (primary) — 2 nights west + 2 nights east:'),
-        ' Marblemount cluster Nights 1-2 → Winthrop/Mazama Nights 3-4. ',
-        h(
-          'em',
-          {},
-          '"the Marble Mount side, just because in case that road doesn\'t open up in time… within an hour driving range."'
-        ),
-        ' — Erin May 18, 11:43pm VN.'
+        h('strong', {}, 'Path B (primary):'),
+        ' 2 nights west (Marblemount cluster) + 2 nights east (Winthrop/Mazama).'
       ),
       h(
         'li',
         {},
-        h('strong', {}, 'Path A (locked fallback) — 4 nights in Marblemount cluster:'),
-        ' one cabin all trip in Marblemount / Concrete / Rockport. Engages automatically if WA-20 stays closed.'
+        h('strong', {}, 'Path A (fallback):'),
+        ' 4 nights west — one cabin all trip. Engages if WA-20 stays closed.'
       )
     )
   );
@@ -698,12 +658,11 @@ export function renderLodging(): HTMLElement {
         'font-size: 0.78rem; color: var(--c-ink-500); margin: 0 0 var(--sp-4); line-height: 1.5;',
     },
     h('strong', {}, '✅ Verified May 2026.'),
-    ' Review scores + prices searched live for Aug 16-20, 2026 dates. ',
-    h('strong', {}, '⚠️ Multi-unit properties: confirm bed configuration at booking'),
-    ' — cabin layouts vary by unit type, lodge rooms often differ from cabins. ',
-    h('strong', {}, '📅 Aug 16-20 availability:'),
-    ' verify on the booking site, supply fluctuates. ',
-    'Some non-primary carousel photos are stock or regional context — see booking links for actual property photos.'
+    ' Scores + prices searched live for Aug 16-20. ',
+    h('strong', {}, '⚠️ Multi-unit: confirm bed config at booking.'),
+    ' ',
+    h('strong', {}, '📅 Availability:'),
+    ' verify on the booking site. Some carousel photos are representative — see booking links for actual property shots.'
   );
 
   const chipBar = renderChipBar();
@@ -750,7 +709,7 @@ export function renderLodging(): HTMLElement {
     h(
       'p',
       { class: 'disclosure__lede' },
-      'Kept for the record. The booked house is ~40 min west of this cluster, so the per-card drive-times below run short for the actual stay.'
+      'Pre-booking research, kept for the record.'
     ),
     sourceStrip,
     sourceNote,

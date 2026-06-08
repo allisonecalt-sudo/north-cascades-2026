@@ -1,11 +1,6 @@
 /**
- * Kosher notes — one short paragraph, no architecture.
- *
- * Per Allison May 16: "you can tell us all kosher stuff to know but we can
- * also shop at reg supermarkets and buying food." The kosher footprint on
- * this site is intentionally tight — one approach paragraph + a slim Seattle
- * Va\'ad resources line. No Chabad-emergency rigging. No grocery-pilgrimage
- * stops. Kosher restaurants live in the Restaurants section, not here.
+ * Kosher notes — tight footprint: approach + budget + Va'ad resources line.
+ * Kosher restaurants live in the Restaurants section, not here.
  */
 
 import { FOOD_APPROACH, FOOD_BUDGET } from '../data/food';
@@ -82,7 +77,7 @@ function renderBudgetBlock(): HTMLElement {
     h(
       'p',
       { class: 'food-budget__verified' },
-      'Verified May 19, 2026 against BLS grocery norms + per-restaurant Yelp price tiers. WA gas-tax inflation is bleeding into grocery prices too — re-verify the week before the trip.'
+      'Source: BLS grocery norms + Yelp price tiers · verified May 19, 2026.'
     )
   );
 }
@@ -133,7 +128,7 @@ export function renderFood(): HTMLElement {
         h(
           'span',
           { class: 'mini-list__detail' },
-          'Packaged hechsher goods + fridge + microwave covers most meals — pasta, sealed sauces, rotisserie chicken, fruit, salad, bread. Sit-down kosher options live in the Food + restaurants section.'
+          'Fridge + microwave covers most meals — pasta, sealed sauces, rotisserie chicken, fruit, salad, bread.'
         )
       )
     )

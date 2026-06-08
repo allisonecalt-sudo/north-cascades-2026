@@ -119,8 +119,7 @@ export const HIKES: Hike[] = [
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/rainy-lake',
-    description:
-      'Flat paved walk to an alpine lake basin. Good first-morning warm-up or rest-day option.',
+    description: 'Paved walk to an alpine lake basin.',
     researchNotes:
       'WTA-verified May 17, 2026: 1.8 mi paved RT, NW Forest Pass required. Trailhead at MP 158 — east of the WA-20 mid-pass closure, accessible from Mazama/Winthrop. Bug load eases by mid-August; carry a shell for ridge weather.',
     video: {
@@ -172,7 +171,7 @@ export const HIKES: Hike[] = [
     season: 'year-round',
     verifiedAsOf: 'May 17, 2026',
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/ladder-creek-falls',
-    description: 'Short paved loop. Lit at night until 11 pm — easy first-evening option.',
+    description: 'Short paved loop, lit until 11 pm.',
     researchNotes:
       'WTA-verified May 17, 2026: <0.5 mi paved loop behind Gorge Powerhouse, no permit required. MP 120 — west of the WA-20 mid-pass closure, reachable from Marblemount any time the highway is open to Newhalem. Lights stay on dusk-to-11pm in summer.',
     photos: [
@@ -204,8 +203,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'none',
     season: 'year-round',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Suspension bridge over the Skagit then a short interpretive loop through old-growth Western red cedar. Easy add-on to any Newhalem stop — pair with Ladder Creek Falls.',
+    description: 'Suspension bridge over the Skagit + old-growth cedar loop.',
     hiddenGem: true,
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/trail-of-the-cedars',
     researchNotes:
@@ -232,8 +230,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      "Mt. Shuksan reflected in a tiny tarn — said to be one of the most photographed views in America. Pair with Chain Lakes / Artist Point on a Day-1 Bellingham detour.",
+    description: 'Mt. Shuksan mirrored in a tarn — one of America\'s most-photographed views.',
     hiddenGem: true,
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/picture-lake',
     researchNotes:
@@ -286,8 +283,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Two alpine lakes + a year-round snowfield + wildflowers, right inside Heather Meadows. Pair with Picture Lake on the same Mt. Baker corridor swing.',
+    description: 'Two alpine lakes + snowfield + wildflowers in Heather Meadows.',
     hiddenGem: true,
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/bagley-lakes',
     researchNotes:
@@ -311,8 +307,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Short, scenic, and big payoff: alpine lake right under Liberty Bell. Quick option for the east-side day, or pair with a Washington Pass stop.',
+    description: 'Alpine lake right under Liberty Bell — short hike, big payoff.',
     researchNotes:
       'WTA-verified May 17, 2026: 4.4 mi RT / +1,050 ft, NW Forest Pass required. THIS IS THE WA-20 / Liberty Bell-group Blue Lake (MP 161) — NOT the Mt. Baker / Twin Lakes Blue Lake (closed via FR 12). Trailhead is east of the WA-20 closure, reachable from Mazama / Winthrop.',
     video: {
@@ -363,8 +358,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'none',
     season: 'jun-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Forested switchbacks up to a Diablo Lake overlook. Natural pairing with the drive-day stops along WA-20.',
+    description: 'Forested switchbacks to a Diablo Lake overlook.',
     researchNotes:
       'WTA-verified May 17, 2026: 3.6 mi / +635 ft, no permit required, 4.0/5 rating. Trailhead at Colonial Creek South Campground (MP 130) sits AT the western edge of the WA-20 mid-pass closure — may or may not be reachable from west side until the closure repair extends past MP 130. Check WSDOT week of trip.',
     video: {
@@ -415,8 +409,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'The full East-side scenic loop: forest switchbacks open into alpine meadows and a ridgeline view over Lake Ann + Cutthroat Peak. Counterclockwise is the easier-on-the-knees direction.',
+    description: 'Top-rated NC hike — ridgeline over Lake Ann + Cutthroat Peak. Go counterclockwise.',
     researchNotes:
       'WTA-verified May 17, 2026: 7.2 mi loop / +2,020 ft / 6,650 ft high point, NW Forest Pass, 4.84/5 from 166 votes — top-rated NC hike. Rainy Pass TH (MP 158) east of the WA-20 closure — reachable from Mazama / Winthrop. Snow can linger into July; mid-Aug clean.',
     video: {
@@ -475,8 +468,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'none',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Switchbacks up to a wide alpine pass at 5,400 ft with views into Stehekin valley. Sustained climb but the trail is steady, never technical.',
+    description: 'Switchbacks to a 5,400 ft alpine pass over Stehekin valley. Never technical.',
     researchNotes:
       'WTA-verified May 17, 2026: 7.0 mi RT / +1,800 ft / 5,392 ft high point, no permit required. Cascade River Rd CURRENTLY CLOSED at MP 20 (Eldorado) per NPS (last update May 6) — typical reopening late-June/early-July; mid-Aug normally fine but verify NPS 360-854-7200 in July. Parking fills by 9-10 am in August.',
     video: {
@@ -536,8 +528,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Erin May 18 callout — "I have something in the Google doc about Mt Baker, it sounds like it\'s worth checking out." West-side alternate, especially useful if east-side smoke or WA-20 status changes. Historic 1932 fire lookout, in-your-face Mt. Baker views. ~1 hr west of Marblemount.',
+    description: 'Historic 1932 fire lookout with in-your-face Mt. Baker views. West-side backup.',
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/park-butte',
     researchNotes:
       'WTA-verified May 17, 2026: 7.5 mi RT / +2,200 ft / 5,450 ft summit, NW Forest Pass required. FR 13 / Baker Lake Rd is Mt. Baker corridor — west-side access INDEPENDENT of WA-20 closure. Seasonal bridge usually in place by early summer; verify Mt. Baker-Snoqualmie NF road status before counting on it. ADDED TO PATH B HIKES May 19, 2026 per Erin\'s explicit callout.',
@@ -558,8 +549,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Heather Meadows / Artist Point — alpine lakes with Baker + Shuksan views. Works as a Day 1 detour from BLI.',
+    description: 'Alpine lakes with Baker + Shuksan views via Artist Point.',
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/chain-lakes-loop',
     researchNotes:
       "Spot-checked May 17, 2026: 6.5 mi loop / +1,820 ft via Heather Meadows + Artist Point, NW Forest Pass required. WA-542 corridor — independent of WA-20 closure. Snow lingers into late July at high points; mid-Aug clean and prime wildflower fade.",
@@ -600,8 +590,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'discover-pass',
     season: 'may-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Forested lake-edge walk in the Sun Mountain trail web — picnic viewpoint on the southwest side, optional dip. Easy rest-day option from Winthrop or pair with the marina kayak rental.',
+    description: 'Forested lake-edge walk in the Sun Mountain trail web.',
     hiddenGem: true,
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/sun-mountain-trails',
     researchNotes:
@@ -623,8 +612,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jun-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Short, gradual climb through east-side pine + wildflowers to a two-tier falls. Steep first stretch then gentle. Quiet east-side option if Maple Pass is your big-hike day and you want something light. (Stats aligned to WTA: 3.5 mi.)',
+    description: 'East-side pine + wildflowers to a two-tier falls. Quiet, light.',
     hiddenGem: true,
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/cedar-creek',
     researchNotes:
@@ -646,8 +634,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Wildflower-streaked switchbacks up to a 5,500 ft summit with Baker, Shuksan, Pickets, San Juans on clear days. South-facing + exposed — sun protection mandatory. Steep FR 1030 is rough but passable for the rental.',
+    description: 'Wildflower switchbacks to a 5,500 ft summit — Baker, Shuksan, Pickets, San Juans. Exposed.',
     hiddenGem: true,
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/sauk-mountain',
     researchNotes:
@@ -669,8 +656,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Forest + meadows to a nose-to-nose Coleman Glacier overlook on Mt. Baker. Notable: a real creek crossing with slick rocks — go in the morning when flow is low. Mt. Baker corridor side trip — far from Marblemount, plan it as a Day-1 Bellingham detour or skip.',
+    description: 'Forest + meadows to a nose-to-nose Coleman Glacier overlook. Real creek crossing.',
     hiddenGem: true,
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/heliotrope-ridge',
     researchNotes:
@@ -678,8 +664,7 @@ export const HIKES: Hike[] = [
     status: {
       kind: 'trailhead-closed',
       label: 'Trailhead currently closed',
-      detail:
-        'Glacier Creek Road (FR 39) is closed at mile 1 due to washouts at miles 3.6 and 3.8 (WTA alert 3.20.26). Trail effectively inaccessible until road is repaired — may or may not reopen by Aug 16. Re-check WTA before counting on this one.',
+      detail: 'Glacier Creek Rd (FR 39) washed out — re-check WTA before counting on this one.',
       sourceUrl: 'https://www.wta.org/go-hiking/hikes/heliotrope-ridge',
       asOf: 'May 17, 2026',
     },
@@ -702,8 +687,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'none',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Optional add-on past the pass and up Sahale Arm to a glacier camp basin at 7,600 ft. Long day, significant climb — only if both feel strong on the morning of, and only with an early start.',
+    description: 'Extension up Sahale Arm to a glacier basin at 7,600 ft. Long day — early start only.',
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/sahale-arm',
     researchNotes:
       'WTA-verified May 17, 2026: 12.8 mi RT / +4,100 ft via Cascade Pass + Sahale Arm. Day-hike requires no permit; overnight at Sahale Glacier Camp needs backcountry permit (Recreation.gov lottery, opens ~Mar). Same Cascade River Rd dependency as Cascade Pass. Loose moraine near the camp — careful footing.',
@@ -750,8 +734,7 @@ export const HIKES: Hike[] = [
     permitNeeded: 'nw-forest-pass',
     season: 'jul-oct',
     verifiedAsOf: 'May 17, 2026',
-    description:
-      'Goes north on the PCT from Rainy Pass. Longer + harder than Maple Pass with a different ridgeline payoff. Only if Maple Pass feels too short.',
+    description: 'PCT north from Rainy Pass — longer + harder than Maple Pass.',
     sourceUrl: 'https://www.wta.org/go-hiking/hikes/cutthroat-pass',
     researchNotes:
       'WTA-verified May 17, 2026: 10 mi RT / +2,034 ft on the PCT north from Rainy Pass. NW Forest Pass required. Same MP 158 TH as Maple Pass — east of the WA-20 closure, reachable from Mazama / Winthrop.',

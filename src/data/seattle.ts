@@ -63,10 +63,8 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     name: 'Pike Place Market',
     category: 'walkable',
     address: '85 Pike St, Seattle, WA 98101',
-    why: 'Market arcade + flying-fish stalls + original Starbucks + waterfront below. Walk it in 45 min; longer if you stop to eat.',
+    why: 'Market arcade, flying-fish stalls, original Starbucks, waterfront below. ~45 min walk.',
     timeNeeded: '1-2 hours',
-    practical:
-      'Pike Place Market Garage (1531 Western Ave): ~$8/hr, $30 daily max.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'img/pike-place-market-seattle.jpg',
@@ -92,7 +90,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     name: 'Kerry Park viewpoint',
     category: 'walkable',
     address: '211 W Highland Dr, Seattle, WA 98119',
-    why: 'Skyline view — Space Needle framed against Mt Rainier on a clear day. Best near sunset.',
+    why: 'Skyline view — Space Needle framed against Mt Rainier. Best near sunset.',
     timeNeeded: '20-30 min',
     practical: 'Free street parking on W Highland Dr.',
     verifiedAsOf: 'May 17, 2026',
@@ -138,9 +136,8 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     name: 'Pioneer Square',
     category: 'walkable',
     address: 'Pioneer Square Historic District, Seattle, WA',
-    why: 'Seattle\'s oldest neighborhood — red-brick blocks, Smith Tower, Occidental Square, galleries, bookstores. Quieter than Pike Place.',
+    why: 'Oldest neighborhood — red-brick blocks, Smith Tower, Occidental Square, galleries, bookstores. Quieter than Pike Place.',
     timeNeeded: '45-60 min',
-    practical: 'Diamond garage at 1st & James or street meters.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'img/seattle-pioneer-square-pergola-2020-04-24.jpg',
@@ -184,9 +181,9 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     name: 'Olympic Sculpture Park',
     category: 'walkable',
     address: '2901 Western Ave, Seattle, WA 98121',
-    why: 'Free outdoor sculpture park on the waterfront — 9 acres of large-scale art, Puget Sound views. Easy walk from Pike Place along the Overlook Walk.',
+    why: 'Free 9-acre waterfront sculpture park, Puget Sound views. Easy walk from Pike Place.',
     timeNeeded: '30-45 min',
-    practical: 'Free entry, open daily sunrise-sunset. Small paid lot on site (~$6/hr).',
+    practical: 'Free, sunrise-sunset. Small paid lot (~$6/hr).',
     photo: {
       src: 'img/seattle-wa-usa-olympic-sculpture-park-hartriegel-2022-1615.jpg',
       alt: 'View through Olympic Sculpture Park trees with the waterfront beyond.',
@@ -202,9 +199,9 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     name: 'Snoqualmie Falls',
     category: 'outdoorsy',
     address: '6501 Railroad Ave SE, Snoqualmie, WA 98065',
-    why: '270-foot waterfall ~30 min east of SEA on I-90 — basically on the return route via I-90. Upper viewpoint is paved + 5-min walk from parking.',
+    why: '270-ft waterfall ~30 min east of SEA on I-90 — on the return route. Upper viewpoint paved, 5-min walk from parking.',
     timeNeeded: '30-60 min',
-    practical: 'Free parking at upper lot. Upper deck is accessible; 1.4-mi RT trail descends to the lower viewpoint.',
+    practical: 'Free upper lot. Deck is accessible; 1.4-mi RT trail to the lower viewpoint.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'img/snoqualmie-falls-washington.jpg',
@@ -238,9 +235,9 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     name: 'Discovery Park',
     category: 'outdoorsy',
     address: '3801 Discovery Park Blvd, Seattle, WA 98199',
-    why: 'Seattle\'s largest park — 534 acres of forest, meadow, sea bluffs. West Point Lighthouse trail (2.8 mi RT) drops to the beach.',
+    why: 'Largest park — 534 acres of forest, meadow, sea bluffs. West Point Lighthouse trail (2.8 mi RT) drops to the beach.',
     timeNeeded: '1-2 hours',
-    practical: 'Free parking. Open 4am-11:30pm. Gentle beach loop after a hiking trip.',
+    practical: 'Free. Open 4am-11:30pm.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'img/seattle-discovery-park-lighthouse-51521932685.jpg',
@@ -284,9 +281,9 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     name: 'Bainbridge Island ferry',
     category: 'outdoorsy',
     address: 'Colman Dock, 801 Alaskan Way, Seattle, WA 98104',
-    why: '35-min ferry across Puget Sound — open-air deck, the skyline shrinking behind you, mountains all around. Walk on (no car) for ~$10 round trip.',
+    why: '35-min ferry across Puget Sound — open-air deck, skyline behind you, mountains all around. Walk on (no car), ~$10 RT.',
     timeNeeded: '2.5-3 hrs with a Bainbridge stop',
-    practical: 'Pier 50 garage or Pioneer Square garages within a 5-min walk. Walk-on fares only charged westbound.',
+    practical: 'Pier 50 / Pioneer Square garages within 5-min walk. Walk-on fares charged westbound only.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
       src: 'img/washington-state-ferry-leaving-for-bainbridge-islandfor-bain-52230622298.jpg',
@@ -330,9 +327,9 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     name: 'Washington Park Arboretum',
     category: 'outdoorsy',
     address: '2300 Arboretum Dr E, Seattle, WA 98112',
-    why: '230 acres of curated landscape between Lake Washington and UW. Quiet, leafy. Japanese Garden inside for an extra $10.',
+    why: '230 acres of curated landscape between Lake Washington and UW. Quiet, leafy. Japanese Garden inside (+$10).',
     timeNeeded: '45-90 min',
-    practical: 'Free parking + free admission to the main arboretum.',
+    practical: 'Free parking + free admission.',
     photo: {
       src: 'img/washington-park-arboretum-seattle-august-2024.jpg',
       alt: 'Late-summer trail through the Washington Park Arboretum with tall trees on both sides.',
@@ -348,9 +345,9 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     name: 'Hotel Andra',
     category: 'lodging',
     address: '2000 4th Ave, Seattle, WA 98121',
-    why: 'Scandinavian-modern boutique in Belltown, walking distance to Pike Place + the waterfront. Spacious rooms, warm wood + wool — same nicer-not-fussy tier as the trip\'s cabin picks.',
+    why: 'Scandinavian-modern boutique in Belltown, walk to Pike Place + waterfront. Same nicer-not-fussy tier as the cabin picks.',
     timeNeeded: 'Overnight',
-    practical: '~$280-380/night Aug 2026. Valet parking ~$55/night.',
+    practical: '~$280-380/night Aug 2026. Valet ~$55/night.',
     photo: {
       src: 'img/seattle-hotel-andra-01.jpg',
       alt: 'Exterior of Hotel Andra in Belltown, Seattle.',
@@ -364,29 +361,29 @@ export const SEATTLE_STOPS: SeattleStop[] = [
 
 export const SEATTLE_LOGISTICS: SeattleLogisticsRow[] = [
   {
-    topic: 'SEA airport → downtown drive',
+    topic: 'SEA → downtown drive',
     detail:
-      'About 14 mi via I-5 N. ~20 min off-peak, 35-55 min in PM rush (3-7pm weekdays). Leave a 1.5-hr buffer before a flight even off-peak.',
+      '~14 mi via I-5 N. ~20 min off-peak, 35-55 min in PM rush. Leave a 1.5-hr buffer before a flight.',
   },
   {
-    topic: 'Parking a rental for a few hours',
+    topic: 'Parking a rental',
     detail:
-      'Pike Place Market Garage (1531 Western Ave) — covered, ~$8/hr, $30 daily max. Pacific Place Garage (600 Pine St) — similar rates. Pioneer Square: Diamond garage at 1st & James.',
+      'Pike Place Market Garage (1531 Western Ave): ~$8/hr, $30 daily max. Pacific Place (600 Pine St): similar. Pioneer Square: Diamond garage at 1st & James.',
   },
   {
-    topic: 'Keep the rental or drop + Uber?',
+    topic: 'Keep rental or drop + Uber?',
     detail:
-      'For a 3-4 hr Day-5 stop: keep it. Detour to a garage near Pike Place, then back to SEA via I-5. For an overnight: drop the rental at SEA on arrival, take Link light rail downtown ($3 / 40 min), or Uber.',
+      'Day-5 stop: keep it (garage near Pike Place, back to SEA via I-5). Overnight: drop at SEA, take Link or Uber downtown.',
   },
   {
     topic: 'Light rail',
     detail:
-      'Link 1 Line runs SEA station → Westlake (downtown / Pike Place) in ~40 min for $3 one way. Trains every 8-10 min. Faster than driving at rush hour.',
+      'Link 1 Line: SEA → Westlake (Pike Place) ~40 min, $3 one way, every 8-10 min. Faster than driving at rush hour.',
   },
   {
-    topic: 'Traffic peaks to avoid',
+    topic: 'Traffic to avoid',
     detail:
-      'Weekday I-5 PM rush 3-7pm both directions through downtown. AM rush 6:30-9am. Saturday afternoons OK; Sunday usually clear.',
+      'I-5 PM rush 3-7pm, AM rush 6:30-9am (weekdays). Sat afternoons OK; Sunday usually clear.',
   },
 ];
 
@@ -395,10 +392,10 @@ export const SEATTLE_ITINERARIES: SeattleItinerary[] = [
     id: 'thu-halfday',
     label: 'Thu Aug 20 — half-day after the drive',
     scenario:
-      'Most common: arrive Seattle mid-afternoon Thu, ~4-6 hours before the evening flight. Optional stop only if you want it.',
+      'Most common: arrive mid-afternoon Thu, ~4-6 hrs before the evening flight.',
     steps: [
-      'Stop at Snoqualmie Falls on the way in (~30 min from Seattle on I-90).',
-      'Park at Pike Place Market Garage (~$8/hr). Walk Pike Place arcade + waterfront + Olympic Sculpture Park (~2 hrs).',
+      'Snoqualmie Falls on the way in (~30 min from Seattle on I-90).',
+      'Park near Pike Place. Walk arcade + waterfront + Olympic Sculpture Park (~2 hrs).',
       'Drive to SEA — leave 90 min before boarding, more in rush hour.',
     ],
   },
@@ -406,36 +403,34 @@ export const SEATTLE_ITINERARIES: SeattleItinerary[] = [
     id: 'thu-ferry',
     label: 'Thu Aug 20 — ferry mini-loop',
     scenario:
-      'Same Thu evening flight, but trade the walking tour for a ferry ride. Works if you arrive in Seattle by ~1pm.',
+      'Same evening flight, ferry instead of the walking tour. Works if you arrive by ~1pm.',
     steps: [
       'Park at Pier 50 / Pioneer Square garages.',
-      'Walk on the Bainbridge ferry (~$10 RT, 35 min each way) — eat lunch with a skyline view.',
+      'Bainbridge ferry (~$10 RT, 35 min each way) — lunch with a skyline view.',
       'Short stroll in Bainbridge town (~1.5 hrs ashore).',
-      'Ferry back, walk Pioneer Square for 30-45 min. Drive to SEA.',
+      'Ferry back, walk Pioneer Square 30-45 min. Drive to SEA.',
     ],
   },
   {
     id: 'sat-overnight',
     label: 'Sat Aug 15 — pre-trip overnight',
-    scenario:
-      'Land Saturday afternoon/evening, sleep in Seattle, drive Sunday morning to Marblemount (~2 hrs) fresh. Useful if redeye-jet-lag is a concern.',
+    scenario: 'Sleep in Seattle, drive to Marblemount fresh Sunday. Good if redeye jet-lag is a concern.',
     steps: [
-      'Drop the rental at SEA — Link light rail to Westlake in 40 min.',
-      'Check into Hotel Andra (Belltown) — walking distance to Pike Place + waterfront.',
-      'Dinner — Teapot Vegetarian House (kosher pareve, Capitol Hill) or Pabla Indian (kosher dairy, Renton). See Food + restaurants for the full Va\'ad-certified list.',
-      'Sunday morning: Uber to SEA, pick up the rental, drive ~2 hrs to Marblemount.',
+      'Drop rental at SEA — Link to Westlake in 40 min.',
+      'Hotel Andra (Belltown) — walk to Pike Place + waterfront.',
+      'Kosher dinner downtown — see Food.',
+      'Sunday: Uber to SEA, pick up rental, drive ~2 hrs to Marblemount.',
     ],
   },
   {
     id: 'thu-overnight',
     label: 'Thu→Fri Aug 20-21 — add-on night',
-    scenario:
-      'Push the eastbound flight to Friday morning. Gives a full evening + morning in Seattle. Worth it if it\'s your first PNW trip.',
+    scenario: 'Push the flight to Friday morning — full evening + morning in Seattle. Worth it on a first PNW trip.',
     steps: [
-      'Drive Winthrop → Snoqualmie Falls → SEA car drop in afternoon.',
-      'Link light rail or Uber to Hotel Andra.',
-      'Late afternoon — Kerry Park at sunset.',
-      'Fri morning — Discovery Park beach loop or Bainbridge ferry, then SEA for departure.',
+      'Winthrop → Snoqualmie Falls → SEA car drop in afternoon.',
+      'Link or Uber to Hotel Andra.',
+      'Kerry Park at sunset.',
+      'Fri morning — Discovery Park beach loop or Bainbridge ferry, then SEA.',
     ],
   },
 ];

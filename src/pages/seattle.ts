@@ -1,7 +1,8 @@
 /**
  * seattle.ts — optional Seattle bookend.
  *
- * What to do with a few hours on either end. Not part of the core trip.
+ * Two windows only: a Day-5 layover before the evening flight, or a Day-1
+ * overnight before the drive in. Optional — not part of the core trip.
  */
 
 import '../styles/main.css';
@@ -13,7 +14,7 @@ function mount(): void {
   const main = mountPageShell({
     pageId: 'seattle',
     title: 'Seattle bookends',
-    lede: 'Optional — what to do with a few hours before or after the park.',
+    lede: 'Optional. Two windows: a Day-5 layover (~4-6 hr before the evening flight) or a Day-1 overnight before the drive in.',
     imageHero: {
       // Replaced 2026-05-17 — previous photo-1502175353174-a7a1d3f2c1f5 was 404 on Unsplash.
       src: 'img/unsplash-1503551723145-6c040742065b.jpg',

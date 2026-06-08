@@ -27,11 +27,8 @@ export const DRIVING_TOPICS: DrivingTopic[] = [
     title: 'WA-20 closure status (the swing factor)',
     tldr: 'As of May 15, 2026, WA-20 closed MP 130-156 through the park. WSDOT target reopen June 25 — "a goal, not a promise."',
     body: [
-      'December 2025 atmospheric-river washouts took out 1,000+ ft of pavement (MP 142-148).',
-      'March 2026 rockslide added ~4,000 cu yd of debris at MP 131.',
-      'Two emergency contracts running: slope stabilization (started May 5) + washout repairs (started May 13).',
       'Re-check Jul 8 (4 days post-target reopen) and Jul 15. If still closed Jul 15 → switch to Stevens Pass loop OR west-side-only OR punt to September.',
-      'This is the latest seasonal reopen since WSDOT started tracking in 1972 — assume it could slip.',
+      'Latest seasonal reopen on record (since 1972) — assume it could slip.',
     ],
     source: {
       name: 'WSDOT · North Cascades Highway live status',
@@ -183,7 +180,7 @@ export const DRIVING_TOPICS: DrivingTopic[] = [
 
 export const DRIVING_INTRO = {
   scope:
-    'US road trip — no IDP needed, no vignette, no foreign-driving permits. The corridor-specific gotchas are: WA-20 closure status, Cascade River Rd gravel, Stevens Pass detour math, cell dead zones, and Aug fire/smoke risk.',
+    'US road trip — no permits. The gotchas: WA-20 closure, Cascade River Rd gravel, Stevens Pass detour, cell dead zones, Aug smoke.',
   asOf: 'May 17, 2026',
 };
 

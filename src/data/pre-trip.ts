@@ -27,21 +27,17 @@ export type Phase =
 export const PHASE_TITLE: Record<Phase, string> = {
   'booking-week-1': 'Booking week — lodging lock',
   'booking-week-2': 'Booking week 2 — road, flights, car',
-  'two-weeks-out': 'Two weeks out — verify the booked-thing-is-the-real-thing',
+  'two-weeks-out': 'Two weeks out — verify bookings',
   'final-week': 'Final week — last calls + pack',
   'day-of': 'Day-of — departure',
 };
 
 export const PHASE_BLURB: Record<Phase, string> = {
-  'booking-week-1':
-    'Lodging holds the trip together. Lock it first — even before WSDOT confirms, free-cancellation properties stay flexible.',
-  'booking-week-2':
-    'Once WSDOT confirms WA-20 reopen, you have ~2-3 weeks to walk the rest: re-check stale dates, lock flights, lock the rental.',
-  'two-weeks-out':
-    'Two weeks before the trip is when assumptions need a phone call. Kosher hours, kitchen scope, anything you treated as static.',
-  'final-week':
-    'Final WSDOT call + a real pack. Screenshot anything that needs to work offline (road status, day-1 itinerary).',
-  'day-of': 'Last morning before you leave for the airport.',
+  'booking-week-1': 'Lock refundable lodging first.',
+  'booking-week-2': 'After WSDOT confirms: re-check dates, flights, rental.',
+  'two-weeks-out': 'Phone-confirm kosher hours + kitchen scope.',
+  'final-week': 'Final WSDOT call + pack. Screenshot for offline.',
+  'day-of': 'Last-morning checks.',
 };
 
 export interface Subitem {
@@ -98,12 +94,12 @@ export const MILESTONES: Milestone[] = [
     date: '2026-06-01',
     dateLabel: 'Mon Jun 1, 2026',
     action:
-      "Book United EWR→SEA nonstop (primary, Allison's travel credit applies — log into united.com first). Alaska EWR→BLI is the fallback if United pricing breaks. Per Erin May 18: flights first — summer inventory is thin and we don't want them filling up. Lodging follows. Book Main Cabin (NOT Basic — Basic gives up voucher coverage).",
+      "Book United EWR→SEA nonstop, Main Cabin (NOT Basic — drops voucher coverage). Log into united.com first for the credit. Fallback: Alaska EWR→BLI.",
     subitems: [
       {
         id: 'morning-vs-midday',
         label: 'Confirm morning vs midday departure with Erin',
-        hint: 'Morning = full Day 1 in Seattle / grocery + drive in. Midday = late arrival, hotel near SEA.',
+        hint: 'Morning = full Day 1 + drive in. Midday = late arrival, hotel near SEA.',
       },
       {
         id: 'book-flights',
@@ -131,7 +127,7 @@ export const MILESTONES: Milestone[] = [
     date: '2026-06-15',
     dateLabel: 'Mon Jun 15, 2026',
     action:
-      'Book the 2 chosen lodgings on REFUNDABLE-ONLY policies (per Erin: "if we find something refundable we can book it as a backup"). Final lock only after WSDOT confirm Jun 25.',
+      'Book the 2 chosen lodgings REFUNDABLE-ONLY. Final lock only after WSDOT confirms Jun 25.',
     subitems: [
       {
         id: 'confirm-path',
@@ -173,7 +169,7 @@ export const MILESTONES: Milestone[] = [
     date: '2026-06-25',
     dateLabel: 'Thu Jun 25, 2026',
     action:
-      'Call WSDOT 1-800-695-7623 to confirm WA-20 is open through the park (mid-corridor MP 130-156).',
+      'Call WSDOT 1-800-695-7623 — is WA-20 open mid-corridor (MP 130-156)?',
     subitems: [
       {
         id: 'call-wsdot',
@@ -191,7 +187,7 @@ export const MILESTONES: Milestone[] = [
       {
         id: 'switch-plan-if-closed',
         label: 'If STILL closed → switch to Plan B (Path D west-only or Path E east-only via Stevens)',
-        hint: 'Walk through the Plan-B path picker on wa20-status.html — picks the swap that keeps both lodgings usable.',
+        hint: 'Walk the Plan-B path picker on wa20-status.html.',
       },
     ],
     link: { label: 'WA-20 deep dive', url: 'wa20-status.html' },
@@ -204,7 +200,7 @@ export const MILESTONES: Milestone[] = [
     date: '2026-06-28',
     dateLabel: 'Sun Jun 28, 2026',
     action:
-      '3 days post-WSDOT — open the live site, hard-refresh, walk every page that has a "verified-on" date. Flag anything stale.',
+      'Hard-refresh the live site, walk every "verified-on" date, flag anything stale.',
     subitems: [
       {
         id: 'recheck-lodging',
@@ -237,7 +233,7 @@ export const MILESTONES: Milestone[] = [
     date: '2026-07-01',
     dateLabel: 'Wed Jul 1, 2026',
     action:
-      'WSDOT confirmed Jun 25 → choose: keep the refundable booking AS-IS, or swap to a better (possibly non-refundable) option now that the path is locked.',
+      'Keep the refundable booking, or swap to a cheaper non-refundable option now the path is locked.',
     subitems: [
       {
         id: 'decision-keep-vs-swap',
@@ -262,7 +258,7 @@ export const MILESTONES: Milestone[] = [
     date: '2026-07-15',
     dateLabel: 'Wed Jul 15, 2026',
     action:
-      'Book Costco Travel SEA pickup, Compact SUV class. Costco bundles taxes + adds 1 free 2nd driver.',
+      'Book Costco Travel SEA pickup, Compact SUV — bundles taxes + free 2nd driver.',
     subitems: [
       {
         id: 'costco-quote-refresh',
@@ -297,7 +293,7 @@ export const MILESTONES: Milestone[] = [
     date: '2026-08-02',
     dateLabel: 'Sun Aug 2, 2026',
     action:
-      'Call each Va\'ad-listed restaurant + grocery to confirm hours + cert currency. Mark verified-DATE per item.',
+      'Call each Va\'ad-listed spot — confirm hours + cert. Mark verified-DATE per item.',
     subitems: [
       {
         id: 'pabla',
@@ -333,12 +329,12 @@ export const MILESTONES: Milestone[] = [
     date: '2026-08-02',
     dateLabel: 'Sun Aug 2, 2026',
     action:
-      'Buy ONE $80 America the Beautiful annual pass (2026 digital). Covers all Forest Service trailheads on this trip (Rainy Pass, Blue Lake, Cutthroat, Park Butte) + any other US National Park for 12 months. Split with Erin = $40/person. Skip the $30 Northwest Forest Pass — AtB does the same job plus everything else.',
+      'Buy ONE $80 America the Beautiful annual pass (2026 digital). Split with Erin = $40/person. Skip the $30 Northwest Forest Pass.',
     subitems: [
       {
         id: 'buy-pass-recreation-gov',
         label: 'Buy 2026 America the Beautiful annual pass at Recreation.gov ($80)',
-        hint: 'https://store.usgs.gov/2026-resident-annual-pass — digital pass, no shipping wait, both travelers can use it together.',
+        hint: 'https://store.usgs.gov/2026-resident-annual-pass — digital, no shipping wait.',
       },
       {
         id: 'save-pass-pdf',
@@ -351,7 +347,7 @@ export const MILESTONES: Milestone[] = [
       {
         id: 'check-resident-status',
         label: 'Confirm US-resident status at checkout (nonresident pass is $250, NOT $80)',
-        hint: 'Allison is US-resident even while living in Jerusalem — the IRS definition (not the day-by-day where-you-physically-are) governs.',
+        hint: 'US-resident by IRS definition even while living in Jerusalem.',
       },
     ],
     link: { label: 'NPS · North Cascades fees', url: 'https://www.nps.gov/noca/planyourvisit/fees.htm' },
@@ -363,7 +359,7 @@ export const MILESTONES: Milestone[] = [
     date: '2026-08-02',
     dateLabel: 'Sun Aug 2, 2026',
     action:
-      'Call each booked property to confirm full-kitchen scope (cookware / oven / fridge / utensils). Multi-unit properties vary by cabin number.',
+      'Call each booked property — confirm kitchen scope (oven / fridge / cookware / utensils).',
     subitems: [
       {
         id: 'call-property-1',
@@ -394,7 +390,7 @@ export const MILESTONES: Milestone[] = [
     date: '2026-08-14',
     dateLabel: 'Fri Aug 14, 2026',
     action:
-      'Final WSDOT call + NPS road conditions. Print or screenshot for offline access (no cell between Newhalem and Mazama).',
+      'Final WSDOT call + NPS road conditions. Screenshot for offline — no cell Newhalem→Mazama.',
     subitems: [
       {
         id: 'call-wsdot-final',
@@ -423,12 +419,12 @@ export const MILESTONES: Milestone[] = [
     date: '2026-08-14',
     dateLabel: 'Fri Aug 14 – Sat Aug 15, 2026',
     action:
-      'Both cooking all meals — kitchen-side packing matters. Plus layered hike gear for 45-50°F pass mornings + 80°F east side.',
+      'Kitchen gear (cooking all meals) + layers for 45-50°F pass mornings, 80°F east side.',
     subitems: [
       {
         id: 'cook-supplies',
         label: 'Cook supplies: sharp knife, foil pans, dish soap, dish towel, ziplocs',
-        hint: 'Hedge against incomplete cabin kitchens — easier than mid-trip Walmart run.',
+        hint: 'Hedge against incomplete cabin kitchens.',
       },
       {
         id: 'hike-gear',

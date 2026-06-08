@@ -14,9 +14,9 @@ import { renderPageCtas } from '../sections/page-ctas';
 function mount(): void {
   const main = mountPageShell({
     pageId: 'hikes',
-    title: 'Hikes, viewpoints, and sky',
+    title: 'Hikes',
     verifiedOn: '2026-05-17 (Wave 4 — destination research + WA-20 chip)',
-    lede: 'Easy-to-moderate only — no scrambling, no big-mileage days. Trailhead facts, distance, elevation.',
+    lede: 'Easy-to-moderate only — no scrambling, no big-mileage days.',
     imageHero: {
       src: 'img/maple-pass-loop-north-cascades.jpg',
       alt: 'Maple Pass Loop with alpine larches and ridgeline views in the North Cascades',
