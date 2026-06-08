@@ -17,7 +17,7 @@ function mount(): void {
     verifiedOn: '2026-05-17',
     lede: 'Five-second read. Big totals, per-person shares, what is locked vs flexible, and concrete trim moves. USD, all-in, 2 travelers.',
     imageHero: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Diablo_Lake_%28Washington_State%29.jpg/1920px-Diablo_Lake_%28Washington_State%29.jpg',
+      src: 'img/diablo-lake-washington-state.jpg',
       alt: 'Diablo Lake with turquoise glacier-flour water and surrounding peaks',
       credit: 'Photo: Wikimedia · CC',
       ctaLabel: 'See the numbers',

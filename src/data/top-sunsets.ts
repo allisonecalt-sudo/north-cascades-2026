@@ -175,7 +175,7 @@ export const TOP_SUNSETS: SunsetSpotRanked[] = [
     verifiedAsOf: 'May 17, 2026',
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Diablo_Lake_from_Overlook_03.jpg',
+        src: 'img/diablo-lake-from-overlook-03.jpg',
         alt: 'Diablo Lake glowing turquoise from the WA-20 overlook in summer.',
         credit: 'Photo: Joe Mabel · CC BY-SA 4.0 (Wikimedia)',
         creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_from_Overlook_03.jpg',

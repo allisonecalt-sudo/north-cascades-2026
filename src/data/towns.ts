@@ -81,7 +81,7 @@ export interface Town {
 // =============================================================================
 
 const PHOTO_WA20: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Washington_Highway_20_North_Cascades.jpg/1280px-Washington_Highway_20_North_Cascades.jpg',
+  src: 'img/washington-highway-20-north-cascades.jpg',
   alt: 'WA-20 winding through the North Cascades corridor in summer — green ridges, the road threading through.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_Highway_20_North_Cascades.jpg',
@@ -90,7 +90,7 @@ const PHOTO_WA20: CarouselPhoto = {
 };
 
 const PHOTO_MARBLEMOUNT: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Marblemount_Community_Club.jpg/960px-Marblemount_Community_Club.jpg',
+  src: 'img/marblemount-community-club.jpg',
   alt: 'Marblemount, WA — Community Club building set in evergreens in summer.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Marblemount_Community_Club.jpg',
@@ -99,7 +99,7 @@ const PHOTO_MARBLEMOUNT: CarouselPhoto = {
 };
 
 const PHOTO_NEWHALEM: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Newhalem_25887_crop.jpg',
+  src: 'img/newhalem-25887-crop.jpg',
   alt: 'Newhalem, the Seattle City Light company town along the Skagit River.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Newhalem_25887_crop.jpg',
@@ -108,7 +108,7 @@ const PHOTO_NEWHALEM: CarouselPhoto = {
 };
 
 const PHOTO_DIABLO: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Diablo_Lake_%28Washington_State%29.jpg/960px-Diablo_Lake_%28Washington_State%29.jpg',
+  src: 'img/diablo-lake-washington-state.jpg',
   alt: 'Diablo Lake, WA — turquoise glacial water surrounded by forested ridges in summer.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_(Washington_State).jpg',
@@ -117,7 +117,7 @@ const PHOTO_DIABLO: CarouselPhoto = {
 };
 
 const PHOTO_WASHINGTON_PASS: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Washington_pass_overlook.jpg/960px-Washington_pass_overlook.jpg',
+  src: 'img/washington-pass-overlook.jpg',
   alt: 'Washington Pass overlook in summer — Liberty Bell Mountain group against clear blue sky.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_pass_overlook.jpg',
@@ -126,7 +126,7 @@ const PHOTO_WASHINGTON_PASS: CarouselPhoto = {
 };
 
 const PHOTO_MAZAMA: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Mazama%2C_Washington.JPG/960px-Mazama%2C_Washington.JPG',
+  src: 'img/mazama-washington.jpg',
   alt: 'Mazama, Washington — tall-grass meadow in the Methow Valley with the Cascades behind, summer.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Mazama,_Washington.JPG',
@@ -135,7 +135,7 @@ const PHOTO_MAZAMA: CarouselPhoto = {
 };
 
 const PHOTO_METHOW_RIVER: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Methow_River.JPG/960px-Methow_River.JPG',
+  src: 'img/methow-river.jpg',
   alt: 'Methow River near Mazama — turquoise river flowing through evergreen forest, summer.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Methow_River.JPG',
@@ -144,7 +144,7 @@ const PHOTO_METHOW_RIVER: CarouselPhoto = {
 };
 
 const PHOTO_METHOW_SUNSET: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Methow_River_near_Pateros_at_sunset.jpg/960px-Methow_River_near_Pateros_at_sunset.jpg',
+  src: 'img/methow-river-near-pateros-at-sunset.jpg',
   alt: 'Methow River at sunset — orange-and-red sky over the river and Methow hills.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Methow_River_near_Pateros_at_sunset.jpg',
@@ -153,7 +153,7 @@ const PHOTO_METHOW_SUNSET: CarouselPhoto = {
 };
 
 const PHOTO_PATTERSON: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/PattersonLake_Winthrop.jpg/960px-PattersonLake_Winthrop.jpg',
+  src: 'img/pattersonlake-winthrop.jpg',
   alt: 'Patterson Lake, Winthrop — alpine lake with wildflowers and rolling Methow hills in summer.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:PattersonLake_Winthrop.jpg',
@@ -162,7 +162,7 @@ const PHOTO_PATTERSON: CarouselPhoto = {
 };
 
 const PHOTO_WINTHROP: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Winthrop%2C_USA_%2819801491829%29.jpg/1280px-Winthrop%2C_USA_%2819801491829%29.jpg',
+  src: 'img/winthrop-usa-19801491829.jpg',
   alt: 'Winthrop main street with wooden boardwalks, false-front Old-West buildings, and mountain backdrop in summer.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Winthrop,_USA_(19801491829).jpg',
@@ -171,7 +171,7 @@ const PHOTO_WINTHROP: CarouselPhoto = {
 };
 
 const PHOTO_CONCRETE: CarouselPhoto = {
-  src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Concrete_town_hall.jpg/960px-Concrete_town_hall.jpg',
+  src: 'img/concrete-town-hall.jpg',
   alt: 'Concrete, WA town hall in summer — green-painted historic building with the US flag flying.',
   credit: 'Photo: Wikimedia · CC',
   creditUrl: 'https://commons.wikimedia.org/wiki/File:Concrete_town_hall.jpg',
@@ -182,7 +182,7 @@ const PHOTO_CONCRETE: CarouselPhoto = {
 // Reuse already-verified Unsplash cabin/river shots from lodging.ts PHOTOS
 // catalog (carousel-grade, summer-palette, no snow).
 const PHOTO_CABIN_RIVER: CarouselPhoto = {
-  src: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=70',
+  src: 'img/unsplash-1510798831971-661eb04b3739.jpg',
   alt: 'Cabin beside a forested river — representative of the Marblemount cabin corridor.',
   credit: 'Photo: Cherise Evertz / Unsplash',
   creditUrl: 'https://unsplash.com/photos/RX2VAhJ9Ll8',
@@ -191,7 +191,7 @@ const PHOTO_CABIN_RIVER: CarouselPhoto = {
 };
 
 const PHOTO_FOREST: CarouselPhoto = {
-  src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=70',
+  src: 'img/unsplash-1448375240586-882707db888b.jpg',
   alt: 'Dense evergreen forest with shafts of morning light — typical of the Skagit corridor.',
   credit: 'Photo: Sebastian Unrau / Unsplash',
   creditUrl: 'https://unsplash.com/photos/sp-p7uuT0tw',
@@ -200,7 +200,7 @@ const PHOTO_FOREST: CarouselPhoto = {
 };
 
 const PHOTO_INN_CLASSIC: CarouselPhoto = {
-  src: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=70',
+  src: 'img/unsplash-1564501049412-61c2a3083791.jpg',
   alt: 'Classic two-story inn with porch and country setting — representative of corridor lodging vibe.',
   credit: 'Photo: Marvin Meyer / Unsplash',
   creditUrl: 'https://unsplash.com/photos/SYTO3xs06fU',
@@ -209,7 +209,7 @@ const PHOTO_INN_CLASSIC: CarouselPhoto = {
 };
 
 const PHOTO_DECK_GOLDEN: CarouselPhoto = {
-  src: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=70',
+  src: 'img/unsplash-1499793983690-e29da59ef1c2.jpg',
   alt: 'Wooden deck and chairs overlooking pine forest at golden hour — vibe shot.',
   credit: 'Photo: Unsplash',
   creditUrl: 'https://unsplash.com/photos/e29da59ef1c2',

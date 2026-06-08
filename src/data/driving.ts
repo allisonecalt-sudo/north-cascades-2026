@@ -25,7 +25,7 @@ export const DRIVING_TOPICS: DrivingTopic[] = [
   {
     id: 'wa20-closure',
     title: 'WA-20 closure status (the swing factor)',
-    tldr: 'As of May 15, 2026, WA-20 closed MP 130-156 through the park. WSDOT target reopen Jul 4 — "a goal, not a promise."',
+    tldr: 'As of May 15, 2026, WA-20 closed MP 130-156 through the park. WSDOT target reopen June 25 — "a goal, not a promise."',
     body: [
       'December 2025 atmospheric-river washouts took out 1,000+ ft of pavement (MP 142-148).',
       'March 2026 rockslide added ~4,000 cu yd of debris at MP 131.',

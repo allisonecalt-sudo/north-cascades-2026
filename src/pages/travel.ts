@@ -38,7 +38,7 @@ function mount(): void {
     lede: 'Real flight options + travel-day logistics. Rental car lives on its own page.',
     imageHero: {
       // Unsplash — wing-over-clouds banner. Brand-neutral aviation aesthetic.
-      src: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1920&q=70',
+      src: 'img/unsplash-1436491865332-7a61a109cc05.jpg',
       alt: 'Airplane wing over a layer of clouds at altitude',
       credit: 'Photo: Ross Parmly / Unsplash',
       ctaLabel: 'See the flights',

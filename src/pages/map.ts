@@ -19,7 +19,7 @@ function mount(): void {
     lede: 'Every lodging, trailhead, and viewpoint pinned. Tap a route chip to preview a drive across the corridor; click any pin for photos, drive times, and similar places.',
     imageHero: {
       // Diablo Lake — the corridor signature, turquoise glacier-flour.
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Diablo_Lake_-_North_Cascades_National_Park.jpg/1920px-Diablo_Lake_-_North_Cascades_National_Park.jpg',
+      src: 'img/diablo-lake-washington-state.jpg',
       alt: 'Turquoise Diablo Lake in North Cascades National Park, ringed by steep forested ridges',
       credit: 'Photo: Wikimedia · CC',
       ctaLabel: 'Open the map',

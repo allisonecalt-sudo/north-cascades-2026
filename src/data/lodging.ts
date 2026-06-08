@@ -412,7 +412,7 @@ export function sortByNature(list: Lodging[]): Lodging[] {
 
 const PHOTOS = {
   cabinWoods: {
-    src: 'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1449158743715-0a90ebb6d2d8.jpg',
     alt: 'Wooden cabin in a forest clearing surrounded by evergreens.',
     credit: 'Photo: Roberto Nickson / Unsplash',
     creditUrl: 'https://unsplash.com/photos/aWBO_xPq1Cg',
@@ -420,7 +420,7 @@ const PHOTOS = {
     height: 533,
   },
   cabinRiver: {
-    src: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1510798831971-661eb04b3739.jpg',
     alt: 'Rustic cabin beside a forested river with a wooden deck.',
     credit: 'Photo: Cherise Evertz / Unsplash',
     creditUrl: 'https://unsplash.com/photos/RX2VAhJ9Ll8',
@@ -428,7 +428,7 @@ const PHOTOS = {
     height: 533,
   },
   lodgeMountain: {
-    src: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1469854523086-cc02fe5d8800.jpg',
     alt: 'Large timber-frame lodge with mountain backdrop at dusk.',
     credit: 'Photo: Paul Gilmore / Unsplash',
     creditUrl: 'https://unsplash.com/photos/M3WeYrV-yyU',
@@ -436,7 +436,7 @@ const PHOTOS = {
     height: 533,
   },
   lodgeRidge: {
-    src: 'https://images.unsplash.com/photo-1517320964276-a002fa203177?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1517320964276-a002fa203177.jpg',
     alt: 'Ridge-top lodge with sweeping valley views.',
     credit: 'Photo: Andre Benz / Unsplash',
     creditUrl: 'https://unsplash.com/photos/ehHaCAyq62E',
@@ -444,7 +444,7 @@ const PHOTOS = {
     height: 533,
   },
   bnbCozy: {
-    src: 'https://images.unsplash.com/photo-1568084680786-a84f91d1153c?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1568084680786-a84f91d1153c.jpg',
     alt: 'Cozy bed-and-breakfast interior with fireplace and pine furniture.',
     credit: 'Photo: Spacejoy / Unsplash',
     creditUrl: 'https://unsplash.com/photos/RUmiI0Z3rino',
@@ -452,7 +452,7 @@ const PHOTOS = {
     height: 533,
   },
   innClassic: {
-    src: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1564501049412-61c2a3083791.jpg',
     alt: 'Classic two-story inn with porch and country setting.',
     credit: 'Photo: Marvin Meyer / Unsplash',
     creditUrl: 'https://unsplash.com/photos/SYTO3xs06fU',
@@ -460,7 +460,7 @@ const PHOTOS = {
     height: 533,
   },
   rentalModern: {
-    src: 'https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1542718610-a1d656d1884c.jpg',
     alt: 'Modern vacation rental with large windows on a wooded property.',
     credit: 'Photo: Andrea Davis / Unsplash',
     creditUrl: 'https://unsplash.com/photos/jJxOnsXyT9o',
@@ -468,7 +468,7 @@ const PHOTOS = {
     height: 533,
   },
   rentalAFrame: {
-    src: 'https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1587061949409-02df41d5e562.jpg',
     alt: 'A-frame vacation rental tucked into the forest at golden hour.',
     credit: 'Photo: Sterling Davis / Unsplash',
     creditUrl: 'https://unsplash.com/photos/Q3rAQM7yMd0',
@@ -476,7 +476,7 @@ const PHOTOS = {
     height: 533,
   },
   glampingHut: {
-    src: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1504280390367-361c6d9f38f4.jpg',
     alt: 'Minimalist modern hut with floor-to-ceiling glass and meadow view.',
     credit: 'Photo: Vincent Guth / Unsplash',
     creditUrl: 'https://unsplash.com/photos/p2TQ-3K7fpw',
@@ -484,7 +484,7 @@ const PHOTOS = {
     height: 533,
   },
   ranchProperty: {
-    src: 'https://images.unsplash.com/photo-1500076656116-558758c991c1?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1500076656116-558758c991c1.jpg',
     alt: 'Open ranch property with split-rail fence and mountain backdrop.',
     credit: 'Photo: Adam Bouse / Unsplash',
     creditUrl: 'https://unsplash.com/photos/W4Z6oJZD-yU',
@@ -492,7 +492,7 @@ const PHOTOS = {
     height: 533,
   },
   cabinClassic: {
-    src: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1518780664697-55e3ad937233.jpg',
     alt: 'Classic log cabin with stone chimney and front porch in pine forest.',
     credit: 'Photo: Eberhard Grossgasteiger / Unsplash',
     creditUrl: 'https://unsplash.com/photos/PUYIOL_zmBA',
@@ -500,7 +500,7 @@ const PHOTOS = {
     height: 533,
   },
   cabinHot: {
-    src: 'https://images.unsplash.com/photo-1488462237308-ecaa28b729d7?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1488462237308-ecaa28b729d7.jpg',
     alt: 'Wood-sided cabin with hot tub on the deck overlooking forest.',
     credit: 'Photo: Mike Marquez / Unsplash',
     creditUrl: 'https://unsplash.com/photos/0_PnY9LSf8E',
@@ -508,7 +508,7 @@ const PHOTOS = {
     height: 533,
   },
   motelInn: {
-    src: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1566073771259-6a8506099945.jpg',
     alt: 'Boutique inn with wood siding and welcoming entrance.',
     credit: 'Photo: Unsplash',
     creditUrl: 'https://unsplash.com/photos/6a8506099945',
@@ -520,7 +520,7 @@ const PHOTOS = {
   // PNW/forest/lake/cabin-themed for palette fit.
   carouselDeck: {
     // Replaced 2026-05-17 — previous photo-1520637836862 was 404 on Unsplash (returned HTML error page).
-    src: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1499793983690-e29da59ef1c2.jpg',
     alt: 'Wooden deck and chairs overlooking pine forest at golden hour.',
     credit: 'Photo: Unsplash',
     creditUrl: 'https://unsplash.com/photos/e29da59ef1c2',
@@ -528,7 +528,7 @@ const PHOTOS = {
     height: 533,
   },
   carouselInterior: {
-    src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1505691938895-1758d7feb511.jpg',
     alt: 'Cabin interior with wood beams and warm lighting.',
     credit: 'Photo: Andrea Davis / Unsplash',
     creditUrl: 'https://unsplash.com/photos/V0FfsxYRWWY',
@@ -536,7 +536,7 @@ const PHOTOS = {
     height: 533,
   },
   carouselForest: {
-    src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1448375240586-882707db888b.jpg',
     alt: 'Dense evergreen forest with shafts of morning light.',
     credit: 'Photo: Sebastian Unrau / Unsplash',
     creditUrl: 'https://unsplash.com/photos/sp-p7uuT0tw',
@@ -544,7 +544,7 @@ const PHOTOS = {
     height: 533,
   },
   carouselRiver: {
-    src: 'https://images.unsplash.com/photo-1502301103665-0b95cc738daf?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1502301103665-0b95cc738daf.jpg',
     alt: 'River winding through forested mountain valley.',
     credit: 'Photo: Robson Hatsukami Morgan / Unsplash',
     creditUrl: 'https://unsplash.com/photos/rfWzS6yWXgo',
@@ -552,7 +552,7 @@ const PHOTOS = {
     height: 533,
   },
   carouselFirepit: {
-    src: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1478131143081-80f7f84ca84d.jpg',
     alt: 'Stone firepit with chairs at a wooded campsite.',
     credit: 'Photo: Tegan Mierle / Unsplash',
     creditUrl: 'https://unsplash.com/photos/fDostElVhN8',
@@ -560,7 +560,7 @@ const PHOTOS = {
     height: 533,
   },
   carouselSunset: {
-    src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1470770841072-f978cf4d019e.jpg',
     alt: 'Mountain valley at sunset with warm sky over evergreens.',
     credit: 'Photo: Bailey Zindel / Unsplash',
     creditUrl: 'https://unsplash.com/photos/NRQV-hBF10M',
@@ -568,7 +568,7 @@ const PHOTOS = {
     height: 533,
   },
   carouselHotTub: {
-    src: 'https://images.unsplash.com/photo-1521783988139-89397d761dce?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1521783988139-89397d761dce.jpg',
     alt: 'Outdoor wooden hot tub on a deck surrounded by trees.',
     credit: 'Photo: Anthony Tran / Unsplash',
     creditUrl: 'https://unsplash.com/photos/9SD6jHd6Stk',
@@ -576,7 +576,7 @@ const PHOTOS = {
     height: 533,
   },
   carouselRanch: {
-    src: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=70',
+    src: 'img/unsplash-1500382017468-9049fed747ef.jpg',
     alt: 'Open pasture with mountains in the distance under big sky.',
     credit: 'Photo: Aaron Burden / Unsplash',
     creditUrl: 'https://unsplash.com/photos/eGpTDoFRAW0',
@@ -667,7 +667,7 @@ const PHOTOS = {
   propSpringCreekInterior: {
     // Swapped 2026-05-17 — interior hot-link CORS-blocked. Reusing the same
     // verified Methow River Wikimedia URL the regMethowRiver entry uses.
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Methow_River.JPG/960px-Methow_River.JPG',
+    src: 'img/methow-river.jpg',
     alt: 'Methow River near Spring Creek Ranch — representative (interior hot-link blocked).',
     credit: 'Photo: Wikimedia · Representative — Methow River',
     creditUrl: 'https://springcreekwinthrop.com/',
@@ -675,7 +675,7 @@ const PHOTOS = {
     height: 610,
   },
   propBuffaloRun: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Buffalo_Run_Restaurant_-_Flickr_-_brewbooks.jpg/960px-Buffalo_Run_Restaurant_-_Flickr_-_brewbooks.jpg',
+    src: 'img/buffalo-run-restaurant-flickr-brewbooks.jpg',
     alt: 'Buffalo Run Restaurant & Inn — roadside sign in summer with the WA-20 corridor and Cascades behind.',
     credit: 'Photo: brewbooks via Wikimedia Commons (CC BY-SA)',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:Buffalo_Run_Restaurant_-_Flickr_-_brewbooks.jpg',
@@ -691,7 +691,7 @@ const PHOTOS = {
   // they are looking at the area, not the room. Pulled May 17, 2026.
   // ====================================================================
   regPattersonLake: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/PattersonLake_Winthrop.jpg/960px-PattersonLake_Winthrop.jpg',
+    src: 'img/pattersonlake-winthrop.jpg',
     alt: 'Representative — Patterson Lake, Winthrop, WA — alpine lake with wildflowers and rolling Methow hills in summer.',
     credit: 'Photo: Geaugagrrl via Wikimedia Commons',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:PattersonLake_Winthrop.jpg',
@@ -699,7 +699,7 @@ const PHOTOS = {
     height: 675,
   },
   regMazama: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Mazama%2C_Washington.JPG/960px-Mazama%2C_Washington.JPG',
+    src: 'img/mazama-washington.jpg',
     alt: 'Representative — Mazama, WA — tall-grass meadow in the Methow Valley with the Cascades behind, summer.',
     credit: 'Photo: Wikimedia Commons (public domain)',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:Mazama,_Washington.JPG',
@@ -707,7 +707,7 @@ const PHOTOS = {
     height: 675,
   },
   regMethowRiver: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Methow_River.JPG/960px-Methow_River.JPG',
+    src: 'img/methow-river.jpg',
     alt: 'Representative — Methow River near Mazama — turquoise river flowing through evergreen forest, summer.',
     credit: 'Photo: Benjamin Cody via Wikimedia Commons',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:Methow_River.JPG',
@@ -715,7 +715,7 @@ const PHOTOS = {
     height: 675,
   },
   regMethowSunset: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Methow_River_near_Pateros_at_sunset.jpg/960px-Methow_River_near_Pateros_at_sunset.jpg',
+    src: 'img/methow-river-near-pateros-at-sunset.jpg',
     alt: 'Representative — Methow River at sunset — orange-and-red sky over the river and Methow hills.',
     credit: 'Photo: Thayne via Wikimedia Commons',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:Methow_River_near_Pateros_at_sunset.jpg',
@@ -723,7 +723,7 @@ const PHOTOS = {
     height: 675,
   },
   regWashingtonPass: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Washington_pass_overlook.jpg/960px-Washington_pass_overlook.jpg',
+    src: 'img/washington-pass-overlook.jpg',
     alt: 'Representative — Washington Pass overlook in summer — Liberty Bell Mountain group against clear blue sky.',
     credit: 'Photo: Wikimedia Commons',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:Washington_pass_overlook.jpg',
@@ -731,7 +731,7 @@ const PHOTOS = {
     height: 710,
   },
   regDiabloLake: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Diablo_Lake_%28Washington_State%29.jpg/960px-Diablo_Lake_%28Washington_State%29.jpg',
+    src: 'img/diablo-lake-washington-state.jpg',
     alt: 'Representative — Diablo Lake, WA — turquoise glacial water surrounded by forested ridges in summer.',
     credit: 'Photo: Wikimedia Commons',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_(Washington_State).jpg',
@@ -739,7 +739,7 @@ const PHOTOS = {
     height: 598,
   },
   regConcrete: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Concrete_town_hall.jpg/960px-Concrete_town_hall.jpg',
+    src: 'img/concrete-town-hall.jpg',
     alt: 'Representative — Concrete, WA town hall in summer — green-painted historic building with the US flag flying.',
     credit: 'Photo: Wikimedia Commons',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:Concrete_town_hall.jpg',
@@ -747,7 +747,7 @@ const PHOTOS = {
     height: 630,
   },
   regMarblemount: {
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Marblemount_Community_Club.jpg/960px-Marblemount_Community_Club.jpg',
+    src: 'img/marblemount-community-club.jpg',
     alt: 'Representative — Marblemount, WA Community Club in summer — small wood-shingle community building set in evergreens.',
     credit: 'Photo: Wikimedia Commons',
     creditUrl: 'https://commons.wikimedia.org/wiki/File:Marblemount_Community_Club.jpg',

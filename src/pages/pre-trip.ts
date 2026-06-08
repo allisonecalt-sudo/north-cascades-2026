@@ -21,7 +21,7 @@ function mount(): void {
     title: 'Pre-trip checklist',
     lede: '10 milestones, 5 phases — from lodging book-by (Jun 15) through day-of departure (Aug 16). Tick subtasks off as you go; state is saved to your device.',
     imageHero: {
-      src: 'https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?auto=format&fit=crop&w=1920&q=70',
+      src: 'img/unsplash-1452421822248-d4c2b47f0c81.jpg',
       alt: 'Hiking gear, boots, and a packed backpack laid out on a wooden floor',
       credit: 'Photo: Holly Mandarich / Unsplash',
       ctaLabel: 'Jump to milestones',

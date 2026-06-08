@@ -140,7 +140,7 @@ export const ACTIVITIES: Activity[] = [
     },
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Diablo_Lake_from_Overlook_03.jpg',
+        src: 'img/diablo-lake-from-overlook-03.jpg',
         alt: 'Diablo Lake glowing turquoise from a forested summer overlook.',
         credit: 'Photo: Joe Mabel · CC BY-SA 4.0',
         creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_from_Overlook_03.jpg',

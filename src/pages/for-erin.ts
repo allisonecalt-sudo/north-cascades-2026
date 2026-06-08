@@ -17,7 +17,7 @@ function mount(): void {
     title: 'For Erin',
     lede: 'Open decisions Allison needs Erin to weigh in on. Must-have answers up top — each question has its own 💬 button. Or just text/email Allison.',
     imageHero: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Winthrop%2C_USA_%2819801491829%29.jpg/1920px-Winthrop%2C_USA_%2819801491829%29.jpg',
+      src: 'img/winthrop-usa-19801491829.jpg',
       alt: 'Winthrop, Washington — Old-West boardwalk town with mountain backdrop',
       credit: 'Photo: Wikimedia · CC',
       ctaLabel: 'See open decisions',

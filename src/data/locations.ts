@@ -213,7 +213,7 @@ const TOWNS: MapLocation[] = [
 // Lodging — West side (drive times from lodging.ts Wave 3 data)
 // ====================================================================
 const LODGING_PHOTO_FALLBACK_WEST =
-  'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=420&q=70';
+  'img/unsplash-1449158743715-0a90ebb6d2d8.jpg';
 
 // Lodging pins reflect the THREE BOOKED Airbnbs only (Aug 16–20, 2026) — the
 // comparison-phase cabins (Marblemount/Concrete west + Winthrop/Mazama east)
@@ -421,7 +421,7 @@ const COOL_SLEEPING: MapLocation[] = [
     anchor: '#cool-sleeping',
     externalAnchor: 'for-erin.html#cool-sleeping',
     photo: {
-      src: 'https://images.unsplash.com/photo-1488462237308-ecaa28b729d7?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1488462237308-ecaa28b729d7.jpg',
       alt: 'Elevated treehouse in a dense forest.',
     },
     meta: {
@@ -445,7 +445,7 @@ const COOL_SLEEPING: MapLocation[] = [
     anchor: '#cool-sleeping',
     externalAnchor: 'for-erin.html#cool-sleeping',
     photo: {
-      src: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1510798831971-661eb04b3739.jpg',
       alt: 'Rustic forest cabin with wood stove.',
     },
     meta: {
@@ -474,7 +474,7 @@ const TRAILHEADS: MapLocation[] = [
     pathAssoc: 'west',
     anchor: '#hikes',
     photo: {
-      src: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1464822759023-fed622ff2c3b.jpg',
       alt: 'High alpine pass with switchbacks below craggy peaks.',
     },
     meta: {
@@ -600,7 +600,7 @@ const VIEWPOINTS: MapLocation[] = [
     anchor: '#viewpoints',
     photo: {
       // Canonical Diablo Lake Overlook photo from data/viewpoints.ts diablo-lake-overlook entry.
-      src: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Diablo_Lake_from_Overlook_03.jpg',
+      src: 'img/diablo-lake-from-overlook-03.jpg',
       alt: 'Turquoise Diablo Lake from the WA-20 overlook, surrounded by forested peaks.',
     },
     meta: {
@@ -662,7 +662,7 @@ const VIEWPOINTS: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#viewpoints',
     photo: {
-      src: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1432405972618-c60b0225b8f9.jpg',
       alt: 'Waterfall plunging into a deep forested gorge.',
     },
     meta: {
@@ -689,7 +689,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     anchor: '#top-sunsets',
     externalAnchor: 'things-to-do.html#washington-pass',
     photo: {
-      src: 'https://images.unsplash.com/photo-1490604001847-b712b0c2f967?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1490604001847-b712b0c2f967.jpg',
       alt: 'Mountain spires lit by golden-hour sunset.',
     },
     meta: {
@@ -735,7 +735,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     anchor: '#top-sunsets',
     externalAnchor: 'things-to-do.html#ovenells',
     photo: {
-      src: 'https://images.unsplash.com/photo-1500964757637-c85e8a162699?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1500964757637-c85e8a162699.jpg',
       alt: 'Open ranch pasture at sunset under distant mountain.',
     },
     meta: {
@@ -781,7 +781,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     anchor: '#top-sunsets',
     externalAnchor: 'things-to-do.html#patterson',
     photo: {
-      src: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1470770841072-f978cf4d019e.jpg',
       alt: 'Calm lake at sunset with reflected ridge.',
     },
     meta: {
@@ -826,7 +826,7 @@ const SUNSET_SPOTS: MapLocation[] = [
     anchor: '#top-sunsets',
     externalAnchor: 'things-to-do.html#freestone',
     photo: {
-      src: 'https://images.unsplash.com/photo-1487014679447-9f8336841d58?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1487014679447-9f8336841d58.jpg',
       alt: 'Alpine lake-front cabin at sunset.',
     },
     meta: {
@@ -854,7 +854,7 @@ const WATER: MapLocation[] = [
     pathAssoc: 'east',
     anchor: '#activities',
     photo: {
-      src: 'https://images.unsplash.com/photo-1487730116645-74489c95b41b?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1487730116645-74489c95b41b.jpg',
       alt: 'Kayaks on a calm sub-alpine lake.',
     },
     meta: {
@@ -945,7 +945,7 @@ const WATER: MapLocation[] = [
     pathAssoc: 'west',
     anchor: '#activities',
     photo: {
-      src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1507525428034-b723cf961d3e.jpg',
       alt: 'Sandy beach on a forested mountain reservoir.',
     },
     meta: {
@@ -973,7 +973,7 @@ const SEATTLE: MapLocation[] = [
     pathAssoc: 'both',
     anchor: '#seattle',
     photo: {
-      src: 'https://images.unsplash.com/photo-1503551723145-6c040742065b?auto=format&fit=crop&w=420&q=70',
+      src: 'img/unsplash-1503551723145-6c040742065b.jpg',
       alt: 'Seattle skyline with Mt. Rainier in the distance.',
     },
   },
@@ -1019,7 +1019,7 @@ export const WA20_CLOSURE_POLYLINE: Array<[number, number]> = [
 export const CLOSURE_LABEL = {
   title: 'WA-20 closed — MP 130 → MP 156',
   detail:
-    'WSDOT target reopen: Jul 4, 2026. "A goal, not a promise." Re-check WSDOT before counting on the through-route.',
+    'WSDOT target reopen: June 25, 2026. "A goal, not a promise." Re-check WSDOT before counting on the through-route.',
   wsdotUrl: 'https://wsdot.com/travel/real-time/mountainpasses/northcascades',
   asOfDate: 'May 17, 2026',
   planBNote: 'Plan-B routing: bookend via I-90 + US-2 (Stevens Pass) instead of through-route.',

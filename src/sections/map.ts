@@ -858,7 +858,7 @@ export function renderMap(opts: RenderMapOptions = {}): HTMLElement {
   const contextStrip = buildContextStrip();
 
   const gistItems = opts.gist ?? [
-    'Everything pinned — lodging, trailheads, viewpoints, sunsets, water. Toggle layers top-right. Red dashed line = the WA-20 closure (reopen target Jul 4).',
+    'Everything pinned — lodging, trailheads, viewpoints, sunsets, water. Toggle layers top-right. Red dashed line = the WA-20 closure (reopen target June 25).',
     'Tap a route chip to draw that drive. Numbered "Nights" badges float above each base.',
     'Click any pin for photos, facts, drive times, and similar spots nearby.',
   ];

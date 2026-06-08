@@ -30,7 +30,7 @@ function mount(): void {
       // HEAD-verified May 17, 2026 via curl (200).
       // Same photo already used as the driving-cascades hero — consistent visual
       // identity across the two road-related pages.
-      src: 'https://upload.wikimedia.org/wikipedia/commons/d/db/Washington_Highway_20_North_Cascades.jpg',
+      src: 'img/washington-highway-20-north-cascades.jpg',
       alt: 'Washington Highway 20 winding through the North Cascades — the corridor this page is about.',
       credit: 'Photo: Wikimedia · CC',
       ctaLabel: 'See the status',

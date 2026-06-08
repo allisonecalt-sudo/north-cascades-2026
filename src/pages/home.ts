@@ -291,7 +291,7 @@ function mount(): void {
     imageHero: {
       // Cascade Pass / Sahale Arm — Pelton Peak + Yawning Glacier + Magic
       // Mountain. CC BY 2.0 Daniel Hershman, 2007.
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Cascade_pass.jpg/1920px-Cascade_pass.jpg',
+      src: 'img/cascade-pass.jpg',
       alt: 'Pelton Peak, Yawning Glacier, and Magic Mountain seen from the Sahale Arm above Cascade Pass in North Cascades National Park',
       credit: 'Photo: Daniel Hershman / Wikimedia · CC BY 2.0',
       ctaLabel: 'See the trip at a glance',

@@ -35,7 +35,7 @@ export const VIEWPOINTS: Viewpoint[] = [
     timeNeeded: '20-30 min',
     featured: true,
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Diablo_Lake_from_Overlook_03.jpg',
+      src: 'img/diablo-lake-from-overlook-03.jpg',
       alt: 'Turquoise Diablo Lake from the WA-20 overlook, surrounded by forested peaks.',
       credit: 'Photo: Joe Mabel · CC BY-SA 4.0 (Wikimedia)',
       creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_from_Overlook_03.jpg',
@@ -249,7 +249,7 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     driveFromWinthrop: '~70 min (when WA-20 is open through)',
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Diablo_Lake_from_Overlook_03.jpg',
+        src: 'img/diablo-lake-from-overlook-03.jpg',
         alt: 'Turquoise Diablo Lake from the WA-20 overlook, surrounded by forested peaks.',
         credit: 'Photo: Joe Mabel · CC BY-SA 4.0 (Wikimedia)',
         creditUrl: 'https://commons.wikimedia.org/wiki/File:Diablo_Lake_from_Overlook_03.jpg',
@@ -356,7 +356,7 @@ export const VIEWPOINT_DESTINATIONS: ViewpointDestination[] = [
     driveFromWinthrop: '~5 hr (requires south via I-90 + I-5 — Day-1-from-BLI only)',
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/6/6c/MountShuksanPictureLake.JPG',
+        src: 'img/mountshuksanpicturelake.jpg',
         alt: 'Mount Shuksan reflected in Picture Lake on a calm summer morning.',
         credit: 'Photo: Siradia · Public domain (Wikimedia)',
         creditUrl: 'https://commons.wikimedia.org/wiki/File:MountShuksanPictureLake.JPG',

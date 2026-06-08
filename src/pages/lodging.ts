@@ -24,7 +24,7 @@ function mount(): void {
       // depicted a tropical beach resort, not PNW. Switching to the Diablo
       // Lake Wikimedia image already used by the costs page (verified
       // bulletproof + actually depicts North Cascades).
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Diablo_Lake_%28Washington_State%29.jpg/1920px-Diablo_Lake_%28Washington_State%29.jpg',
+      src: 'img/diablo-lake-washington-state.jpg',
       alt: 'Diablo Lake turquoise water with surrounding North Cascades peaks',
       credit: 'Photo: Wikimedia · CC',
       ctaLabel: 'See the cabins',

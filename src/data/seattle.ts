@@ -69,7 +69,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
       'Pike Place Market Garage (1531 Western Ave): ~$8/hr, $30 daily max.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Pike_Place_Market_Seattle.jpg/960px-Pike_Place_Market_Seattle.jpg',
+      src: 'img/pike-place-market-seattle.jpg',
       alt: 'Pike Place Public Market entrance with the famous red neon sign and clock.',
       credit: 'Photo: Daniel Schwen · CC BY-SA 4.0 (Wikimedia)',
       creditUrl: 'https://commons.wikimedia.org/wiki/File:Pike_Place_Market_Seattle.jpg',
@@ -78,7 +78,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     },
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Pike_Place_Market_Seattle.jpg/960px-Pike_Place_Market_Seattle.jpg',
+        src: 'img/pike-place-market-seattle.jpg',
         alt: 'Pike Place Public Market entrance with the famous red neon sign and clock.',
         credit: 'Photo: Daniel Schwen · CC BY-SA 4.0 (Wikimedia)',
         creditUrl: 'https://commons.wikimedia.org/wiki/File:Pike_Place_Market_Seattle.jpg',
@@ -97,7 +97,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     practical: 'Free street parking on W Highland Dr.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seattle_skyline_from_Kerry_Park%2C_March_2019.jpg/960px-Seattle_skyline_from_Kerry_Park%2C_March_2019.jpg',
+      src: 'img/seattle-skyline-from-kerry-park-march-2019.jpg',
       alt: 'Seattle skyline panorama from Kerry Park with the Space Needle and Mount Rainier behind.',
       credit: 'Photo: SounderBruce · CC BY-SA 4.0 (Wikimedia)',
       creditUrl:
@@ -107,7 +107,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     },
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Seattle_skyline_from_Kerry_Park%2C_March_2019.jpg/960px-Seattle_skyline_from_Kerry_Park%2C_March_2019.jpg',
+        src: 'img/seattle-skyline-from-kerry-park-march-2019.jpg',
         alt: 'Seattle skyline panorama from Kerry Park with the Space Needle and Mount Rainier behind.',
         credit: 'Photo: SounderBruce · CC BY-SA 4.0 (Wikimedia)',
         creditUrl:
@@ -143,7 +143,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     practical: 'Diamond garage at 1st & James or street meters.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Seattle_-_Pioneer_Square_Pergola_-_2020-04-24.jpg/960px-Seattle_-_Pioneer_Square_Pergola_-_2020-04-24.jpg',
+      src: 'img/seattle-pioneer-square-pergola-2020-04-24.jpg',
       alt: 'Iron-and-glass Pioneer Square pergola in front of historic brick buildings.',
       credit: 'Photo: Joe Mabel · CC BY-SA 4.0 (Wikimedia)',
       creditUrl:
@@ -153,7 +153,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     },
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Seattle_-_Pioneer_Square_Pergola_-_2020-04-24.jpg/960px-Seattle_-_Pioneer_Square_Pergola_-_2020-04-24.jpg',
+        src: 'img/seattle-pioneer-square-pergola-2020-04-24.jpg',
         alt: 'Iron-and-glass Pioneer Square pergola in front of historic brick buildings.',
         credit: 'Photo: Joe Mabel · CC BY-SA 4.0 (Wikimedia)',
         creditUrl:
@@ -188,7 +188,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     timeNeeded: '30-45 min',
     practical: 'Free entry, open daily sunrise-sunset. Small paid lot on site (~$6/hr).',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Seattle_%28WA%2C_USA%29%2C_Olympic_Sculpture_Park%2C_Hartriegel_--_2022_--_1615.jpg/960px-Seattle_%28WA%2C_USA%29%2C_Olympic_Sculpture_Park%2C_Hartriegel_--_2022_--_1615.jpg',
+      src: 'img/seattle-wa-usa-olympic-sculpture-park-hartriegel-2022-1615.jpg',
       alt: 'View through Olympic Sculpture Park trees with the waterfront beyond.',
       credit: 'Photo: Dietmar Rabich · CC BY-SA 4.0 (Wikimedia)',
       creditUrl:
@@ -207,7 +207,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     practical: 'Free parking at upper lot. Upper deck is accessible; 1.4-mi RT trail descends to the lower viewpoint.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Snoqualmie_Falls_Washington.jpg/960px-Snoqualmie_Falls_Washington.jpg',
+      src: 'img/snoqualmie-falls-washington.jpg',
       alt: 'Snoqualmie Falls cascading down a forested cliff in a wide misty plunge.',
       credit: 'Photo: Kpsudeep · CC BY-SA 4.0 (Wikimedia)',
       creditUrl: 'https://commons.wikimedia.org/wiki/File:Snoqualmie_Falls_Washington.jpg',
@@ -216,7 +216,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     },
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Snoqualmie_Falls_Washington.jpg/960px-Snoqualmie_Falls_Washington.jpg',
+        src: 'img/snoqualmie-falls-washington.jpg',
         alt: 'Snoqualmie Falls cascading down a forested cliff in a wide misty plunge.',
         credit: 'Photo: Kpsudeep · CC BY-SA 4.0 (Wikimedia)',
         creditUrl: 'https://commons.wikimedia.org/wiki/File:Snoqualmie_Falls_Washington.jpg',
@@ -243,7 +243,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     practical: 'Free parking. Open 4am-11:30pm. Gentle beach loop after a hiking trip.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Seattle_Discovery_Park_Lighthouse_%2851521932685%29.jpg/960px-Seattle_Discovery_Park_Lighthouse_%2851521932685%29.jpg',
+      src: 'img/seattle-discovery-park-lighthouse-51521932685.jpg',
       alt: 'West Point Lighthouse at Discovery Park with Puget Sound and distant peaks.',
       credit: 'Photo: Seattle City Council · CC BY 2.0 (Wikimedia)',
       creditUrl:
@@ -253,7 +253,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     },
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Seattle_Discovery_Park_Lighthouse_%2851521932685%29.jpg/960px-Seattle_Discovery_Park_Lighthouse_%2851521932685%29.jpg',
+        src: 'img/seattle-discovery-park-lighthouse-51521932685.jpg',
         alt: 'West Point Lighthouse at Discovery Park with Puget Sound and distant peaks.',
         credit: 'Photo: Seattle City Council · CC BY 2.0 (Wikimedia)',
         creditUrl:
@@ -289,7 +289,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     practical: 'Pier 50 garage or Pioneer Square garages within a 5-min walk. Walk-on fares only charged westbound.',
     verifiedAsOf: 'May 17, 2026',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Washington_State_Ferry_leaving_for_Bainbridge_Islandfor_Bain_%2852230622298%29.jpg/960px-Washington_State_Ferry_leaving_for_Bainbridge_Islandfor_Bain_%2852230622298%29.jpg',
+      src: 'img/washington-state-ferry-leaving-for-bainbridge-islandfor-bain-52230622298.jpg',
       alt: 'Washington State Ferry pulling away from Colman Dock toward Bainbridge Island.',
       credit: 'Photo: Han Zheng · CC BY-SA 2.0 (Wikimedia)',
       creditUrl:
@@ -299,7 +299,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     },
     photos: [
       {
-        src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Washington_State_Ferry_leaving_for_Bainbridge_Islandfor_Bain_%2852230622298%29.jpg/960px-Washington_State_Ferry_leaving_for_Bainbridge_Islandfor_Bain_%2852230622298%29.jpg',
+        src: 'img/washington-state-ferry-leaving-for-bainbridge-islandfor-bain-52230622298.jpg',
         alt: 'Washington State Ferry pulling away from Colman Dock toward Bainbridge Island.',
         credit: 'Photo: Han Zheng · CC BY-SA 2.0 (Wikimedia)',
         creditUrl:
@@ -334,7 +334,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     timeNeeded: '45-90 min',
     practical: 'Free parking + free admission to the main arboretum.',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Washington_Park_Arboretum%2C_Seattle%2C_August_2024.jpg/960px-Washington_Park_Arboretum%2C_Seattle%2C_August_2024.jpg',
+      src: 'img/washington-park-arboretum-seattle-august-2024.jpg',
       alt: 'Late-summer trail through the Washington Park Arboretum with tall trees on both sides.',
       credit: 'Photo: Another Believer · CC BY-SA 4.0 (Wikimedia)',
       creditUrl:
@@ -352,7 +352,7 @@ export const SEATTLE_STOPS: SeattleStop[] = [
     timeNeeded: 'Overnight',
     practical: '~$280-380/night Aug 2026. Valet parking ~$55/night.',
     photo: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Seattle_-_Hotel_Andra_01.jpg/960px-Seattle_-_Hotel_Andra_01.jpg',
+      src: 'img/seattle-hotel-andra-01.jpg',
       alt: 'Exterior of Hotel Andra in Belltown, Seattle.',
       credit: 'Photo: Joe Mabel · CC BY-SA 3.0 (Wikimedia)',
       creditUrl: 'https://commons.wikimedia.org/wiki/File:Seattle_-_Hotel_Andra_01.jpg',

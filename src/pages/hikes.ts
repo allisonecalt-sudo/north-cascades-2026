@@ -18,7 +18,7 @@ function mount(): void {
     verifiedOn: '2026-05-17 (Wave 4 — destination research + WA-20 chip)',
     lede: 'Easy-to-moderate only — no scrambling, no big-mileage days. Trailhead facts, distance, elevation.',
     imageHero: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Maple_Pass_Loop%2C_North_Cascades.jpg/1920px-Maple_Pass_Loop%2C_North_Cascades.jpg',
+      src: 'img/maple-pass-loop-north-cascades.jpg',
       alt: 'Maple Pass Loop with alpine larches and ridgeline views in the North Cascades',
       credit: 'Photo: Wikimedia · CC',
       ctaLabel: 'See the hikes',
