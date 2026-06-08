@@ -502,10 +502,8 @@ function buildClosureBanner(): HTMLElement {
       h(
         'span',
         { class: 'closure-banner__summary-text' },
-        h('strong', {}, 'WA-20 currently CLOSED through the park.'),
-        ' WSDOT target reopen: ',
-        h('strong', {}, 'June 25, 2026'),
-        ' (pulled forward from July 4 after the May 13 second emergency contract). Both paths assume worst case.'
+        h('strong', {}, CLOSURE_ALERT.headline + '.'),
+        ' West side (Diablo Lake) already open as of May 30 — only the mid-corridor work zone remains.'
       )
     ),
     h(
@@ -539,12 +537,10 @@ function buildClosureBanner(): HTMLElement {
         'p',
         {
           class: 'closure-banner__detail',
-          style:
-            'font-size: 0.78rem; margin-top: 0.6rem; padding: 0.5rem 0.6rem; background: #fdecec; border: 1px solid #c4393a; color: #6d1a1b; border-radius: 6px;',
+          style: 'font-size: 0.78rem; margin-top: 0.6rem; opacity: 0.85;',
         },
-        h('strong', {}, 'Conflict — verify before booking week: '),
-        'NPS road-conditions page (May 6, 2026 update) lists "Expected reopening: April or early May (weather-dependent)" while WSDOT target above says June 25. Both sources are stale in different directions. Confirm by phone — WSDOT 1-800-695-7623 — before locking the week. ',
-        h('a', { href: 'wa20-status.html', class: 'closure-banner__link', style: 'font-weight: 600;' }, 'See sources + phone protocol →')
+        '"A goal, not a promise" — re-check late June to confirm the reopen held. WSDOT 1-800-695-7623. ',
+        h('a', { href: 'wa20-status.html', class: 'closure-banner__link', style: 'font-weight: 600;' }, 'Sources + fallback plan →')
       ),
       h(
         'p',
@@ -552,7 +548,7 @@ function buildClosureBanner(): HTMLElement {
           class: 'closure-banner__detail',
           style: 'font-size: 0.72rem; opacity: 0.82; margin-top: 0.6rem; font-style: italic;',
         },
-        'Source: WSDOT North Cascades Highway live status · verified May 17, 2026. Re-check before Aug 1.'
+        'Source: WSDOT North Cascades Highway live status · verified May 30, 2026. Re-check before Aug 1.'
       )
     )
   );

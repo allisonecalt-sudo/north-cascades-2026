@@ -179,6 +179,13 @@
   margin-top: var(--sp-2);
 }
 .card__source a {
+  /* Quiet attribution link, but give it a comfortable tap target (≥32px tall)
+   * so it's easy to hit on a phone. Vertical padding + inline-flex centering
+   * grow the hit area without making the text visually louder. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 4px 2px;
   color: var(--c-ink-600);
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -1074,6 +1081,10 @@
 }
 
 .rental-card__source-link {
+  /* Sits mid-sentence; inline-block + vertical padding grows the tap target to
+   * ~32px without breaking the surrounding prose flow. Stays visually quiet. */
+  display: inline-block;
+  padding: 7px 2px;
   color: var(--c-forest-700, #2d4d33);
   text-decoration: underline;
 }
@@ -1890,6 +1901,11 @@
 }
 
 .cool-sleep__source-link {
+  /* Quiet provenance link with a comfortable ≥32px tap target on mobile. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 4px 2px;
   color: var(--c-glacier-700, #1f5a76);
   text-decoration: none;
   border-bottom: 1px dotted currentColor;

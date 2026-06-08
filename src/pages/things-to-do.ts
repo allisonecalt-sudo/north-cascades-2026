@@ -98,11 +98,11 @@ function mount(): void {
   });
 
   main.append(
-    group('Activities', ACTIVITIES.length, 'Paddle, swim, bike, side towns', renderActivities()),
-    group('Lakes & water', LAKES.length, 'Swim story + rentals + drive times', renderLakes()),
-    group('Top sunsets', TOP_SUNSETS.length, 'Ranked spots — Allison’s window', renderTopSunsets()),
-    group('Viewpoints', VIEWPOINT_DESTINATIONS.length, 'Drive-up postcard stops', renderViewpointsGallery()),
-    group('Towns', TOWNS.length, 'Corridor stops + groceries', renderTowns()),
+    group('Activities', ACTIVITIES.length, 'Paddle · swim · bike', renderActivities()),
+    group('Lakes & water', LAKES.length, 'Swim · rentals · drives', renderLakes()),
+    group('Top sunsets', TOP_SUNSETS.length, 'Ranked + timing', renderTopSunsets()),
+    group('Viewpoints', VIEWPOINT_DESTINATIONS.length, 'Drive-up overlooks', renderViewpointsGallery()),
+    group('Towns', TOWNS.length, 'Stops + groceries', renderTowns()),
     renderPageCtas('things-to-do')
   );
 

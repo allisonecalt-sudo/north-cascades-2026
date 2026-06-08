@@ -260,6 +260,147 @@
   font-style: italic;
 }
 
+/* The note carries two copies — a wide one (sortable hint) and a narrow one
+ * (card-stack hint). Show the wide one by default; the media query below swaps
+ * them at the reflow breakpoint. */
+.rental-compare__note-narrow {
+  display: none;
+}
+
+/* ────────────────────────────────────────────────────────────
+ * Mobile reflow (≤640px) — the 6-col comparison table is unreadable in a
+ * horizontal-scroll box on a 390px phone (first column wrapped 6-8 lines, right
+ * columns off-screen). Below 640px we drop the table layout entirely and render
+ * each <tr> as a stacked per-car CARD: vehicle name as the card heading, every
+ * other cell as a label:value row (label injected from the td's data-label via
+ * ::before). Layout-only — no data changes. Desktop (≥640px) keeps the table.
+ * ──────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Kill the horizontal scroll box; the cards fit the viewport width. */
+  .rental-compare__scroll {
+    overflow-x: visible;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  /* Collapse table semantics to block flow. */
+  .rental-compare__table {
+    min-width: 0;
+    width: 100%;
+    border-collapse: separate;
+    display: block;
+  }
+
+  /* Hide the header row — labels move inline onto each cell. */
+  .rental-compare__table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .rental-compare__table tbody {
+    display: block;
+  }
+
+  /* Each row becomes a card. */
+  .rental-compare__table tbody tr {
+    display: block;
+    margin: 0 0 var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-md);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .rental-compare__table tbody tr:last-child {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  /* Each cell becomes a label:value row. */
+  .rental-compare__table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--sp-3);
+    padding: 0.3rem 0;
+    border: none;
+    text-align: right;
+  }
+
+  /* Inject the column name as the left-hand label. */
+  .rental-compare__table tbody td[data-label]::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    text-align: left;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--c-ink-500);
+    text-transform: uppercase;
+  }
+
+  /* First cell (vehicle + vendor) = the card heading; no label, full width. */
+  .rental-compare__table tbody td.rental-compare__vehicle {
+    display: block;
+    text-align: left;
+    padding: 0 0 var(--sp-2);
+    margin-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--c-warm-100);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    color: var(--c-ink-900);
+    line-height: 1.3;
+  }
+
+  .rental-compare__table tbody td.rental-compare__vehicle .rental-compare__hybrid--no {
+    display: block;
+    margin-top: var(--sp-1);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+  }
+
+  /* Notes cell reads as a paragraph, not a label:value pair. */
+  .rental-compare__table tbody td[data-label='Notes'] {
+    display: block;
+    text-align: left;
+    padding-top: var(--sp-2);
+    margin-top: var(--sp-1);
+    border-top: 1px solid var(--c-warm-100);
+    line-height: 1.4;
+  }
+
+  .rental-compare__table tbody td[data-label='Notes']::before {
+    display: block;
+    margin-bottom: var(--sp-1);
+  }
+
+  /* Top-pick card: keep the green accent, applied to the whole card. */
+  .rental-compare__table tbody tr.is-toppick {
+    border-color: var(--c-good-border);
+    border-left-width: 3px;
+  }
+
+  .rental-compare__table tbody tr.is-toppick td:first-child {
+    border-left: none;
+  }
+
+  /* Swap the helper note copy. */
+  .rental-compare__note-wide {
+    display: none;
+  }
+
+  .rental-compare__note-narrow {
+    display: inline;
+  }
+}
+
 /* ────────────────────────────────────────────────────────────
  * Best-practice block — numbered list, each item has a one-line "why".
  * ──────────────────────────────────────────────────────────── */

@@ -296,18 +296,18 @@ function renderCompareTable(): HTMLElement {
         },
         h(
           'td',
-          {},
+          { class: 'rental-compare__vehicle' },
           r.vehicle,
           h('br'),
           h('span', { class: 'rental-compare__hybrid--no' }, r.vendor)
         ),
-        h('td', { class: 'rental-compare__price' }, r.baseDisplay),
+        h('td', { class: 'rental-compare__price', 'data-label': 'All-in (5 days)' }, r.baseDisplay),
         r.hybrid
-          ? h('td', { class: 'rental-compare__hybrid--yes' }, 'Yes')
-          : h('td', { class: 'rental-compare__hybrid--no' }, 'No'),
-        h('td', {}, r.clearance),
-        h('td', {}, r.cancel),
-        h('td', {}, r.notes)
+          ? h('td', { class: 'rental-compare__hybrid--yes', 'data-label': 'Hybrid?' }, 'Yes')
+          : h('td', { class: 'rental-compare__hybrid--no', 'data-label': 'Hybrid?' }, 'No'),
+        h('td', { 'data-label': 'Clearance' }, r.clearance),
+        h('td', { 'data-label': 'Cancellation' }, r.cancel),
+        h('td', { 'data-label': 'Notes' }, r.notes)
       )
     )
   );
@@ -324,7 +324,16 @@ function renderCompareTable(): HTMLElement {
     h(
       'p',
       { class: 'rental-compare__note' },
-      'Sortable — tap a column header. Default sort: price ascending.'
+      h(
+        'span',
+        { class: 'rental-compare__note-wide' },
+        'Sortable — tap a column header. Default sort: price ascending.'
+      ),
+      h(
+        'span',
+        { class: 'rental-compare__note-narrow' },
+        'One card per vehicle, ordered cheapest first. Top pick highlighted.'
+      )
     )
   );
 }
