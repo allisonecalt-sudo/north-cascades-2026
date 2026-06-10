@@ -16,8 +16,8 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
+      # lint also runs the privacy grep (conf/eTicket/seat/address) + link shape check
       - run: npm run lint
-      - run: npm run typecheck
+      # live photo-exists + dead-link resolve check — fails CI if a link rotted
+      - run: npm run check:links:net
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e

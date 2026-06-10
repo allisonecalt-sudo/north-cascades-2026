@@ -1,0 +1,1110 @@
+/* ===========================================================================
+   brochure.css — the North Cascades 2026 digital brochure.
+
+   What this is: the entire visual system for the one-page brochure.
+   Why: scratch-rebuild per the trip-site-rebuild spec — high-end travel-agency
+     pamphlet, light mode only, editorial serif display + clean sans body,
+     generous whitespace, restrained palette, strict labeled photo grid.
+   Palette: shifted from Austria's forest/gold to a North-Cascades evergreen +
+     slate-blue (the turquoise-lake / alpine register), kept calm and light.
+   Constraints: ≤ ~640 lines, mobile-first at 412px (Pixel 7 Pro) then desktop.
+   ========================================================================== */
+
+/* ---------- tokens ---------- */
+:root {
+  --ink: #1c2522; /* near-black, cool evergreen-tinted */
+  --ink-soft: #54605f; /* muted body */
+  --ink-faint: #87908d; /* captions / chips */
+  --paper: #f5f7f5; /* cool off-white page */
+  --card: #ffffff;
+  --line: #dfe6e2; /* hairline divider */
+  --accent: #2f5d50; /* deep evergreen */
+  --accent-soft: #e9f0ec;
+  --slate: #3d6680; /* slate-blue — the lake/alpine accent (replaces gold) */
+  --slate-soft: #eaf1f5;
+  --warn: #9a5b1f; /* WA-20 caveat amber — used only on the caveat banner */
+  --warn-soft: #fdf2e3;
+  --shadow: 0 1px 2px rgba(28, 37, 34, 0.04), 0 8px 24px rgba(28, 37, 34, 0.06);
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius: 14px;
+  --maxw: 760px;
+  --gutter: 20px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 2px;
+}
+
+/* ---------- thin nav ---------- */
+.brochure-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 8px;
+  background: rgba(245, 247, 245, 0.92);
+  backdrop-filter: saturate(1.2) blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.brochure-nav a {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.brochure-nav a:hover,
+.brochure-nav a:focus-visible {
+  color: var(--ink);
+  background: var(--accent-soft);
+}
+
+/* ---------- layout shell ---------- */
+.section {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 56px var(--gutter) 8px;
+}
+
+.section-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(26px, 7vw, 36px);
+  line-height: 1.1;
+  margin: 0 0 24px;
+  letter-spacing: -0.01em;
+}
+
+/* ===========================================================================
+   1. COVER
+   ========================================================================== */
+.cover {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  color: #fff;
+  overflow: hidden;
+}
+
+.cover__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 24, 28, 0.28) 0%,
+    rgba(17, 24, 28, 0.12) 38%,
+    rgba(17, 24, 28, 0.74) 100%
+  );
+}
+
+.cover__inner {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+  padding: 0 var(--gutter) 44px;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.cover__eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.92;
+  margin: 0 0 10px;
+}
+
+.cover__title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(48px, 16vw, 92px);
+  line-height: 0.94;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.cover__subtitle {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(16px, 4.2vw, 22px);
+  margin: 10px 0 22px;
+  opacity: 0.95;
+}
+
+.cover__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cover__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cover__status {
+  margin-top: 18px;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(4px);
+}
+
+.cover__credit {
+  position: absolute;
+  z-index: 2;
+  right: 10px;
+  bottom: 6px;
+  font-size: 10px;
+  opacity: 0.66;
+}
+
+/* ===========================================================================
+   2. AT A GLANCE — the CANDIDATE STRIP (DELTA 1, single-base variant)
+   Three candidate houses as nodes, ordered by drive-to-trailheads, leaning
+   pick in evergreen. Pure CSS, no tiles.
+   ========================================================================== */
+.glance__lead {
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+.cands {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.cand {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.cand__dot {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--slate);
+  color: #fff;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 16px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(28, 37, 34, 0.18);
+}
+
+.cand__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cand__place {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.cand__sub {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-top: 1px;
+}
+
+.cand__drive {
+  justify-self: end;
+  text-align: right;
+  white-space: nowrap;
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+
+/* leaning pick = evergreen accent */
+.cand--rec {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.cand--rec .cand__dot {
+  background: var(--accent);
+}
+
+.cand--rec .cand__drive {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ===========================================================================
+   3. DAY BY DAY — the spine
+   ========================================================================== */
+.day {
+  border-top: 1px solid var(--line);
+  padding: 30px 0;
+}
+
+.day:first-of-type {
+  border-top: none;
+}
+
+.day__head {
+  margin-bottom: 14px;
+}
+
+.day__date {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: 600;
+}
+
+.day__title {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(21px, 5.5vw, 27px);
+  line-height: 1.15;
+  margin: 4px 0 6px;
+}
+
+.day__logistics {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+/* fixed-slot labeled photo — strict grid, consistent aspect (spec rule A8) */
+.photo-frame {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  background: var(--accent-soft);
+}
+
+.photo-frame img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.photo-frame__label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 14px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  background: linear-gradient(0deg, rgba(17, 24, 28, 0.68), transparent);
+}
+
+/* representative-photo banner (lodging photo isn't the actual property) */
+.photo-frame__banner {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(28, 37, 34, 0.74);
+  padding: 4px 9px;
+  border-radius: 7px;
+  backdrop-filter: blur(2px);
+}
+
+.photo-frame__broken {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  font-size: 12px;
+  color: var(--ink-faint);
+  padding: 12px;
+  text-align: center;
+}
+
+.day__tldr {
+  margin: 14px 0 14px;
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.day__blocks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.block {
+  border-radius: 10px;
+}
+
+.block--plain {
+  display: flex;
+  gap: 11px;
+  align-items: baseline;
+  padding: 9px 10px;
+}
+
+.block__icon {
+  font-size: 15px;
+  line-height: 1.4;
+  width: 20px;
+  flex: none;
+  text-align: center;
+}
+
+.block__line {
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+/* expandable block */
+details.block {
+  background: transparent;
+}
+
+details.block > summary {
+  display: flex;
+  gap: 11px;
+  align-items: baseline;
+  padding: 9px 10px;
+  cursor: pointer;
+  list-style: none;
+  border-radius: 10px;
+}
+
+details.block > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.block > summary:hover {
+  background: var(--accent-soft);
+}
+
+.block__chevron {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--ink-faint);
+  transition: transform 0.18s ease;
+}
+
+details.block[open] .block__chevron {
+  transform: rotate(180deg);
+}
+
+.block__detail {
+  padding: 2px 10px 12px 41px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.block__text {
+  margin: 0 0 8px;
+}
+
+.block__detail .block__text:last-child {
+  margin-bottom: 0;
+}
+
+/* drive time on a stop line (DELTA 4) */
+.block__drive {
+  color: var(--slate);
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: 4px;
+}
+
+/* ---------- WA-20 caveat banner (fail-loud, dated) ---------- */
+.wa20 {
+  margin: 8px 0;
+  padding: 9px 11px;
+  background: var(--warn-soft);
+  border: 1px solid #f0dcbe;
+  border-radius: 9px;
+  font-size: 12.5px;
+  color: var(--warn);
+  line-height: 1.5;
+}
+
+.wa20__icon {
+  font-weight: 700;
+  margin-right: 3px;
+}
+
+.wa20 a {
+  color: var(--warn);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------- place links: 📍 Navigate + ↗ Website (DELTA 2) ---------- */
+.lnks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.lnk {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.lnk--map {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: transparent;
+}
+
+.lnk--web {
+  color: var(--slate);
+  background: var(--slate-soft);
+  border-color: transparent;
+}
+
+.lnk:hover,
+.lnk:focus-visible {
+  filter: brightness(0.96);
+  text-decoration: none;
+}
+
+/* ===========================================================================
+   3b. DAY-SHAPE OPTIONS (DELTA 3) — fully-formed pickable mini-plans
+   ========================================================================== */
+.shapes {
+  margin-top: 16px;
+  border-top: 1px dashed var(--line);
+  padding-top: 14px;
+}
+
+.shapes__lead {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0 0 10px;
+}
+
+details.shape {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+details.shape[open] {
+  border-color: var(--accent);
+}
+
+details.shape > summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: 'name chev' 'sum chev';
+  gap: 0 10px;
+  align-items: center;
+  padding: 12px 14px;
+  cursor: pointer;
+  list-style: none;
+}
+
+details.shape > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.shape > summary:hover {
+  background: var(--accent-soft);
+}
+
+.shape__name {
+  grid-area: name;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--accent);
+}
+
+.shape__summary {
+  grid-area: sum;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+details.shape > summary .block__chevron {
+  grid-area: chev;
+  align-self: center;
+}
+
+.shape__stops {
+  list-style: none;
+  margin: 0;
+  padding: 2px 14px 14px;
+}
+
+.shape__stop {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.shape__when {
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink-faint);
+  padding-top: 2px;
+}
+
+.shape__stopbody {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.shape__place {
+  font-weight: 600;
+  font-size: 14.5px;
+}
+
+.shape__divider {
+  color: var(--ink-faint);
+}
+
+.shape__drive {
+  color: var(--slate);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.shape__line {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  line-height: 1.5;
+}
+
+.shape__detail {
+  margin-top: 8px;
+}
+
+.shape__text {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin: 0 0 8px;
+}
+
+/* ===========================================================================
+   4. WHERE WE SLEEP — base cards
+   ========================================================================== */
+.beds {
+  display: grid;
+  gap: 18px;
+}
+
+.bed-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.bed-card__body {
+  padding: 16px 16px 18px;
+}
+
+.bed-card__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+
+.bed-card__name {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.bed-card__town {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 2px 0 12px;
+}
+
+.status-pill {
+  flex: none;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.status-pill--booked {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.status-pill--rec {
+  background: var(--accent);
+  color: #fff;
+}
+
+.status-pill--open {
+  background: var(--slate-soft);
+  color: var(--slate);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.chip {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 4px 9px;
+  border-radius: 8px;
+}
+
+.bed-card__blurb {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.bed-card__dates {
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* lodging detail expander (holds blurb + 📍/↗ links — DELTA 2) */
+.bed-card__more {
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.bed-card__more > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.bed-card__more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.bed-card__detail {
+  padding-top: 10px;
+}
+
+.bed-card__more[open] .block__chevron {
+  transform: rotate(180deg);
+}
+
+/* ===========================================================================
+   5. OPEN DECISIONS + PRACTICAL
+   ========================================================================== */
+.decision {
+  background: var(--slate-soft);
+  border: 1px solid #d4e1e9;
+  border-radius: var(--radius);
+  padding: 18px 18px 8px;
+}
+
+.decision__ask {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 19px;
+  margin: 0 0 6px;
+  color: var(--ink);
+}
+
+.decision__lean {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+
+.decision__opts {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.decision__opt {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 10px 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 13.5px;
+}
+
+.decision__opt--rec {
+  border-color: var(--accent);
+}
+
+.decision__opt-mark {
+  flex: none;
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.decision__opt-name {
+  font-weight: 600;
+}
+
+.decision__opt-note {
+  color: var(--ink-soft);
+  display: block;
+  margin-top: 2px;
+}
+
+.decision__fresh {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  margin: 6px 0 12px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.practical {
+  margin-top: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--card);
+}
+
+details.practical-item {
+  border-bottom: 1px solid var(--line);
+}
+
+details.practical-item:last-child {
+  border-bottom: none;
+}
+
+details.practical-item > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+details.practical-item > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.practical-item > summary:hover {
+  background: var(--paper);
+}
+
+.practical-item__body {
+  padding: 0 16px 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.62;
+}
+
+/* ---------- On-trip kit (DELTA 2): every place, grouped ---------- */
+.kit__lead {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+
+.kit__group + .kit__group {
+  margin-top: 14px;
+}
+
+.kit__base {
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--slate);
+  margin: 0 0 6px;
+}
+
+.kit__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.kit__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+
+.kit__place {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.kit__row .lnks {
+  margin-top: 0;
+}
+
+/* costs — one headline number, no dashboard */
+.costs {
+  margin-top: 22px;
+  text-align: center;
+  padding: 28px 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.costs__num {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(26px, 7vw, 38px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.costs__approx {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 6px 0 0;
+}
+
+.costs__split {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin: 18px 0 10px;
+  flex-wrap: wrap;
+}
+
+.costs__person {
+  font-size: 14px;
+}
+
+.costs__person b {
+  font-family: var(--serif);
+  font-size: 18px;
+  display: block;
+  color: var(--accent);
+}
+
+.costs__person span {
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.costs__basis {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  font-style: italic;
+  margin: 8px auto 0;
+  max-width: 56ch;
+  line-height: 1.5;
+}
+
+/* ---------- footer ---------- */
+.brochure-footer {
+  max-width: var(--maxw);
+  margin: 40px auto 0;
+  padding: 28px var(--gutter) 48px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+.brochure-footer p {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- floating notes button ---------- */
+.notes-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 60;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(28, 37, 34, 0.28);
+}
+
+.notes-fab:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- desktop ---------- */
+@media (min-width: 760px) {
+  .section {
+    padding-top: 72px;
+  }
+  .cands {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .beds {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .day__grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .day__grid .day__head {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition: none !important;
+  }
+}

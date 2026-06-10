@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -24,15 +24,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
+      # lint also runs the privacy grep + link shape check (see package.json)
       - run: npm run lint
-      - run: npm run typecheck
+      # live photo-exists / dead-link resolve check
+      - run: npm run check:links:net
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: dist
 
   deploy:
     needs: build

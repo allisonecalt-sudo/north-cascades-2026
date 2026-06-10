@@ -1,43 +1,49 @@
-import { defineConfig } from 'vite';
-import { fileURLToPath, URL } from 'url';
+import { defineConfig, type Plugin } from 'vite';
+import { resolve } from 'node:path';
 
-// GitHub Pages serves the site under /north-cascades-2026/. Local dev uses '/'.
-// Multi-page (May 16, 2026 — Austria-inspired digestibility pass). Each .html
-// is a separate Rollup input so Vite emits a working dist for each.
-const here = (p: string): string => fileURLToPath(new URL(p, import.meta.url));
+// Cache-bleed defense plugin (carried over from the Austria rebuild).
+// GH-Pages serves HTML with a short max-age via Fastly; rapid-fire deploys can
+// leave browser + edge caches holding stale HTML pointing to old bundle hashes.
+// Vite already hashes JS/CSS — only HTML needs cache-busting. GH-Pages does NOT
+// honor _headers files, so inject equivalent meta tags on every HTML page at
+// build time, plus a per-build version stamp for devtools verification.
+function htmlCacheBust(buildId: string): Plugin {
+  const metaBlock = `<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="x-build-id" content="${buildId}" />`;
+  return {
+    name: 'html-cache-bust',
+    transformIndexHtml: {
+      order: 'pre',
+      handler(html) {
+        return html.replace(/(<meta charset="UTF-8" \/>)/i, `$1\n    ${metaBlock}`);
+      },
+    },
+  };
+}
 
-// `vite preview` serves the production build, so it must use the production base
-// (/north-cascades-2026/) — otherwise the built HTML's /north-cascades-2026/...
-// asset URLs 404 (served as the HTML fallback) and no module ever executes.
-// `command` is 'serve' for both `vite` (dev) and `vite preview`, so detect
-// preview via argv. Dev stays at '/'.
+// GitHub Pages serves at /north-cascades-2026/ — base must match repo name.
+// For local dev, base = "/". `vite preview` serves the production build, so it
+// must also use the production base, else the built HTML's asset URLs 404.
 const isPreview = process.argv.includes('preview');
 
 export default defineConfig(({ command }) => ({
   base: command === 'build' || isPreview ? '/north-cascades-2026/' : '/',
+  plugins: [htmlCacheBust(new Date().toISOString())],
   build: {
     outDir: 'dist',
     sourcemap: false,
     rollupOptions: {
+      // 2026-06-10 SCRATCH REBUILD: the brochure is ONE page. The old multi-
+      // page site (lodging/hikes/things-to-do/… .html) lives on branch
+      // archive/pre-rebuild-2026-06-10 — pullable, nothing lost.
       input: {
-        home: here('index.html'),
-        lodging: here('lodging.html'),
-        hikes: here('hikes.html'),
-        thingsToDo: here('things-to-do.html'),
-        travel: here('travel.html'),
-        rental: here('rental.html'),
-        food: here('food.html'),
-        seattle: here('seattle.html'),
-        forErin: here('for-erin.html'),
-        notes: here('notes.html'),
-        costs: here('costs.html'),
-        preTrip: here('pre-trip.html'),
-        hiddenGems: here('hidden-gems.html'),
-        map: here('map.html'),
-        weatherPlanC: here('weather-plan-c.html'),
-        search: here('search.html'),
-        wa20Status: here('wa20-status.html'),
+        main: resolve(__dirname, 'index.html'),
       },
     },
+  },
+  server: {
+    port: 5173,
   },
 }));

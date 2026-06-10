@@ -1,0 +1,448 @@
+// ===========================================================================
+// main.ts — renders the entire North Cascades 2026 brochure from src/trip.ts.
+//
+// What this is: the one renderer. Reads TRIP (single source of truth) and
+//   builds all five guided blocks (cover → glance → days → sleep → practical).
+// Why: spec rule A7 — zero hardcoded facts in HTML; everything flows from data.
+// Notes: photos fail LOUD (a broken image shows a labeled placeholder, never a
+//   silent gap — spec rule A11) and EAGER-load (so full-page screenshots never
+//   catch an empty frame). The glance block draws a CANDIDATE STRIP (the trip's
+//   one decision is which of three west-side houses — DELTA 1, single-base
+//   variant of Austria's route ribbon). Every named place carries 📍 Navigate +
+//   ↗ Website (DELTA 2). East-side items carry a fail-loud WA-20 re-check
+//   banner. A small floating 💬 button reuses src/supabase.ts.
+// ===========================================================================
+
+import type { Base, Day, DayBlock, DayShape, KitGroup, PlaceLinks, Photo } from './trip.js';
+import { TRIP, mapsUrl } from './trip.js';
+import { mountNotes } from './notes.js';
+import { mountCandidates } from './route.js';
+
+// --- tiny DOM helpers ------------------------------------------------------
+function el<K extends keyof HTMLElementTagNameMap>(
+  tag: K,
+  className?: string,
+  html?: string
+): HTMLElementTagNameMap[K] {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (html !== undefined) node.innerHTML = html;
+  return node;
+}
+
+function esc(s: string): string {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+const ICON: Record<DayBlock['icon'], string> = {
+  drive: '🚗',
+  activity: '🥾',
+  sunset: '🌅',
+  food: '🍽',
+  stay: '🛏',
+  time: '🕑',
+};
+
+// --- WA-20 caveat banner (fail-loud, dated) --------------------------------
+// Rendered inside the expanded detail of any block / shape stop flagged wa20.
+function wa20Html(): string {
+  return `<p class="wa20"><span class="wa20__icon" aria-hidden="true">⚠</span> ${esc(
+    TRIP.wa20Caveat
+  )} <a href="${esc(TRIP.wa20Url)}" target="_blank" rel="noopener">WSDOT status ↗</a></p>`;
+}
+
+// --- place links: 📍 Navigate + ↗ Website (spec A9b / DELTA 2) --------------
+// ONE predictable position, always last. `maps` is always built; `website`
+// renders only when a trustworthy URL exists (omitted, never invented — the
+// three booked Airbnbs have no listing URL on file, so they get 📍 only).
+function linksHtml(name: string, links: PlaceLinks): string {
+  const nav = `<a class="lnk lnk--map" href="${esc(mapsUrl(links.query))}" target="_blank" rel="noopener" aria-label="Navigate to ${esc(
+    name
+  )}">📍 Navigate</a>`;
+  const web = links.website
+    ? `<a class="lnk lnk--web" href="${esc(links.website)}" target="_blank" rel="noopener" aria-label="Website for ${esc(
+        name
+      )}">↗ Website</a>`
+    : '';
+  return `<span class="lnks">${nav}${web}</span>`;
+}
+
+// --- photo frame (fail-loud, eager) ----------------------------------------
+function photoFrame(photo: Photo, banner?: string): HTMLElement {
+  const frame = el('figure', 'photo-frame');
+  const img = el('img');
+  img.src = photo.src;
+  img.alt = photo.alt;
+  img.loading = 'eager';
+  img.decoding = 'async';
+  img.addEventListener('error', () => {
+    img.remove();
+    const broken = el(
+      'div',
+      'photo-frame__broken',
+      `⚠ photo failed to load<br><small>${esc(photo.label)}</small>`
+    );
+    frame.prepend(broken);
+  });
+  frame.appendChild(img);
+  if (banner) {
+    frame.appendChild(el('span', 'photo-frame__banner', esc(banner)));
+  }
+  frame.appendChild(el('figcaption', 'photo-frame__label', esc(photo.label)));
+  return frame;
+}
+
+// =========================================================================
+// 1. COVER
+// =========================================================================
+function renderCover(): HTMLElement {
+  const m = TRIP.meta;
+  const sec = el('section', 'cover');
+  sec.id = 'cover';
+
+  const img = el('img', 'cover__photo');
+  img.src = m.heroPhoto.src;
+  img.alt = m.heroPhoto.alt;
+  img.loading = 'eager';
+  sec.appendChild(img);
+
+  sec.appendChild(el('span', 'cover__credit', esc(m.heroPhoto.credit)));
+
+  const inner = el('div', 'cover__inner');
+  inner.innerHTML = `
+    <p class="cover__eyebrow">${esc(m.heroPhoto.label)}</p>
+    <h1 class="cover__title">${esc(m.name)}</h1>
+    <p class="cover__subtitle">${esc(m.subtitle)}</p>
+    <div class="cover__meta">
+      <span>📅 ${esc(m.dateRange)}</span>
+      <span>👣 ${esc(m.travelers)}</span>
+      <span>🌙 ${m.nights} nights</span>
+    </div>
+    <span class="cover__status">${esc(m.statusLine)}</span>
+  `;
+  sec.appendChild(inner);
+  return sec;
+}
+
+// =========================================================================
+// 2. AT A GLANCE — candidate strip (DELTA 1, single-base variant)
+// =========================================================================
+function renderGlance(): HTMLElement {
+  const sec = el('section', 'section');
+  sec.id = 'glance';
+  sec.appendChild(el('p', 'section-eyebrow', 'The trip at a glance'));
+  sec.appendChild(el('h2', 'section-title', `One house, four nights — three to choose from`));
+  sec.appendChild(
+    el(
+      'p',
+      'glance__lead',
+      'No mid-trip move this time: one west-side house for all four nights, with three full park days run from there. The only open decision is which of the three held houses you keep.'
+    )
+  );
+
+  const strip = el('div', 'glance__strip');
+  strip.id = 'candidate-strip';
+  sec.appendChild(strip);
+
+  return sec;
+}
+
+// =========================================================================
+// 3. DAY BY DAY
+// =========================================================================
+function renderBlock(block: DayBlock): HTMLElement {
+  const icon = ICON[block.icon];
+  const drive = block.driveFromBase
+    ? `<span class="block__drive">· ${esc(block.driveFromBase)}</span>`
+    : '';
+  const lineHtml = `<span class="block__line">${esc(block.line)}${drive}</span>`;
+
+  if (block.detail || block.place || block.wa20) {
+    const d = el('details', 'block');
+    const detailText = block.detail ? `<p class="block__text">${esc(block.detail)}</p>` : '';
+    const placeLinks = block.place ? linksHtml(block.place.name, block.place.links) : '';
+    const wa20 = block.wa20 ? wa20Html() : '';
+    d.innerHTML = `
+      <summary>
+        <span class="block__icon" aria-hidden="true">${icon}</span>
+        ${lineHtml}
+        <span class="block__chevron" aria-hidden="true">▾</span>
+      </summary>
+      <div class="block__detail">${detailText}${wa20}${placeLinks}</div>
+    `;
+    return d;
+  }
+  const row = el('div', 'block block--plain');
+  row.innerHTML = `
+    <span class="block__icon" aria-hidden="true">${icon}</span>
+    ${lineHtml}
+  `;
+  return row;
+}
+
+// --- day-shape options (DELTA 3) -------------------------------------------
+function renderShapes(shapes: DayShape[]): HTMLElement {
+  const wrap = el('div', 'shapes');
+  wrap.appendChild(
+    el(
+      'p',
+      'shapes__lead',
+      'A day from here could look like one of these — recommendations, not orders:'
+    )
+  );
+
+  shapes.forEach((shape) => {
+    const card = el('details', 'shape');
+    const stops = shape.stops
+      .map((s) => {
+        const driveHtml = s.drive ? `<span class="shape__drive">${esc(s.drive)}</span>` : '';
+        const detailText = s.detail ? `<p class="shape__text">${esc(s.detail)}</p>` : '';
+        const wa20 = s.wa20 ? wa20Html() : '';
+        const placeLinks = s.links ? linksHtml(s.place, s.links) : '';
+        const body =
+          detailText || wa20 || placeLinks
+            ? `<div class="shape__detail">${detailText}${wa20}${placeLinks}</div>`
+            : '';
+        return `
+          <li class="shape__stop">
+            <span class="shape__when">${esc(s.when)}</span>
+            <span class="shape__stopbody">
+              <span class="shape__place">${esc(s.place)}${s.drive ? ` <span class="shape__divider">·</span> ${driveHtml}` : ''}</span>
+              <span class="shape__line">${esc(s.line)}</span>
+              ${body}
+            </span>
+          </li>`;
+      })
+      .join('');
+    card.innerHTML = `
+      <summary>
+        <span class="shape__name">${esc(shape.name)}</span>
+        <span class="shape__summary">${esc(shape.summary)}</span>
+        <span class="block__chevron" aria-hidden="true">▾</span>
+      </summary>
+      <ol class="shape__stops">${stops}</ol>
+    `;
+    wrap.appendChild(card);
+  });
+  return wrap;
+}
+
+function renderDay(day: Day): HTMLElement {
+  const art = el('article', 'day');
+  art.id = day.id;
+
+  const grid = el('div', 'day__grid');
+
+  const head = el('div', 'day__head');
+  head.innerHTML = `
+    <span class="day__date">${esc(day.dateLabel)} · ${esc(day.dayOfWeek)}</span>
+    <h3 class="day__title">${esc(day.title)}</h3>
+    <span class="day__logistics">${esc(day.logistics)}</span>
+  `;
+  grid.appendChild(head);
+
+  const left = el('div', 'day__media');
+  left.appendChild(photoFrame(day.photo));
+  grid.appendChild(left);
+
+  const right = el('div', 'day__content');
+  right.appendChild(el('p', 'day__tldr', esc(day.tldr)));
+  const blocks = el('ul', 'day__blocks');
+  day.blocks.forEach((b) => {
+    const li = el('li');
+    li.appendChild(renderBlock(b));
+    blocks.appendChild(li);
+  });
+  right.appendChild(blocks);
+
+  if (day.shapes && day.shapes.length > 0) {
+    right.appendChild(renderShapes(day.shapes));
+  }
+
+  grid.appendChild(right);
+  art.appendChild(grid);
+  return art;
+}
+
+function renderDays(): HTMLElement {
+  const sec = el('section', 'section');
+  sec.id = 'days';
+  sec.appendChild(el('p', 'section-eyebrow', 'Day by day'));
+  sec.appendChild(el('h2', 'section-title', 'Five days, one at a time'));
+  TRIP.days.forEach((d) => sec.appendChild(renderDay(d)));
+  return sec;
+}
+
+// =========================================================================
+// 4. WHERE WE SLEEP — the three candidate houses
+// =========================================================================
+function renderBase(base: Base): HTMLElement {
+  const card = el('article', 'bed-card');
+  card.appendChild(
+    photoFrame(
+      base.photo,
+      base.representativePhoto ? 'Representative photo — not the listing' : undefined
+    )
+  );
+
+  const body = el('div', 'bed-card__body');
+  const booked = base.status === 'booked';
+  const statusLabel = booked ? 'Booked ✓' : base.recommended ? 'Leaning ★' : 'Held — could pick';
+  const statusClass = booked ? 'booked' : base.recommended ? 'rec' : 'open';
+  body.innerHTML = `
+    <div class="bed-card__topline">
+      <span class="bed-card__name">${esc(base.name)}</span>
+      <span class="status-pill status-pill--${statusClass}">${statusLabel}</span>
+    </div>
+    <p class="bed-card__town">${esc(base.town)} · ${esc(base.heldBy)}</p>
+    <div class="chips">${base.chips.map((c) => `<span class="chip">${esc(c)}</span>`).join('')}</div>
+    <p class="bed-card__dates">${esc(base.dateLabel)} · ${base.nights} nights · ${esc(base.driveToTrailheads)}</p>
+    <details class="bed-card__more">
+      <summary>Details + links <span class="block__chevron" aria-hidden="true">▾</span></summary>
+      <div class="bed-card__detail">
+        <p class="bed-card__blurb">${esc(base.blurb)}</p>
+        ${linksHtml(base.name, base.links)}
+      </div>
+    </details>
+  `;
+  card.appendChild(body);
+  return card;
+}
+
+function renderSleep(): HTMLElement {
+  const sec = el('section', 'section');
+  sec.id = 'sleep';
+  sec.appendChild(el('p', 'section-eyebrow', 'Where we sleep'));
+  sec.appendChild(el('h2', 'section-title', 'Three held houses — keep one'));
+  const grid = el('div', 'beds');
+  TRIP.bases.forEach((b) => grid.appendChild(renderBase(b)));
+  sec.appendChild(grid);
+  return sec;
+}
+
+// =========================================================================
+// 5. OPEN DECISIONS + PRACTICAL
+// =========================================================================
+function renderPractical(): HTMLElement {
+  const sec = el('section', 'section');
+  sec.id = 'practical';
+  sec.appendChild(el('p', 'section-eyebrow', 'Open decision + practical'));
+  sec.appendChild(el('h2', 'section-title', 'One thing left to decide'));
+
+  const dec = TRIP.openDecision;
+  const decBox = el('div', 'decision');
+  decBox.innerHTML = `
+    <p class="decision__ask">${esc(dec.ask)}</p>
+    <p class="decision__lean">${esc(dec.leaning)}</p>
+    <ul class="decision__opts">
+      ${dec.options
+        .map(
+          (o) => `
+        <li class="decision__opt${o.recommended ? ' decision__opt--rec' : ''}">
+          <span class="decision__opt-mark" aria-hidden="true">${o.recommended ? '★' : '○'}</span>
+          <span>
+            <span class="decision__opt-name">${esc(o.name)}</span>
+            <span class="decision__opt-note">${esc(o.note)}</span>
+          </span>
+        </li>`
+        )
+        .join('')}
+    </ul>
+    <p class="decision__fresh">${esc(dec.freshness)}</p>
+  `;
+  sec.appendChild(decBox);
+
+  // Costs — one headline number, no dashboard.
+  const c = TRIP.costs;
+  const costs = el('div', 'costs');
+  costs.innerHTML = `
+    <div class="costs__num">${esc(c.headline)}</div>
+    <p class="costs__approx">${esc(c.approx)}</p>
+    <div class="costs__split">
+      ${c.perPerson
+        .map(
+          (p) =>
+            `<div class="costs__person"><b>${esc(p.amount)}</b>${esc(p.who)}<br><span>${esc(
+              p.note
+            )}</span></div>`
+        )
+        .join('')}
+    </div>
+    <p class="costs__basis">${esc(c.basis)}</p>
+  `;
+  sec.appendChild(costs);
+
+  // Practical accordion.
+  const practical = el('div', 'practical');
+  TRIP.practical.forEach((p) => {
+    const item = el('details', 'practical-item');
+    item.innerHTML = `
+      <summary>${esc(p.label)}<span aria-hidden="true">＋</span></summary>
+      <div class="practical-item__body">${esc(p.body)}</div>
+    `;
+    practical.appendChild(item);
+  });
+
+  practical.appendChild(renderKit(TRIP.kit));
+  sec.appendChild(practical);
+
+  return sec;
+}
+
+// --- On-trip kit (DELTA 2) -------------------------------------------------
+function renderKit(groups: KitGroup[]): HTMLElement {
+  const item = el('details', 'practical-item kit');
+  const groupsHtml = groups
+    .map((g) => {
+      const rows = g.places
+        .map(
+          (p) => `
+        <li class="kit__row">
+          <span class="kit__place">${esc(p.name)}</span>
+          ${linksHtml(p.name, p.links)}
+        </li>`
+        )
+        .join('');
+      return `
+        <div class="kit__group">
+          <p class="kit__base">${esc(g.base)}</p>
+          <ul class="kit__list">${rows}</ul>
+        </div>`;
+    })
+    .join('');
+  item.innerHTML = `
+    <summary>On-trip kit — every pin + booking link<span aria-hidden="true">＋</span></summary>
+    <div class="practical-item__body kit__body">
+      <p class="kit__lead">Every place of the trip in one spot — tap 📍 to navigate, ↗ for the official page. (The three held houses have no listing URL on file, so they’re 📍 only.)</p>
+      ${groupsHtml}
+    </div>
+  `;
+  return item;
+}
+
+// =========================================================================
+// boot
+// =========================================================================
+function boot(): void {
+  const root = document.getElementById('brochure');
+  if (!root) {
+    console.error('Brochure mount point #brochure missing');
+    return;
+  }
+  root.appendChild(renderCover());
+  root.appendChild(renderGlance());
+  root.appendChild(renderDays());
+  root.appendChild(renderSleep());
+  root.appendChild(renderPractical());
+
+  mountCandidates('candidate-strip', TRIP.bases);
+  mountNotes();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
