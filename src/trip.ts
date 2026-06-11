@@ -678,7 +678,7 @@ export const TRIP: TripData = {
       title: 'A full day in the park',
       logistics: 'Full day · a day from here could look like…',
       photo: P.blueLake,
-      tldr: 'Last full day. Two shapes — the second big hike (whichever of Cascade Pass / Maple Pass you didn’t do), or a slow lakeside-cabin day at the house with a short local walk. You’ve earned the choice. Golden hour to close.',
+      tldr: 'Last full day. Three shapes — the second big hike, a slow lakeside-cabin day, or the San Juan island ferry day (walk-on from Anacortes, 44 min away — orca country). Golden hour to close.',
       blocks: [
         {
           icon: 'sunset',
@@ -757,6 +757,55 @@ export const TRIP: TripData = {
               detail:
                 'No driving needed — a quiet last evening at the house before the travel day.',
               links: { query: 'Sedro-Woolley Washington' },
+            },
+          ],
+        },
+        {
+          name: 'The island day (San Juan)',
+          summary:
+            'Walk-on ferry to Friday Harbor — orcas, harbor town, home by dinner. The one marquee day that doesn’t care about WA-20.',
+          stops: [
+            {
+              when: 'Morning',
+              place: 'Anacortes Ferry Terminal → Friday Harbor (walk-on)',
+              drive: '44 min from base + ~1h05–1h30 ferry',
+              line: 'Park at the terminal, walk on — no reservation needed',
+              detail:
+                'Walk-on passengers never need a reservation — just arrive ~30–40 min before a mid-morning sailing (fares are collected westbound only). The crossing through the islands is a highlight in itself — ride the top deck. Taking the CAR on the ferry is also possible but August vehicle spots must be reserved ahead (see Practical).',
+              links: {
+                query: 'Anacortes Ferry Terminal Washington',
+                website: 'https://wsdot.wa.gov/travel/washington-state-ferries',
+              },
+            },
+            {
+              when: 'Midday',
+              place: 'Friday Harbor',
+              drive: 'on foot from the dock',
+              line: 'Harbor town — lunch from the pack on the waterfront',
+              detail:
+                'The town wraps around the marina — everything is walkable from the ferry dock. Packed lunch on the waterfront (no kosher restaurants on the island), the Whale Museum if you want a roof for an hour.',
+              links: { query: 'Friday Harbor San Juan Island WA' },
+            },
+            {
+              when: 'Afternoon',
+              place: 'Lime Kiln Point State Park (“Whale Watch Park”)',
+              drive: '~25 min from Friday Harbor (shuttle/taxi/scooter — or your car if reserved)',
+              line: 'The best shore-based orca watching in the country — August is peak',
+              detail:
+                'A lighthouse on a bluff over Haro Strait — orcas pass close to shore in summer; August is peak season. Without a car: San Juan Transit shuttle, a taxi, or a scooter/bike rental from the harbor. Alternative shape: skip Lime Kiln and book a ~3 hr whale-watch boat straight from Friday Harbor instead (book a few days ahead in August).',
+              links: {
+                query: 'Lime Kiln Point State Park San Juan Island',
+                website: 'https://parks.wa.gov/find-parks/state-parks/lime-kiln-point-state-park',
+              },
+            },
+            {
+              when: 'Golden hour',
+              place: 'Late-afternoon ferry back → home by dinner',
+              drive: '~1h05–1h30 ferry + 44 min drive',
+              line: 'Golden hour ON the water — then the short drive home',
+              detail:
+                'Aim for a late-afternoon/early-evening sailing back — the light through the islands is the day’s second show. Dinner at the house; you’re only 44 minutes from the terminal.',
+              links: { query: 'Anacortes Ferry Terminal Washington' },
             },
           ],
         },
@@ -842,6 +891,10 @@ export const TRIP: TripData = {
       body: 'WSDOT now targets a full reopen of SR-20 on Fri Jun 19, 2026 (verified Jun 10 — accelerated from the earlier Jul 4 / Jun 25 estimates). The Diablo Lake Overlook + Ross Dam stretch already reopened May 30. The last closed section (Ross Dam → Porcupine Creek, ~MP 134–156) is on track but weather-dependent. East-side destinations (Maple Pass, Washington Pass, Rainy Lake) need the full reopen — re-check WSDOT before any east-side day. West-side days (Cascade Pass, Diablo Lake) and the Mt. Baker side do not depend on it. August wildfire smoke is the other real risk — check inciweb.nwcg.gov + airnow.gov from Aug 1.',
     },
     {
+      label: 'San Juan ferry (only if you do the island day)',
+      body: 'Walk-on: no reservation, ever — arrive ~30–40 min early, fares collected westbound only, Anacortes terminal is 44 min from the base. Taking the CAR over: August vehicle spots need a WSDOT reservation — they release in waves (a chunk ~2 months out, then 2 weeks and 2 days before each sailing), so decide car-vs-walk-on with Erin and set the reservation reminder if car. The walk-on version of the day needs zero advance booking except an optional whale-watch boat.',
+    },
+    {
       label: 'Flights',
       body: 'Out: UA1330 EWR→SEA, Sun Aug 16, 7:59 AM → 11:03 AM. Home: UA2017 SEA→EWR, Thu Aug 20, 10:58 PM redeye → 7:10 AM Fri Aug 21. Both booked — details on file. (Allison’s TLV→NYC leg is a separate ticket; the joint booking starts at NYC.)',
     },
@@ -851,7 +904,7 @@ export const TRIP: TripData = {
     },
     {
       label: 'Rhythm',
-      body: 'One west-side house, four nights — no mid-trip move. Three full park days, each offered as a couple of fully-formed shapes you pick by the morning’s weather and WA-20 status. Easy-to-moderate hiking, big alpine views, back to a full kitchen and two real beds each night. Drive times are honestly from the (still-undecided) house, so a couple show a range.',
+      body: 'One west-side house, four nights — no mid-trip move. Three full park days, each offered as two or three fully-formed shapes you pick by the morning’s weather and WA-20 status (one is a San Juan island ferry day that needs no WA-20 at all). Easy-to-moderate hiking, big alpine views, back to a full kitchen and two real beds each night. Drive times are honestly from the (still-undecided) house, so a couple show a range.',
     },
   ],
 
@@ -979,6 +1032,29 @@ export const TRIP: TripData = {
           links: {
             query: 'Seattle-Tacoma International Airport',
             website: 'https://www.portseattle.org/sea-tac',
+          },
+        },
+      ],
+    },
+    {
+      base: 'San Juan island day (optional)',
+      places: [
+        {
+          name: 'Anacortes Ferry Terminal (44 min from base)',
+          links: {
+            query: 'Anacortes Ferry Terminal Washington',
+            website: 'https://wsdot.wa.gov/travel/washington-state-ferries',
+          },
+        },
+        {
+          name: 'Friday Harbor (the town)',
+          links: { query: 'Friday Harbor San Juan Island WA' },
+        },
+        {
+          name: 'Lime Kiln Point State Park (shore orcas)',
+          links: {
+            query: 'Lime Kiln Point State Park San Juan Island',
+            website: 'https://parks.wa.gov/find-parks/state-parks/lime-kiln-point-state-park',
           },
         },
       ],
