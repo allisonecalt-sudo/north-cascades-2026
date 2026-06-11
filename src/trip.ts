@@ -468,7 +468,7 @@ export const TRIP: TripData = {
               drive: '~2h15 from base',
               line: 'Drive in, climb the switchbacks to the pass at 5,400 ft',
               detail:
-                '~1h15 to the Marblemount area + ~1h up Cascade River Rd (final 13 mi compacted dirt + gravel, any car with reasonable clearance is fine, go slow). Cascade Pass: 7.0 mi RT · ~1,800 ft gain · 3.5–4 hrs, moderate (WTA). Pack lunch + 2L water each — no services at the trailhead.',
+                '~50 min to the Marblemount area + ~1h up Cascade River Rd (final 13 mi compacted dirt + gravel, any car with reasonable clearance is fine, go slow). Cascade Pass: 7.0 mi RT · ~1,800 ft gain · 3.5–4 hrs, moderate (WTA). Pack lunch + 2L water each — no services at the trailhead.',
               links: {
                 query: 'Cascade Pass Trailhead North Cascades',
                 website: 'https://www.wta.org/go-hiking/hikes/cascade-pass',
